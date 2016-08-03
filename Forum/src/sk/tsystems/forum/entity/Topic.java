@@ -15,14 +15,57 @@ public class Topic {
 	@Id
 	@GeneratedValue
 	int topicId;
-	@Column(name="NAME", nullable= false)
+	@Column(name = "NAME", nullable = false)
 	String name;
-	@Column(name="PUBLIC", nullable= false)
+	@Column(name = "PUBLIC", nullable = false)
 	boolean isPublic;
-	@OneToMany
-	List<Comment> comments;
-	@Column(name="CREATIONDATE", nullable= false)
+	// TODO implementovat list ak nam ho bude treba
+	// @OneToMany
+	// List<Comment> comments;
+	@Column(name = "CREATIONDATE", nullable = false)
 	Date creationDate;
 	@OneToOne
 	Blocked blocked;
+
+	public Topic(String name, boolean isPublic, Blocked blocked) {
+		super();
+		this.name = name;
+		this.isPublic = isPublic;
+		this.creationDate = creationDate;
+		this.blocked = blocked;
+	}
+
+	public Topic() {
+		this(null, false, null);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public boolean isPublic() {
+		return isPublic;
+	}
+
+	public void setPublic(boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+
+	public Blocked getBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(Blocked blocked) {
+		this.blocked = blocked;
+	}
+
 }

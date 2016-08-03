@@ -29,4 +29,67 @@ public class Comment {
 	boolean isPublic;
 	@OneToOne
 	Blocked blocked;
+
+	public Comment(String comment, Topic topic, User owner, boolean isPublic) {
+		super();
+		this.comment = comment;
+		this.topic = topic;
+		this.owner = owner;
+		this.isPublic = isPublic;
+		this.creationDate = new Date(); // TODO overit ci tento date davca
+										// aktualny datum a cas
+	}
+
+	public Comment() { // Tento konstruktor nepouziva programator , iba jpa
+		this(null, null, null, false);
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public Topic getTopic() {
+		return topic;
+	}
+
+	public void setTopic(Topic topic) {
+		this.topic = topic;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public boolean isPublic() {
+		return isPublic;
+	}
+
+	public void setPublic(boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+
+	public Blocked getBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(Blocked blocked) {
+		this.blocked = blocked;
+	}
+
+	public int getCommentid() {
+		return commentid;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
 }
