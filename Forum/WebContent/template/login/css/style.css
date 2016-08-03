@@ -1,0 +1,13 @@
+body {
+	background-color: black;
+}
+
+h1 {
+	color: white;
+	font-family: verdana;
+	padding: 2rem;
+}
+
+div.reg_main_div {
+	text-align: center;
+}
