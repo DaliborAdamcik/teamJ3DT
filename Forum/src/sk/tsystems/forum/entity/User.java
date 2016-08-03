@@ -45,6 +45,10 @@ public class User {
 		this.name = name;
 		this.role = UserRole.GUEST;
 	}
+	
+	public User(){
+		this(null, null, null, null);
+	}
 
 	public String getUserName() {
 		return userName;
