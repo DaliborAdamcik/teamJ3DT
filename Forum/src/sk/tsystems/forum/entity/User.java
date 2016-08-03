@@ -9,8 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="JPA_USER")
 public class User {
 	@Id
 	@GeneratedValue

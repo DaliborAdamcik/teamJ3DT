@@ -10,6 +10,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class Blocked {
 	@Id
+	int id;
 	@OneToOne
 	User blockedBy;
 	@Column(name = "BLOCKDATE", nullable = false)
