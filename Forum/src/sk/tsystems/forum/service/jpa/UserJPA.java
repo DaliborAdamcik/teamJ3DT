@@ -39,11 +39,7 @@ public class UserJPA implements UserInterface {
 	@Override
 	public User getUser(String name) { // TODO JPA DOLEZITE toto je zleeeeee spravit cez list :-/ 
 		try (JpaConnector jpa = new JpaConnector()) {
-			
 			return (User)jpa.createQuery("select u from User u where u.userName=:name ").setParameter("name", name).getSingleResult();
-		
-			
-			//return jpa.getEntityManager().find(User.class, name);
 		}
 	}
 
@@ -57,7 +53,7 @@ public class UserJPA implements UserInterface {
 	@Override
 	public List<User> getUsers(UserRole role) {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.createQuery("").setParameter("name", role).getResultList(); //TODO JPA treba napisat SELECT
+			return jpa.createQuery("select u from User u where u.role=:name").setParameter("name", role).getResultList(); //TODO JPA treba napisat SELECT
 		}
 	}
 

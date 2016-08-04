@@ -2,7 +2,9 @@ package sk.tsystems.forum.junittest.servicesJPA;
 
 import static org.junit.Assert.*;
 
+
 import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -107,12 +109,24 @@ public class UserJPATest {
 
 	@Test
 	public void testGetUserInt() {
-		fail("Not yet implemented");
+		Date regDate = new Date();
+		User user = new User(userName, password, birthDate, realName);
+		//add user
+		userservice.addUser(user);
+		int userid= user.getId();
+				
+		assertNotNull("Persistence of user failed", userservice.getUser(userName));
+		assertEquals("Bad name", userservice.getUser(userName).getId(),userid);
+		
 	}
 
 	@Test
 	public void testGetUsersUserRole() {
-		fail("Not yet implemented");
+		List<User> userList = userservice.getUsers(UserRole.GUEST);
+		for (User user:userList){
+			assertEquals("User role is not guest", user.getRole(), UserRole.GUEST);
+			
+		}
 	}
 
 	@Test
