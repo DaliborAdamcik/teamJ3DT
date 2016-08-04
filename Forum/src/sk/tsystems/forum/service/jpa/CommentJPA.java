@@ -43,7 +43,7 @@ public class CommentJPA implements CommentInterface {
 	@Override
 	public List<Comment> getComments(Topic topic) {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.createQuery("").setParameter("name", topic).getResultList(); //TODO JPA treba napisat SELECT
+			return jpa.createQuery("SELECT c FROM Comment c WHERE c.topic=:topic").setParameter("topic", topic).getResultList();
 		}
 	}
 
