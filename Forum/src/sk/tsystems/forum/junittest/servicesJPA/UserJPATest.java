@@ -6,8 +6,6 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Persistence;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,12 +76,17 @@ public class UserJPATest {
 		User user = new User(userName, password, birthDate, realName);
 		// add user
 		userservice.addUser(user);
+		int userid = user.getId();
 		//change password
 		String newPassword=TestHelper.randomString(20);
 		user.setPassword(newPassword);
 		userservice.updateUser(user);
+		assertEquals("BAD USER ID!!", user.getId(), userid);
+		
 		//znovu nacitat password
-		User updatedUser = userservice.getUser(userName);
+		User updatedUser = userservice.getUser(user.getId());
+		assertEquals("BAD USER ID!!", updatedUser.getId(), userid);
+
 		assertEquals("username not updated sucessfully", updatedUser.getPassword(),newPassword);
 	}
 
@@ -96,7 +99,6 @@ public class UserJPATest {
 		// add user
 		userservice.addUser(user);
 		//try to select user from DB
-		
 		User userTest = userservice.getUser(userName);
 		assertNotNull("Persistence of user failed", userTest);
 		assertEquals("Bad name", userTest.getRealName(), realName);
