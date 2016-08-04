@@ -6,6 +6,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sk.tsystems.forum.service.jpa.UserJPA;
+import sk.tsystems.forum.serviceinterface.UserInterface;
+
 /**
  * Servlet implementation class Register
  */
@@ -25,8 +28,23 @@ public class Register extends MasterServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+        request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").forward(request, response);
+        ServletHelper svHelper = new ServletHelper(request);
+        svHelper.setService(new UserJPA()); // TODO !!! this line must be removed from here for general purposes
+        try
+        {
+        	UserInterface usrSvc = svHelper.getUserService();
+        	
+        	
+        			
+        	
+            request.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(request, response);
+        	
+        }
+        finally
+        {
+            request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").forward(request, response);
+        }
 	}
 
 	/**

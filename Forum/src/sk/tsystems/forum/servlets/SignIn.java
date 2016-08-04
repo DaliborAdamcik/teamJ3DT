@@ -6,12 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.catalina.ant.FindLeaksTask;
-
-import com.sun.xml.internal.bind.v2.runtime.Name;
-
 import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.service.jpa.UserJPA;
 import sk.tsystems.forum.serviceinterface.UserInterface;
 
 /**
@@ -41,8 +37,11 @@ public class SignIn extends MasterServlet implements Servlet {
 		String password = request.getParameter("user_pass");	
 		if(userName == null || password == null){	
 			return;
-		}	 
-		UserInterface userService = getUserService(request); //TODO najdenie pozuivatela podla mena
+		}	
+
+        ServletHelper svHelper = new ServletHelper(request);
+        svHelper.setService(new UserJPA()); // TODO !!! this line must be removed from here for general purposes
+		UserInterface userService = svHelper.getUserService(); //TODO najdenie pozuivatela podla mena
 		userService.getUser(userName);
 		
 		User user = userService.getUser(userName);
