@@ -25,16 +25,16 @@ public class Topic {
 	@OneToOne
 	Blocked blocked;
 
-	public Topic(String name, boolean isPublic) {
+	public Topic(String name, boolean isPublic, Blocked blocked) {
 		super();
 		this.name = name;
 		this.isPublic = isPublic;
 		this.creationDate = new Date();
-		this.blocked = null;
+		this.blocked = blocked;
 	}
 
 	public Topic() {
-		this(null, false);
+		this(null, false, null);
 	}
 
 	public String getName() {
