@@ -50,7 +50,7 @@ public class Welcome extends MasterServlet {
 		List<User> userList = new ArrayList<User>();
 		userList.add(newAdmin);
 		userList.add(newUser);
-		
+		response.getWriter().println("<h1>Uncompleted welcome page</h1>");
 		
 
 	}

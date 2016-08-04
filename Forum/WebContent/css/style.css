@@ -1,0 +1,56 @@
+body {
+	background-color: black;
+}
+
+h1 {
+	color: white;
+	font-family: verdana;
+	padding: 2rem;
+}
+
+div.main_div {
+	text-align: center;
+}
+
+#label {
+	color: white;
+}
+
+.tg {
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin: 0px auto;
+	align: center;
+}
+
+.tg td {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	padding: 10px 5px;
+	border-style: solid;
+	border-width: 1px;
+	overflow: hidden;
+	word-break: normal;
+}
+
+.tg th {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	padding: 10px 5px;
+	border-style: solid;
+	border-width: 1px;
+	overflow: hidden;
+	word-break: normal;
+}
+
+.tg .tg-bold {
+	font-weight: bold;
+	background-color: #000000;
+	color: #ffffff
+}
+
+.tg .tg-normal {
+	background-color: #000000;
+	color: #ffffff
+}
