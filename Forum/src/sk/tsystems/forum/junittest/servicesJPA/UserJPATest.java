@@ -78,6 +78,7 @@ public class UserJPATest {
 	@Test
 	public void testGetUserString() {
 		fail("Not yet implemented");
+		
 	}
 
 	@Test
