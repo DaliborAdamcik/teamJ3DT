@@ -2,7 +2,6 @@ package sk.tsystems.forum.service.jpa;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
@@ -56,14 +55,14 @@ public class UserJPA implements UserInterface {
 	@Override
 	public List<User> getUsers(UserRole role) {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.createQuery("select u from User u where u.role=:name").setParameter("name", role).getResultList(); //TODO JPA treba napisat SELECT
+			return jpa.createQuery("select u from User u where u.role=:name").setParameter("name", role).getResultList(); 
 		}
 	}
 
 	@Override
 	public List<User> getUsers(Topic topic) {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.createQuery("").setParameter("name", topic).getResultList(); //TODO JPA treba napisat SELECT
+			return jpa.createQuery("select u from User u where u.topic=:name").setParameter("name", topic).getResultList(); 
 		}
 	}
 

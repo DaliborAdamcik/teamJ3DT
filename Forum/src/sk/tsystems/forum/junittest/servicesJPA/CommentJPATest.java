@@ -64,65 +64,59 @@ public class CommentJPATest {
 
 		assertNotNull("Selecting from database failed", testComment);
 		assertEquals("Bad comment", testComment.getComment(), comment);
-		assertEquals("Bad topic", testComment.getTopic(), topic);
+		assertEquals("Bad topic", testComment.getTopic().getId(), topic.getId());
 		assertEquals("Bad creation date", testComment.getCreationDate().getTime() / 1000, creationDate.getTime() / 1000);
-		assertEquals("Bad owner", testComment.getOwner(), owner);
+		assertEquals("Bad owner", testComment.getOwner().getId(), owner.getId());
 		assertEquals("Comment cant be blocked", testComment.getBlocked(), null);
 		assertTrue("Bad ID in DB", testComment.getId() > 0);
 	}
 
 	@Test
-	public void testUpdateComment() {
+	public void testUpdateCommentComment() {	
 		Comment randomComment = new Comment(comment, topic, owner, isPublic);
 		commentservice.addComment(randomComment);
 		
-		commentservice.updateComment(randomComment);
-
-		Comment testComment = commentservice.getComment(randomComment.getId());
-
-		assertNotNull("Selecting from database failed", testComment);
-		assertEquals("Bad comment", testComment.getComment(), comment);
-		assertEquals("Bad topic", testComment.getTopic(), topic);
-		assertEquals("Bad creation date", testComment.getCreationDate().getTime() / 1000, creationDate.getTime() / 1000);
-		assertEquals("Bad owner", testComment.getOwner(), owner);
-		assertEquals("Comment cant be blocked", testComment.getBlocked(), null);
-		assertTrue("Bad ID in DB", testComment.getId() > 0);
-	}
-	
-	@Test
-	public void testUpdateCommentComment() {
-		Comment randomComment = new Comment(TestHelper.randomString(20), topic, owner, isPublic);
-		commentservice.addComment(randomComment);
-		System.out.println();
+		int commentId = randomComment.getId();
 		
-		randomComment.setComment(comment);
+		String newComment = TestHelper.randomString(20);
+		
+		randomComment.setComment(newComment);
+		
 		commentservice.updateComment(randomComment);
-		Comment testComment = commentservice.getComment(randomComment.getId());
-		assertNotNull("Selecting from database failed", testComment);
-		assertEquals("Bad comment", testComment.getComment(), comment);		
+		
+		assertEquals("BAD COMMENT ID", randomComment.getId(), commentId);
+
+		Comment updatedComment = commentservice.getComment(randomComment.getId());
+
+		assertNotNull("Selecting from database failed", updatedComment);
+		assertEquals("Bad comment", updatedComment.getComment(), newComment);
+		assertEquals("BAD COMMENT ID", randomComment.getId(), commentId);
 	}
 	
 	@Test
 	public void testUpdateCommentTopic() {
-		Comment randomComment = new Comment(comment, new Topic(), owner, isPublic);
+		Comment randomComment = new Comment(comment, topic, owner, isPublic);
+		
 		commentservice.addComment(randomComment);
-		randomComment.setTopic(topic);
+		
+		int commentId= randomComment.getId();
+		
+		Topic newTopic = new Topic("Test", false);
+		
+		topicservice.addTopic(newTopic);
+		
+		randomComment.setTopic(newTopic);
+		
 		commentservice.updateComment(randomComment);
-		Comment testComment = commentservice.getComment(randomComment.getId());
-		assertNotNull("Selecting from database failed", testComment);
-		assertEquals("Bad topic", testComment.getTopic(), topic);		
+		
+		assertEquals("BAD COMMENT ID", randomComment.getId(), commentId);
+		
+		Comment updatedComment = commentservice.getComment(randomComment.getId());
+		
+		assertNotNull("Selecting from database failed", updatedComment);
+		assertEquals("Bad topic", updatedComment.getTopic().getId(), newTopic.getId());	
+		assertEquals("BAD COMMENT ID", randomComment.getId(), commentId);
 	}
-	
-/*	@Test
-	public void testUpdateCommentOwner() {
-		Comment randomComment = new Comment(comment, topic, new User(), isPublic);
-		commentservice.addComment(randomComment);
-		randomComment.setOwner(owner);
-		commentservice.updateComment(randomComment);
-		Comment testComment = commentservice.getComment(randomComment.getId());
-		assertNotNull("Selecting from database failed", testComment);
-		assertEquals("Bad owner", testComment.getComment(), owner);		
-	}*/
 	
 	@Test
 	public void testUpdateCommentIsPublic() {
@@ -132,7 +126,7 @@ public class CommentJPATest {
 		commentservice.updateComment(randomComment);
 		Comment testComment = commentservice.getComment(randomComment.getId());
 		assertNotNull("Selecting from database failed", testComment);
-		assertEquals("Do not change publicity", testComment.getComment(), isPublic);		
+		assertEquals("Do not change publicity", testComment.isPublic(), isPublic);		
 	}
 	
 	@Test

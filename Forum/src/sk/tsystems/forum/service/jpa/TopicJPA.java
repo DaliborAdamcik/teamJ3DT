@@ -1,7 +1,6 @@
 package sk.tsystems.forum.service.jpa;
 
 import java.util.List;
-import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.serviceinterface.TopicInterface;
 
@@ -49,7 +48,7 @@ public class TopicJPA implements TopicInterface {
 	@Override
 	public List<Topic> getTopics() {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.createQuery("").getResultList(); //TODO JPA treba napisat SELECT
+			return jpa.createQuery("select t from Topic u").getResultList(); //TODO JPA treba skontrolovat SELECT
 		}
 	}
 
