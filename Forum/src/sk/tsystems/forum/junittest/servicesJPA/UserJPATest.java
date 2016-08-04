@@ -48,7 +48,6 @@ public class UserJPATest {
 	public void testAddUser() {
 		// create a new user
 		Date regDate = new Date();
-		System.out.println();
 		User user = new User(userName, password, birthDate, realName);
 		// add user
 		userservice.addUser(user);
@@ -72,12 +71,37 @@ public class UserJPATest {
 
 	@Test
 	public void testUpdateUser() { // toto dat viac krat ako napriklad testUpdateUserPassword, testUpdateUserName atï
-		fail("Not yet implemented");
+		User user = new User(userName, password, birthDate, realName);
+		// add user
+		userservice.addUser(user);
+		//change password
+		String newPassword=TestHelper.randomString(20);
+		user.setPassword(newPassword);
+		userservice.updateUser(user);
+		//znovu nacitat password
+		User updatedUser = userservice.getUser(userName);
+		assertEquals("username not updated sucessfully", updatedUser.getPassword(),newPassword);
 	}
 
 	@Test
 	public void testGetUserString() {
-		fail("Not yet implemented");
+		
+		
+		Date regDate = new Date();
+		User user = new User(userName, password, birthDate, realName);
+		// add user
+		userservice.addUser(user);
+		//try to select user from DB
+		User userTest = userservice.getUser(userName);
+		assertNotNull("Persistence of user failed", userTest);
+		assertEquals("Bad name", userTest.getRealName(), realName);
+		assertEquals("Bad real name", userTest.getUserName(), userName);
+		assertEquals("Bad birth date", userTest.getBirthDate().getTime() / 1000, birthDate.getTime() / 1000);
+		assertEquals("Bad password", userTest.getPassword(), password);
+		assertEquals("User can't be blocked", userTest.getBlocked(), null);
+		assertEquals("BAD role", userTest.getRole(), UserRole.GUEST);
+		assertEquals("Bad registration date", userTest.getRegistrationDate().getTime() / 1000, regDate.getTime() / 1000);
+		assertTrue("Bad ID in DB", userTest.getId()>0);
 		
 	}
 
