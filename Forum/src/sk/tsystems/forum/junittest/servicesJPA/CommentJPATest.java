@@ -33,7 +33,7 @@ public class CommentJPATest {
 		userservice = new UserJPA();
 		topicservice = new TopicJPA();
 		comment = TestHelper.randomString(20);
-		topic = new Topic("topic", false, null); 					// neskor test pre isPublic?
+		topic = new Topic("topic", false); 					// neskor test pre isPublic?
 		creationDate = new Date();
 		owner = new User("Tester", "tester", new Date(), "Tester");
 		isPublic = false;
