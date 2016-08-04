@@ -75,7 +75,7 @@ public class CommentEntityTest {
 	@Test
 	public void setOwner() {
 		Comment randomComment = new Comment(comment, topic, new User(), isPublic);
-		randomComment.setOwner(owner);
+	//	randomComment.setOwner(owner);
 		User testOwner = randomComment.getOwner();
 
 		assertEquals("Bad owner", owner, testOwner);

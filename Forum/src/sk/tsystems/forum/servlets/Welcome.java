@@ -1,10 +1,19 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import sk.tsystems.forum.entity.Blocked;
+import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.entity.UserRole;
+import sk.tsystems.forum.serviceinterface.UserInterface;
 
 /**
  * Servlet implementation class Welcome
@@ -25,8 +34,23 @@ public class Welcome extends MasterServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		UserInterface userService = getUserService(request);
+		
+		Date date = new Date();
+		
+		User newAdmin = new User("Pan Admin", "zloziteheslo", date, "admicius");
+		newAdmin.setRole(UserRole.ADMIN);
+		
+		User newUser = new User("Aladar Fajka", "hesielko", date, "Aladaaaar");
+		newUser.setBlocked(new Blocked(newAdmin, "lebo"));
+		newUser.setRole(UserRole.GUEST);
+		
+		List<User> userList = new ArrayList<User>();
+		userList.add(newAdmin);
+		userList.add(newUser);
+		
+		
+
 	}
 
 	/**

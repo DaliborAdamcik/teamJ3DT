@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Persistence;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -94,6 +96,7 @@ public class UserJPATest {
 		// add user
 		userservice.addUser(user);
 		//try to select user from DB
+		
 		User userTest = userservice.getUser(userName);
 		assertNotNull("Persistence of user failed", userTest);
 		assertEquals("Bad name", userTest.getRealName(), realName);
