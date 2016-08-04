@@ -33,9 +33,9 @@ public class CommentJPATest {
 		userservice = new UserJPA();
 		topicservice = new TopicJPA();
 		comment = TestHelper.randomString(20);
-		topic = new Topic(); 					// neskor test pre isPublic?
+		topic = new Topic("topic", false, null); 					// neskor test pre isPublic?
 		creationDate = new Date();
-		owner = new User();
+		owner = new User("Tester", "tester", new Date(), "Tester");
 		isPublic = false;
 		userservice.addUser(owner);
 		topicservice.addTopic(topic);
@@ -44,7 +44,7 @@ public class CommentJPATest {
 	@After
 	public void tearDown() throws Exception {
 		userservice.removeUser(owner);
-		topicservice.addTopic(topic);
+		topicservice.removeTopic(topic);
 	}
 
 	@Test
@@ -89,9 +89,7 @@ public class CommentJPATest {
 	
 	@Test
 	public void testUpdateCommentComment() {
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
-		//userservice.addUser(owner);
-		//topicservice.addTopic(topic);
+		Comment randomComment = new Comment(TestHelper.randomString(20), topic, owner, isPublic);
 		commentservice.addComment(randomComment);
 		randomComment.setComment(comment);
 		commentservice.updateComment(randomComment);
@@ -102,19 +100,36 @@ public class CommentJPATest {
 	
 	@Test
 	public void testUpdateCommentTopic() {
-		
+		Comment randomComment = new Comment(comment, new Topic(), owner, isPublic);
+		commentservice.addComment(randomComment);
+		randomComment.setTopic(topic);
+		commentservice.updateComment(randomComment);
+		Comment testComment = commentservice.getComment(randomComment.getId());
+		assertNotNull("Selecting from database failed", testComment);
+		assertEquals("Bad topic", testComment.getTopic(), topic);		
 	}
 	
 	@Test
 	public void testUpdateCommentOwner() {
-		
+		Comment randomComment = new Comment(comment, topic, new User(), isPublic);
+		commentservice.addComment(randomComment);
+		randomComment.setOwner(owner);
+		commentservice.updateComment(randomComment);
+		Comment testComment = commentservice.getComment(randomComment.getId());
+		assertNotNull("Selecting from database failed", testComment);
+		assertEquals("Bad owner", testComment.getComment(), owner);		
 	}
 	
 	@Test
 	public void testUpdateCommentIsPublic() {
-		
+		Comment randomComment = new Comment(comment, topic, owner, true);
+		commentservice.addComment(randomComment);
+		randomComment.setPublic(isPublic);
+		commentservice.updateComment(randomComment);
+		Comment testComment = commentservice.getComment(randomComment.getId());
+		assertNotNull("Selecting from database failed", testComment);
+		assertEquals("Do not change publicity", testComment.getComment(), isPublic);		
 	}
-	
 	
 	@Test
 	public void testGetComment() {
