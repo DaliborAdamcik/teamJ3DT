@@ -1,13 +1,16 @@
 package sk.tsystems.forum.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,18 +32,18 @@ public class User {
 	String realName;
 	@Column(name = "ROLE")
 	UserRole role;
-	// TODO implementovat list ak nam ho bude treba
+	
+	 @OneToMany(cascade=CascadeType.ALL)
+	 List<Topic> topics;
 	// @OneToMany
-	// List<Topic> topics;
-	// @OneToMany
-	// List<Comment> comments;
+	// List<Comment> comments;  // TODO implementovat list ak nam ho bude treba
 	@OneToOne
 	
 	Blocked blocked;
 
 	public User(String userName, String password, Date birthDate, String name) {
 		super();
-
+		topics = new ArrayList<Topic>();
 		this.userName = userName;
 		this.password = password;
 		this.birthDate = birthDate;
@@ -52,6 +55,20 @@ public class User {
 	@Deprecated
 	public User(){
 		this(null, null, null, null);
+	}
+
+	
+	public Iterator<Topic> getTopicsIterator() {
+		return topics.iterator();
+	}
+	
+	public void addTopic(Topic topic){
+		topics.add(topic);
+	}
+	
+	public void addTopicList(List<Topic> list){
+		topics.addAll(list);
+		
 	}
 
 	public String getUserName() {
