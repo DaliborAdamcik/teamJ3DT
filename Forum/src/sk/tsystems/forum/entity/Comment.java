@@ -66,10 +66,6 @@ public class Comment {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
-		this.owner = owner;
-	}
-
 	public boolean isPublic() {
 		return isPublic;
 	}

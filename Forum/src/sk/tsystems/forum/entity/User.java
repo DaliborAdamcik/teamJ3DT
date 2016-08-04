@@ -35,6 +35,7 @@ public class User {
 	// @OneToMany
 	// List<Comment> comments;
 	@OneToOne
+	
 	Blocked blocked;
 
 	public User(String userName, String password, Date birthDate, String name) {
@@ -48,6 +49,7 @@ public class User {
 		this.role = UserRole.GUEST;
 	}
 	
+	@Deprecated
 	public User(){
 		this(null, null, null, null);
 	}

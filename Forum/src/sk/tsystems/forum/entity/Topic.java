@@ -17,7 +17,7 @@ public class Topic {
 	int id;
 	@Column(name = "NAME", nullable = false)
 	String name;
-	@Column(name = "PUBLIC", nullable = false)
+	@Column(name = "ISPUBLIC", nullable = false)
 	boolean isPublic;
 	// TODO implementovat list ak nam ho bude treba
 	// @OneToMany

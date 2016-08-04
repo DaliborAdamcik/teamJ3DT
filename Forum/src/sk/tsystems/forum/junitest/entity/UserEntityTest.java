@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import javax.management.relation.Role;
-
 import org.junit.Before;
 import org.junit.Test;
 
