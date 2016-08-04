@@ -1,20 +1,18 @@
 package sk.tsystems.forum.entity;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
 public class Topic {
 	@Id
 	@GeneratedValue
-	int topicId;
+	int id;
 	@Column(name = "NAME", nullable = false)
 	String name;
 	@Column(name = "PUBLIC", nullable = false)
@@ -31,7 +29,7 @@ public class Topic {
 		super();
 		this.name = name;
 		this.isPublic = isPublic;
-		this.creationDate = creationDate;
+		this.creationDate = new Date();
 		this.blocked = blocked;
 	}
 
@@ -66,6 +64,10 @@ public class Topic {
 
 	public void setBlocked(Blocked blocked) {
 		this.blocked = blocked;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 }

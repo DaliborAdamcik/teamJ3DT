@@ -34,17 +34,17 @@ public class TestHelper {
 	/**
 	 * Generates an random string with specified number of chars (letters and numerics)
 	 * Position of individual characters is random 
-	 * @param lettercount Count of letters([a-z, A-Z]) in result string
-	 * @param numericcount Count of numeric characters in result
+	 * @param letterCount Count of letters([a-z, A-Z]) in result string
+	 * @param numericCount Count of numeric characters in result
 	 * @return Random string
 	 * @author Dalibor
 	 */
-	public static String randomString(int lettercount, int numericcount) // TODO add special characters
+	public static String randomString(int letterCount, int numericCount) // TODO add special characters
 	{
-		if(lettercount <0 || numericcount <0 || lettercount+numericcount==0)
+		if(letterCount <0 || numericCount <0 || letterCount+numericCount==0)
 		{
 			throw new RuntimeException(
-					String.format("Invalid configuration for randomString: letters %d / numerics %d", lettercount, numericcount));
+					String.format("Invalid configuration for randomString: letters %d / numerics %d", letterCount, numericCount));
 		}
 		
 		StringBuilder strBuild = new StringBuilder();
@@ -53,19 +53,19 @@ public class TestHelper {
 		do {
 			if(rand.nextBoolean())
 			{
-				if(numericcount-- <= 0)
+				if(numericCount-- <= 0)
 					continue;
 				strBuild.append(RandomChar(CharType.NUMERIC));
 			}
 			else // is letter
 			{
-				if(lettercount-- <= 0)
+				if(letterCount-- <= 0)
 					continue;
 
 				strBuild.append(RandomChar(rand.nextBoolean()?CharType.LOWERCASELETTER:CharType.UPPERCASELETTER));
 			}
 		}
-		while (lettercount>0 || numericcount>0);
+		while (letterCount>0 || numericCount>0);
 		
 		return strBuild.toString();
 	}

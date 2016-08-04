@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class User {
 	@Id
 	@GeneratedValue
-	int userid;
+	int id;
 	@Column(name = "USERNAME", nullable = false)
 	String userName;
 	@Column(name = "PASSWORD", nullable = false)
@@ -26,7 +26,7 @@ public class User {
 	@Column(name = "REGISTRATIONDATE", nullable = false)
 	Date registrationDate;
 	@Column(name = "NAME")
-	String name;
+	String realName;
 	@Column(name = "ROLE")
 	UserRole role;
 	// TODO implementovat list ak nam ho bude treba
@@ -44,7 +44,7 @@ public class User {
 		this.password = password;
 		this.birthDate = birthDate;
 		this.registrationDate = new Date();
-		this.name = name;
+		this.realName = name;
 		this.role = UserRole.GUEST;
 	}
 	
@@ -76,14 +76,6 @@ public class User {
 		this.birthDate = birthDate;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public UserRole getRole() {
 		return role;
 	}
@@ -100,12 +92,20 @@ public class User {
 		this.blocked = blocked;
 	}
 
-	public int getUserid() {
-		return userid;
-	}
-
 	public Date getRegistrationDate() {
 		return registrationDate;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 }

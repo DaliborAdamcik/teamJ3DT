@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 public class Comment {
 	@Id
 	@GeneratedValue
-	int commentid;
+	int id;
 	@Column(name = "COMMENTARY", nullable = false)
 	String comment;
 	@ManyToOne
@@ -84,8 +84,8 @@ public class Comment {
 		this.blocked = blocked;
 	}
 
-	public int getCommentid() {
-		return commentid;
+	public int getId() {
+		return id;
 	}
 
 	public Date getCreationDate() {
