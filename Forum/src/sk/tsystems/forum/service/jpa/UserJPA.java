@@ -34,6 +34,7 @@ public class UserJPA implements UserInterface {
 	@Override
 	public boolean updateUser(User user) { // OK
 		return addUser(user);
+		
 	}
 
 	@Override
