@@ -25,6 +25,7 @@ public class Blocked {
 		this.reason = reason;
 	}
 
+	@Deprecated
 	public Blocked() {
 		this(null, null);
 	}

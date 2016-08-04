@@ -42,6 +42,7 @@ public class Comment {
 										// aktualny datum a cas
 	}
 
+	@Deprecated
 	public Comment() { // Tento konstruktor nepouziva programator , iba jpa
 		this(null, null, null, false);
 	}

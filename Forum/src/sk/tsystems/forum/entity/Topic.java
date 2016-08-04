@@ -35,6 +35,7 @@ public class Topic {
 	
 	}
 
+	@Deprecated
 	public Topic() {
 		this(null, false);
 	}
