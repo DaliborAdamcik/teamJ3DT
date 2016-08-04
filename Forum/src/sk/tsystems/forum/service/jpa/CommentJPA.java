@@ -30,7 +30,10 @@ public class CommentJPA implements CommentInterface {
 
 	@Override
 	public boolean updateComment(Comment comment) { // OK
-		return addComment(comment);
+		try (JpaConnector jpa = new JpaConnector()) {
+			jpa.merge(comment);
+			return true;
+		}
 	}
 
 	@Override

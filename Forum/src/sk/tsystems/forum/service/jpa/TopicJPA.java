@@ -32,7 +32,11 @@ public class TopicJPA implements TopicInterface {
 
 	@Override
 	public boolean updateTopic(Topic topic) { // OK
-		return addTopic(topic);
+		try (JpaConnector jpa = new JpaConnector()) {
+			jpa.merge(topic);
+			return true;
+		}
+
 	}
 
 	@Override

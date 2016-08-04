@@ -33,8 +33,10 @@ public class UserJPA implements UserInterface {
 
 	@Override
 	public boolean updateUser(User user) { // OK
-		return addUser(user);
-		
+		try (JpaConnector jpa = new JpaConnector()) {
+			jpa.merge(user);
+			return true;
+		}
 	}
 
 	@Override
