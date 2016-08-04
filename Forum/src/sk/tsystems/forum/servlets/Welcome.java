@@ -34,7 +34,7 @@ public class Welcome extends MasterServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserInterface userService = getUserService(request);
+		//UserInterface userService = getUserService(request);
 		
 		Date date = new Date();
 		
