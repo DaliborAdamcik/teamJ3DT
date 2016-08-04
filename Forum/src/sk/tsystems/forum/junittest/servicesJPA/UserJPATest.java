@@ -78,12 +78,17 @@ public class UserJPATest {
 		User user = new User(userName, password, birthDate, realName);
 		// add user
 		userservice.addUser(user);
+		int userid = user.getId();
 		//change password
 		String newPassword=TestHelper.randomString(20);
 		user.setPassword(newPassword);
 		userservice.updateUser(user);
+		assertEquals("BAD USER ID!!", user.getId(), userid);
+		
 		//znovu nacitat password
-		User updatedUser = userservice.getUser(userName);
+		User updatedUser = userservice.getUser(user.getId());
+		assertEquals("BAD USER ID!!", updatedUser.getId(), userid);
+
 		assertEquals("username not updated sucessfully", updatedUser.getPassword(),newPassword);
 	}
 
