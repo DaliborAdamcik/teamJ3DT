@@ -28,7 +28,7 @@ public class Register extends MasterServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
         ServletHelper svHelper = new ServletHelper(request);
         svHelper.setService(new UserJPA()); // TODO !!! this line must be removed from here for general purposes
         try
@@ -38,12 +38,12 @@ public class Register extends MasterServlet {
         	
         			
         	
-            request.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/register.jsp").include(request, response);
         	
         }
         finally
         {
-            request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
         }
 	}
 
