@@ -34,12 +34,20 @@ public class Register extends MasterServlet {
         try
         {
         	UserInterface usrSvc = svHelper.getUserService();
+        	try
+        	{
+        		
+        	}
+        	catch(NullPointerException e)
+        	{
+        		
+        	}
+        	
         	
         	
         			
         	
             request.getRequestDispatcher("/WEB-INF/jsp/register.jsp").include(request, response);
-        	
         }
         finally
         {
