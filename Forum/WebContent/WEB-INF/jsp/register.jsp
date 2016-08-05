@@ -3,7 +3,6 @@
 
 <form method='post'>
 	<div class="main_div">
-		<h1>F &middot; O &middot; R &middot; U &middot; M</h1>
 		<label id="label">New User Registration:</label>
 		<br> <br>
 		<input type="text" required="required" id="reg_login" placeholder="Nick Name" autofocus> 
@@ -19,10 +18,5 @@
 		<span id="confirmMessage" class="confirmMessage"></span>
 		<br> <br>
 		<input type="submit" value="Submit">
-		<br> <br>
-		<label id="label">Already registered? &middot; </label> <a href="login.html">Login</a>
-		<br>
-		<a href="welcome.html">Back to welcome page</a>
-
 	</div>
 </form>
