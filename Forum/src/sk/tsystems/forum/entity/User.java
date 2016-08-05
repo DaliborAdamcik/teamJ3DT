@@ -8,8 +8,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,7 +35,8 @@ public class User {
 	@Column(name = "ROLE")
 	UserRole role;
 	
-	 @OneToMany(cascade=CascadeType.ALL)
+	 @OneToMany(cascade=CascadeType.DETACH,fetch = FetchType.LAZY,mappedBy="id")
+	// @JoinColumn(name="id" )
 	 List<Topic> topics;
 	// @OneToMany
 	// List<Comment> comments;  // TODO implementovat list ak nam ho bude treba

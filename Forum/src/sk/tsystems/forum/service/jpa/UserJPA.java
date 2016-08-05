@@ -62,7 +62,7 @@ public class UserJPA implements UserInterface {
 	@Override
 	public List<User> getUsers(Topic topic) {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.createQuery("select u from User u where u.topic=:name").setParameter("name", topic).getResultList(); 
+			return jpa.createQuery("select u from User u join u.topics Topic where topic.id=:topicid").setParameter("topicid", topic.getId()).getResultList(); 
 		}
 	}
 	

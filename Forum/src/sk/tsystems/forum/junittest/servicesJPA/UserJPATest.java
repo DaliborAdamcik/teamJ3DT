@@ -12,9 +12,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.junittest.TestHelper;
+import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class UserJPATest {
@@ -139,7 +141,38 @@ public class UserJPATest {
 
 	@Test
 	public void testGetUsersTopic() {
-		fail("Not yet implemented");
+		
+		TopicJPA topicservie = new TopicJPA();
+		//User1 - With topic "topic1"
+		User user1 = new User(userName, password, birthDate, realName);
+		String topic1Name =TestHelper.randomString(20);
+		Topic topic1 = new Topic(topic1Name,true);
+		topicservie.addTopic(topic1);
+		user1.addTopic(topic1);
+		userservice.addUser(user1);
+		
+		//User2 - with topics topic2,topic3
+		User user2 = new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
+		String topic2Name = TestHelper.randomString(20);
+		Topic topic2 = new Topic(topic2Name,true);
+		topicservie.addTopic(topic2);
+		user2.addTopic(topic2);
+		String topic3Name = TestHelper.randomString(20);
+		Topic topic3 = new Topic(topic3Name,true);
+		topicservie.addTopic(topic3);
+		user2.addTopic(topic3);
+		userservice.addUser(user2);
+		
+		//user3 with topics topic1,topic2,topic3
+		User user3 = new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
+		user3.addTopic(topic1);
+		user3.addTopic(topic2);
+		user3.addTopic(topic3);
+		userservice.addUser(user3);
+		
+		
+		
+		
 	}
 
 }
