@@ -18,7 +18,7 @@
 			<c:forEach items="${comments}" var="comment">
 				<li>
 					<div class="commenterImage">
-						<img src="images/userPicture.png width=50 height=50 alt=user" />
+						<img src="images/userPicture.png" alt = userPicture height=50 width=50 />
 					</div>
 					<div class="commentText">
 						<p class="">${comment.getComment()}</p>
