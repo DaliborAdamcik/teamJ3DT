@@ -19,4 +19,6 @@
 		<br> <br>
 		<input type="submit" value="Submit">
 	</div>
+	
 </form>
+<script src="js/register.js" ></script>
