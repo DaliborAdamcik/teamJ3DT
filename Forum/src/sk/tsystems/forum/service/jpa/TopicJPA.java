@@ -48,7 +48,7 @@ public class TopicJPA implements TopicInterface {
 	@Override
 	public List<Topic> getTopics() {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.createQuery("select t from Topic u").getResultList(); //TODO JPA treba skontrolovat SELECT
+			return jpa.createQuery("select t from Topic t").getResultList(); //TODO JPA treba skontrolovat SELECT
 		}
 	}
 
