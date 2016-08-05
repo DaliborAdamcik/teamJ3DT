@@ -40,7 +40,6 @@ public class SignIn extends MasterServlet implements Servlet {
 		}	
 
         ServletHelper svHelper = new ServletHelper(request);
-        svHelper.setService(new UserJPA()); // TODO !!! this line must be removed from here for general purposes
 		UserInterface userService = svHelper.getUserService(); //TODO najdenie pozuivatela podla mena
 		userService.getUser(userName);
 		
@@ -53,7 +52,14 @@ public class SignIn extends MasterServlet implements Servlet {
 			return;
 		}
 		
+		if(user != null){
+			response.getWriter().println("I am " + user);
+			svHelper.setLoggedUser(user);
+			
+		}
 		/// TODO vypisat som "peter" alebo zle heslo
+		
+		// TODO uloyit prihlaseneho pouyivatela do session cey helper
 				
 		
 		request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").include(request, response);
