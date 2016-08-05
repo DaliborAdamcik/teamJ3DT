@@ -31,7 +31,9 @@
 		</ul>
 		<form class="form-inline" role="form">
 			<div class="form-group">
-				<input class="form-control" type="text" placeholder="Your comments" />
+			<input type="hidden" name="action" value="insert_comment">
+			<input type="hidden" name="topicid" value="${topicid}">
+				<input class="form-control" type="text" name = "comment" placeholder="Your comments" />
 			</div>
 			<div class="form-group">
 				<button class="btn btn-default">Add</button>

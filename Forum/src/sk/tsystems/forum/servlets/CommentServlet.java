@@ -2,6 +2,7 @@ package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.service.jpa.UserJPA;
+import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.serviceinterface.CommentInterface;
 import sk.tsystems.forum.serviceinterface.TopicInterface;
 import sk.tsystems.forum.serviceinterface.UserInterface;
@@ -42,19 +43,45 @@ public class CommentServlet extends MasterServlet {
         	UserInterface usrSvc = svHelper.getUserService();
         	CommentInterface commentservice = svHelper.getCommentService();
         	TopicInterface topicservice = svHelper.getTopicService();
-//        	commentservice.addComment(new Comment("sehr schon", topicservice.getTopic(10), usrSvc.getUser(32), true));
-//        	commentservice.addComment(new Comment("alles gutes", topicservice.getTopic(10), usrSvc.getUser(45), true));
-//        	commentservice.addComment(new Comment("igen", topicservice.getTopic(10), usrSvc.getUser(32), true));
-//        	commentservice.addComment(new Comment("szep", topicservice.getTopic(10), usrSvc.getUser(48), true));
-//        	commentservice.addComment(new Comment("szia mafia", topicservice.getTopic(10), usrSvc.getUser(53), true));
+        	int topic_id = 0;
+        	User usr = null;
+        	try {
+        		topic_id = Integer.parseInt(request.getParameter("topicid"));
+        		request.setAttribute("topicid", topic_id);
+        		}
+        	catch(NullPointerException | NumberFormatException e )
+        	{
+        	e.printStackTrace();
+        	}
+        	try
+			{
+				usr = new User("Janka", "janka", new Date(), "Jana");
+				svHelper.getUserService().addUser(usr);
+			}
+			catch(Exception e)
+			{
+				response.getWriter().print("Tento account uz exituje");
+			}
         	
-        	commentservice.getComments(topicservice.getTopic(10));
+        	svHelper.setLoggedUser(usr);
+//        	       	
+//        	commentservice.addComment(new Comment("sehr schon", topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
+//        	commentservice.addComment(new Comment("alles gutes", topicservice.getTopic(topic_id), usrSvc.getUser(12), true));
+//        	commentservice.addComment(new Comment("igen", topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
+//        	commentservice.addComment(new Comment("szep", topicservice.getTopic(topic_id), usrSvc.getUser(3), true));
+//        	commentservice.addComment(new Comment("szia mafia", topicservice.getTopic(topic_id), usrSvc.getUser(6), true));
+//        	
+        	commentservice.getComments(topicservice.getTopic(topic_id));
         	List<Comment> comments = new ArrayList<>();
-			comments = commentservice.getComments(topicservice.getTopic(10));
+			comments = commentservice.getComments(topicservice.getTopic(topic_id));
 			request.setAttribute("comments", comments.iterator());
         	       			
 			request.getRequestDispatcher("/WEB-INF/jsp/comment.jsp").include(request, response);
-        	
+			String action = request.getParameter("action");
+			
+			 if ("insert_comment".equals(action)) {
+					commentservice.addComment(new Comment(request.getParameter("comment"), topicservice.getTopic(topic_id), svHelper.getLoggedUser(), true));		
+			 }
         }
         finally
         {
