@@ -21,7 +21,7 @@ public class UserJPA implements UserInterface {
 			return true;
 		}
 	}
-
+	@Deprecated
 	@Override
 	public boolean removeUser(User user) { 
 		try (JpaConnector jpa = new JpaConnector()) {

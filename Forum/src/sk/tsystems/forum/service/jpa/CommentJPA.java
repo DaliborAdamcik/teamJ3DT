@@ -19,7 +19,7 @@ public class CommentJPA implements CommentInterface {
 			return true;
 		}
 	}
-
+	@Deprecated
 	@Override
 	public boolean removeComment(Comment comment) {  
 		try (JpaConnector jpa = new JpaConnector()) {
