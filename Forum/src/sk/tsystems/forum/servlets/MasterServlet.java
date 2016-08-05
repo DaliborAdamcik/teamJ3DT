@@ -31,7 +31,6 @@ public abstract class MasterServlet extends HttpServlet {
 		
 		// we can do some global checks here
 
-
 		super.service(arg0, arg1); // this line cant be comment out in case of any situation 
 	}
 }
