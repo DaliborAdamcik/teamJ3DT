@@ -2,28 +2,90 @@ package sk.tsystems.forum.junittest;
 
 import static org.junit.Assert.*;
 
+import java.util.Random;
+import java.util.regex.Pattern;
+
 import org.junit.Test;
 
+import sk.tsystems.forum.junittest.TestHelper.CharType;
+
 public class TESTtestHelper {
+	private final int numTests = 20000;
 
 	@Test
-	public final void testRandomChar() {
-		TestHelper thlp = new TestHelper();
-		
-		for(int i = 0;i<10000;i++)
-			thlp.
-		
-		
+	public final void testCharacterEnum() {
+		for(CharType ct: CharType.values()) {
+			switch (ct) {
+				case LOWERCASELETTER:
+				case NUMERIC:
+				case UPPERCASELETTER: break;
+				default: fail("Test Not yet implemented"); break;
+			}
+		}
 	}
 
 	@Test
+	public final void testRandomCharLOWERCASELETTER() {
+		for(int i = 0;i<numTests;i++) 
+		{
+			char c = TestHelper.RandomChar(CharType.LOWERCASELETTER);
+			assertTrue("Invalid character", c>= 'a' && c<='z');
+		}
+	}
+	
+	@Test
+	public final void testRandomCharUPPERCASELETTER() {
+		for(int i = 0;i<numTests;i++) 
+		{
+			char c = TestHelper.RandomChar(CharType.UPPERCASELETTER);
+			assertTrue("Invalid character", c>= 'A' && c<='Z');
+		}
+	}
+	
+	@Test
+	public final void testRandomCharNUMERIC() {
+		for(int i = 0;i<numTests;i++) 
+		{
+			char c = TestHelper.RandomChar(CharType.NUMERIC);
+			assertTrue("Invalid character", c>= '0' && c<='9');
+		}
+	}
+
+	@Test
+	public final void testNumericCount() {
+		assertEquals(10, TestHelper.NUMBER_OF_NUMERICS);
+	}
+
+	@Test
+	public final void testLetterCount() {
+		assertEquals(26, TestHelper.NUMBER_OF_LETTERS);
+	}
+	
+	@Test
 	public final void testRandomStringIntInt() {
-		fail("Not yet implemented"); // TODO
+		fail("BAD implementation use RandomString(int int)");
+		Pattern pat = Pattern.compile("[A-Za-z0-9]+");
+		Random rand = new Random();
+		for(int i =0; i<numTests;i++)
+		{
+			int strLen = rand.nextInt(500)+1;
+			String tested = TestHelper.randomString(strLen);
+			assertEquals("Invalid string legth", strLen, tested.length());
+			assertTrue("Invalid characters found", pat.matcher(tested).matches());
+		}
 	}
 
 	@Test
 	public final void testRandomStringInt() {
-		fail("Not yet implemented"); // TODO
+		Pattern pat = Pattern.compile("[A-Za-z0-9]+");
+		Random rand = new Random();
+		for(int i =0; i<numTests;i++)
+		{
+			int strLen = rand.nextInt(500)+1;
+			String tested = TestHelper.randomString(strLen);
+			assertEquals("Invalid string legth", strLen, tested.length());
+			assertTrue("Invalid characters found", pat.matcher(tested).matches());
+		}
 	}
 
 }
