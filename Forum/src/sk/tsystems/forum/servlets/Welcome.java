@@ -35,6 +35,8 @@ public class Welcome extends MasterServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletHelper helpser = new ServletHelper(request);
+        request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
+
 				
 		UserInterface userService = helpser.getUserService();
 		
@@ -52,7 +54,7 @@ public class Welcome extends MasterServlet {
 		userList.add(newUser);
 		response.getWriter().println("<h1>Uncompleted welcome page</h1>");
 		
-
+		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 	}
 
 	/**
