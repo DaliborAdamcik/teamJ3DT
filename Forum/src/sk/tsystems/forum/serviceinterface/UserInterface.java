@@ -38,4 +38,8 @@ public interface UserInterface {
 	
 	List<User> getUsers(Topic topic);
 	
+	List<User> getAllUsers();
+		
+	
+	
 }

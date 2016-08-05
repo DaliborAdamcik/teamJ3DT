@@ -53,7 +53,7 @@ public class SignIn extends MasterServlet implements Servlet {
 			return;
 		}
 		
-		/// vypisat som "peter" alebo zle heslo
+		/// TODO vypisat som "peter" alebo zle heslo
 				
 		
 		request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").include(request, response);
