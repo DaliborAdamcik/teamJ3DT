@@ -2,7 +2,7 @@ package sk.tsystems.forum.junittest.servicesJPA;
 
 import static org.junit.Assert.*;
 
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,9 +37,18 @@ public class UserJPATest {
 
 	@After
 	public void tearDown() throws Exception {
-		// tu testovat remove user
+		//TODO neviem na co to je
+		
+		
 	}
-
+	@Test
+	public void testUserRemove() {
+		User user = new User(userName, password, birthDate, realName);
+		userservice.addUser(user);
+		assertEquals("BAD USER ID!!", user.getId(),user.getId());
+		userservice.removeUser(user);
+		//assert
+	}
 	/**
 	 * Test for good initialization of object
 	 */
@@ -68,11 +77,6 @@ public class UserJPATest {
 		assertEquals("BAD role", userTest.getRole(), UserRole.GUEST);
 		assertEquals("Bad reg date", userTest.getRegistrationDate().getTime() / 1000, regDate.getTime() / 1000);
 		assertTrue("Bad ID in DB", userTest.getId()>0);
-	}
-
-	@Test
-	public void testRemoveUser() { // toto nerobit, vymazat potom
-		fail("Not yet implemented");
 	}
 
 	@Test
@@ -142,12 +146,12 @@ public class UserJPATest {
 	@Test
 	public void testGetUsersTopic() {
 		
-		TopicJPA topicservie = new TopicJPA();
+		TopicJPA topicservice = new TopicJPA();
 		//User1 - With topic "topic1"
 		User user1 = new User(userName, password, birthDate, realName);
 		String topic1Name =TestHelper.randomString(20);
 		Topic topic1 = new Topic(topic1Name,true);
-		topicservie.addTopic(topic1);
+		topicservice.addTopic(topic1);
 		user1.addTopic(topic1);
 		userservice.addUser(user1);
 		
@@ -155,11 +159,11 @@ public class UserJPATest {
 		User user2 = new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
 		String topic2Name = TestHelper.randomString(20);
 		Topic topic2 = new Topic(topic2Name,true);
-		topicservie.addTopic(topic2);
+		topicservice.addTopic(topic2);
 		user2.addTopic(topic2);
 		String topic3Name = TestHelper.randomString(20);
 		Topic topic3 = new Topic(topic3Name,true);
-		topicservie.addTopic(topic3);
+		topicservice.addTopic(topic3);
 		user2.addTopic(topic3);
 		userservice.addUser(user2);
 		
@@ -170,7 +174,23 @@ public class UserJPATest {
 		user3.addTopic(topic3);
 		userservice.addUser(user3);
 		
+		//creation of expected lists
 		
+		List<User> listOfUsersWithTopic1 =new ArrayList<User>();
+		listOfUsersWithTopic1.add(user1);
+		listOfUsersWithTopic1.add(user3);
+		List<User> listOfUsersWithTopic2 =new ArrayList<User>();
+		listOfUsersWithTopic2.add(user1);
+		listOfUsersWithTopic2.add(user2);
+		
+		//tests
+		for(int listPosition=0;listPosition<listOfUsersWithTopic1.size();listPosition++){
+		assertEquals("Lists are not equal",listOfUsersWithTopic1.get(0).getId(),userservice.getUsers(topic1).get(0).getId() );
+		}
+		
+		for(int listPosition=0;listPosition<listOfUsersWithTopic2.size();listPosition++){
+			assertEquals("Lists are not equal",listOfUsersWithTopic2.get(0).getId(),userservice.getUsers(topic2).get(0).getId() );
+			}
 		
 		
 	}
