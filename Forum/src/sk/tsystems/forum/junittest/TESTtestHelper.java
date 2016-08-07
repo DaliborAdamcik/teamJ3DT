@@ -63,15 +63,43 @@ public class TESTtestHelper {
 	
 	@Test
 	public final void testRandomStringIntInt() {
-		fail("BAD implementation use RandomString(int int)");
-		Pattern pat = Pattern.compile("[A-Za-z0-9]+");
 		Random rand = new Random();
 		for(int i =0; i<numTests;i++)
 		{
-			int strLen = rand.nextInt(500)+1;
-			String tested = TestHelper.randomString(strLen);
-			assertEquals("Invalid string legth", strLen, tested.length());
-			assertTrue("Invalid characters found", pat.matcher(tested).matches());
+			int cntLet = rand.nextInt(250);
+			int cntNum = rand.nextInt(250);
+			String tested = "";
+			try
+			{
+				tested = TestHelper.randomString(cntLet, cntNum);
+			}
+			catch(RuntimeException e)
+			{
+				if(cntLet+cntNum>0)
+					throw e;
+				
+				e.printStackTrace();
+			}
+			
+			
+			int contCntNum = 0;
+			int contCntLet = 0;
+			
+			for (int j = 0; j<cntLet+cntNum; j++)
+			{
+				char c = tested.charAt(j);
+				if(c>= 'A' && c<='Z' || c>= 'a' && c<='z')
+					contCntLet++;
+				else
+				if(c>= '0' && c<='9')
+					contCntNum++;
+				else
+					fail("Invalid character"+c);
+			}
+			
+			assertEquals("Invalid string legth", cntLet+cntNum, tested.length());
+			assertEquals("Invalid Letters count", cntLet, contCntLet);
+			assertEquals("Invalid Numbers count", cntNum, contCntNum);
 		}
 	}
 
