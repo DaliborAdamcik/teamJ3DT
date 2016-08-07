@@ -16,16 +16,21 @@ public class UserJPA implements UserInterface {
 
 	@Override
 	public boolean addUser(User user) { // OK
+		if(user.getId()>0) // getId = 0 - new user, getId > already added = exit (Dalik)
+			return false;
+
 		try (JpaConnector jpa = new JpaConnector()) {
 			jpa.persist(user);
 			return true;
 		}
 	}
+	
 	@Deprecated
 	@Override
 	public boolean removeUser(User user) { 
 		try (JpaConnector jpa = new JpaConnector()) {
-			jpa.getEntityManager().remove(user); //TODO transaction begin end ?? 
+			
+			jpa.remove(user); 
 			return true;
 		}
 	}

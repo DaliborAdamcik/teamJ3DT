@@ -38,6 +38,9 @@ public class UserJPATest {
 	@After
 	public void tearDown() throws Exception {
 		//TODO neviem na co to je
+		/* tato cast kodu sluzi na zavolanei po vsetkych testoch
+		 * tu by sa mali mazat temporary udaje a podobne, ktore by len zahlcovali databazy"
+		*/
 		
 		
 	}
@@ -65,21 +68,60 @@ public class UserJPATest {
 		// create a new user
 		Date regDate = new Date();
 		User user = new User(userName, password, birthDate, realName);
+
 		// add user
 		userservice.addUser(user);
+
 		//try to select user from DB
 		User userTest = userservice.getUser(user.getId());
 		assertNotNull("Persistence of user failed", userTest);
+
+		assertTrue("Bad ID in DB", userTest.getId()>0);
+		assertEquals("Bad tstUSR1.ID vs tstUSR2.ID", userTest.getId(), user.getId());
+
 		assertEquals("Bad name", userTest.getRealName(), realName);
 		assertEquals("Bad real name", userTest.getUserName(), userName);
 		assertEquals("Bad birth date", userTest.getBirthDate().getTime() / 1000, birthDate.getTime() / 1000);
 		assertEquals("Bad password", userTest.getPassword(), password);
-		assertEquals("User cant be blocked", userTest.getBlocked(), null);
+		assertNull("User cant be blocked", userTest.getBlocked());
 		assertEquals("BAD role", userTest.getRole(), UserRole.GUEST);
 		assertEquals("Bad reg date", userTest.getRegistrationDate().getTime() / 1000, regDate.getTime() / 1000);
-		assertTrue("Bad ID in DB", userTest.getId()>0);
 	}
 
+	/**
+	 * Test service to duplicate add of user into database.
+	 * @author Dalibor
+	 */
+	@Test
+	public void testAddUserDuplicity() {
+		userName = TestHelper.randomString(30);
+		realName = TestHelper.randomString(20);
+		password = TestHelper.randomString(20);
+		
+		// create a new user
+		User user = new User(userName, password, birthDate, realName);
+
+		// add user # 1st. try - must be success (condition is not already exists)
+		assertTrue("Cant add test user #1", userservice.addUser(user));
+		// add user # 2nd. try
+		assertFalse("Cant add test user #2", userservice.addUser(user));
+		
+		List<User> controlList = userservice.getAllUsers();
+		
+		int inList = 0;
+		for (User user2 : controlList) {
+			if(user2.getUserName().compareTo(user.getUserName())==0)
+				inList++;
+		}
+		assertEquals("User not fond / more times saved in list", 1, inList);
+		
+		
+		assertTrue("Remove temporary User", userservice.removeUser(user));
+		assertNull("Failed to remove user / Duplicate entries in DB", userservice.getUser(user.getId()));
+		
+		
+	}
+	
 	@Test
 	public void testUpdateUser() { // toto dat viac krat ako napriklad testUpdateUserPassword, testUpdateUserName atï
 		User user = new User(userName, password, birthDate, realName);
@@ -108,7 +150,6 @@ public class UserJPATest {
 		// add user
 		userservice.addUser(user);
 		//try to select user from DB
-		
 		User userTest = userservice.getUser(userName);
 		assertNotNull("Persistence of user failed", userTest);
 		assertEquals("Bad name", userTest.getRealName(), realName);
