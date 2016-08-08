@@ -18,8 +18,7 @@ public class UserJPA implements UserInterface {
 			return false;
 
 		try (JpaConnector jpa = new JpaConnector()) {
-			jpa.persist(user);
-			return true;
+			return jpa.persist(user);
 		}
 	}
 	
