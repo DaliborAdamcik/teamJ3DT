@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
+import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.serviceinterface.TopicInterface;
 
 /**
@@ -17,13 +18,13 @@ import sk.tsystems.forum.serviceinterface.TopicInterface;
 @WebServlet("/Welcome")
 public class Welcome extends MasterServlet {
 	private static final long serialVersionUID = 1L;
+	TopicJPA topicJPA = new TopicJPA();
 
 	/**
 	 * @see MasterServlet#MasterServlet()
 	 */
 	public Welcome() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	/**
@@ -43,7 +44,7 @@ public class Welcome extends MasterServlet {
 				System.out.println("Request> create new topic: " + request.getParameter("new_topic_name"));
 
 				if (helpser.getSessionRole() == UserRole.ADMIN) {
-					new Topic(request.getParameter("new_topic_name"), true);
+					topicJPA.addTopic(new Topic(request.getParameter("new_topic_name"), true));
 					System.out.println("New topic " + request.getParameter("new_topic_name") + "was created.");
 				}
 			}
