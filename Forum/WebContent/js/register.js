@@ -1,35 +1,44 @@
 //http://stackoverflow.com/questions/3831680/httpservletrequest-get-json-post-data
 //$('form [name="reg"]');
-$('#reg').submit(function(ev){
+$('#register').submit(function(ev){
 	
-    var $form = $('#reg');
-    console.log($form);
-    console.log($form.serialize());
-    console.log($form.serializeObject());
-    console.log(JSON.stringify($form.serializeObject()));
-    console.log(JSON.stringify($form.serialize()));
-    console.log(JSON.stringify($form));
-	
-    
-    return false; // prevent subnit form
-});
+    //var $form = $('#register');
+    var jsobj = {};
+    jsobj.name = $('#reg_login').val();
 
-$.fn.serializeObject = function()
-{
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
+    //jsobj.name = $('#reg_email');
+    jsobj.birth = $('#reg_birthdate').val(); //TODO check for valid date
+    jsobj.pass = $('#reg_pass1').val(); //TODO check for valid format
+    
+    //confirmMessage
+    console.log(jsobj);
+    
+    
+    $.ajax({
+        type: "POST",
+        url: "Register",
+        contentType:"application/json;charset=UTF-8",
+        dataType: "json",
+        data:JSON.stringify(jsobj),
+        success: function (response) {
+        	console.log(response);
+        	
+/*            if(response.id){
+                console.log(response.id);
+                $frm.trigger('reset');
+                loadAnk(response.id);
+                localStorage.setItem(localStorageName, "anketoval");
+                $frm.hide();
+                $('#hlasujzas').show();
+            }*/
+        },
+        error: function (jxhr) {
+            window.alert("Spracovanie neúspešné. Údaje neboli zapísané. Kód chyby:" + status + "\n" + jxhr.statusText + "\n" + jxhr.responseText);
         }
     });
-    return o;
-};
+
+    return false; // prevent subnit form
+});
 
 function checkPass() {
 	var pass1 = document.getElementById('reg_pass1');
