@@ -89,7 +89,7 @@ public class SignIn extends MasterServlet implements Servlet {
 				response.getWriter().println("I am " + user);
 				svHelper.setLoggedUser(user);
 			} else {
-				//request.setAttribute("error", "Invalid Username or Password");
+				//request.setAttribute("error", "Invalid Username or Password");                    //TODO dead code
 
 			}
 
