@@ -46,6 +46,10 @@ public class UserJPA implements UserInterface {
 		try (JpaConnector jpa = new JpaConnector()) {
 			return (User)jpa.createQuery("select u from User u where u.userName=:name ").setParameter("name", name).getSingleResult();
 		}
+		catch(javax.persistence.NoResultException e) 
+		{
+			return null; 
+		}
 	}
 
 	@Override

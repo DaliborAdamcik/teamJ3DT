@@ -29,7 +29,7 @@ public class User {
 	 * User Name
 	 */
 
-	@Column(name = "USERNAME", nullable = false)
+	@Column(name = "USERNAME", nullable = false, unique=true)
 	String userName;
 
 	/**
