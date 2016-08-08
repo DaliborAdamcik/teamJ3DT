@@ -9,6 +9,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Blocked {
+	
 	@Id
 	int id;
 	@OneToOne
