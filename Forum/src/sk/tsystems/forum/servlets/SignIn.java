@@ -49,7 +49,7 @@ public class SignIn extends MasterServlet implements Servlet {
 		
 		out.println("</head>");
 		out.println("<body>");*/
-		out.println("<h>Login</h2>");
+		//out.println("<h>Login</h2>");
 		
 		try {
 			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").include(request, response);
@@ -59,7 +59,7 @@ public class SignIn extends MasterServlet implements Servlet {
 			
 			try
 			{
-				User usr = new User("Joe", "123456", new Date(), "");                  /// TODO opravit userName a Name - nick presp. o co sa jedna
+				User usr = new User("Joe", "123456", new Date(), "Jozef");                  /// TODO opravit userName a Name - nick presp. o co sa jedna
 				svHelper.getUserService().addUser(usr);
 			}
 			catch(Exception e)
