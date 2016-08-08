@@ -11,7 +11,7 @@
 			<br> <br> <br>
 			<input type="submit" value="Submit">
 			<br> <br>
-<!-- <!-- 			<label id="label">Not registered yet? &middot; </label> <a href="regform.html">Registration</a> -->       //TODO implement "Not registered yet?"
+<!-- 		<a href="Register">Not registered yet? Click here to register.</a> -->
 			<br>
 <!-- 		<a href="welcome.html">Back to welcome page</a> -->
 			<jsp:include page="footer.jsp"/>
