@@ -3,6 +3,9 @@ package sk.tsystems.forum.service.jpa;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.RollbackException;
+
+import org.hibernate.exception.ConstraintViolationException;
 
 class JpaConnector implements AutoCloseable { // class selector is package
 	private EntityManagerFactory factory = null;
@@ -35,6 +38,10 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		getEntityManager().getTransaction().commit();
 	}
 
+	void rollBackTransaction() {
+		getEntityManager().getTransaction().rollback();
+	}
+
 	private void closeEntityManager() {
 		if (entityManager != null && entityManager.isOpen()) {
 			entityManager.close();
@@ -47,10 +54,23 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		}
 	}
 	
-	void persist(Object object) {
-		beginTransaction();
-		getEntityManager().persist(object);
-		commitTransaction();
+	boolean persist(Object object) {
+		try {
+			beginTransaction();
+			getEntityManager().persist(object);
+			commitTransaction();
+			return true;			
+		}
+		catch(RollbackException e)
+		{
+			if(exceptionChild(e, ConstraintViolationException.class))
+			{
+				System.err.println("**** cant store object "+object.getClass().getSimpleName()+": "+e.getMessage());
+				
+			}
+			else throw e;
+		}
+		return false;
 	}
 
 	void merge(Object object) {
@@ -71,6 +91,11 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		return getEntityManager().createQuery(query);
 	}
 	
+	boolean exceptionChild(Exception e, Class<?> clazz)
+	{
+		
+		return true;
+	}
 	
 	@Override
 	public void close() //throws Exception // TODO toto sme zakomentovali, hadam to nebude v buductnosti robit zle
@@ -78,5 +103,6 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		closeEntityManager();
 		closeEntityManagerFactory();
 	}
+	
 	
 }

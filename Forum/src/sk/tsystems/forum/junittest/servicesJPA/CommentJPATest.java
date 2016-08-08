@@ -2,6 +2,7 @@ package sk.tsystems.forum.junittest.servicesJPA;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class CommentJPATest {
 	private TopicJPA topicservice;
 	private String comment;
 	private Topic topic;
-	private Date creationDate;
 	private User owner;
 	private boolean isPublic;
+	private List<Object> toRemove;
 
 	@Before
 	public void setUp() throws Exception {
@@ -33,18 +34,21 @@ public class CommentJPATest {
 		userservice = new UserJPA();
 		topicservice = new TopicJPA();
 		comment = TestHelper.randomString(20);
-		topic = new Topic("topic", false); // neskor test pre isPublic?
-		creationDate = new Date();
-		owner = new User("Tester", "tester", new Date(), "Tester");
+		topic = new Topic(TestHelper.randomString(20), false);
+		owner = new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
 		isPublic = false;
+		toRemove = new ArrayList<>();
 		userservice.addUser(owner);
+		
 		topicservice.addTopic(topic);
+						
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		// userservice.removeUser(owner);
-		// topicservice.removeTopic(topic);
+		toRemove.add(owner);
+		toRemove.add(topic);
+		TestHelper.removeTemporaryObjects(toRemove);
 	}
 
 	@Test
@@ -59,14 +63,13 @@ public class CommentJPATest {
 
 		Comment randomComment = new Comment(comment, topic, owner, isPublic);
 		commentservice.addComment(randomComment);
+		toRemove.add(randomComment);
 
 		Comment testComment = commentservice.getComment(randomComment.getId());
 
 		assertNotNull("Selecting from database failed", testComment);
 		assertEquals("Bad comment", testComment.getComment(), comment);
 		assertEquals("Bad topic", testComment.getTopic().getId(), topic.getId());
-		assertEquals("Bad creation date", testComment.getCreationDate().getTime() / 1000,
-				creationDate.getTime() / 1000);
 		assertEquals("Bad owner", testComment.getOwner().getId(), owner.getId());
 		assertEquals("Comment cant be blocked", testComment.getBlocked(), null);
 		assertTrue("Bad ID in DB", testComment.getId() > 0);
@@ -76,6 +79,7 @@ public class CommentJPATest {
 	public void testUpdateCommentComment() {
 		Comment randomComment = new Comment(comment, topic, owner, isPublic);
 		commentservice.addComment(randomComment);
+		toRemove.add(randomComment);
 
 		int commentId = randomComment.getId();
 
@@ -99,12 +103,14 @@ public class CommentJPATest {
 		Comment randomComment = new Comment(comment, topic, owner, isPublic);
 
 		commentservice.addComment(randomComment);
+		toRemove.add(randomComment);
 
 		int commentId = randomComment.getId();
 
-		Topic newTopic = new Topic("Test", false);
+		Topic newTopic = new Topic(TestHelper.randomString(20), false);
 
 		topicservice.addTopic(newTopic);
+		toRemove.add(newTopic);
 
 		randomComment.setTopic(newTopic);
 
@@ -123,6 +129,7 @@ public class CommentJPATest {
 	public void testUpdateCommentIsPublic() {
 		Comment randomComment = new Comment(comment, topic, owner, true);
 		commentservice.addComment(randomComment);
+		toRemove.add(randomComment);
 		randomComment.setPublic(isPublic);
 		commentservice.updateComment(randomComment);
 		Comment testComment = commentservice.getComment(randomComment.getId());
@@ -134,6 +141,7 @@ public class CommentJPATest {
 	public void testGetComment() {
 		Comment randomComment = new Comment(comment, topic, owner, isPublic);
 		commentservice.addComment(randomComment);
+		toRemove.add(randomComment);
 		int ident = randomComment.getId();
 		Comment testComment = commentservice.getComment(ident);
 		assertNotNull("Selecting from database failed", testComment);
@@ -151,6 +159,9 @@ public class CommentJPATest {
 		commentservice.addComment(randomComment1);
 		commentservice.addComment(randomComment2);
 		commentservice.addComment(randomComment3);
+		toRemove.add(randomComment1);
+		toRemove.add(randomComment2);
+		toRemove.add(randomComment3);
 
 		List<Comment> testComments = commentservice.getComments(topic);
 
