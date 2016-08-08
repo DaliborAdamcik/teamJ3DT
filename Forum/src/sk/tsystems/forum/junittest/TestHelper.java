@@ -66,7 +66,7 @@ public class TestHelper {
 			}
 			
 		}
-		listOfTemporaryObjects.clear();
+	//	listOfTemporaryObjects.clear();
 		return true;
 	}
 	

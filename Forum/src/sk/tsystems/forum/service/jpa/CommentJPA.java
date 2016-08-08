@@ -23,7 +23,7 @@ public class CommentJPA implements CommentInterface {
 	@Override
 	public boolean removeComment(Comment comment) {  
 		try (JpaConnector jpa = new JpaConnector()) {
-			jpa.getEntityManager().remove(comment);// TODO begin end transaction ??
+			jpa.remove(comment); 
 			return true;
 		}
 	}

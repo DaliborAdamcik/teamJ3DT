@@ -224,22 +224,32 @@ public class UserJPATest {
 		user3.addTopic(topic3);
 		
 		userservice.addUser(user3);
-		listOfTemporaryObjects.add(user2);
-		listOfTemporaryObjects.add(user3);
-		listOfTemporaryObjects.add(user1);
-		listOfTemporaryObjects.add(topic3);
-		listOfTemporaryObjects.add(topic1);
-		listOfTemporaryObjects.add(topic2);
+		
 		//creation of expected lists
 		
 		List<User> listOfUsersWithTopic1 =new ArrayList<User>();
 		listOfUsersWithTopic1.add(user1);
 		listOfUsersWithTopic1.add(user3);
 		
+		listOfTemporaryObjects.add(user2);
+		System.out.println(user2.getId() + "us");
+		listOfTemporaryObjects.add(user3);
+		System.out.println(user3.getId()+ "us");
+		listOfTemporaryObjects.add(user1);
+		System.out.println(user1.getId()+ "us");
+	//	TestHelper.removeTemporaryObjects(listOfTemporaryObjects);
+		listOfTemporaryObjects.add(topic3);
+		System.out.println(topic3.getId()+ "top");
+		
+		listOfTemporaryObjects.add(topic1);
+		System.out.println(topic1.getId()+ "top");
+		listOfTemporaryObjects.add(topic2);
+		System.out.println(topic2.getId()+ "top");
 		//tests
 		for(int listPosition=0;listPosition<listOfUsersWithTopic1.size();listPosition++){
 		assertEquals("Lists are not equal",listOfUsersWithTopic1.get(listPosition).getId(),userservice.getUsers(topic1).get(listPosition).getId() );
 		}
+		
 		
 		
 	}

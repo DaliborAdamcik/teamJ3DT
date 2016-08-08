@@ -24,7 +24,7 @@ public class TopicJPA implements TopicInterface {
 	@Override
 	public boolean removeTopic(Topic topic) {
 		try (JpaConnector jpa = new JpaConnector()) { //OK
-			jpa.getEntityManager().remove(topic);
+			jpa.remove(topic); 
 			return true;
 		}
 	}
