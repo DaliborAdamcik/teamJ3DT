@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><!DOCTYPE html>
 <html lang="en">
 
@@ -15,4 +16,6 @@
 <body>
 <div class="main_div">		
 	<h1>F &middot; O &middot; R &middot; U &middot; M</h1>
+
+<jsp:include page="Menuanduser.jsp" />
 </div>

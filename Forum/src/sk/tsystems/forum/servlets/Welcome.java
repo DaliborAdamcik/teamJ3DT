@@ -56,13 +56,19 @@ public class Welcome extends MasterServlet {
 				System.out.println("User was logged out...");
 			}
 		}
-
+		
+		//Atribut logged user, vyuizity pri jsp kde je menu
+		request.setAttribute("loggeduser", helpser.getLoggedUser());
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		
-		response.getWriter().printf("<a href=\"Welcome?parameter=logout\">Logout</a>");
 		
-		if (helpser.getLoggedUser() != null)
-			response.getWriter().print("<h1>Logged: " + helpser.getLoggedUser() + "</h1>");
+		//TODO presunute do JSP, uz to nebude treba
+//		response.getWriter().printf("<a href=\"Welcome?parameter=logout\">Logout</a>");
+		
+	if (helpser.getLoggedUser() != null)
+		
+		//TODO netreba to uz pravdepodobne
+//		response.getWriter().print("<h1>Logged: " + helpser.getLoggedUser().getUserName() + "</h1>");
 
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
 
@@ -73,8 +79,8 @@ public class Welcome extends MasterServlet {
 		for (Topic t : topicService.getTopics()) {
 			response.getWriter().printf("\nTopic: <a href=\"Comment?topicid=%d\">%s<a><br>", t.getId(), t.getName());
 		}
-
-		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
+		//TODO toto sa uz asi nebude pouzivat, uz je to v inom jsp
+//		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 	}
 
 	/**

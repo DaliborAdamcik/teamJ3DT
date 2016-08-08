@@ -1,19 +1,12 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.hibernate.boot.model.source.internal.hbm.Helper;
-
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.service.jpa.UserJPA;
 import sk.tsystems.forum.serviceinterface.UserInterface;
 
 /**
@@ -39,7 +32,7 @@ public class SignIn extends MasterServlet implements Servlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
-	PrintWriter out = response.getWriter();
+	
 	
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 	
@@ -77,7 +70,7 @@ public class SignIn extends MasterServlet implements Servlet {
 			
 
 			User user = userService.getUser(userName);
-			if (user == null &&  user.getPassword().compareTo(password)!=0) {
+			if (user != null && user.getPassword().compareTo(password)!=0) {
 				response.getWriter().println("<h1>Nespravne meno alebo heslo</h1>");
 				return;
 			}

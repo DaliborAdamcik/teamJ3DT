@@ -8,6 +8,6 @@
 </div>
 
 
-<!--  DO NOT REMOVE THIS TAGS -->
+<!--  DO NOT REMOVE THEESE TAGS -->
 </body>
 </html>
