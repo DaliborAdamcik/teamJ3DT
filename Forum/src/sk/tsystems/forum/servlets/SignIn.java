@@ -74,30 +74,26 @@ public class SignIn extends MasterServlet implements Servlet {
 				return;
 			}
 
-			userService.getUser(userName);
+			
 
 			User user = userService.getUser(userName);
-			if (user == null) {
+			if (user == null &&  user.getPassword().compareTo(password)!=0) {
+				response.getWriter().println("<h1>Nespravne meno alebo heslo</h1>");
 				return;
 			}
 
-			if (password != user.getPassword()) { 
-				return;
-			}
+			
 
-			if (user != null) {
+			
 				response.getWriter().println("I am " + user);
 				svHelper.setLoggedUser(user);
-			} else {
-				//request.setAttribute("error", "Invalid Username or Password");                    //TODO dead code
-
-			}
+			
 
 		} finally {
 
 		}
 		
-		out.println("<form metod='get'>");
+/*		out.println("<form metod='get'>");
 		
 		out.println("<input type ='hidden' name= '' value = ''/>");
 		
@@ -106,7 +102,7 @@ public class SignIn extends MasterServlet implements Servlet {
 		out.println("</form>");
 		
 		out.println("</body>");
-		out.println("</html>");		
+		out.println("</html>");	*/	
 
 	}
 
