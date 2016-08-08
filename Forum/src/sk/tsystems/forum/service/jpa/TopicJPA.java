@@ -44,7 +44,7 @@ public class TopicJPA implements TopicInterface {
 			return jpa.getEntityManager().find(Topic.class, ident);
 		}
 	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Topic> getTopics() {
 		try (JpaConnector jpa = new JpaConnector()) {

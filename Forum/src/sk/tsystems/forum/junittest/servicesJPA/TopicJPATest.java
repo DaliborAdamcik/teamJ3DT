@@ -8,10 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.junittest.TestHelper;
-import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 
 public class TopicJPATest {

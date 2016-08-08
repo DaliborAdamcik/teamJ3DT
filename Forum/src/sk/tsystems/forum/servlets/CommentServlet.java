@@ -40,7 +40,7 @@ public class CommentServlet extends MasterServlet {
         ServletHelper svHelper = new ServletHelper(request);
         try
         {
-        	UserInterface usrSvc = svHelper.getUserService();
+        	UserInterface usrSvc = svHelper.getUserService();//TODO not used, delete in case
         	CommentInterface commentservice = svHelper.getCommentService();
         	TopicInterface topicservice = svHelper.getTopicService();
         	int topic_id = 0;

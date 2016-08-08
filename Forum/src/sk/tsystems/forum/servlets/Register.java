@@ -34,6 +34,8 @@ public class Register extends MasterServlet {
         try
         {
         	UserInterface usrSvc = svHelper.getUserService();
+        	
+        	//TODO prazdny try - doplnit alebo vymazat
         	try
         	{
         		

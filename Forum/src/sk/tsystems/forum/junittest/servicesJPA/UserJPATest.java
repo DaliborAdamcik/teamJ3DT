@@ -165,7 +165,7 @@ public class UserJPATest {
 
 	@Test
 	public void testGetUserInt() {
-		Date regDate = new Date();
+	//	Date regDate = new Date();
 		User user = new User(userName, password, birthDate, realName);
 		//add user
 		userservice.addUser(user);

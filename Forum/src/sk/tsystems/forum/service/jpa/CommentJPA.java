@@ -43,6 +43,7 @@ public class CommentJPA implements CommentInterface {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Comment> getComments(Topic topic) {
 		try (JpaConnector jpa = new JpaConnector()) {

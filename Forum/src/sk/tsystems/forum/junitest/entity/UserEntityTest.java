@@ -30,6 +30,7 @@ public class UserEntityTest {
 
 	@Test
 	public void userNameTest() {
+		@SuppressWarnings("deprecation")
 		User user = new User();
 		assertNull("Username set without constructor", user.getUserName());
 		user.setUserName(userName);
@@ -38,6 +39,7 @@ public class UserEntityTest {
 
 	@Test
 	public void RealNameTest() {
+		@SuppressWarnings("deprecation")
 		User user = new User();
 		assertNull("Realname set without constructor", user.getRealName());
 		user.setRealName(realName);
@@ -46,6 +48,7 @@ public class UserEntityTest {
 
 	@Test
 	public void passwordTest() {
+		@SuppressWarnings("deprecation")
 		User user = new User();
 		assertNull("Password set without constructor", user.getPassword());
 		user.setPassword(password);
@@ -55,6 +58,7 @@ public class UserEntityTest {
 
 	@Test
 	public void birthDateTest() {
+		@SuppressWarnings("deprecation")
 		User user = new User();
 		assertNull("BithDate set without constructor", user.getBirthDate());
 		user.setBirthDate(birthDate);
@@ -64,6 +68,7 @@ public class UserEntityTest {
 
 	@Test
 	public void registrationDateTest() {
+		@SuppressWarnings("deprecation")
 		User user = new User();
 		assertNotNull("regDate is null", user.getRegistrationDate());
 		assertEquals("regdate not equal", user.getRegistrationDate().getTime() / 100, actualDate.getTime() / 100);
@@ -71,6 +76,7 @@ public class UserEntityTest {
 
 	@Test
 	public void getInitRoleTest() {
+		@SuppressWarnings("deprecation")
 		User user = new User();
 		assertNotNull("role(init) is null", user.getRole());
 		assertEquals("role not set in constructor", user.getRole(), UserRole.GUEST);
@@ -79,6 +85,7 @@ public class UserEntityTest {
 
 	@Test
 	public void roleTest() {
+		@SuppressWarnings("deprecation")
 		User user = new User();
 		UserRole role = UserRole.REGULARUSER;
 		user.setRole(role);

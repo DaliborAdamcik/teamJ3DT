@@ -10,10 +10,8 @@ import sk.tsystems.forum.serviceinterface.UserInterface;
 
 public class UserJPA implements UserInterface {
 
-	public UserJPA() {
-		// TODO Auto-generated constructor stub
-	}
-
+	
+	
 	@Override
 	public boolean addUser(User user) { // OK
 		if(user.getId()>0) // getId = 0 - new user, getId > already added = exit (Dalik)
@@ -44,7 +42,7 @@ public class UserJPA implements UserInterface {
 	}
 
 	@Override
-	public User getUser(String name) { // TODO JPA DOLEZITE toto je zleeeeee spravit cez list :-/ 
+	public User getUser(String name) { 
 		try (JpaConnector jpa = new JpaConnector()) {
 			return (User)jpa.createQuery("select u from User u where u.userName=:name ").setParameter("name", name).getSingleResult();
 		}
@@ -56,21 +54,21 @@ public class UserJPA implements UserInterface {
 			return jpa.getEntityManager().find(User.class, ident);
 		}
 	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getUsers(UserRole role) {
 		try (JpaConnector jpa = new JpaConnector()) {
 			return jpa.createQuery("select u from User u where u.role=:name").setParameter("name", role).getResultList(); 
 		}
 	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getUsers(Topic topic) {
 		try (JpaConnector jpa = new JpaConnector()) {
 			return jpa.createQuery("select u from User u join u.topics t where t=:topic").setParameter("topic", topic).getResultList(); 
 		}
 	}
-	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getAllUsers(){
 		try (JpaConnector jpa = new JpaConnector()) {

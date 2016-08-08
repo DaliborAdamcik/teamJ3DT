@@ -21,6 +21,7 @@ public abstract class MasterServlet extends HttpServlet {
 	 * WARNING: Please, don't place here any code that can be directly send to client 
 	 * 	e.g including another servlet / jsp
 	 */
+	//TODO arg1 arg0?
 	@Override
 	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
 		System.out.println("**** Master SERVLET initialization *****"); // TODO only for debug purposes, please remove in production mode
