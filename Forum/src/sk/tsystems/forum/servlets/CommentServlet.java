@@ -43,7 +43,7 @@ public class CommentServlet extends MasterServlet {
 		PrintWriter out = response.getWriter();
 
 		try {
-			//UserInterface usrSvc = svHelper.getUserService();
+			// UserInterface usrSvc = svHelper.getUserService();
 			CommentInterface commentservice = svHelper.getCommentService();
 			TopicInterface topicservice = svHelper.getTopicService();
 			int topic_id = 0;
@@ -54,14 +54,15 @@ public class CommentServlet extends MasterServlet {
 			} catch (NullPointerException | NumberFormatException e) {
 				e.printStackTrace();
 			}
-			try {
-				usr = new User("Janka", "janka", new Date(), "Jana");
-				svHelper.getUserService().addUser(usr);
-			} catch (Exception e) {
-				response.getWriter().print("Tento account uz existuje");
-			}
-
-			svHelper.setLoggedUser(usr);
+			
+//			try {
+//				usr = new User("Janka", "janka", new Date(), "Jana");
+//				svHelper.getUserService().addUser(usr);
+//			} catch (Exception e) {
+//				response.getWriter().print("Tento account uz existuje");
+//			}
+//
+//			svHelper.setLoggedUser(usr);
 
 			// commentservice.addComment(new Comment("sehr schon",
 			// topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
@@ -74,23 +75,27 @@ public class CommentServlet extends MasterServlet {
 			// commentservice.addComment(new Comment("szia mafia",
 			// topicservice.getTopic(topic_id), usrSvc.getUser(6), true));
 
-			commentservice.getComments(topicservice.getTopic(topic_id));
-			List<Comment> comments = new ArrayList<>();
-			comments = commentservice.getComments(topicservice.getTopic(topic_id));
-			request.setAttribute("comments", comments.iterator());
-
-			request.getRequestDispatcher("/WEB-INF/jsp/comment.jsp").include(request, response);
+	
+		
 			String action = request.getParameter("action");
 
 			if ("insert_comment".equals(action)) {
-				if (svHelper.getSessionRole().equals(UserRole.GUEST)) {
+				// if (svHelper.getSessionRole().equals(UserRole.GUEST))
+				if (svHelper.getLoggedUser() == null) {
 					out.println("You are not sign in or maybe you are blocked");
 				} else {
 					commentservice.addComment(new Comment(request.getParameter("comment"),
 							topicservice.getTopic(topic_id), svHelper.getLoggedUser(), true));
 				}
 			}
+			
+			commentservice.getComments(topicservice.getTopic(topic_id));
+			List<Comment> comments = new ArrayList<>();
+			comments = commentservice.getComments(topicservice.getTopic(topic_id));
+			request.setAttribute("comments", comments.iterator());
+			
 		} finally {
+			request.getRequestDispatcher("/WEB-INF/jsp/comment.jsp").include(request, response);
 			request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 		}
 	}
