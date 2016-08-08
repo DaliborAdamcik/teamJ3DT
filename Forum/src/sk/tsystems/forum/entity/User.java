@@ -64,12 +64,7 @@ public class User {
 	/**
 	 * Many-to-many connection between topics and users
 	 */
-	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY) // TODO
-																		// ,mappedBy="id"
-																		// doplnit
-																		// v
-																		// pripade
-																		// potreby
+	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
 	List<Topic> topics;
 
 	// /**

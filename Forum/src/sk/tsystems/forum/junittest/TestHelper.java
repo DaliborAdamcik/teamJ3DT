@@ -1,6 +1,15 @@
 package sk.tsystems.forum.junittest;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Random;
+
+import sk.tsystems.forum.entity.Comment;
+import sk.tsystems.forum.entity.Topic;
+import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.service.jpa.CommentJPA;
+import sk.tsystems.forum.service.jpa.TopicJPA;
+import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class TestHelper {
 	
@@ -13,6 +22,55 @@ public class TestHelper {
 	public static final byte NUMBER_OF_LETTERS = 'Z'-'A'+1; 
 	public static final byte NUMBER_OF_NUMERICS = 10; 
 	
+	/**
+	 * List of entities to be deleted from database after tests end;
+	 */
+	
+	//public static List<Object> listOfTemporaryObjects = new ArrayList<Object>();
+	
+	
+//	/**
+//	 * Adds an object to list of temporary list
+//	 * @param temporary object
+//	 * @return true
+//	 */
+//	public static  boolean addToListOfTemporaryObjects(Object temporaryObject){
+//		listOfTemporaryObjects.add(temporaryObject);
+//		return true;
+//	}
+	/**
+	 * Removes all temporary objects from the database
+	 * @return true if successful, false otherwise
+	 */
+	@SuppressWarnings("deprecation")
+	public static boolean removeTemporaryObjects(List<Object> listOfTemporaryObjects){
+		UserJPA userservice = new UserJPA();
+		CommentJPA commentservice = new CommentJPA();
+		TopicJPA topicservice = new TopicJPA();
+		System.out.println(listOfTemporaryObjects);
+		
+		
+		for(Object object:listOfTemporaryObjects){
+			if (object.getClass().equals(User.class)) {
+				
+				userservice.removeUser(userservice.getUser(((User) object).getId()));
+				System.out.print(object +" deleted");
+			}
+			if (object.getClass().equals(Topic.class)) {
+				topicservice.removeTopic(topicservice.getTopic(((Topic) object).getId()));
+				System.out.print(object +" deleted");
+			}
+			if (object.getClass().equals(Comment.class)) {
+				commentservice.removeComment(commentservice.getComment(((Comment) object).getId()));
+				System.out.print(object +" deleted");
+			}
+			
+		}
+		listOfTemporaryObjects.clear();
+		return true;
+	}
+	
+		
 	/**
 	 * Generates one random character of specified type
 	 * @param charType

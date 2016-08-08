@@ -5,9 +5,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Persistence;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +22,7 @@ public class UserJPATest {
 	private String password;
 	private String realName;
 	private Date birthDate;
-	
+	public List<Object> listOfTemporaryObjects;
 	@Before
 	public void setUp() throws Exception {
 		userservice = new UserJPA(); // start tested service
@@ -33,6 +30,7 @@ public class UserJPATest {
 		realName = TestHelper.randomString(20);
 		password = TestHelper.randomString(20);
 		birthDate = new Date();
+	listOfTemporaryObjects = new ArrayList<Object>();
 	}
 
 	@After
@@ -42,7 +40,7 @@ public class UserJPATest {
 		 * tu by sa mali mazat temporary udaje a podobne, ktore by len zahlcovali databazy"
 		*/
 		
-		
+		TestHelper.removeTemporaryObjects(listOfTemporaryObjects);
 	}
 //	@Test
 //	public void testUserRemove() {
@@ -71,6 +69,7 @@ public class UserJPATest {
 
 		// add user
 		userservice.addUser(user);
+		listOfTemporaryObjects.add(user);
 
 		//try to select user from DB
 		User userTest = userservice.getUser(user.getId());
@@ -127,6 +126,8 @@ public class UserJPATest {
 		User user = new User(userName, password, birthDate, realName);
 		// add user
 		userservice.addUser(user);
+		listOfTemporaryObjects.add(user);
+		System.out.print(listOfTemporaryObjects);
 		int userid = user.getId();
 		//change password
 		String newPassword=TestHelper.randomString(20);
@@ -149,6 +150,7 @@ public class UserJPATest {
 		User user = new User(userName, password, birthDate, realName);
 		// add user
 		userservice.addUser(user);
+		listOfTemporaryObjects.add(user);
 		//try to select user from DB
 		User userTest = userservice.getUser(userName);
 		assertNotNull("Persistence of user failed", userTest);
@@ -169,6 +171,7 @@ public class UserJPATest {
 		User user = new User(userName, password, birthDate, realName);
 		//add user
 		userservice.addUser(user);
+		listOfTemporaryObjects.add(user);
 		int userid= user.getId();
 				
 		assertNotNull("Persistence of user failed", userservice.getUser(userName));
@@ -194,28 +197,39 @@ public class UserJPATest {
 		String topic1Name =TestHelper.randomString(20);
 		Topic topic1 = new Topic(topic1Name,true);
 		topicservice.addTopic(topic1);
+		
 		user1.addTopic(topic1);
 		userservice.addUser(user1);
+		
 		
 		//User2 - with topics topic2,topic3
 		User user2 = new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
 		String topic2Name = TestHelper.randomString(20);
 		Topic topic2 = new Topic(topic2Name,true);
 		topicservice.addTopic(topic2);
+		
 		user2.addTopic(topic2);
 		String topic3Name = TestHelper.randomString(20);
 		Topic topic3 = new Topic(topic3Name,true);
+		
 		topicservice.addTopic(topic3);
 		user2.addTopic(topic3);
 		userservice.addUser(user2);
+		
 		
 		//user3 with topics topic1,topic2,topic3
 		User user3 = new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
 		user3.addTopic(topic1);
 		user3.addTopic(topic2);
 		user3.addTopic(topic3);
-		userservice.addUser(user3);
 		
+		userservice.addUser(user3);
+		listOfTemporaryObjects.add(user2);
+		listOfTemporaryObjects.add(user3);
+		listOfTemporaryObjects.add(user1);
+		listOfTemporaryObjects.add(topic3);
+		listOfTemporaryObjects.add(topic1);
+		listOfTemporaryObjects.add(topic2);
 		//creation of expected lists
 		
 		List<User> listOfUsersWithTopic1 =new ArrayList<User>();
