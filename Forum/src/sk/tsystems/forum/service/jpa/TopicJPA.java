@@ -20,7 +20,7 @@ public class TopicJPA implements TopicInterface {
 			return true;
 		}
 	}
-
+	@Deprecated
 	@Override
 	public boolean removeTopic(Topic topic) {
 		try (JpaConnector jpa = new JpaConnector()) { //OK

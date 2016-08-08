@@ -12,8 +12,8 @@
 			<br> <br> <br>
 			<input type="submit" value="Submit">
 			<br> <br>
-<!-- <!-- 			<label id="label">Not registered yet? &middot; </label> <a href="regform.html">Registration</a> --> -->
-<!-- 			<br> -->
+<!-- <!-- 			<label id="label">Not registered yet? &middot; </label> <a href="regform.html">Registration</a> --> 
+			<br>
 			<a href="welcome.html">Back to welcome page</a>
 			
 		</div>

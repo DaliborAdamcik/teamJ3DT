@@ -59,6 +59,13 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		commitTransaction();
 	}
 	
+	void remove(Object object)
+	{
+		beginTransaction();
+		getEntityManager().remove(getEntityManager().contains(object) ? object : getEntityManager().merge(object)); //TODO is okay?? 
+		commitTransaction();
+	}
+	
 	javax.persistence.Query createQuery(String query)
 	{
 		return getEntityManager().createQuery(query);

@@ -59,7 +59,7 @@ public class SignIn extends MasterServlet implements Servlet {
 			
 			try
 			{
-				User usr = new User("", "", new Date(), "");
+				User usr = new User("Joe", "123456", new Date(), "");                  /// TODO opravit userName a Name - nick presp. o co sa jedna
 				svHelper.getUserService().addUser(usr);
 			}
 			catch(Exception e)

@@ -46,14 +46,14 @@ public class User {
 	
 	Blocked blocked;
 
-	public User(String userName, String password, Date birthDate, String name) {
+	public User(String userName, String password, Date birthDate, String realName) {
 		super();
 		topics = new ArrayList<Topic>();
 		this.userName = userName;
 		this.password = password;
 		this.birthDate = birthDate;
 		this.registrationDate = new Date();
-		this.realName = name;
+		this.realName = realName;
 		this.role = UserRole.GUEST;
 	}
 	

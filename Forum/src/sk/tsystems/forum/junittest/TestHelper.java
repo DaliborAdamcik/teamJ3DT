@@ -10,7 +10,7 @@ public class TestHelper {
 	 * @author Dalibor
 	 */
 	public enum CharType {UPPERCASELETTER, LOWERCASELETTER, NUMERIC};
-	public static final byte NUMBER_OF_LETTERS = 'Z'-'A'; 
+	public static final byte NUMBER_OF_LETTERS = 'Z'-'A'+1; 
 	public static final byte NUMBER_OF_NUMERICS = 10; 
 	
 	/**
@@ -25,7 +25,7 @@ public class TestHelper {
 		switch(charType)
 		{
 			case LOWERCASELETTER: return (char)(rand.nextInt(NUMBER_OF_LETTERS)+'a');
-			case NUMERIC: return (char)(rand.nextInt(NUMBER_OF_LETTERS+1)+'0');
+			case NUMERIC: return (char)(rand.nextInt(NUMBER_OF_NUMERICS)+'0');
 			case UPPERCASELETTER: return (char)(rand.nextInt(NUMBER_OF_LETTERS)+'A');
 			default: throw new RuntimeException("randomChar - An unimplemented option selected: "+charType.toString()); 
 		}
