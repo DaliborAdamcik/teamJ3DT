@@ -6,15 +6,42 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 
 public interface CommentInterface {
+	/**
+	 * Adds comment to the database
+	 * 
+	 * @param comment
+	 * @return true if successful, false othervise
+	 */
+	boolean addComment(Comment comment);
+	/**
+	 * Removes comment from the database
+	 * 
+	 * @param comment
+	 * @return true if successful, false othervise
+	 */
+	boolean removeComment(Comment comment);
+	/**
+	 * Update comment in the database
+	 * 
+	 * @param comment
+	 * @return true if successful, false othervise
+	 */
+	boolean updateComment(Comment comment);
+
+	/**
+	 * Gets comment from the database
+	 * 
+	 * @param ID of comment
+	 * @return comment with specific ID
+	 */
+	Comment getComment(int ident);
 	
-boolean addComment(Comment comment);
-
-boolean removeComment(Comment comment);
-
-boolean updateComment(Comment comment);
-
-Comment getComment(int ident);
-
-List<Comment> getComments(Topic topic);
+	/**
+	 * Returns all comments <b> that are listed with specific topic</b>
+	 * 
+	 * @param topic
+	 * @return list of comments on specific topic
+	 */
+	List<Comment> getComments(Topic topic);
 
 }
