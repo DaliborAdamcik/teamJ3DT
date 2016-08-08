@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<link rel="stylesheet" type="text/css" href="comment.css">
+<link rel="stylesheet" type="text/css" href="css/comment.css">
 
 <div class="detailBox">
 	<div class="titleBox">
@@ -18,7 +18,7 @@
 			<c:forEach items="${comments}" var="comment">
 				<li>
 					<div class="commenterImage">
-						<img src="images/userPicture.png" alt = userPicture height=50 width=50 />
+						<img src="images/userPicture.png" alt = userPicture height=30 width=30 />
 					</div>
 					<div class="commentText">
 						<p class="">${comment.getComment()}</p>

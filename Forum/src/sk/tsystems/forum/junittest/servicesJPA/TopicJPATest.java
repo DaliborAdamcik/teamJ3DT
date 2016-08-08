@@ -3,6 +3,7 @@ package sk.tsystems.forum.junittest.servicesJPA;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -96,5 +97,36 @@ public class TopicJPATest {
 		assertNotNull("Selecting from database failed", testTopic);
 		assertEquals("Bad id", testTopic.getId(), ident);
 	}
+	
+	@Test
+	public void testGetTopics() {
+		Topic randomTopic1 = new Topic(name, isPublic);
+		String name2 = TestHelper.randomString(20);
+		String name3 = TestHelper.randomString(20);
+		Topic randomTopic2 = new Topic(name2, true);
+		Topic randomTopic3 = new Topic(name3, isPublic);
 
+		topicservice.addTopic(randomTopic1);
+		topicservice.addTopic(randomTopic2);
+		topicservice.addTopic(randomTopic3);
+
+		List<Topic> testTopics = topicservice.getTopics();
+
+		assertNotNull("Selecting from database failed", testTopics);
+		
+		for (Topic t : testTopics) {
+			if (t.getId() == randomTopic1.getId()) {
+				assertEquals("Bad name1", name, t.getName());
+				assertEquals("Bad isPublic1", isPublic, t.isPublic());
+			}
+			if (t.getId() == randomTopic2.getId()) {
+				assertEquals("Bad name2", name2, t.getName());
+				assertEquals("Bad isPublic2", true, t.isPublic());
+			}
+			if (t.getId() == randomTopic3.getId()) {
+				assertEquals("Bad name3", name3, t.getName());
+				assertEquals("Bad isPublic3", isPublic, t.isPublic());
+			}
+		}
+	}
 }
