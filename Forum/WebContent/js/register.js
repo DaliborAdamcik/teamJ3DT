@@ -11,15 +11,15 @@ $('#register').submit(function(ev){
     jsobj.pass = $('#reg_pass1').val(); //TODO check for valid format
     
     //confirmMessage
-    console.log(jsobj);
-    
-    
+    var sendobj = {};
+    sendobj.register = jsobj;
+    console.log(sendobj);
     $.ajax({
         type: "POST",
         url: "Register",
         contentType:"application/json;charset=UTF-8",
         dataType: "json",
-        data: JSON.stringify({}.register = jsobj),
+        data: JSON.stringify(sendobj),
         success: function (response) {
         	console.log(response);
         	

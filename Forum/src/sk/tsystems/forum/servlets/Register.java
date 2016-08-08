@@ -46,11 +46,12 @@ public class Register extends MasterServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("register", "ok");
+        jsonResponse.put("register", "something is bad");
         
         try
         {
-            StringBuilder sb = new StringBuilder();
+            // TODO tot dat do helper class
+        	StringBuilder sb = new StringBuilder();
             String s;
             while ((s = request.getReader().readLine()) != null) 
                 sb.append(s);
@@ -58,6 +59,7 @@ public class Register extends MasterServlet {
             System.out.println(sb);// TODO temp code, remove
 
         	JSONObject jsonClient = new JSONObject(sb.toString());
+        	// * po tade
         	
         	if(jsonClient.has("checknick"))
         	{
@@ -102,9 +104,9 @@ public class Register extends MasterServlet {
 		resp.put("registered", false);
 		// TODO do some check on name, eg length and so on... // nick, bith, pass
 		try { // TODO erase this
-			resp.put("exists", helper.getUserService().getUser(req.getString("nick"))!=null);
+			//resp.put("exists", helper.getUserService().getUser(req.getString("nick"))!=null);
 			
-			User usr = new User(req.getString("nick"), req.getString("pass"), new Date(), "we dont heave a rela namae at this time"); // TODO !! len tak nabuchane to je
+			User usr = new User(req.getString("nick"), req.getString("pass"), new Date(), req.getString("nick")+"real"); // TODO !! len tak nabuchane to je
 			if(helper.getUserService().addUser(usr))
 			{
 				resp.put("registered", true);
