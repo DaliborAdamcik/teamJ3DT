@@ -56,16 +56,16 @@ public class SignIn extends MasterServlet implements Servlet {
 			ServletHelper svHelper = new ServletHelper(request);
 			UserInterface userService = svHelper.getUserService();
 
-			
-			try
-			{
-				User usr = new User("Joe", "123456", new Date(), "Jozef");                  /// TODO opravit userName a Name - nick presp. o co sa jedna
-				svHelper.getUserService().addUser(usr);
-			}
-			catch(Exception e)
-			{
-				response.getWriter().print("Jozov account uz exituje");
-			}
+//			
+//			try
+//			{
+//				User usr = new User("Joe", "123456", new Date(), "Jozef");                  /// TODO opravit userName a Name - nick presp. o co sa jedna
+//				svHelper.getUserService().addUser(usr);
+//			}
+//			catch(Exception e)
+//			{
+//				response.getWriter().print("Jozov account uz exituje");
+//			}
 			
 			
 			String userName = request.getParameter("user_login"); 
@@ -87,6 +87,8 @@ public class SignIn extends MasterServlet implements Servlet {
 			
 				response.getWriter().println("I am " + user);
 				svHelper.setLoggedUser(user);
+				//red
+				response.sendRedirect("/Welcome"); 
 			
 
 		} finally {
