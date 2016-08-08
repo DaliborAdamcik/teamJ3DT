@@ -143,8 +143,8 @@ public class ServletHelper {
 	 *            an object name in request
 	 * @return Object from request if found, otherwise NULL will be returned
 	 */
-	Object getSessionObject(String NAME){ // TODO maybe private?
-	
+	Object getSessionObject(String NAME) { // TODO maybe private?
+
 		return servletRequest.getSession().getAttribute(NAME);
 	}
 
@@ -158,9 +158,10 @@ public class ServletHelper {
 	 *            an object to be stored
 	 * @return always true
 	 */
-	boolean setSessionObject(String NAME, Object object) {// TODO maybe private?,
+	boolean setSessionObject(String NAME, Object object) {// TODO maybe
+															// private?,
 															// do some checks?
-	
+
 		servletRequest.getSession().setAttribute(NAME, object);
 		return true;
 	}
@@ -186,8 +187,13 @@ public class ServletHelper {
 	 * @return true on sucess
 	 */
 	final boolean setLoggedUser(User user) {
-		setSessionObject(USER_SESSION_IDENT, user.getId());
-		return true;
+		if (user != null) {
+			setSessionObject(USER_SESSION_IDENT, user.getId());
+			return true;
+		} else {
+			setSessionObject(USER_SESSION_IDENT, null);
+			return false;
+		}
 	}
 
 	/**
