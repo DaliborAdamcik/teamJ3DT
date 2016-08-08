@@ -4,7 +4,7 @@ $('#register').submit(function(ev){
 	
     //var $form = $('#register');
     var jsobj = {};
-    jsobj.name = $('#reg_login').val();
+    jsobj.nick = $('#reg_login').val();
 
     //jsobj.name = $('#reg_email');
     jsobj.birth = $('#reg_birthdate').val(); //TODO check for valid date
@@ -19,7 +19,7 @@ $('#register').submit(function(ev){
         url: "Register",
         contentType:"application/json;charset=UTF-8",
         dataType: "json",
-        data:JSON.stringify(jsobj),
+        data: JSON.stringify({}.register = jsobj),
         success: function (response) {
         	console.log(response);
         	
@@ -39,6 +39,36 @@ $('#register').submit(function(ev){
 
     return false; // prevent subnit form
 });
+
+$('#reg_login').keyup(function(){
+	
+    var jsobj = {};
+    jsobj.checknick = {};
+    jsobj.checknick.nick = $('#reg_login').val();
+    
+    console.log(jsobj);
+    
+    $.ajax({
+        type: "POST",
+        url: "Register",
+        contentType:"application/json;charset=UTF-8",
+        dataType: "json",
+        data:JSON.stringify(jsobj),
+        success: function (response) {
+        	console.log(response);
+        	if(response.exists)
+        		$('#confirmMessage').text('User name exists');
+        	else
+        	$('#confirmMessage').html('User name OK');
+        },
+        error: function (jxhr) {
+            window.alert("Spracovanie neúspešné. Údaje neboli zapísané. Kód chyby:" + status + "\n" + jxhr.statusText + "\n" + jxhr.responseText);
+        }
+    });
+
+    return false; // prevent subnit form
+});
+
 
 function checkPass() {
 	var pass1 = document.getElementById('reg_pass1');

@@ -1,6 +1,7 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Enumeration;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import com.sun.org.apache.xerces.internal.util.DOMEntityResolverWrapper;
+
+import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.service.jpa.UserJPA;
 import sk.tsystems.forum.serviceinterface.UserInterface;
 
@@ -33,28 +37,37 @@ public class Register extends MasterServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
-        request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
         request.getRequestDispatcher("/WEB-INF/jsp/register.jsp").include(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ServletHelper svHelper = new ServletHelper(request);
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("register", "ok");
         
         try
         {
-            JSONObject jsonClient = new JSONObject();
+            StringBuilder sb = new StringBuilder();
+            String s;
+            while ((s = request.getReader().readLine()) != null) 
+                sb.append(s);
+
+            System.out.println(sb);// TODO temp code, remove
+
+        	JSONObject jsonClient = new JSONObject(sb.toString());
+        	
+        	if(jsonClient.has("checknick"))
+        	{
+        		checkUserExists(jsonClient.getJSONObject("checknick"), jsonResponse, new ServletHelper(request));
+        	}
+        	if(jsonClient.has("register"))
+        	{
+        		doRegister(jsonClient.getJSONObject("register"), jsonResponse, new ServletHelper(request));
+        	}
             
-            Enumeration<String> si = request.getParameterNames(); 
-            while(si.hasMoreElements())
-            {
-            	
-            	System.out.println(si.nextElement());
-            }
             
         	
         	
@@ -64,6 +77,50 @@ public class Register extends MasterServlet {
 			response.setContentType("application/json");
 			response.getWriter().print(jsonResponse);
         }
+	}
+	
+	private void checkUserExists(JSONObject req, JSONObject resp, ServletHelper helper)
+	{
+		// TODO do some check on name, eg length and so on...
+		try { // TODO erase this
+			resp.put("exists", helper.getUserService().getUser(req.getString("nick"))!=null);
+		}
+		catch(javax.persistence.NoResultException e)
+		{
+			resp.put("exists", false);
+			System.err.println("****************************** Temporary catch on register.java.");
+		}
+		catch(javax.persistence.NonUniqueResultException e)
+		{
+			resp.put("exists", true);
+			System.err.println("****************************** Temporary catch on register.java.");
+		}
+	}
+	
+	private void doRegister(JSONObject req, JSONObject resp, ServletHelper helper)
+	{
+		resp.put("registered", false);
+		// TODO do some check on name, eg length and so on... // nick, bith, pass
+		try { // TODO erase this
+			resp.put("exists", helper.getUserService().getUser(req.getString("nick"))!=null);
+			
+			User usr = new User(req.getString("nick"), req.getString("pass"), new Date(), "we dont heave a rela namae at this time"); // TODO !! len tak nabuchane to je
+			if(helper.getUserService().addUser(usr))
+			{
+				resp.put("registered", true);
+				helper.setLoggedUser(usr);
+			}
+		}
+		catch(javax.persistence.NoResultException e)
+		{
+			resp.put("exists", false);
+			System.err.println("****************************** Temporary catch on register.java.");
+		}
+		catch(javax.persistence.NonUniqueResultException e)
+		{
+			resp.put("exists", true);
+			System.err.println("****************************** Temporary catch on register.java.");
+		}
 	}
 
 }
