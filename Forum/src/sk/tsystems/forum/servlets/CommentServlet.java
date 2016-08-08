@@ -16,7 +16,6 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.serviceinterface.CommentInterface;
 import sk.tsystems.forum.serviceinterface.TopicInterface;
-import sk.tsystems.forum.serviceinterface.UserInterface;
 
 /**
  * Servlet implementation class Register
@@ -42,11 +41,9 @@ public class CommentServlet extends MasterServlet {
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		ServletHelper svHelper = new ServletHelper(request);
 		PrintWriter out = response.getWriter();
-		
+
 		try {
-			UserInterface usrSvc = svHelper.getUserService();// TODO not used,
-																// delete in
-																// case
+			//UserInterface usrSvc = svHelper.getUserService();
 			CommentInterface commentservice = svHelper.getCommentService();
 			TopicInterface topicservice = svHelper.getTopicService();
 			int topic_id = 0;
@@ -65,18 +62,18 @@ public class CommentServlet extends MasterServlet {
 			}
 
 			svHelper.setLoggedUser(usr);
-			
-			 commentservice.addComment(new Comment("sehr schon",
-			 topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
-			 commentservice.addComment(new Comment("alles gutes",
-			 topicservice.getTopic(topic_id), usrSvc.getUser(12), true));
-			 commentservice.addComment(new Comment("igen",
-			 topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
-			 commentservice.addComment(new Comment("szep",
-			 topicservice.getTopic(topic_id), usrSvc.getUser(3), true));
-			 commentservice.addComment(new Comment("szia mafia",
-			 topicservice.getTopic(topic_id), usrSvc.getUser(6), true));
-			
+
+			// commentservice.addComment(new Comment("sehr schon",
+			// topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
+			// commentservice.addComment(new Comment("alles gutes",
+			// topicservice.getTopic(topic_id), usrSvc.getUser(12), true));
+			// commentservice.addComment(new Comment("igen",
+			// topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
+			// commentservice.addComment(new Comment("szep",
+			// topicservice.getTopic(topic_id), usrSvc.getUser(3), true));
+			// commentservice.addComment(new Comment("szia mafia",
+			// topicservice.getTopic(topic_id), usrSvc.getUser(6), true));
+
 			commentservice.getComments(topicservice.getTopic(topic_id));
 			List<Comment> comments = new ArrayList<>();
 			comments = commentservice.getComments(topicservice.getTopic(topic_id));
