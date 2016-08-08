@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.sun.org.apache.xerces.internal.util.DOMEntityResolverWrapper;
 
 import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.service.jpa.UserJPA;
 import sk.tsystems.forum.serviceinterface.UserInterface;
 
@@ -47,6 +48,7 @@ public class Register extends MasterServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("register", "something is bad");
+        ServletHelper helper = new ServletHelper(request);
         
         try
         {
@@ -63,11 +65,11 @@ public class Register extends MasterServlet {
         	
         	if(jsonClient.has("checknick"))
         	{
-        		checkUserExists(jsonClient.getJSONObject("checknick"), jsonResponse, new ServletHelper(request));
+        		checkUserExists(jsonClient.getJSONObject("checknick"), jsonResponse, helper);
         	}
         	if(jsonClient.has("register"))
         	{
-        		doRegister(jsonClient.getJSONObject("register"), jsonResponse, new ServletHelper(request));
+        		doRegister(jsonClient.getJSONObject("register"), jsonResponse, helper);
         	}
             
             
