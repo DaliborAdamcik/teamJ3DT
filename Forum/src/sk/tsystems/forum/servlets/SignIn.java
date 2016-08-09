@@ -33,8 +33,8 @@ public class SignIn extends MasterServlet implements Servlet {
 		// TODO Auto-generated method stub
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
 	
-	
-		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
+	//TODO uz je includnuty v v Menuanduser.jsp,netreba includovat 2x
+	//	request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 	
 /*		out.println("<html>");
 		out.println("<head>");
