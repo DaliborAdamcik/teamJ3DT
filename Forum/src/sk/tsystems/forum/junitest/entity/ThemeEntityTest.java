@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sk.tsystems.forum.entity.Theme;
-import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.junittest.TestHelper;
 
 public class ThemeEntityTest {
