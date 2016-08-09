@@ -1,5 +1,3 @@
-//http://stackoverflow.com/questions/3831680/httpservletrequest-get-json-post-data
-//$('form [name="reg"]');
 $('#register').submit(function(ev){
 	
     //var $form = $('#register');
@@ -40,14 +38,52 @@ $('#register').submit(function(ev){
     return false; // prevent subnit form
 });
 
-$('#reg_login').keyup(function(){
+function stateMessage(objID, message, state)
+{
+	var stateImg = 'err.png';
+	switch(state)
+	{
+		case 'err': break;
+		case 'ok': stateImg = 'ok.png'; break;
+		case 'load': stateImg = 'loader.gif'; break;
+		case 'critic': stateImg = 'warn_red.png'; break;
+		case 'warning': stateImg = 'warn_yel.png'; break;
+		default:
+			console.log("stateMessage invalid option: ", state); break;
+	}
+	
+	$('#'+objID+'_img').attr('src', 'images/'+stateImg);
+	$('#'+objID+'_state').text(message);
+}
+
+/*Checks user-name is correct and validates is free( online)
+ * TODO Can be associated another event of input  
+ */
+$('#reg_login').keyup(function(e){
+	var $newnick = $('#reg_login').val();
+	
+	console.log($newnick);
+	if($newnick.length<4)
+	{
+		stateMessage('reg_login', 'Your new nickname is too short', 'err');
+		return;
+	}
+
+	var testValidChars = /^([a-z][a-z0-9]{3,})$/g;
+	if(!testValidChars.test($newnick))
+	{
+		stateMessage('reg_login', 'Nickname can contain only a-z and 0-9 characters.', 'err');
+		return;
+	}
+	
+	stateMessage('reg_login', 'Validating availibility onlione', 'load');
 	
     var jsobj = {};
     jsobj.checknick = {};
-    jsobj.checknick.nick = $('#reg_login').val();
+    jsobj.checknick.nick = $newnick;
     
-    console.log(jsobj);
-    
+    console.log(jsobj, JSON.stringify(jsobj));
+
     $.ajax({
         type: "POST",
         url: "Register",
@@ -57,18 +93,25 @@ $('#reg_login').keyup(function(){
         success: function (response) {
         	console.log(response);
         	if(response.exists)
-        		$('#confirmMessage').text('User name exists');
+    		{
+        		stateMessage('reg_login', 'Nickname already exists, please type another nickname', 'warning');
+    		}
         	else
-        	$('#confirmMessage').html('User name OK');
+        	if(response.error)
+    		{
+        		stateMessage('reg_login', 'LET: '+response.error, 'err');
+    		}
+        	else
+        		stateMessage('reg_login', 'Your nickname is free for fregistration', 'ok');
         },
         error: function (jxhr) {
-            window.alert("Spracovanie neúspešné. Údaje neboli zapísané. Kód chyby:" + status + "\n" + jxhr.statusText + "\n" + jxhr.responseText);
+    		stateMessage('reg_login', 'ERROR - Cant check nickname online: '+ status + " / " + jxhr.statusText, 'critic');
+            // jxhr.responseText
         }
     });
 
     return false; // prevent subnit form
 });
-
 
 function checkPass() {
 	var pass1 = document.getElementById('reg_pass1');
