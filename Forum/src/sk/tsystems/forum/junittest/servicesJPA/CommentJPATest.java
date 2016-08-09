@@ -149,7 +149,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testGetComments() {
+	public void testGetCommentsByToopic() {
 		Comment randomComment1 = new Comment(comment, topic, owner, isPublic);
 		String comment2 = TestHelper.randomString(20);
 		String comment3 = TestHelper.randomString(20);
@@ -181,5 +181,54 @@ public class CommentJPATest {
 				assertEquals("Bad isPublic3", true, c.isPublic());
 			}
 		}
+	}
+	@Test
+	public void testGetCommentsByOwner() {
+	
+		User owner1= new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
+		User owner2= new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
+		User owner3= new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
+		userservice.addUser(owner1);
+		userservice.addUser(owner2);
+		userservice.addUser(owner3);
+			Comment randomComment1 = new Comment(comment, topic, owner1, isPublic);
+			
+			Comment randomComment2 = new Comment(comment, topic, owner2, isPublic);
+			Comment randomComment3 = new Comment(comment, topic, owner3, true);
+			
+			commentservice.addComment(randomComment1);
+			commentservice.addComment(randomComment2);
+			commentservice.addComment(randomComment3);
+			toRemove.add(randomComment1);
+			toRemove.add(randomComment2);
+			toRemove.add(randomComment3);
+			toRemove.add(owner1);
+			toRemove.add(owner2);
+			toRemove.add(owner3);
+			
+			
+			List<Comment> testComments = new ArrayList<Comment>();
+					testComments.addAll(commentservice.getComments(owner1));
+					testComments.addAll(commentservice.getComments(owner2));
+					testComments.addAll(commentservice.getComments(owner3));
+
+			assertNotNull("Selecting from database failed", testComments);
+
+			for (Comment c : testComments) {
+				if (c.getId() == randomComment1.getId()) {
+					assertEquals("Bad owner in comment1", owner1.getId(), c.getOwner().getId());
+				}
+				if (c.getId() == randomComment2.getId()) {
+					assertEquals("Bad owner in comment2", owner2.getId(), c.getOwner().getId());
+				
+				}
+				if (c.getId() == randomComment3.getId()) {
+					assertEquals("Bad owner in comment3", owner3.getId(), c.getOwner().getId());
+				}
+			}
+			
+			
+			
+			
 	}
 }

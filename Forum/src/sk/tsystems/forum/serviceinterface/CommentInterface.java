@@ -4,6 +4,7 @@ import java.util.List;
 
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
+import sk.tsystems.forum.entity.User;
 
 public interface CommentInterface {
 	/**
@@ -43,5 +44,22 @@ public interface CommentInterface {
 	 * @return list of comments on specific topic
 	 */
 	List<Comment> getComments(Topic topic);
+	
+	
+	/**
+	 * Returns all comments that were created by certain user
+	 * 
+	 * @param owner (user that created comment)
+	 * @return list of comments written by certain user
+	 */
+	List<Comment> getComments(User owner);
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
