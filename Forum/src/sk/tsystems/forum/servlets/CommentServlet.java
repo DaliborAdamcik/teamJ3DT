@@ -3,7 +3,6 @@ package sk.tsystems.forum.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.serviceinterface.CommentInterface;
 import sk.tsystems.forum.serviceinterface.TopicInterface;
 
@@ -47,22 +44,21 @@ public class CommentServlet extends MasterServlet {
 			CommentInterface commentservice = svHelper.getCommentService();
 			TopicInterface topicservice = svHelper.getTopicService();
 			int topic_id = 0;
-			User usr = null;
 			try {
 				topic_id = Integer.parseInt(request.getParameter("topicid"));
 				request.setAttribute("topicid", topic_id);
 			} catch (NullPointerException | NumberFormatException e) {
 				e.printStackTrace();
 			}
-			
-//			try {
-//				usr = new User("Janka", "janka", new Date(), "Jana");
-//				svHelper.getUserService().addUser(usr);
-//			} catch (Exception e) {
-//				response.getWriter().print("Tento account uz existuje");
-//			}
-//
-//			svHelper.setLoggedUser(usr);
+
+			// try {
+			// usr = new User("Janka", "janka", new Date(), "Jana");
+			// svHelper.getUserService().addUser(usr);
+			// } catch (Exception e) {
+			// response.getWriter().print("Tento account uz existuje");
+			// }
+			//
+			// svHelper.setLoggedUser(usr);
 
 			// commentservice.addComment(new Comment("sehr schon",
 			// topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
@@ -75,8 +71,6 @@ public class CommentServlet extends MasterServlet {
 			// commentservice.addComment(new Comment("szia mafia",
 			// topicservice.getTopic(topic_id), usrSvc.getUser(6), true));
 
-	
-		
 			String action = request.getParameter("action");
 
 			if ("insert_comment".equals(action)) {
@@ -88,12 +82,12 @@ public class CommentServlet extends MasterServlet {
 							topicservice.getTopic(topic_id), svHelper.getLoggedUser(), true));
 				}
 			}
-			
+
 			commentservice.getComments(topicservice.getTopic(topic_id));
 			List<Comment> comments = new ArrayList<>();
 			comments = commentservice.getComments(topicservice.getTopic(topic_id));
 			request.setAttribute("comments", comments.iterator());
-			
+
 		} finally {
 			request.getRequestDispatcher("/WEB-INF/jsp/comment.jsp").include(request, response);
 			request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
