@@ -5,13 +5,15 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 
-class JpaConnector implements AutoCloseable { // class selector is package
+public class JpaConnector implements AutoCloseable { // class selector is package
 	private EntityManagerFactory factory = null;
 	private EntityManager entityManager = null;
 
-	JpaConnector() {
+	public JpaConnector() {
 		super();
 	}
 
@@ -29,15 +31,15 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		return entityManager;
 	}
 
-	void beginTransaction() {
+	public void beginTransaction() {
 		getEntityManager().getTransaction().begin();
 	}
 
-	void commitTransaction() {
+	public void commitTransaction() {
 		getEntityManager().getTransaction().commit();
 	}
 
-	void rollBackTransaction() {
+	public void rollBackTransaction() {
 		getEntityManager().getTransaction().rollback();
 	}
 
@@ -53,7 +55,7 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		}
 	}
 
-	boolean persist(Object object) {
+	public boolean persist(Object object) {
 		try {
 			beginTransaction();
 			getEntityManager().persist(object);
@@ -70,25 +72,23 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		return false;
 	}
 
-	void merge(Object object) {
+	public void merge(Object object) {
 		beginTransaction();
 		getEntityManager().merge(object);
 		commitTransaction();
 	}
 
-	void remove(Object object) {
+	public void remove(Object object) {
 		beginTransaction();
 		getEntityManager().remove(getEntityManager().contains(object) ? object : getEntityManager().merge(object)); // TODO
-																													// is
-																													// okay??
 		commitTransaction();
 	}
 
-	javax.persistence.Query createQuery(String query) {
+	public javax.persistence.Query createQuery(String query) {
 		return getEntityManager().createQuery(query);
 	}
 
-	boolean exceptionChild(Exception e, Class<?> weSearch) {
+	public boolean exceptionChild(Exception e, Class<?> weSearch) { // TODO toto dat do helepera
 		Throwable thr = e;
 		do {
 			if (thr.getClass().equals(weSearch))
@@ -96,6 +96,19 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		} while ((thr = thr.getCause()) != null);
 		return false;
 	}
+	
+	public void dropAll()
+	{
+		Configuration config = new Configuration();
+		config.addResource("persistence.xml");
+		
+		//new org.hibernate.tool.hbm2ddl.SchemaExport();
+		//SchemaExport schemaExport = new org.hibernate.tool.hbm2ddl.SchemaExport.();
+		
+//		schemaExport.drop(null, );
+		
+	//	schemaExport.create(true,true)  	
+		}
 
 	@Override
 	public void close() // throws Exception // TODO toto sme zakomentovali,
