@@ -1,15 +1,20 @@
 package sk.tsystems.forum.service.jpa;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.management.RuntimeErrorException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 
-import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 public class JpaConnector implements AutoCloseable { // class selector is package
+	
+	private static final String persistenceUnitName = "hibernatePersistenceUnit";
+	
 	private EntityManagerFactory factory = null;
 	private EntityManager entityManager = null;
 
@@ -19,7 +24,7 @@ public class JpaConnector implements AutoCloseable { // class selector is packag
 
 	private EntityManagerFactory getFactory() {
 		if (factory == null || !factory.isOpen()) {
-			factory = Persistence.createEntityManagerFactory("hibernatePersistenceUnit");
+			factory = Persistence.createEntityManagerFactory(persistenceUnitName);
 		}
 		return factory;
 	}
@@ -97,18 +102,14 @@ public class JpaConnector implements AutoCloseable { // class selector is packag
 		return false;
 	}
 	
-	public void dropAll()
+	public void dropAndCreate()
 	{
-		Configuration config = new Configuration();
-		config.addResource("persistence.xml");
-		
-		//new org.hibernate.tool.hbm2ddl.SchemaExport();
-		//SchemaExport schemaExport = new org.hibernate.tool.hbm2ddl.SchemaExport.();
-		
-//		schemaExport.drop(null, );
-		
-	//	schemaExport.create(true,true)  	
-		}
+		close(); // as a first we need to close existing hibernate session
+
+		Map<String, Object> configOverrides = new HashMap<String, Object>(); // override settings 
+		configOverrides.put("hibernate.hbm2ddl.auto", "create");
+		factory = Persistence.createEntityManagerFactory(persistenceUnitName, configOverrides);
+	}
 
 	@Override
 	public void close() // throws Exception // TODO toto sme zakomentovali,
