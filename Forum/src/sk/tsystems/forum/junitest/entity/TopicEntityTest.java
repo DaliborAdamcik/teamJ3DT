@@ -42,7 +42,7 @@ public class TopicEntityTest {
 	@Test
 	public void isPublic() {
 		Topic randomTopic = new Topic(name, isPublic);
-		boolean testIsPublic = randomTopic.isPublic();
+		boolean testIsPublic = randomTopic.isIsPublic();
 
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}
@@ -51,7 +51,7 @@ public class TopicEntityTest {
 	public void setPublic() {
 		Topic randomTopic = new Topic(name, true);
 		randomTopic.setPublic(isPublic);
-		boolean testIsPublic = randomTopic.isPublic();
+		boolean testIsPublic = randomTopic.isIsPublic();
 
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}

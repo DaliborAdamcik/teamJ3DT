@@ -90,7 +90,7 @@ public class TopicJPATest {
 		topicservice.updateTopic(randomTopic);
 		Topic testTopic = topicservice.getTopic(randomTopic.getId());
 		assertNotNull("Selecting from database failed", testTopic);
-		assertEquals("Do not change publicity", testTopic.isPublic(), isPublic);
+		assertEquals("Do not change publicity", testTopic.isIsPublic(), isPublic);
 	}
 
 	@Test
@@ -126,15 +126,15 @@ public class TopicJPATest {
 		for (Topic t : testTopics) {
 			if (t.getId() == randomTopic1.getId()) {
 				assertEquals("Bad name1", name, t.getName());
-				assertEquals("Bad isPublic1", isPublic, t.isPublic());
+				assertEquals("Bad isPublic1", isPublic, t.isIsPublic());
 			}
 			if (t.getId() == randomTopic2.getId()) {
 				assertEquals("Bad name2", name2, t.getName());
-				assertEquals("Bad isPublic2", true, t.isPublic());
+				assertEquals("Bad isPublic2", true, t.isIsPublic());
 			}
 			if (t.getId() == randomTopic3.getId()) {
 				assertEquals("Bad name3", name3, t.getName());
-				assertEquals("Bad isPublic3", isPublic, t.isPublic());
+				assertEquals("Bad isPublic3", isPublic, t.isIsPublic());
 			}
 		}
 	}
