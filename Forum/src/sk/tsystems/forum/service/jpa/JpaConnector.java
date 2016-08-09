@@ -10,10 +10,10 @@ import org.hibernate.exception.ConstraintViolationException;
 class JpaConnector implements AutoCloseable { // class selector is package
 	private EntityManagerFactory factory = null;
 	private EntityManager entityManager = null;
+
 	JpaConnector() {
 		super();
 	}
-
 
 	private EntityManagerFactory getFactory() {
 		if (factory == null || !factory.isOpen()) {
@@ -28,7 +28,6 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		}
 		return entityManager;
 	}
-
 
 	void beginTransaction() {
 		getEntityManager().getTransaction().begin();
@@ -53,22 +52,20 @@ class JpaConnector implements AutoCloseable { // class selector is package
 			factory.close();
 		}
 	}
-	
+
 	boolean persist(Object object) {
 		try {
 			beginTransaction();
 			getEntityManager().persist(object);
 			commitTransaction();
-			return true;			
-		}
-		catch(RollbackException e)
-		{
-			if(exceptionChild(e, ConstraintViolationException.class))
-			{
-				System.err.println("**** cant store object "+object.getClass().getSimpleName()+": "+e.getMessage());
-				
-			}
-			else throw e;
+			return true;
+		} catch (RollbackException e) {
+			if (exceptionChild(e, ConstraintViolationException.class)) {
+				System.err
+						.println("**** cant store object " + object.getClass().getSimpleName() + ": " + e.getMessage());
+
+			} else
+				throw e;
 		}
 		return false;
 	}
@@ -78,31 +75,34 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		getEntityManager().merge(object);
 		commitTransaction();
 	}
-	
-	void remove(Object object)
-	{
+
+	void remove(Object object) {
 		beginTransaction();
-		getEntityManager().remove(getEntityManager().contains(object) ? object : getEntityManager().merge(object)); //TODO is okay?? 
+		getEntityManager().remove(getEntityManager().contains(object) ? object : getEntityManager().merge(object)); // TODO
+																													// is
+																													// okay??
 		commitTransaction();
 	}
-	
-	javax.persistence.Query createQuery(String query)
-	{
+
+	javax.persistence.Query createQuery(String query) {
 		return getEntityManager().createQuery(query);
 	}
-	
-	boolean exceptionChild(Exception e, Class<?> clazz)
-	{
-		
-		return true;
+
+	boolean exceptionChild(Exception e, Class<?> weSearch) {
+		Throwable thr = e;
+		do {
+			if (thr.getClass().equals(weSearch))
+				return true;
+		} while ((thr = thr.getCause()) != null);
+		return false;
 	}
-	
+
 	@Override
-	public void close() //throws Exception // TODO toto sme zakomentovali, hadam to nebude v buductnosti robit zle
+	public void close() // throws Exception // TODO toto sme zakomentovali,
+						// hadam to nebude v buductnosti robit zle
 	{
 		closeEntityManager();
 		closeEntityManagerFactory();
 	}
-	
-	
+
 }
