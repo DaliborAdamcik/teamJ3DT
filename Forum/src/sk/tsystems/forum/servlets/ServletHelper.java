@@ -1,6 +1,11 @@
 package sk.tsystems.forum.servlets;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
@@ -216,6 +221,28 @@ public class ServletHelper {
 			return UserRole.GUEST;
 
 		return user.getRole();
+	}
+	
+	final JSONObject getJSON()
+	{
+    	StringBuilder sb = new StringBuilder();
+        String s;
+        try
+        {
+            while ((s = servletRequest.getReader().readLine()) != null) 
+                sb.append(s);
+            
+        	return new JSONObject(sb.toString());
+        }
+        catch(IOException ex)
+        {
+        	throw new RuntimeException("Cand read JSON from frequest: IO error", ex);
+        }
+        catch(JSONException ex) // an error in json or not available
+        {
+        	System.out.println("*\tForum WARN: parse JSON from client: "+ex.getMessage());
+        	return null;
+        }
 	}
 
 }
