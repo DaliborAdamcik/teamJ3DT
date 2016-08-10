@@ -34,14 +34,14 @@
 								<c:when test="${user.blocked ==null}">
 									<td>
 										<form method="post" action="Admin">
-										<input type="text" name="ban_reason" placeholder="ban reason" required="required" >
-											<button name="ban_user" value="${user.id}">ban</button>
+										<input type="text" name="block_reason" placeholder="block reason" required="required" >
+											<button name="block" value="${user.id}">block</button>
 										</form>
 								</c:when>
 								<c:otherwise>
 									<td>
 										<form method="post" action="Admin">
-											<button name="unban_user" value="${user.id}">unban</button>
+											<button name="unblock" value="${user.id}">unblock</button>
 										</form>
 								</c:otherwise>
 							</c:choose> <c:choose>
@@ -81,14 +81,14 @@
 								<c:when test="${topic.blocked ==null}">
 									<td>
 										<form method="post" action="Admin">
-										<input type="text" name="ban_reason" placeholder="ban reason" required="required" >
-											<button name="ban_topic" value="${topic.id}">ban</button>
+										<input type="text" name="block_reason" placeholder="block reason" required="required" >
+											<button name="block" value="${topic.id}">block</button>
 										</form>
 								</c:when>
 								<c:otherwise>
 									<td>
 										<form method="post" action="Admin">
-											<button name="unban_topic" value="${topic.id}">unban
+											<button name="unblock" value="${topic.id}">unblock
 											</button>
 										</form>
 								</c:otherwise>

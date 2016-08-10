@@ -14,9 +14,9 @@ public class Topic  extends BlockableEntity {
 	/**
 	 * ID. Generated automatically by Hibernate
 	 */
-	@Id
-	@GeneratedValue
-	private int id;
+//	@Id
+//	@GeneratedValue
+//	private int id;
 	
 	/**
 	 * name of the topic
@@ -97,8 +97,8 @@ public class Topic  extends BlockableEntity {
 	 * Getter for ID
 	 * @return ID
 	 */
-	public int getId() {
-		return id;
-	}
+//	public int getId() {
+//		return id;
+//	}
 
 }

@@ -14,6 +14,7 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
+import sk.tsystems.forum.helper.BlockHelper;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.service.CommentService;
@@ -48,7 +49,6 @@ public class Admin extends MasterServlet {
 		ServletHelper servletHelper = new ServletHelper(request);
 		request.setAttribute("loggeduser", servletHelper.getLoggedUser());
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
-		BlockedJPA blockedservice=new BlockedJPA();
 		if (servletHelper.getLoggedUser() == null || servletHelper.getLoggedUser().getRole() != UserRole.ADMIN) {
 			response.getWriter().print("<h1>Only admins can view this page</h1>");
 			// TODO prehodit do JSP
@@ -85,40 +85,29 @@ public class Admin extends MasterServlet {
 			e.printStackTrace();
 		}
 
-		// try pre ban usera
+		// try pre block
 		try {
-			if (request.getParameter("ban_user") != null && request.getParameter("ban_reason") != null) {
-				int idOfUserToBeBanned = Integer.parseInt(request.getParameter("ban_user"));
-				String banReason = request.getParameter("ban_reason");
-				Blocked block = new Blocked(servletHelper.getLoggedUser(),banReason);
-				blockedservice.addBlocked(block);
-				User userToBeBanned = userservice.getUser(idOfUserToBeBanned);
-				userToBeBanned.setBlocked(block);
-				userservice.updateUser(userToBeBanned);
+			if (request.getParameter("block") != null && request.getParameter("block_reason") != null) {
+				int idOfUserToBeBlocked = Integer.parseInt(request.getParameter("block"));
+				String blockReason = request.getParameter("block_reason");
+				BlockHelper.block(idOfUserToBeBlocked, blockReason, servletHelper.getLoggedUser());
 			}
 			
 		} catch (Exception e) {
 
 		}
 		
-		//try pre unban usera
+		//try pre unblock
 		try {
-			if (request.getParameter("unban_user") != null) {
-				int idOfUserToBeUnbanned = Integer.parseInt(request.getParameter("unban_user"));
-				User userToBeUnbanned = userservice.getUser(idOfUserToBeUnbanned);
-				Blocked block = userservice.getUser(idOfUserToBeUnbanned).getBlocked();
-				userToBeUnbanned.setBlocked(null);
-				userservice.updateUser(userToBeUnbanned);
-				blockedservice.removeBlocked(block);
+			if (request.getParameter("unblock") != null) {
+				int idOfUserToBeUnbanned = Integer.parseInt(request.getParameter("unblock"));
+				BlockHelper.unblock(idOfUserToBeUnbanned);
 			}
 			
 		} catch (Exception e) {
 
 		}
 		
-		
-		
-
 		request.getRequestDispatcher("/WEB-INF/jsp/admin.jsp").include(request, response);
 	}
 

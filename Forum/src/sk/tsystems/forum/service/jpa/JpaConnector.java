@@ -113,15 +113,24 @@ public class JpaConnector implements AutoCloseable { // class selector is packag
 		factory = Persistence.createEntityManagerFactory(persistenceUnitName, configOverrides);
 	}
 	
-	public List<Class<?>> getMappedClasses()
+	public List<Class<?>> getMappedClasses(Class<?> filterSuperClass)
 	{
 		List<Class<?>> results = new ArrayList<>();
 		for(EntityType<?> ee: getFactory().getMetamodel().getEntities())
-			results.add(ee.getJavaType());
+		{
+			Class<?> clazz = ee.getJavaType();
+			if(filterSuperClass.isAssignableFrom(clazz))
+				results.add(clazz);
+		}
 
 		return results;
 	}
 
+	public List<Class<?>> getMappedClasses()
+	{
+		return getMappedClasses(Object.class);
+	}
+	
 	@Override
 	public void close() // throws Exception // TODO toto sme zakomentovali,
 						// hadam to nebude v buductnosti robit zle

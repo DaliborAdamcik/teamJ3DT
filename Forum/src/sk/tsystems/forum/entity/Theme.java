@@ -21,9 +21,9 @@ public class Theme  extends BlockableEntity {
 	/**
 	 * ID. Generated automatically by Hibernate
 	 */
-	@Id
-	@GeneratedValue
-	private int id;
+//	@Id
+//	@GeneratedValue
+//	private int id;
 
 	/**
 	 * Name of the theme
@@ -138,7 +138,7 @@ public class Theme  extends BlockableEntity {
 	 * 
 	 * @return ID
 	 */
-	public int getId() {
-		return id;
-	}
+//	public int getId() {
+//		return id;
+//	}
 }

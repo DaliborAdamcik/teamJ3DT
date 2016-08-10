@@ -2,9 +2,7 @@
 
 <div class="main_div" style="padding: 0.5em;">		
 	<hr />
-	<a href="SignIn">Login</a>  &middot;
-	<a href="Register">Register</a>  &middot;
-	<a href=".">Back to welcome page</a>
+	tu bude raz kopirajt
 </div>
 
 
