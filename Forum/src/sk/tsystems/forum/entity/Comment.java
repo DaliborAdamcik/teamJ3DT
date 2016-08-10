@@ -4,8 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -59,20 +59,19 @@ public class Comment extends BlockableEntity {
 	 * @param isPublic
 	 */
 	public Comment(String comment, Topic topic, User owner, boolean isPublic) {
-		super();
-		this.comment = comment;
-		this.topic = topic;
+		this();
+		setComment(comment);
+		setTopic(topic);
+		setPublic(isPublic);
 		this.owner = owner;
-		this.isPublic = isPublic;
-		this.creationDate = new Date(); 
 	}
 
 	/**
 	 * constructor only for JPA.
 	 */
-	@Deprecated
-	public Comment() { // Tento konstruktor nepouziva programator , iba jpa
-		this(null, null, null, false);
+	private Comment() {
+		super();
+		this.creationDate = new Date(); 
 	}
 
 	/**

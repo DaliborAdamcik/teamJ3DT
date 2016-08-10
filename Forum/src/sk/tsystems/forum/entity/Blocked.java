@@ -36,15 +36,17 @@ public class Blocked {
 	private String reason;
 
 	public Blocked(User blockedBy, String reason) {
-		super();
-		this.blockedBy = blockedBy;
-		this.blockdate = new Date();
-		this.reason = reason;
+		this();
+		setBlockedBy(blockedBy);
+		setReason(reason);
 	}
 
-	@Deprecated
-	public Blocked() {
-		this(null, null);
+	/**
+	 * constructor for JPA
+	 */
+	private Blocked() {
+		super();
+		this.blockdate = new Date();
 	}
 
 	/**

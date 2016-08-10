@@ -81,14 +81,14 @@ public class User extends BlockableEntity {
 	public User(String userName, String password, Date birthDate, String realName) {
 		this();
 		setUserName(userName);
-		
-		this.password = password;
-		this.birthDate = birthDate;
-		this.realName = realName;
-		
-		
+		setPassword(password);
+		setBirthDate(birthDate);
+		setRealName(realName);
 	}
 
+	/**
+	 * Constructor for JPA
+	 */
 	private User() {
 		super();
 		topics = new ArrayList<Topic>();

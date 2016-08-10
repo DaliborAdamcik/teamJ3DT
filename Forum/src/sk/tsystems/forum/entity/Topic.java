@@ -41,16 +41,17 @@ public class Topic  extends BlockableEntity {
 	private Date creationDate;
 	
 	public Topic(String name, boolean isPublic) {
-		super();
-		this.name = name;
-		this.isPublic = isPublic;
-		this.creationDate = new Date();
-
+		this();
+		setName(name);
+		setPublic(isPublic);
 	}
 
-	@Deprecated
-	public Topic() {
-		this(null, false);
+	/**
+	 * Constructor for JPA
+	 */
+	private Topic() {
+		super();
+		this.creationDate = new Date();
 	}
 	
 	/**

@@ -59,10 +59,9 @@ public class Theme  extends BlockableEntity {
 	 * @param isPublic
 	 */
 	public Theme(String name, boolean isPublic) {
-		super();
-		this.name = name;
-		this.isPublic = isPublic;
-		this.creationDate = new Date();
+		this();
+		setName(name);
+		setPublic(isPublic);
 	}
 	
 	/**
@@ -70,10 +69,10 @@ public class Theme  extends BlockableEntity {
 	 * (INFO: HHH000182: No default (no-argument) constructor for class: 
 	 * 	sk.tsystems.forum.entity.Theme (class must be instantiated by Interceptor))
 	 */
-	@Deprecated
 	public Theme()
 	{
-		this(null, true);
+		super();
+		this.creationDate = new Date();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
