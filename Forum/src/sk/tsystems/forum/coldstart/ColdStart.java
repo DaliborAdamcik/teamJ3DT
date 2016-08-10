@@ -2,102 +2,101 @@ package sk.tsystems.forum.coldstart;
 
 import java.util.Date;
 
-
-import sk.tsystems.forum.entity.Blocked;
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.entity.UserRole;
+import sk.tsystems.forum.service.CommentService;
+import sk.tsystems.forum.service.TopicService;
+import sk.tsystems.forum.service.UserService;
 import sk.tsystems.forum.service.jpa.CommentJPA;
+import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
-import sk.tsystems.forum.serviceinterface.CommentInterface;
-import sk.tsystems.forum.serviceinterface.TopicInterface;
-import sk.tsystems.forum.serviceinterface.UserInterface;
 
 /**
  * Place for cold intialization methods ... 
  *
  */
 public class ColdStart {
-	private UserInterface userService;
-	private CommentInterface commentColdStart;
-	private TopicInterface topicColdStart;
-	private Blocked blocked;
-	
-	User janka;
-	User jano;
-	User jozo;
-	User dalibor;
-	User tomas;
-	
+	private UserService userService;
+	private CommentService commentService;
+	private TopicService topicService;
 	
 	public ColdStart() {
 		this.userService = new UserJPA();
-		this.topicColdStart = new TopicJPA();
-		this.commentColdStart = new CommentJPA();
+		this.topicService = new TopicJPA();
+		this.commentService = new CommentJPA();
 	}
 
 	public void run()
 	{
-		User janka = new User("Janka", "123456", new Date(), "Jana");
-		User jano = new User("Jano", "123456", new Date(), "Jano");
-		User jozo = new User("Jozo", "123456", new Date(), "Jozef");
-		User dalibor = new User("Dalik", "123456", new Date(), "Dalibor");
-		User tomas = new User("Tomas", "123456", new Date(), "Tomas");
+		// as a first we drop all old data and create new structure for database
+		try(JpaConnector connJPA = new JpaConnector())
+		{
+			connJPA.dropAndCreate();
+		}
 		
+		User janka = new User("janka", "123456", new Date(), "Jana");
+		User jano = new User("jano", "123456", new Date(), "Jano");
+		User jozo = new User("jozo", "123456", new Date(), "Jozef");
+		User dalibor = new User("dalik", "123456", new Date(), "Dalibor");
+		User tomas = new User("tomas", "123456", new Date(), "Tomas");
+		User admin = new User("admin", "admin", new Date(), "Administrator");
+
+		admin.setRole(UserRole.ADMIN);
+		janka.setRole(UserRole.ADMIN);
+		jano.setRole(UserRole.ADMIN);
+		jozo.setRole(UserRole.ADMIN);
+		dalibor.setRole(UserRole.ADMIN);
+		tomas.setRole(UserRole.ADMIN);
 		
-		// user service persist users 
+		// persist users  
+		userService.addUser(admin);
 		userService.addUser(janka);
 		userService.addUser(jano);
 		userService.addUser(jozo);
 		userService.addUser(dalibor);
 		userService.addUser(tomas);
 		
-		// volat inicialiyacie pre userov
-		jankaInicialize(janka);
-		janoInicialize(jano);
-		jozoInicialize(jozo);
-		
-		userService.addUser(new User("Janka", "123456", new Date(), "Jana"));
+		// initialize user (create topics and so on)
+		jankaInitialize(janka);
+		janoInitialize(jano);
+		jozoInitialize(jozo);
+		daliborInitialize(dalibor);
+		tomasInitialize(tomas);
 	}
 	
-	public void jankaInicialize(User user){
-		
+	public void jankaInitialize(User user){
 		Topic topic = new Topic("Lietadla", true);
-		topicColdStart.addTopic(topic);
+		topicService.addTopic(topic);
 		
-		commentColdStart.addComment(new Comment("Sehr schon", topic, user, true));
-		// persistnut
+		commentService.addComment(new Comment("Sehr schon", topic, user, true));
 	}
 	
-	public void janoInicialize(User user){
+	public void janoInitialize(User user){
 		Topic topic = new Topic("Auta", false);
-		topicColdStart.addTopic(topic);
-		commentColdStart.addComment(new Comment("Paraaada", topic, user, false));
+		topicService.addTopic(topic);
+		commentService.addComment(new Comment("Paraaada", topic, user, false));
 	}
 	
-	public void jozoInicialize(User user){
-		jozo.setBlocked(blocked);
+	public void jozoInitialize(User user){
 		Topic topic = new Topic("Motorky", false);
-		topicColdStart.addTopic(topic);
-		commentColdStart.addComment(new Comment("zuum zuuumm", topic, user, false));
-		
+		topicService.addTopic(topic);
+		commentService.addComment(new Comment("zuum zuuumm", topic, user, false));
 	}
 	
-	public void daliborInicialize(User user){
+	public void daliborInitialize(User user){
 		Topic topic = new Topic("Vlaky", true);
-		topicColdStart.addTopic(topic);
-		commentColdStart.addComment(new Comment("Dobree", topic, user, true));
-		
+		topicService.addTopic(topic);
+		commentService.addComment(new Comment("Dobree", topic, user, true));
 	}
 	
-	public void tomasInicialize(User user){
+	public void tomasInitialize(User user){
 		Topic topic = new Topic("Tazne stroje", true);
-		topicColdStart.addTopic(topic);
-		commentColdStart.addComment(new Comment("Paradne", topic, user, true));
-		
+		topicService.addTopic(topic);
+		commentService.addComment(new Comment("Paradne", topic, user, true));
 	}
-	
 	
 }
 

@@ -1,7 +1,5 @@
 package sk.tsystems.forum.entity;
-
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +21,7 @@ public class Topic {
 	 * name of the topic
 	 * 
 	 */
-	@Column(name = "NAME", nullable = false)
+	@Column(name = "NAME", nullable = false,unique=true)
 	String name;
 	
 	/**
@@ -80,7 +78,7 @@ public class Topic {
 	 * Getter for isPublic
 	 * @return isPublic
 	 */
-	public boolean isPublic() {
+	public boolean isIsPublic() {
 		return isPublic;
 	}
 

@@ -1,4 +1,4 @@
-package sk.tsystems.forum.serviceinterface;
+package sk.tsystems.forum.service;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 
-public interface CommentInterface {
+public interface CommentService {
 	/**
 	 * Adds comment to the database
 	 * 

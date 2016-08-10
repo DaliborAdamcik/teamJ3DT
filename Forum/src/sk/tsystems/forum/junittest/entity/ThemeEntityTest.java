@@ -1,4 +1,4 @@
-package sk.tsystems.forum.junitest.entity;
+package sk.tsystems.forum.junittest.entity;
 
 import static org.junit.Assert.*;
 
@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sk.tsystems.forum.entity.Theme;
-import sk.tsystems.forum.junittest.TestHelper;
+import sk.tsystems.forum.helper.TestHelper;
 
 public class ThemeEntityTest {
 	private String name;
@@ -41,7 +41,7 @@ public class ThemeEntityTest {
 	@Test
 	public void isPublic() {
 		Theme randomTheme = new Theme(name, isPublic);
-		boolean testIsPublic = randomTheme.isPublic();
+		boolean testIsPublic = randomTheme.isIsPublic();
 
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}
@@ -50,7 +50,7 @@ public class ThemeEntityTest {
 	public void setPublic() {
 		Theme randomTheme = new Theme(name, true);
 		randomTheme.setPublic(isPublic);
-		boolean testIsPublic = randomTheme.isPublic();
+		boolean testIsPublic = randomTheme.isIsPublic();
 
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}

@@ -1,4 +1,4 @@
-package sk.tsystems.forum.helper;
+package sk.tsystems.forum.helper.exceptions;
 
 /**
  * PasswordCheckException

@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.serviceinterface.CommentInterface;
-import sk.tsystems.forum.serviceinterface.TopicInterface;
+import sk.tsystems.forum.helper.ServletHelper;
+import sk.tsystems.forum.service.CommentService;
+import sk.tsystems.forum.service.TopicService;
+import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
  * Servlet implementation class Register
@@ -41,8 +43,8 @@ public class CommentServlet extends MasterServlet {
 
 		try {
 			// UserInterface usrSvc = svHelper.getUserService();
-			CommentInterface commentservice = svHelper.getCommentService();
-			TopicInterface topicservice = svHelper.getTopicService();
+			CommentService commentservice = svHelper.getCommentService();
+			TopicService topicservice = svHelper.getTopicService();
 			int topic_id = 0;
 			try {
 				topic_id = Integer.parseInt(request.getParameter("topicid"));

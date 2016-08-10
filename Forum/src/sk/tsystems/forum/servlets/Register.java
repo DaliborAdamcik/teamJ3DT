@@ -2,24 +2,21 @@ package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sound.midi.Patch;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
-
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.service.jpa.UserJPA;
-import sk.tsystems.forum.serviceinterface.UserInterface;
+import sk.tsystems.forum.helper.ServletHelper;
+import sk.tsystems.forum.helper.UserHelper;
+import sk.tsystems.forum.helper.exceptions.NickNameException;
+import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
+import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
  * Servlet implementation class Register
@@ -33,7 +30,6 @@ public class Register extends MasterServlet {
      */
     public Register() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -80,7 +76,7 @@ public class Register extends MasterServlet {
         try
         {
         	String userName = req.getString("nick"); // get nickname from user
-        	nickNameValidator(userName); // validate nickname
+        	UserHelper.nickNameValidator(userName); // validate nickname
 			resp.put("exists", helper.getUserService().getUser(userName)!=null); // check user exists
         }
         catch(JSONException ex)
@@ -93,11 +89,18 @@ public class Register extends MasterServlet {
 	
 	private void doRegister(JSONObject req, JSONObject resp, ServletHelper helper)
 	{
-        resp.put("register", "checkUserExists");
+        resp.put("register", "doRegister");
 		resp.put("registered", false);
 		// TODO do some check on name, eg length and so on... // nick, bith, pass
-		try { // TODO erase this
-			//resp.put("exists", helper.getUserService().getUser(req.getString("nick"))!=null);
+		try { 
+        	String userName = req.getString("nick"); // get nickname from user
+        	UserHelper.nickNameValidator(userName); // validate nickname
+			 UserHelper.passwordOverallControll(req.getString("pass")); 
+			
+        	
+        	resp.put("exists", helper.getUserService().getUser(userName)!=null); // check user exists
+			
+			
 			
 			User usr = new User(req.getString("nick"), req.getString("pass"), new Date(), req.getString("nick")+"real"); // TODO !! len tak nabuchane to je
 			if(helper.getUserService().addUser(usr))
@@ -106,35 +109,12 @@ public class Register extends MasterServlet {
 				helper.setLoggedUser(usr);
 			}
 		}
-		catch(javax.persistence.NoResultException e)
-		{
-			resp.put("exists", false);
-			System.err.println("****************************** Temporary catch on register.java.");
-		}
-		catch(javax.persistence.NonUniqueResultException e)
-		{
-			resp.put("exists", true);
-			System.err.println("****************************** Temporary catch on register.java.");
+        catch(JSONException ex)
+        {
+            resp.put("error", "requested parameters not found"); // an error occured getting username
+        }		
+		catch (PasswordCheckException | NickNameException e) {
+			resp.put("error", e.getMessage()); 
 		}
 	}
-	
-	private boolean nickNameValidator(String userName) throws NickNameException
-	{
-    	if(userName.length()<4)
-    		throw new NickNameException("Nickname must be 4 characters long");
-    	
-    	Pattern testValidNickName = Pattern.compile("^([a-z][a-z0-9]{3,})$");
-    	if(!testValidNickName.matcher(userName).matches())
-    		throw new NickNameException("Nickname can contain a-z and 0-9 characters. First character muste be a-z.");
-    	
-    	return true;
-	}
-	
-	private class NickNameException extends Exception {
-		private static final long serialVersionUID = 1L;
-		NickNameException(String message) {
-			super(message);
-		}
-	}
-
 }

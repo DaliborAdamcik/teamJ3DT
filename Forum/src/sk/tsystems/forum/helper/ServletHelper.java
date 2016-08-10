@@ -1,4 +1,4 @@
-package sk.tsystems.forum.servlets;
+package sk.tsystems.forum.helper;
 
 import java.io.IOException;
 
@@ -9,10 +9,10 @@ import org.json.JSONObject;
 
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.serviceinterface.CommentInterface;
-import sk.tsystems.forum.serviceinterface.TopicInterface;
-import sk.tsystems.forum.serviceinterface.UserInterface;
-import sk.tsystems.forum.servlets.master.GetServiceException;
+import sk.tsystems.forum.helper.exceptions.GetServiceException;
+import sk.tsystems.forum.service.CommentService;
+import sk.tsystems.forum.service.TopicService;
+import sk.tsystems.forum.service.UserService;
 
 /**
  * 
@@ -80,8 +80,8 @@ public class ServletHelper {
 	 * @return An instance of UserInterface service, otherwise an runtime
 	 *         exception is thrown
 	 */
-	final UserInterface getUserService() {
-		return (UserInterface) getService(USER_SERVICE_IDENT, UserInterface.class);
+	public final UserService getUserService() {
+		return (UserService) getService(USER_SERVICE_IDENT, UserService.class);
 	}
 
 	/**
@@ -90,8 +90,8 @@ public class ServletHelper {
 	 * @return An instance of TopicInterface service, otherwise an runtime
 	 *         exception is thrown
 	 */
-	final TopicInterface getTopicService() {
-		return (TopicInterface) getService(TOPIC_SERVICE_IDENT, TopicInterface.class);
+	public final TopicService getTopicService() {
+		return (TopicService) getService(TOPIC_SERVICE_IDENT, TopicService.class);
 	}
 
 	/**
@@ -100,8 +100,8 @@ public class ServletHelper {
 	 * @return An instance of CommentInterface service, otherwise an runtime
 	 *         exception is thrown
 	 */
-	final CommentInterface getCommentService() {
-		return (CommentInterface) getService(COMMENT_SERVICE_IDENT, CommentInterface.class);
+	public final CommentService getCommentService() {
+		return (CommentService) getService(COMMENT_SERVICE_IDENT, CommentService.class);
 	}
 
 	/**
@@ -127,12 +127,12 @@ public class ServletHelper {
 	 * @return true on success, false on error occured, throws exceptions on
 	 *         foreign service is detected
 	 */
-	final boolean setService(Object serviceInstance) {
-		if (serviceInstance instanceof UserInterface)
+	public final boolean setService(Object serviceInstance) {
+		if (serviceInstance instanceof UserService)
 			return setService(serviceInstance, USER_SERVICE_IDENT);
-		else if (serviceInstance instanceof TopicInterface)
+		else if (serviceInstance instanceof TopicService)
 			return setService(serviceInstance, TOPIC_SERVICE_IDENT);
-		else if (serviceInstance instanceof CommentInterface)
+		else if (serviceInstance instanceof CommentService)
 			return setService(serviceInstance, COMMENT_SERVICE_IDENT);
 		else
 			throw new GetServiceException(
@@ -148,7 +148,7 @@ public class ServletHelper {
 	 *            an object name in request
 	 * @return Object from request if found, otherwise NULL will be returned
 	 */
-	Object getSessionObject(String NAME) { // TODO maybe private?
+	public Object getSessionObject(String NAME) { // TODO maybe private?
 
 		return servletRequest.getSession().getAttribute(NAME);
 	}
@@ -163,7 +163,7 @@ public class ServletHelper {
 	 *            an object to be stored
 	 * @return always true
 	 */
-	boolean setSessionObject(String NAME, Object object) {// TODO maybe
+	public boolean setSessionObject(String NAME, Object object) {// TODO maybe
 															// private?,
 															// do some checks?
 
@@ -176,7 +176,7 @@ public class ServletHelper {
 	 * 
 	 * @return An instance of User entity (logged in user) or null
 	 */
-	final User getLoggedUser() {
+	public final User getLoggedUser() {
 		Integer ident;
 		if ((ident = (Integer) getSessionObject(USER_SESSION_IDENT)) == null)
 			return null;
@@ -191,7 +191,7 @@ public class ServletHelper {
 	 *            to save in session
 	 * @return true on sucess
 	 */
-	final boolean setLoggedUser(User user) {
+	public final boolean setLoggedUser(User user) {
 		if (user != null) {
 			setSessionObject(USER_SESSION_IDENT, user.getId());
 			return true;
@@ -204,7 +204,7 @@ public class ServletHelper {
 	/**
 	 * Logouts current user
 	 */
-	final void logoutUser() {
+	public final void logoutUser() {
 		setLoggedUser(null);
 	}
 
@@ -215,7 +215,7 @@ public class ServletHelper {
 	 * 
 	 * @return An role of User
 	 */
-	final UserRole getSessionRole() {
+	public final UserRole getSessionRole() {
 		User user = getLoggedUser();
 		if (user == null || user.getBlocked() != null)
 			return UserRole.GUEST;
@@ -223,7 +223,7 @@ public class ServletHelper {
 		return user.getRole();
 	}
 	
-	final JSONObject getJSON()
+	public final JSONObject getJSON()
 	{
     	StringBuilder sb = new StringBuilder();
         String s;

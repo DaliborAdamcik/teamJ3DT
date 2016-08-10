@@ -7,7 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.serviceinterface.UserInterface;
+import sk.tsystems.forum.helper.ServletHelper;
+import sk.tsystems.forum.service.UserService;
+import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
  * Servlet implementation class SignIn
@@ -47,7 +49,7 @@ public class SignIn extends MasterServlet implements Servlet {
 		try {
 			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").include(request, response);
 			ServletHelper svHelper = new ServletHelper(request);
-			UserInterface userService = svHelper.getUserService();
+			UserService userService = svHelper.getUserService();
 
 //			
 //			try
@@ -70,7 +72,7 @@ public class SignIn extends MasterServlet implements Servlet {
 			
 
 			User user = userService.getUser(userName);
-			if (user != null && user.getPassword().compareTo(password)!=0) {
+			if (user == null || user.getPassword().compareTo(password)!=0) {
 				response.getWriter().println("<h1>Nespravne meno alebo heslo</h1>");
 				return;
 			}

@@ -1,5 +1,8 @@
 package sk.tsystems.forum.service.jpa;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -7,17 +10,20 @@ import javax.persistence.RollbackException;
 
 import org.hibernate.exception.ConstraintViolationException;
 
-class JpaConnector implements AutoCloseable { // class selector is package
+public class JpaConnector implements AutoCloseable { // class selector is package
+	
+	private static final String persistenceUnitName = "hibernatePersistenceUnit";
+	
 	private EntityManagerFactory factory = null;
 	private EntityManager entityManager = null;
 
-	JpaConnector() {
+	public JpaConnector() {
 		super();
 	}
 
 	private EntityManagerFactory getFactory() {
 		if (factory == null || !factory.isOpen()) {
-			factory = Persistence.createEntityManagerFactory("hibernatePersistenceUnit");
+			factory = Persistence.createEntityManagerFactory(persistenceUnitName);
 		}
 		return factory;
 	}
@@ -29,15 +35,15 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		return entityManager;
 	}
 
-	void beginTransaction() {
+	public void beginTransaction() {
 		getEntityManager().getTransaction().begin();
 	}
 
-	void commitTransaction() {
+	public void commitTransaction() {
 		getEntityManager().getTransaction().commit();
 	}
 
-	void rollBackTransaction() {
+	public void rollBackTransaction() {
 		getEntityManager().getTransaction().rollback();
 	}
 
@@ -53,7 +59,7 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		}
 	}
 
-	boolean persist(Object object) {
+	public boolean persist(Object object) {
 		try {
 			beginTransaction();
 			getEntityManager().persist(object);
@@ -70,31 +76,38 @@ class JpaConnector implements AutoCloseable { // class selector is package
 		return false;
 	}
 
-	void merge(Object object) {
+	public void merge(Object object) {
 		beginTransaction();
 		getEntityManager().merge(object);
 		commitTransaction();
 	}
 
-	void remove(Object object) {
+	public void remove(Object object) {
 		beginTransaction();
 		getEntityManager().remove(getEntityManager().contains(object) ? object : getEntityManager().merge(object)); // TODO
-																													// is
-																													// okay??
 		commitTransaction();
 	}
 
-	javax.persistence.Query createQuery(String query) {
+	public javax.persistence.Query createQuery(String query) {
 		return getEntityManager().createQuery(query);
 	}
 
-	boolean exceptionChild(Exception e, Class<?> weSearch) {
+	public boolean exceptionChild(Exception e, Class<?> weSearch) { // TODO toto dat do helepera
 		Throwable thr = e;
 		do {
 			if (thr.getClass().equals(weSearch))
 				return true;
 		} while ((thr = thr.getCause()) != null);
 		return false;
+	}
+	
+	public void dropAndCreate()
+	{
+		close(); // as a first we need to close existing hibernate session
+
+		Map<String, Object> configOverrides = new HashMap<String, Object>(); // override settings 
+		configOverrides.put("hibernate.hbm2ddl.auto", "create");
+		factory = Persistence.createEntityManagerFactory(persistenceUnitName, configOverrides);
 	}
 
 	@Override

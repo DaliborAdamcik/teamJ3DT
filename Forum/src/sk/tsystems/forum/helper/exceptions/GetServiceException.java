@@ -1,4 +1,4 @@
-package sk.tsystems.forum.servlets.master;
+package sk.tsystems.forum.helper.exceptions;
 
 public class GetServiceException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

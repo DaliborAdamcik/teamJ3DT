@@ -1,4 +1,4 @@
-package sk.tsystems.forum.junitest.entity;
+package sk.tsystems.forum.junittest.entity;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.junittest.TestHelper;
+import sk.tsystems.forum.helper.TestHelper;
 
 public class UserEntityTest {
 

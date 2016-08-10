@@ -69,6 +69,17 @@ public class Theme {
 		this.isPublic = isPublic;
 		this.creationDate = new Date();
 	}
+	
+	/**
+	 * Non-Parametric constructor used by HIBERNATE
+	 * (INFO: HHH000182: No default (no-argument) constructor for class: 
+	 * 	sk.tsystems.forum.entity.Theme (class must be instantiated by Interceptor))
+	 */
+	@Deprecated
+	public Theme()
+	{
+		this(null, true);
+	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	// GETTERS / SETTERS
@@ -96,7 +107,7 @@ public class Theme {
 	 * 
 	 * @return isPublic
 	 */
-	public boolean isPublic() {
+	public boolean isIsPublic() {
 		return isPublic;
 	}
 

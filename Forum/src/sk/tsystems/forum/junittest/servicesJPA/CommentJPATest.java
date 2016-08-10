@@ -13,7 +13,7 @@ import org.junit.Test;
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.junittest.TestHelper;
+import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
@@ -134,7 +134,7 @@ public class CommentJPATest {
 		commentservice.updateComment(randomComment);
 		Comment testComment = commentservice.getComment(randomComment.getId());
 		assertNotNull("Selecting from database failed", testComment);
-		assertEquals("Do not change publicity", testComment.isPublic(), isPublic);
+		assertEquals("Do not change publicity", testComment.isIsPublic(), isPublic);
 	}
 
 	@Test
@@ -170,15 +170,15 @@ public class CommentJPATest {
 		for (Comment c : testComments) {
 			if (c.getId() == randomComment1.getId()) {
 				assertEquals("Bad comment1", comment, c.getComment());
-				assertEquals("Bad isPublic1", isPublic, c.isPublic());
+				assertEquals("Bad isPublic1", isPublic, c.isIsPublic());
 			}
 			if (c.getId() == randomComment2.getId()) {
 				assertEquals("Bad comment2", comment2, c.getComment());
-				assertEquals("Bad isPublic2",  isPublic, c.isPublic());
+				assertEquals("Bad isPublic2",  isPublic, c.isIsPublic());
 			}
 			if (c.getId() == randomComment3.getId()) {
 				assertEquals("Bad comment3", comment3, c.getComment());
-				assertEquals("Bad isPublic3", true, c.isPublic());
+				assertEquals("Bad isPublic3", true, c.isIsPublic());
 			}
 		}
 	}

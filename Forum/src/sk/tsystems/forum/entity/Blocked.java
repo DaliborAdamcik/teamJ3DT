@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
@@ -14,6 +15,7 @@ public class Blocked {
 	 * ID. Generated automatically by Hibernate
 	 */
 	@Id
+	@GeneratedValue
 	int id;
 	/**
 	 * User(admin) that created the block

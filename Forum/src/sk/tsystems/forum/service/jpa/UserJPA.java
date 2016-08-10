@@ -6,9 +6,9 @@ import java.util.List;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.serviceinterface.UserInterface;
+import sk.tsystems.forum.service.UserService;
 
-public class UserJPA implements UserInterface {
+public class UserJPA implements UserService {
 
 	
 	
