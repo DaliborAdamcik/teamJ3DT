@@ -35,7 +35,6 @@ public class TopicJPA implements TopicService {
 			jpa.merge(topic);
 			return true;
 		}
-
 	}
 
 	@Override
@@ -44,6 +43,7 @@ public class TopicJPA implements TopicService {
 			return jpa.getEntityManager().find(Topic.class, ident);
 		}
 	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Topic> getTopics() {
