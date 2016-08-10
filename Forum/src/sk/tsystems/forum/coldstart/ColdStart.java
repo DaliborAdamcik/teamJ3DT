@@ -43,13 +43,19 @@ public class ColdStart {
 		User dalibor = new User("dalik", "123456", new Date(), "Dalibor");
 		User tomas = new User("tomas", "123456", new Date(), "Tomas");
 		User admin = new User("admin", "admin", new Date(), "Administrator");
-
+		User guest1 = new User("guest1", "guest1", new Date(), "GUEST");
+		User guest2 = new User("guest2", "guest2", new Date(), "GUEST");
+		User user1 = new User("user1", "user1", new Date(), "USER");
+		
 		admin.setRole(UserRole.ADMIN);
 		janka.setRole(UserRole.ADMIN);
 		jano.setRole(UserRole.ADMIN);
 		jozo.setRole(UserRole.ADMIN);
 		dalibor.setRole(UserRole.ADMIN);
 		tomas.setRole(UserRole.ADMIN);
+		guest1.setRole(UserRole.GUEST);
+		guest2.setRole(UserRole.GUEST);
+		user1.setRole(UserRole.REGULARUSER);
 		
 		// persist users  
 		userService.addUser(admin);
@@ -58,6 +64,9 @@ public class ColdStart {
 		userService.addUser(jozo);
 		userService.addUser(dalibor);
 		userService.addUser(tomas);
+		userService.addUser(guest1);
+		userService.addUser(guest2);
+		userService.addUser(user1);
 		
 		// initialize user (create topics and so on)
 		jankaInitialize(janka);

@@ -8,6 +8,7 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.service.UserService;
 import sk.tsystems.forum.service.jpa.JpaConnector;
@@ -33,7 +34,7 @@ public static void main(String[] args) {
 		try(JpaConnector jpa = new JpaConnector())
 		{
 			BlockableEntity objectToBeBlocked= null;
-			for(Class<?> clz:jpa.getMappedClasses())
+			for(Class<?> clz:jpa.getMappedClasses(BlockableEntity.class))
 			{
 				objectToBeBlocked = (BlockableEntity) jpa.getEntityManager().find(clz, id);
 				if(objectToBeBlocked!= null)
@@ -55,7 +56,7 @@ public static void main(String[] args) {
 		try(JpaConnector jpa = new JpaConnector())
 		{
 			BlockableEntity objectToBeUnblocked= null;
-			for(Class<?> clz: jpa.getMappedClasses())
+			for(Class<?> clz: jpa.getMappedClasses(BlockableEntity.class))
 			{
 				objectToBeUnblocked = (BlockableEntity) jpa.getEntityManager().find(clz, id);
 				if(objectToBeUnblocked!= null)
@@ -72,6 +73,67 @@ public static void main(String[] args) {
 		}
 		
 	}
+	
+	public static void  mark(int id){
+		
+		try(JpaConnector jpa = new JpaConnector())
+		{
+			Object o =null;
+			Class<?> currentClass=null;
+			for(Class<?> clz: jpa.getMappedClasses())
+			{
+				o = jpa.getEntityManager().find(clz, id);
+				if(o!= null){
+					currentClass=clz;
+					break;
+					}
+			}
+
+			if(o== null){
+				throw new RuntimeException("No element with id " + id + " in the database");
+			}
+			
+			currentClass.cast(o);
+			System.out.println(o.getClass());
+			System.out.println(o.getClass());
+			System.out.println(o.getClass());
+			System.out.println(o.getClass());
+			System.out.println(o.getClass());
+			
+			
+			System.out.println(o.getClass());
+			if(o.getClass().equals(Topic.class)){
+				Topic topic = (Topic)o;
+				topic.setPublic(!topic.isIsPublic());
+				jpa.merge(topic);				
+			}
+			if(o.getClass().equals(Comment.class)){
+				Comment comment = (Comment)o;
+				comment.setPublic(!comment.isIsPublic());
+				jpa.merge(comment);
+			}
+			if(o.getClass().equals(Theme.class)){
+				Theme theme = (Theme)o;
+				theme.setPublic(!theme.isIsPublic());
+				jpa.merge(theme);
+				
+			}
+			
+		}
+	}
+		
+		public static void promoteUser(int id,UserRole role){
+			try(JpaConnector jpa = new JpaConnector())
+			{
+				User user = jpa.getEntityManager().find(User.class, id);
+				user.setRole(role);
+				jpa.merge(user);
+			}
+		
+			
+		}
+		
+	
 	
 	
 	

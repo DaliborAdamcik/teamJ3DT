@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.loader.collection.OneToManyJoinWalker;
+
+import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.entity.UserRole;
+import sk.tsystems.forum.helper.BlockHelper;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
@@ -31,11 +36,64 @@ public abstract class MasterServlet extends HttpServlet {
 		servletHelper.setService(new TopicJPA());
 		servletHelper.setService(new CommentJPA());
 		
+		if(servletHelper.getSessionRole() == UserRole.ADMIN){
+		//block and unblock
+		blockAndUnblock(request, servletHelper);
+		//mark/unmark object as public
+		mark(request, servletHelper);
+		//promote user
+		promoteUser(request, servletHelper);
+		}
+		
 		// we can do some global checks here
 		
 		// globally set current user
 		request.setAttribute(CURRENT_USER_ATTRIB, servletHelper.getLoggedUser());
 		
 		super.service(request, response); // this line cant be comment out in case of any situation 
+	}
+	
+	private void blockAndUnblock(HttpServletRequest request, ServletHelper servletHelper){
+		try {
+			String blockID;
+			String blockReason;
+			if ((blockID = request.getParameter("block")) != null && (blockReason = request.getParameter("block_reason")) != null) {
+				int idOfObjectToBeBlocked = Integer.parseInt(blockID);
+				BlockHelper.block(idOfObjectToBeBlocked, blockReason, servletHelper.getLoggedUser());
+			}
+			if ((blockID = request.getParameter("unblock")) != null) {
+				int idOfObjectToBeUnbanned = Integer.parseInt(blockID);
+				BlockHelper.unblock(idOfObjectToBeUnbanned);
+			}
+			
+		} catch (NumberFormatException e) {
+			System.err.println("*****Master Servlet block Exception: "+e.getMessage());
+		}
+	}
+	
+	private void promoteUser(HttpServletRequest request, ServletHelper servletHelper){
+		//try for user
+		try {
+			if (request.getParameter("promote_to_regular") != null) {
+				int idOfUserToBePromoted = Integer.parseInt(request.getParameter("promote_to_regular"));
+				BlockHelper.promoteUser(idOfUserToBePromoted, UserRole.REGULARUSER);
+			}
+		}catch (NumberFormatException e) {
+			System.err.println("*****Master Servlet block Exception: "+e.getMessage());
+		}
+	}
+	
+	private void mark(HttpServletRequest request, ServletHelper servletHelper){
+		//try for user
+		try {
+			if (request.getParameter("mark_public") != null) {
+				int objToBeMarked = Integer.parseInt(request.getParameter("mark_public"));
+				BlockHelper.mark(objToBeMarked);
+				
+			}
+		}catch (NumberFormatException e) {
+			System.err.println("*****Master Servlet block Exception: "+e.getMessage());
+		}
+		}
 	}
 }

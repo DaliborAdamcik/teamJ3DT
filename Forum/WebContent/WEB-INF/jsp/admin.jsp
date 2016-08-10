@@ -39,10 +39,10 @@
 										</form>
 								</c:when>
 								<c:otherwise>
-									<td>
+									
 										<form method="post" action="Admin">
 											<button name="unblock" value="${user.id}">unblock</button>
-										</form>
+										</form><td>
 								</c:otherwise>
 							</c:choose> <c:choose>
 								<c:when test="${user.role == 'GUEST'}">
@@ -52,13 +52,7 @@
 												to regular</button>
 										</form>
 								</c:when>
-								<c:when test="${user.role == 'REGULARUSER'}">
-									<td>
-										<form method="post" action="Admin">
-											<button name="promote_to_admin" value="${user.id}">promote
-												to admin</button>
-										</form>
-								</c:when>
+								
 							</c:choose>
 				</c:forEach>
 			</table>
@@ -86,17 +80,17 @@
 										</form>
 								</c:when>
 								<c:otherwise>
-									<td>
+									
 										<form method="post" action="Admin">
 											<button name="unblock" value="${topic.id}">unblock
 											</button>
-										</form>
+										</form><td>
 								</c:otherwise>
 							</c:choose> <c:choose>
 								<c:when test="${topic.isPublic}">
 									<td>
 										<form method="post" action="Admin">
-											<button name="unmark_public" value="${topic.id}">mark
+											<button name="mark_public" value="${topic.id}">mark
 												non-public</button>
 										</form>
 								</c:when>

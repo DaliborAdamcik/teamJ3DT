@@ -85,28 +85,28 @@ public class Admin extends MasterServlet {
 			e.printStackTrace();
 		}
 
-		// try pre block
-		try {
-			if (request.getParameter("block") != null && request.getParameter("block_reason") != null) {
-				int idOfUserToBeBlocked = Integer.parseInt(request.getParameter("block"));
-				String blockReason = request.getParameter("block_reason");
-				BlockHelper.block(idOfUserToBeBlocked, blockReason, servletHelper.getLoggedUser());
-			}
-			
-		} catch (Exception e) {
-
-		}
-		
-		//try pre unblock
-		try {
-			if (request.getParameter("unblock") != null) {
-				int idOfUserToBeUnbanned = Integer.parseInt(request.getParameter("unblock"));
-				BlockHelper.unblock(idOfUserToBeUnbanned);
-			}
-			
-		} catch (Exception e) {
-
-		}
+//		// try pre block
+//		try {
+//			if (request.getParameter("block") != null && request.getParameter("block_reason") != null) {
+//				int idOfUserToBeBlocked = Integer.parseInt(request.getParameter("block"));
+//				String blockReason = request.getParameter("block_reason");
+//				BlockHelper.block(idOfUserToBeBlocked, blockReason, servletHelper.getLoggedUser());
+//			}
+//			
+//		} catch (Exception e) {
+//
+//		}
+//		
+//		//try pre unblock
+//		try {
+//			if (request.getParameter("unblock") != null) {
+//				int idOfUserToBeUnbanned = Integer.parseInt(request.getParameter("unblock"));
+//				BlockHelper.unblock(idOfUserToBeUnbanned);
+//			}
+//			
+//		} catch (Exception e) {
+//
+//		}
 		
 		request.getRequestDispatcher("/WEB-INF/jsp/admin.jsp").include(request, response);
 	}
