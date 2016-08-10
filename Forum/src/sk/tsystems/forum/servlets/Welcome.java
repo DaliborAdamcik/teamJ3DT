@@ -1,6 +1,8 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +28,7 @@ public class Welcome extends MasterServlet {
 	 * @see MasterServlet#MasterServlet()
 	 */
 	public Welcome() {
-		
+
 	}
 
 	/**
@@ -51,7 +53,7 @@ public class Welcome extends MasterServlet {
 				}
 			}
 		}
-		
+
 		if (request.getParameter("parameter") != null) {
 			if (request.getParameter("parameter").equals("logout")) {
 				helpser.logoutUser();
@@ -60,32 +62,42 @@ public class Welcome extends MasterServlet {
 			}
 		}
 		
-		//Atribut logged user, vyuizity pri jsp kde je menu
+		TopicService topicService = helpser.getTopicService();
+		
+		List<Topic> topics = new ArrayList<>();
+		topics = topicService.getTopics();
+		request.setAttribute("topics", topics.iterator());
+
+		// Atribut logged user, vyuizity pri jsp kde je menu
 		request.setAttribute("loggeduser", helpser.getLoggedUser());
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
-		
-		
-		//TODO presunute do JSP, uz to nebude treba
-//		response.getWriter().printf("<a href=\"Welcome?parameter=logout\">Logout</a>");
-		
-	if (helpser.getLoggedUser() != null)
-		
-		//TODO netreba to uz pravdepodobne
-//		response.getWriter().print("<h1>Logged: " + helpser.getLoggedUser().getUserName() + "</h1>");
-
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 
-		TopicService topicService = helpser.getTopicService();
+		// TODO presunute do JSP, uz to nebude treba
+		// response.getWriter().printf("<a
+		// href=\"Welcome?parameter=logout\">Logout</a>");
 
-		response.getWriter().printf("<br><b>TOPICS:</b><br><br>");
+	//	if (helpser.getLoggedUser() != null)
 
-		for (Topic t : topicService.getTopics()) {
-			response.getWriter().printf("\nTopic: <a href=\"Comment?topicid=%d\">%s<a><br>", t.getId(), t.getName());
-		}
-		//TODO toto sa uz asi nebude pouzivat, uz je to v inom jsp
-//		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
-		
-	
+			// TODO netreba to uz pravdepodobne
+			// response.getWriter().print("<h1>Logged: " +
+			// helpser.getLoggedUser().getUserName() + "</h1>");
+
+		//	request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
+
+
+			// response.getWriter().printf("<br><b>TOPICS:</b><br><br>");
+			//
+			// for (Topic t : topicService.getTopics()) {
+			// response.getWriter().printf("\nTopic: <a
+			// href=\"Comment?topicid=%d\">%s<a><br>", t.getId(), t.getName());
+			// }
+
+			// TODO toto sa uz asi nebude pouzivat, uz je to v inom jsp
+			// request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request,
+			// response);		
+
 	}
 
 	/**

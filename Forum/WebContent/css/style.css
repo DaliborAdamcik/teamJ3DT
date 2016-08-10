@@ -1,11 +1,12 @@
 body {
-	background-image: url("images/background_blue.png");
-/* 	color: white; */
+	background-image: url("./../images/background_blue.png");
+	color: white;
 }
 
-.main_div{
+.main_div {
 	padding: 15px;
 }
+
 
 /* input { */
 /* 	color: black; */

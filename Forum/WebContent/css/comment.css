@@ -10,12 +10,12 @@
 }
 
 .titleBox {
-	background-color: #fdfdfd;
+	background-color: #000000;
 	padding: 10px;
 }
 
 .titleBox label {
-	color: #444;
+	color: #ff00ff;
 	margin: 0;
 	display: inline-block;
 }
