@@ -8,29 +8,28 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import sk.tsystems.forum.entity.common.BlockableEntity;
 
 @Entity
 @Table(name="COMMENTARY")
-public class Comment {
+public class Comment  extends BlockableEntity {
 	@Id
 	@GeneratedValue
-	int id;
+	private int id;
 	@Column(name = "COMMENTARY", nullable = false)
-	String comment;
+	private String comment;
 	@ManyToOne
 	@JoinColumn(name = "TOPICID")
-	Topic topic;
+	private Topic topic;
 	@Column(name = "CREATIONDATE", nullable = false)
-	Date creationDate;
+	private Date creationDate;
 	@ManyToOne
 	@JoinColumn(name = "USERID")
-	User owner;
+	private User owner;
 	@Column(name = "ISPUBLIC", nullable = false)
-	boolean isPublic;
-	@OneToOne
-	Blocked blocked;
+	private boolean isPublic;
 
 	public Comment(String comment, Topic topic, User owner, boolean isPublic) {
 		super();
@@ -73,14 +72,6 @@ public class Comment {
 
 	public void setPublic(boolean isPublic) {
 		this.isPublic = isPublic;
-	}
-
-	public Blocked getBlocked() {
-		return blocked;
-	}
-
-	public void setBlocked(Blocked blocked) {
-		this.blocked = blocked;
 	}
 
 	public int getId() {
