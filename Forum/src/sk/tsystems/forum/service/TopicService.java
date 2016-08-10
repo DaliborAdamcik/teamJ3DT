@@ -32,8 +32,7 @@ public interface TopicService {
 	/**
 	 * Gets topic from the database
 	 * 
-	 * @param ID
-	 *            of topic
+	 * @param ID of topic
 	 * @return Topic with specific ID
 	 */
 	Topic getTopic(int ident);
@@ -41,7 +40,6 @@ public interface TopicService {
 	/**
 	 * Reads list of all topics from the database
 	 * 
-	
 	 * @return List of all topics
 	 */
 	List<Topic> getTopics();
