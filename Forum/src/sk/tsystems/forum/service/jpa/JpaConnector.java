@@ -1,12 +1,15 @@
 package sk.tsystems.forum.service.jpa;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
+import javax.persistence.metamodel.EntityType;
 
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -108,6 +111,15 @@ public class JpaConnector implements AutoCloseable { // class selector is packag
 		Map<String, Object> configOverrides = new HashMap<String, Object>(); // override settings 
 		configOverrides.put("hibernate.hbm2ddl.auto", "create");
 		factory = Persistence.createEntityManagerFactory(persistenceUnitName, configOverrides);
+	}
+	
+	public List<Class<?>> getMappedClasses()
+	{
+		List<Class<?>> results = new ArrayList<>();
+		for(EntityType<?> ee: getFactory().getMetamodel().getEntities())
+			results.add(ee.getJavaType());
+
+		return results;
 	}
 
 	@Override
