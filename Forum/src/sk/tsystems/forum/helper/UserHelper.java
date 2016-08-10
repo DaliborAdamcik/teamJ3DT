@@ -1,8 +1,14 @@
 package sk.tsystems.forum.helper;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 
@@ -58,7 +64,7 @@ public class UserHelper {
 
 	public static void main(String[] args) {
 		try {
-			//passwordOverallControll("pas");
+			// passwordOverallControll("pas");
 			passwordOverallControll("12345678");
 			System.out.println("ok");
 		} catch (PasswordCheckException e) {
@@ -81,5 +87,23 @@ public class UserHelper {
 			throw new NickNameException("Nickname can contain a-z and 0-9 characters. First character must be a-z.");
 
 		return true;
+	}
+	
+	/***
+	 * String 2 Date convert
+	 * valid format "dd.MM.yyyy HH:mm"
+	 * 
+	 * @author Tuomas
+	 */
+	public static Date stringToDate(String dateString) throws BadDateException {
+		DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH);
+		Date date;
+
+		try {
+			date = format.parse(dateString);
+			return date;
+		} catch (ParseException e) {
+			throw new BadDateException("Date in invalid format. Valid format is \"dd.MM.yyyy HH:mm\".", e);
+		}
 	}
 }
