@@ -15,6 +15,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
+import sk.tsystems.forum.helper.UserHelper;
+import sk.tsystems.forum.helper.exceptions.NickNameException;
+import sk.tsystems.forum.service.jpa.JpaConnector;
 
 @Entity
 @Table(name = "JPA_USER")
@@ -76,19 +79,21 @@ public class User extends BlockableEntity {
 	
 
 	public User(String userName, String password, Date birthDate, String realName) {
-		super();
-		topics = new ArrayList<Topic>();
-		this.userName = userName;
+		this();
+		setUserName(userName);
+		
 		this.password = password;
 		this.birthDate = birthDate;
-		this.registrationDate = new Date();
 		this.realName = realName;
-		this.role = UserRole.GUEST;
+		
+		
 	}
 
-	@Deprecated
-	public User() {
-		this(null, null, null, null);
+	private User() {
+		super();
+		topics = new ArrayList<Topic>();
+		this.registrationDate = new Date();
+		this.role = UserRole.GUEST;
 	}
 
 	/**
@@ -133,8 +138,10 @@ public class User extends BlockableEntity {
 	 * Setter for userName
 	 * 
 	 * @param userName
+	 * @throws NickNameException 
 	 */
 	public void setUserName(String userName) {
+		//UserHelper.nickNameValidator(userName);
 		this.userName = userName;
 	}
 
