@@ -6,9 +6,9 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.service.CommentInterface;
-import sk.tsystems.forum.service.TopicInterface;
-import sk.tsystems.forum.service.UserInterface;
+import sk.tsystems.forum.service.CommentService;
+import sk.tsystems.forum.service.TopicService;
+import sk.tsystems.forum.service.UserService;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.TopicJPA;
@@ -19,9 +19,9 @@ import sk.tsystems.forum.service.jpa.UserJPA;
  *
  */
 public class ColdStart {
-	private UserInterface userService;
-	private CommentInterface commentService;
-	private TopicInterface topicService;
+	private UserService userService;
+	private CommentService commentService;
+	private TopicService topicService;
 	
 	public ColdStart() {
 		this.userService = new UserJPA();

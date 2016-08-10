@@ -16,6 +16,7 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
+import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
  * Servlet implementation class Register

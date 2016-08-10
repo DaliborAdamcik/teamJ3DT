@@ -10,9 +10,9 @@ import org.json.JSONObject;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.exceptions.GetServiceException;
-import sk.tsystems.forum.service.CommentInterface;
-import sk.tsystems.forum.service.TopicInterface;
-import sk.tsystems.forum.service.UserInterface;
+import sk.tsystems.forum.service.CommentService;
+import sk.tsystems.forum.service.TopicService;
+import sk.tsystems.forum.service.UserService;
 
 /**
  * 
@@ -80,8 +80,8 @@ public class ServletHelper {
 	 * @return An instance of UserInterface service, otherwise an runtime
 	 *         exception is thrown
 	 */
-	public final UserInterface getUserService() {
-		return (UserInterface) getService(USER_SERVICE_IDENT, UserInterface.class);
+	public final UserService getUserService() {
+		return (UserService) getService(USER_SERVICE_IDENT, UserService.class);
 	}
 
 	/**
@@ -90,8 +90,8 @@ public class ServletHelper {
 	 * @return An instance of TopicInterface service, otherwise an runtime
 	 *         exception is thrown
 	 */
-	public final TopicInterface getTopicService() {
-		return (TopicInterface) getService(TOPIC_SERVICE_IDENT, TopicInterface.class);
+	public final TopicService getTopicService() {
+		return (TopicService) getService(TOPIC_SERVICE_IDENT, TopicService.class);
 	}
 
 	/**
@@ -100,8 +100,8 @@ public class ServletHelper {
 	 * @return An instance of CommentInterface service, otherwise an runtime
 	 *         exception is thrown
 	 */
-	public final CommentInterface getCommentService() {
-		return (CommentInterface) getService(COMMENT_SERVICE_IDENT, CommentInterface.class);
+	public final CommentService getCommentService() {
+		return (CommentService) getService(COMMENT_SERVICE_IDENT, CommentService.class);
 	}
 
 	/**
@@ -128,11 +128,11 @@ public class ServletHelper {
 	 *         foreign service is detected
 	 */
 	public final boolean setService(Object serviceInstance) {
-		if (serviceInstance instanceof UserInterface)
+		if (serviceInstance instanceof UserService)
 			return setService(serviceInstance, USER_SERVICE_IDENT);
-		else if (serviceInstance instanceof TopicInterface)
+		else if (serviceInstance instanceof TopicService)
 			return setService(serviceInstance, TOPIC_SERVICE_IDENT);
-		else if (serviceInstance instanceof CommentInterface)
+		else if (serviceInstance instanceof CommentService)
 			return setService(serviceInstance, COMMENT_SERVICE_IDENT);
 		else
 			throw new GetServiceException(

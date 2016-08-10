@@ -5,9 +5,9 @@ import java.util.List;
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.service.CommentInterface;
+import sk.tsystems.forum.service.CommentService;
 
-public class CommentJPA implements CommentInterface {
+public class CommentJPA implements CommentService {
 
 	public CommentJPA() {
 		// TODO Auto-generated constructor stub

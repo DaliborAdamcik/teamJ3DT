@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import sk.tsystems.forum.junittest.TestHelper.CharType;
+import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.TestHelper.CharType;
 
 public class TESTtestHelper {
 	private final int numTests = 20000;

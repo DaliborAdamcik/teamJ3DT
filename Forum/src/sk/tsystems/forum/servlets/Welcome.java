@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.ServletHelper;
-import sk.tsystems.forum.service.TopicInterface;
+import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.jpa.TopicJPA;
+import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
  * Servlet implementation class Welcome
@@ -74,7 +75,7 @@ public class Welcome extends MasterServlet {
 
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
 
-		TopicInterface topicService = helpser.getTopicService();
+		TopicService topicService = helpser.getTopicService();
 
 		response.getWriter().printf("<br><b>TOPICS:</b><br><br>");
 

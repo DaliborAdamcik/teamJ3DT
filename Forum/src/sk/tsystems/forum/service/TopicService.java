@@ -4,7 +4,7 @@ import java.util.List;
 
 import sk.tsystems.forum.entity.Topic;
 
-public interface TopicInterface {
+public interface TopicService {
 	/**
 	 * Adds topic to the database
 	 * 

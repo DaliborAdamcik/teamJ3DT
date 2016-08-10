@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.junittest.TestHelper;
+import sk.tsystems.forum.helper.TestHelper;
 
 public class UserEntityTest {
 

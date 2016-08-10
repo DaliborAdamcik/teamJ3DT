@@ -6,7 +6,7 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 
-public interface CommentInterface {
+public interface CommentService {
 	/**
 	 * Adds comment to the database
 	 * 

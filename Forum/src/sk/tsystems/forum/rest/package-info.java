@@ -5,4 +5,4 @@
  * @author Študent
  *
  */
-package sk.tsystems.forum.servertoclient.rest;
+package sk.tsystems.forum.rest;

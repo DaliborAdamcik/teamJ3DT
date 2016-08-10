@@ -15,13 +15,14 @@ import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.ServletHelper;
-import sk.tsystems.forum.junittest.TestHelper;
-import sk.tsystems.forum.service.CommentInterface;
-import sk.tsystems.forum.service.TopicInterface;
-import sk.tsystems.forum.service.UserInterface;
+import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.service.CommentService;
+import sk.tsystems.forum.service.TopicService;
+import sk.tsystems.forum.service.UserService;
 import sk.tsystems.forum.service.jpa.BlockedJPA;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
+import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
  * Servlet implementation class Admin
@@ -55,9 +56,9 @@ public class Admin extends MasterServlet {
 
 		}
 		// add all users to request, later to be printed in admin.jsp
-		UserInterface userservice = servletHelper.getUserService();
+		UserService userservice = servletHelper.getUserService();
 		request.setAttribute("listofusers", userservice.getAllUsers());
-		TopicInterface topicservice = servletHelper.getTopicService();
+		TopicService topicservice = servletHelper.getTopicService();
 		request.setAttribute("listoftopics", topicservice.getTopics());
 		// try to add topic TODO prerobit ked sa aktualizuje databaza
 		try {

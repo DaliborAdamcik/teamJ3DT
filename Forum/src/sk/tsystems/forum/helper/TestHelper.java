@@ -1,4 +1,4 @@
-package sk.tsystems.forum.junittest;
+package sk.tsystems.forum.helper;
 
 import java.util.List;
 import java.util.ArrayList;

@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sk.tsystems.forum.entity.Topic;
-import sk.tsystems.forum.junittest.TestHelper;
+import sk.tsystems.forum.helper.TestHelper;
 
 public class TopicEntityTest {
 	private String name;

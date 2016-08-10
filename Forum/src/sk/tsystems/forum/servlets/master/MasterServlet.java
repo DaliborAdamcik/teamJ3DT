@@ -1,4 +1,4 @@
-package sk.tsystems.forum.servlets;
+package sk.tsystems.forum.servlets.master;
 
 import java.io.IOException;
 
