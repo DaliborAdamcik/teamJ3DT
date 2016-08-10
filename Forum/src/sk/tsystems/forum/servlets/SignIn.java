@@ -7,7 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.serviceinterface.UserInterface;
+import sk.tsystems.forum.helper.ServletHelper;
+import sk.tsystems.forum.service.UserInterface;
 
 /**
  * Servlet implementation class SignIn

@@ -1,4 +1,4 @@
-package sk.tsystems.forum.serviceinterface;
+package sk.tsystems.forum.service;
 
 import java.util.List;
 

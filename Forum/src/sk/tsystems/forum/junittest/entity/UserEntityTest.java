@@ -1,4 +1,4 @@
-package sk.tsystems.forum.junitest.entity;
+package sk.tsystems.forum.junittest.entity;
 
 import static org.junit.Assert.*;
 

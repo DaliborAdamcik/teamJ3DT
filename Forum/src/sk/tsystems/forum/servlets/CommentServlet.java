@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.serviceinterface.CommentInterface;
-import sk.tsystems.forum.serviceinterface.TopicInterface;
+import sk.tsystems.forum.helper.ServletHelper;
+import sk.tsystems.forum.service.CommentInterface;
+import sk.tsystems.forum.service.TopicInterface;
 
 /**
  * Servlet implementation class Register

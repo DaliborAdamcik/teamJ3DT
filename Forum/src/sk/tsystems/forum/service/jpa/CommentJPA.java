@@ -5,7 +5,7 @@ import java.util.List;
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.serviceinterface.CommentInterface;
+import sk.tsystems.forum.service.CommentInterface;
 
 public class CommentJPA implements CommentInterface {
 

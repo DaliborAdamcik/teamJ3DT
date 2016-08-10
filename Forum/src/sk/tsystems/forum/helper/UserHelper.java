@@ -2,7 +2,9 @@ package sk.tsystems.forum.helper;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import sk.tsystems.forum.helper.NickNameException;
+
+import sk.tsystems.forum.helper.exceptions.NickNameException;
+import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 
 public class UserHelper {
 

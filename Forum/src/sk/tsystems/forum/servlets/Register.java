@@ -12,9 +12,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.helper.NickNameException;
-import sk.tsystems.forum.helper.PasswordCheckException;
+import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.UserHelper;
+import sk.tsystems.forum.helper.exceptions.NickNameException;
+import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 
 /**
  * Servlet implementation class Register

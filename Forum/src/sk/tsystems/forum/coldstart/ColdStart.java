@@ -6,13 +6,13 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
+import sk.tsystems.forum.service.CommentInterface;
+import sk.tsystems.forum.service.TopicInterface;
+import sk.tsystems.forum.service.UserInterface;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
-import sk.tsystems.forum.serviceinterface.CommentInterface;
-import sk.tsystems.forum.serviceinterface.TopicInterface;
-import sk.tsystems.forum.serviceinterface.UserInterface;
 
 /**
  * Place for cold intialization methods ... 

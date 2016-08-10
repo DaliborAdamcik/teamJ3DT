@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;

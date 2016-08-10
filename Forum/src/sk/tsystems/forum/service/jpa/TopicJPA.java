@@ -2,7 +2,7 @@ package sk.tsystems.forum.service.jpa;
 
 import java.util.List;
 import sk.tsystems.forum.entity.Topic;
-import sk.tsystems.forum.serviceinterface.TopicInterface;
+import sk.tsystems.forum.service.TopicInterface;
 
 /**
  * http://grepcode.com/file/repo1.maven.org/maven2/javax.persistence/persistence-api/1.0.2/javax/persistence/Query.java?av=f
