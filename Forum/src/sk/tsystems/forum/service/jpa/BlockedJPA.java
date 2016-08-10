@@ -1,9 +1,9 @@
 package sk.tsystems.forum.service.jpa;
 
 import sk.tsystems.forum.entity.Blocked;
+import sk.tsystems.forum.service.BlockedService;
 
-public class BlockedJPA {
-	
+public class BlockedJPA implements BlockedService {
 	
 	public boolean addBlocked(Blocked blocked) { // OK
 		try (JpaConnector jpa = new JpaConnector()) {
