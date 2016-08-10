@@ -107,7 +107,7 @@ public class Theme {
 	 * 
 	 * @return isPublic
 	 */
-	public boolean isPublic() {
+	public boolean isIsPublic() {
 		return isPublic;
 	}
 

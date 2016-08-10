@@ -41,7 +41,7 @@ public class ThemeEntityTest {
 	@Test
 	public void isPublic() {
 		Theme randomTheme = new Theme(name, isPublic);
-		boolean testIsPublic = randomTheme.isPublic();
+		boolean testIsPublic = randomTheme.isIsPublic();
 
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}
@@ -50,7 +50,7 @@ public class ThemeEntityTest {
 	public void setPublic() {
 		Theme randomTheme = new Theme(name, true);
 		randomTheme.setPublic(isPublic);
-		boolean testIsPublic = randomTheme.isPublic();
+		boolean testIsPublic = randomTheme.isIsPublic();
 
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}

@@ -74,7 +74,7 @@ public class CommentEntityTest {
 	@Test
 	public void isPublic() {
 		Comment randomComment = new Comment(comment, topic, owner, isPublic);
-		boolean testIsPublic = randomComment.isPublic();
+		boolean testIsPublic = randomComment.isIsPublic();
 		
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}
@@ -83,7 +83,7 @@ public class CommentEntityTest {
 	public void setPublic() {
 		Comment randomComment = new Comment(comment, topic, owner, true);
 		randomComment.setPublic(isPublic);
-		boolean testIsPublic = randomComment.isPublic();
+		boolean testIsPublic = randomComment.isIsPublic();
 		
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}

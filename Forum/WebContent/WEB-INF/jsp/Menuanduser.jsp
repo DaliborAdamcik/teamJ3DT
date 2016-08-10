@@ -3,8 +3,8 @@
 	pageEncoding="ISO-8859-1"%>
 	<div class="main_div" style="padding: 0.5em;">
 		<c:choose>
-			<c:when test="${loggeduser != null}">
-	logged as: ${loggeduser.userName} (${loggeduser.role}) <a
+			<c:when test="${CURRENT_USER != null}">
+	logged as: ${CURRENT_USER.userName} (${CURRENT_USER.role}) <a
 					href="Welcome?parameter=logout">Logout</a> &middot;
 
 			</c:when>
@@ -15,7 +15,7 @@
 		</c:choose>
 		
 		<c:choose>
-			<c:when test="${loggeduser.role == 'ADMIN'}">
+			<c:when test="${CURRENT_USER.role == 'ADMIN'}">
 			<a href="Admin">Admin</a> &middot;
 			</c:when>
 			</c:choose>

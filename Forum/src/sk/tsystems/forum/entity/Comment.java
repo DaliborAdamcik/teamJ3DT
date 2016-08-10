@@ -67,7 +67,7 @@ public class Comment {
 		return owner;
 	}
 
-	public boolean isPublic() {
+	public boolean isIsPublic() {
 		return isPublic;
 	}
 

@@ -84,6 +84,8 @@ public class Welcome extends MasterServlet {
 		}
 		//TODO toto sa uz asi nebude pouzivat, uz je to v inom jsp
 //		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
+		
+	
 	}
 
 	/**
