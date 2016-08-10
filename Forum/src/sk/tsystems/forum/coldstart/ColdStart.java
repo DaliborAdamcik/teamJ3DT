@@ -2,13 +2,16 @@ package sk.tsystems.forum.coldstart;
 
 import java.util.Date;
 
+import sk.tsystems.forum.entity.Blocked;
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
+import sk.tsystems.forum.service.BlockedService;
 import sk.tsystems.forum.service.CommentService;
 import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.UserService;
+import sk.tsystems.forum.service.jpa.BlockedJPA;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.TopicJPA;
@@ -22,11 +25,13 @@ public class ColdStart {
 	private UserService userService;
 	private CommentService commentService;
 	private TopicService topicService;
+	private BlockedService blockedService;
 	
 	public ColdStart() {
 		this.userService = new UserJPA();
 		this.topicService = new TopicJPA();
 		this.commentService = new CommentJPA();
+		this.blockedService = new BlockedJPA();
 	}
 
 	public void run()
@@ -46,6 +51,8 @@ public class ColdStart {
 		User guest1 = new User("guest1", "guest1", new Date(), "GUEST");
 		User guest2 = new User("guest2", "guest2", new Date(), "GUEST");
 		User user1 = new User("user1", "user1", new Date(), "USER");
+		User banned = new User("banned", "banned", new Date(), "BANNED USER");
+		
 		
 		admin.setRole(UserRole.ADMIN);
 		janka.setRole(UserRole.ADMIN);
@@ -67,6 +74,7 @@ public class ColdStart {
 		userService.addUser(guest1);
 		userService.addUser(guest2);
 		userService.addUser(user1);
+		userService.addUser(banned);
 		
 		// initialize user (create topics and so on)
 		jankaInitialize(janka);
@@ -74,12 +82,17 @@ public class ColdStart {
 		jozoInitialize(jozo);
 		daliborInitialize(dalibor);
 		tomasInitialize(tomas);
+		
+		// block blocked user
+		Blocked block = new Blocked(admin, "Blocked for testing purposes");
+		blockedService.addBlocked(block);
+		banned.setBlocked(block);
+		userService.updateUser(banned);
 	}
 	
 	public void jankaInitialize(User user){
 		Topic topic = new Topic("Lietadla", true);
 		topicService.addTopic(topic);
-		
 		commentService.addComment(new Comment("Sehr schon", topic, user, true));
 	}
 	
