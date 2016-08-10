@@ -8,8 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import sk.tsystems.forum.entity.common.CommonEntity;
+
 @Entity
-public class Blocked {
+public class Blocked extends CommonEntity{
 
 	/**
 	 * ID. Generated automatically by Hibernate

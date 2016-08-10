@@ -15,28 +15,19 @@ import sk.tsystems.forum.entity.common.BlockableEntity;
 @Entity
 @Table(name = "COMMENTARY")
 public class Comment extends BlockableEntity {
-	// @Id
-	// @GeneratedValue
-	// private int id;
 
 	/**
 	 * comment
 	 */
 	@Column(name = "COMMENTARY", nullable = false)
 	private String comment;
-	@ManyToOne
-	@JoinColumn(name = "TOPICID")
 
 	/**
 	 * topic
 	 */
+	@ManyToOne
+	@JoinColumn(name = "TOPICID")
 	private Topic topic;
-
-	/**
-	 * cretion date. set explicitly in the constructor(by actual time)
-	 */
-	@Column(name = "CREATIONDATE", nullable = false)
-	private Date creationDate;
 
 	/**
 	 * owner
@@ -44,6 +35,7 @@ public class Comment extends BlockableEntity {
 	@ManyToOne
 	@JoinColumn(name = "USERID")
 	private User owner;
+
 	/**
 	 * public status
 	 */
@@ -71,7 +63,6 @@ public class Comment extends BlockableEntity {
 	 */
 	private Comment() {
 		super();
-		this.creationDate = new Date(); 
 	}
 
 	/**
@@ -137,8 +128,15 @@ public class Comment extends BlockableEntity {
 		this.isPublic = isPublic;
 	}
 
+	/**
+	 * Getter for creationDate
+	 * <p>This method returns date of Theme create</p>
+	 * <p><b><i>DEPRECATED</i></b> Please use getCreated() instead.</p>
+	 * @return creationDate (return value is same as getCreated)
+	 */
+	@Deprecated
 	public Date getCreationDate() {
-		return creationDate;
+		return getCreated();
 	}
 
 }
