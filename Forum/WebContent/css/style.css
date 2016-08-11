@@ -5,11 +5,15 @@ body {
 	padding-bottom: 6rem;
 	min-height: 100%;
 	background-image: url("./../images/NYWebsiteBackground.png");
-	color: white;
+	color: #534d53;
 }
 
 .main_div {
 	padding: 15px;
+}
+
+.footer {
+	color: white;
 }
 
 /* input { */

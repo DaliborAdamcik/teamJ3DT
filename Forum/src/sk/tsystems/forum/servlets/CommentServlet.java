@@ -53,26 +53,6 @@ public class CommentServlet extends MasterServlet {
 				e.printStackTrace();
 			}
 
-			// try {
-			// usr = new User("Janka", "janka", new Date(), "Jana");
-			// svHelper.getUserService().addUser(usr);
-			// } catch (Exception e) {
-			// response.getWriter().print("Tento account uz existuje");
-			// }
-			//
-			// svHelper.setLoggedUser(usr);
-
-			// commentservice.addComment(new Comment("sehr schon",
-			// topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
-			// commentservice.addComment(new Comment("alles gutes",
-			// topicservice.getTopic(topic_id), usrSvc.getUser(12), true));
-			// commentservice.addComment(new Comment("igen",
-			// topicservice.getTopic(topic_id), usrSvc.getUser(10), true));
-			// commentservice.addComment(new Comment("szep",
-			// topicservice.getTopic(topic_id), usrSvc.getUser(3), true));
-			// commentservice.addComment(new Comment("szia mafia",
-			// topicservice.getTopic(topic_id), usrSvc.getUser(6), true));
-
 			String action = request.getParameter("action");
 
 			if ("insert_comment".equals(action)) {
@@ -85,9 +65,9 @@ public class CommentServlet extends MasterServlet {
 				}
 			}
 
-			commentservice.getComments(topicservice.getTopic(topic_id));
 			List<Comment> comments = new ArrayList<>();
 			comments = commentservice.getComments(topicservice.getTopic(topic_id));
+			request.setAttribute("topicName", topicservice.getTopic(topic_id).getName());
 			request.setAttribute("comments", comments.iterator());
 
 		} finally {

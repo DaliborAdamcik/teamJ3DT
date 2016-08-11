@@ -6,7 +6,7 @@
 
 <div class="detailBox">
 	<div class="titleBox">
-		<label>Comment Box</label>
+		<label>${topicName}</label>
 		<!-- 		<button type="button" class="close" aria-hidden="true">&times;</button> -->
 	</div>
 	<div class="commentBox">
