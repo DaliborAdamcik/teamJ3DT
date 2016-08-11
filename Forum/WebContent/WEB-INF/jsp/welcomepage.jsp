@@ -20,7 +20,7 @@
 </div>
 
 <div class="container">
-	<h2>Topics</h2>
+	<h2>TOPICS</h2>
 	<div class="list-group">
 		<c:forEach items="${topics}" var="topics">
 			<a href="Comment?topicid=${topics.getId()}" class="list-group-item">${topics.getName()}</a>

@@ -4,41 +4,45 @@
 
 <link rel="stylesheet" type="text/css" href="css/comment.css">
 
-<div class="detailBox">
-	<div class="titleBox">
-		<label>${topicName}</label>
-		<!-- 		<button type="button" class="close" aria-hidden="true">&times;</button> -->
-	</div>
-	<div class="commentBox">
+<div class="container">
+	<div class="detailBox">
+		<div class="titleBox">
+			<label>${topicName}</label>
+			<!-- 		<button type="button" class="close" aria-hidden="true">&times;</button> -->
+		</div>
+		<div class="commentBox">
 
-		<p class="taskDescription">This topic is very interesting....</p>
-	</div>
-	<div class="actionBox">
-		<ul class="commentList">
-			<c:forEach items="${comments}" var="comment">
-				<li>
-					<div class="commenterImage">
-						<img src="images/userPicture.png" alt = userPicture height=30 width=30 />
-					</div>
-					<div class="commentText">
-						<p class="">${comment.getComment()}</p>
-						<span class="date sub-text">from
-							${comment.owner.getUserName()} on ${comment.getCreationDate()}</span>
+			<p class="taskDescription">This topic is very interesting....</p>
+		</div>
+		<div class="actionBox">
+			<ul class="commentList">
+				<c:forEach items="${comments}" var="comment">
+					<li>
+						<div class="commenterImage">
+							<img src="images/userPicture.png" alt=userPicture height=30
+								width=30 />
+						</div>
+						<div class="commentText">
+							<p class="">${comment.getComment()}</p>
+							<span class="date sub-text">from
+								${comment.owner.getUserName()} on ${comment.getCreationDate()}</span>
 
-					</div>
-				</li>
-			</c:forEach>
-		</ul>
-		<form class="form-inline" role="form">
-			<div class="form-group">
-			<input type="hidden" name="action" value="insert_comment">
-			<input type="hidden" name="topicid" value="${topicid}">
-				<input class="form-control" type="text" name = "comment" placeholder="Your comments" />
-			</div>
-			<div class="form-group">
-				<button class="btn btn-default">Add</button>
-			</div>
-		</form>
+						</div>
+					</li>
+				</c:forEach>
+			</ul>
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<input type="hidden" name="action" value="insert_comment">
+					<input type="hidden" name="topicid" value="${topicid}"> <input
+						class="form-control" type="text" name="comment"
+						placeholder="Your comments" />
+				</div>
+				<div class="form-group">
+					<button class="btn btn-default">Add</button>
+				</div>
+			</form>
 
+		</div>
 	</div>
 </div>
