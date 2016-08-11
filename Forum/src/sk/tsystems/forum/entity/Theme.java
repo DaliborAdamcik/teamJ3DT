@@ -50,7 +50,7 @@ public class Theme  extends BlockableEntity {
 	 * (INFO: HHH000182: No default (no-argument) constructor for class: 
 	 * 	sk.tsystems.forum.entity.Theme (class must be instantiated by Interceptor))
 	 */
-	public Theme()
+	private Theme()
 	{
 		super();
 	}
