@@ -41,6 +41,7 @@
 							<c:when test="${loggeduser!= null}">
 								<li>logged as: ${loggeduser.userName} (${loggeduser.role})
 								</li>
+								<li><a href="/Forum/Useroptions">Options</a></li>
 
 								<li><a href="Welcome?parameter=logout"><span
 										class="glyphicon glyphicon-log-out"></span> Logout</a></li>
