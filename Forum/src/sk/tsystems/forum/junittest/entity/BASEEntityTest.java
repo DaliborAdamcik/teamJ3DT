@@ -7,6 +7,14 @@ import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,13 +79,12 @@ public class BASEEntityTest {
 	@Test
 	public void entityFieldsTest() {
 		System.out.println("* Test mapped classes for: private fields");
-		FieldTest test = new FieldTest();
 		
 		foreachClazzTestRun(clazzez, (Class<?> clazz) -> {
 			System.out.printf("\t(private fileds):\n");
+			FieldTest test = new FieldTest(); // field test is for one class instead
 
 			doFieldTestCondition(clazz.getDeclaredFields(), test);
-			
 			
 			// test superclasses fiels
 			recursiveClazzTestRun(clazz.getSuperclass(), (Class<?> clzz) -> {
@@ -90,6 +97,7 @@ public class BASEEntityTest {
 							
 							return own.getSuperclass(); 
 						});
+			// sem placnut dalsie checky
 			
 			return;
 		});
@@ -97,10 +105,33 @@ public class BASEEntityTest {
 	
 	private class FieldTest implements FieldTestCondition
 	{
+		private int idCount = 0;
+		private int generatedCount = 0;
+		
+		
 		@Override
 		public void testField(Field field) {
-			assertTrue("Field cannot be accesible for public", Modifier.isPrivate(field.getModifiers()));
+			assertTrue("Field cannot be accesible for public", Modifier.isPrivate(field.getModifiers())); // check field is private
+			
+			Column column = field.getAnnotation(Column.class);
+
+			if( field.getAnnotation(OneToOne.class)==null && 
+				field.getAnnotation(OneToMany.class)==null &&		
+				field.getAnnotation(ManyToMany.class)==null &&		
+				field.getAnnotation(ManyToOne.class)==null ) 		
+			{
+				assertNotNull("@Column (JPA) annotation is missing", column);
+				assertNotEquals("@Column must have property 'name'", 0, column.name().length());
+			}
+			else
+				assertNull("@Column (JPA) annotation cant be used with Relation ships annotation", column);
+			
+			if(field.getAnnotation(Id.class)!=null) idCount++;
+			if(field.getAnnotation(GeneratedValue.class)!=null) generatedCount++;
 		}
+
+		public int getIdCount() { return idCount; }
+		public int getGeneratedCount() { return generatedCount;	}
 	}
 	
 	/**
