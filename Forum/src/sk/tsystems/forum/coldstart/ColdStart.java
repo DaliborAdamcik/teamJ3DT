@@ -32,6 +32,8 @@ public class ColdStart {
 	private TopicService topicService;
 	private BlockedService blockedService;
 	
+	//private List<Object> toPersist;
+	
 	public ColdStart() {
 		this.userService = new UserJPA();
 		this.themeService = new ThemeJPA();
@@ -45,7 +47,10 @@ public class ColdStart {
 		try(JpaConnector connJPA = new JpaConnector())
 		{
 			connJPA.dropAndCreate();
+			System.out.println("\n\n******* ALL DROPPED **** > CREATE\n\n");
 		}
+		
+		
 		String pass = "123456.a";
 		// new users
 		User janka = new User("janka", pass, new Date(), "Jana");
@@ -60,7 +65,7 @@ public class ColdStart {
 		User user1 = new User("user1", pass, new Date(), "USER");
 		User banned = new User("banned", pass, new Date(), "BANNED USER");
 		
-		User topicUser = new User("tuser", pass, new Date(), "JEZIS KRISTUS");
+		User topicUser = new User("tuser", pass, new Date(), "Pomarancova Stava");
 		
 		// set roles
 		janka.setRole(UserRole.ADMIN);
@@ -108,74 +113,76 @@ public class ColdStart {
 	}
 	
 	public void jankaInitialize(User user){
-		Theme theme = new Theme("Lietadla", true);
-		themeService.addTheme(theme);
+		Topic topic = new Topic("Lietadla", true);
+		topicService.addTopic(topic);
 		
-		topicService.addTopic(new Topic("Airbus A360", theme, "Mile pilotky, mily piloti, letusky, letusi, co si myslite o A360ke??", 0, user, true));
-		topicService.addTopic(new Topic("Guma na Boeingu", theme, "Mam sfuknutu gumu na 747micke, staci mi pumpa na galuzkovy ventil??", 0, user, true));
+		themeService.addTheme(new Theme("Airbus A360", topic, "Mile pilotky, mily piloti, letusky, letusi, co si myslite o A360ke??", 0, user, true));
+		themeService.addTheme(new Theme("Guma na Boeingu", topic, "Mam sfuknutu gumu na 747micke, staci mi pumpa na galuzkovy ventil??", 0, user, true));
 		
-		// commentService.addComment(new Comment("Sehr schon", topic, user, true));
+		commentService.addComment(new Comment("Sehr schon", topic, user, true));
 	}
 	
 	public void janoInitialize(User user){
-		Theme theme = new Theme("Auta", false);
-		themeService.addTheme(theme);
+		Topic topic = new Topic("Auta", false);
+		topicService.addTopic(topic);
 		
-		topicService.addTopic(new Topic("Nova MBcka", theme, "Ako sa radi 6tka na MBcke??", 0, user, false));
-		topicService.addTopic(new Topic("120cina pred Irkutskou", theme, "Kto mi prehol plech na mojej 120cine?", 0, user, false));
+		themeService.addTheme(new Theme("Nova MBcka", topic, "Ako sa radi 6tka na MBcke??", 0, user, false));
+		themeService.addTheme(new Theme("120cina pred Irkutskou", topic, "Kto mi prehol plech na mojej 120cine?", 0, user, false));
 		
-		// commentService.addComment(new Comment("Paraaada", topic, user, false));
+		commentService.addComment(new Comment("Paraaada", topic, user, false));
 	} 
 	
 	public void jozoInitialize(User user){
-		Theme theme = new Theme("Motorky", false);
-		themeService.addTheme(theme);
+		Topic topic = new Topic("Motorky", false);
+		topicService.addTopic(topic);
 		
-		topicService.addTopic(new Topic("Kawa alebo Jawa", theme, "Na com skor vyturujem 300km/h", 0, user, true));
-		topicService.addTopic(new Topic("Kolobezky", theme, "Aj kolobezky su len motorky...", 0, user, true));
+		themeService.addTheme(new Theme("Kawa alebo Jawa", topic, "Na com skor vyturujem 300km/h", 0, user, true));
+		themeService.addTheme(new Theme("Kolobezky", topic, "Aj kolobezky su len motorky...", 0, user, true));
 		
-		// commentService.addComment(new Comment("zuum zuuumm", topic, user, false));
+		commentService.addComment(new Comment("zuum zuuumm", topic, user, false));
 	}
 	
 	public void daliborInitialize(User user){
-		Theme theme = new Theme("Vlaky", true);
-		themeService.addTheme(theme);
+		Topic topic = new Topic("Vlaky", true);
+		topicService.addTopic(topic);
 		
-		topicService.addTopic(new Topic("Trakcia", theme, "Ake napatia su v trakcii na slovensku?", 0, user, true));
-		topicService.addTopic(new Topic("Nove Elephanty", theme, "Zas som si roztrieskal hlavu o batozinovy priestor...", 0, user, true));
+		themeService.addTheme(new Theme("Trakcia", topic, "Ake napatia su v trakcii na slovensku?", 0, user, true));
+		themeService.addTheme(new Theme("Nove Elephanty", topic, "Zas som si roztrieskal hlavu o batozinovy priestor...", 0, user, true));
 		
-		// commentService.addComment(new Comment("Dobree", topic, user, true));
+		commentService.addComment(new Comment("Dobree", topic, user, true));
 	}
 	
 	public void tomasInitialize(User user){
-		Theme theme = new Theme("Tazke stroje", true);
-		themeService.addTheme(theme);
+		Topic topic = new Topic("Tazke stroje", true);
+		topicService.addTopic(topic);
 		
-		topicService.addTopic(new Topic("Bager na predaj", theme, "Predam bager, plastovy, 30cm...", 0, user, true));
-		topicService.addTopic(new Topic("Nove Elephanty", theme, "Zas som si roztrieskal hlavu o batozinovy priestor...", 0, user, true));
+		themeService.addTheme(new Theme("Bager na predaj", topic, "Predam bager, plastovy, 30cm...", 0, user, true));
+		themeService.addTheme(new Theme("Nove Elephanty", topic, "Zas som si roztrieskal hlavu o batozinovy priestor...", 0, user, true));
 		
-		// commentService.addComment(new Comment("Paradne", topic, user, true));
+		commentService.addComment(new Comment("Paradne", topic, user, true));
 	}
 	
 	public void topicUserInitialize(User user) {
-		Theme theme = new Theme("Test Theme", true);
-		themeService.addTheme(theme);
+		Topic topic = new Topic("Test Theme", true);
+		topicService.addTopic(topic);
 		
-		Topic topic1 = new Topic("Test topic 1", theme, "Test description 1", 0, user, true);
-		Topic topic2 = new Topic("Test topic 2", theme, "Test description 2", 0, user, true);
-		Topic topic3 = new Topic("Test topic 3", theme, "Test description 3", 0, user, true);
+		Theme theme1 = new Theme("Test topic 1", topic, "Test description 1", 0, user, true);
+		Theme theme2 = new Theme("Test topic 2", topic, "Test description 2", 0, user, true);
+		Theme theme3 = new Theme("Test topic 3", topic, "Test description 3", 0, user, true);
 		
 		
-		topicService.addTopic(topic1);
-		topicService.addTopic(topic2);
-		topicService.addTopic(topic3);
+		themeService.addTheme(theme1);
+		themeService.addTheme(theme2);
+		themeService.addTheme(theme3);
 		
-		user.addTopic(topic1);
-		user.addTopic(topic2);
-		user.addTopic(topic3);
+		user.addTopic(topic);
+		user.addTopic(topic);
+		user.addTopic(topic);
 		
 		userService.updateUser(user);
 	}
+	
+	
 	
 	
 }
