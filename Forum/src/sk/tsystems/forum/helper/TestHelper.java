@@ -175,7 +175,7 @@ public class TestHelper {
 	 * @author Dalik
 	 * @return random date limited by today
 	 */
-	public static Date RandomDate() {
+	public static Date randomDate() {
 		Random rand = new Random();
 		Date now = new Date();
 		long timestamp = 0;
