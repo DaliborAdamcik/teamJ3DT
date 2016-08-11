@@ -11,8 +11,8 @@
 		<c:when test="${loggeduser.role == 'ADMIN'}">
 			<form method='post'>
 				<label id="label">Add new topic:</label> <br> <br> <input
-					type="text" required="required" name="new_topic_name"
-					placeholder="New Topic Name" autofocus> <br> <br>
+					type="text" required="required" name="new_topic"
+					placeholder="Topic name" autofocus> <br> <br>
 				<input type="submit" value="Submit"> <br> <br>
 			</form>
 		</c:when>
