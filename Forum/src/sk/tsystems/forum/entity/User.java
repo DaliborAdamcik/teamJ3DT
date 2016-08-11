@@ -13,7 +13,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
+import sk.tsystems.forum.helper.UserHelper;
+import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
+import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 
 @Entity
 @Table(name = "JPA_USER")
@@ -62,7 +65,7 @@ public class User extends BlockableEntity {
 	// List<Comment> comments; // TODO implementovat list ak nam ho bude treba
 	
 
-	public User(String userName, String password, Date birthDate, String realName) {
+	public User(String userName, String password, Date birthDate, String realName) throws NickNameException, PasswordCheckException {
 		this();
 		setUserName(userName);
 		setPassword(password);
@@ -70,6 +73,10 @@ public class User extends BlockableEntity {
 		setRealName(realName);
 	}
 
+	public User(String userName, String password, String birthDate, String realName) throws NickNameException, PasswordCheckException, BadDateException {
+		this(userName, password, UserHelper.stringToDate(birthDate), realName);
+	}
+	
 	/**
 	 * Constructor for JPA
 	 */
@@ -123,8 +130,8 @@ public class User extends BlockableEntity {
 	 * @param userName
 	 * @throws NickNameException 
 	 */
-	public void setUserName(String userName) {
-		//UserHelper.nickNameValidator(userName);
+	public void setUserName(String userName) throws NickNameException {
+		UserHelper.nickNameValidator(userName);
 		this.userName = userName;
 	}
 
@@ -141,8 +148,10 @@ public class User extends BlockableEntity {
 	 * Setter for password
 	 * 
 	 * @param password
+	 * @throws PasswordCheckException 
 	 */
-	public void setPassword(String password) {
+	public void setPassword(String password) throws PasswordCheckException {
+		UserHelper.passwordOverallControll(password);
 		this.password = password;
 	}
 
@@ -165,6 +174,16 @@ public class User extends BlockableEntity {
 	}
 
 	/**
+	 * Setter for birthDate
+	 * This setter parses string to date and saves (if conversion is sucess)
+	 * @param birthDate
+	 * @throws BadDateException 
+	 */
+	public void setBirthDate(String birthDate) throws BadDateException {
+		this.birthDate = UserHelper.stringToDate(birthDate);
+	}
+
+	/**
 	 * Getter for role
 	 * 
 	 * @return role
@@ -183,17 +202,6 @@ public class User extends BlockableEntity {
 	}
 
 	/**
-	 * Getter for registrationDate
-	 * <p>This method returns date of user registration</p>
-	 * <p><b><i>DEPRECATED</i></b> Please use getCreated() instead.</p>
-	 * @return registrationDate (return value is same as getCreated)
-	 */
-	@Deprecated
-	public Date getRegistrationDate() {
-		return getCreated();
-	}
-
-	/**
 	 * Getter for real name
 	 * 
 	 * @return real name
@@ -208,7 +216,19 @@ public class User extends BlockableEntity {
 	 * @param RealName
 	 */
 	public void setRealName(String realName) {
+		// TODO do some check here
 		this.realName = realName;
+	}
+
+	/**
+	 * Getter for registrationDate
+	 * <p>This method returns date of user registration</p>
+	 * <p><b><i>DEPRECATED</i></b> Please use getCreated() instead.</p>
+	 * @return registrationDate (return value is same as getCreated)
+	 */
+	@Deprecated
+	public Date getRegistrationDate() {
+		return getCreated();
 	}
 
 }
