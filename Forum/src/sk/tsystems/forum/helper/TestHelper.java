@@ -1,5 +1,6 @@
 package sk.tsystems.forum.helper;
 
+import java.util.Date;
 import java.util.List;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -167,6 +168,22 @@ public class TestHelper {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	/**
+	 * Creates random date since Unix epoch to now
+	 * @author Dalik
+	 * @return random date limited by today
+	 */
+	public static Date RandomDate() {
+		Random rand = new Random();
+		Date now = new Date();
+		long timestamp = 0;
+		do{
+			timestamp = rand.nextLong();
+		} while(timestamp > now.getTime());
+		
+		return new Date(timestamp);
 	}
 
 }
