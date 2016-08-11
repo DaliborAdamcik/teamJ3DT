@@ -61,29 +61,7 @@ public class Admin extends MasterServlet {
 		TopicService topicservice = servletHelper.getTopicService();
 		request.setAttribute("listoftopics", topicservice.getTopics());
 		// try to add topic TODO prerobit ked sa aktualizuje databaza
-		try {
-			String newTopicName = request.getParameter("new_topic");
-			boolean addable = true;
-			if (newTopicName != null && newTopicName != "") {
-				for (Topic topic : topicservice.getTopics()) { // TODO total
-																// shit, spravit
-																// normalny
-																// check a
-																// smazat
-					if (topic.getName().equals(newTopicName)) {
-						System.out.println("topic exists");
-						addable = false;
-					}
-				}
-				if (addable) {
-					Topic newTopic = new Topic(newTopicName, true);
-					topicservice.addTopic(newTopic);
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 
 //		// try pre block
 //		try {
