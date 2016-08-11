@@ -3,6 +3,7 @@ package sk.tsystems.forum.junittest.entity;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.List;
 
@@ -70,21 +71,19 @@ public class BASEEntityTest {
 	@Test
 	public void entityFieldsTest() {
 		System.out.println("* Test mapped classes for: private fields");
+		FieldTest test = new FieldTest();
 		
 		foreachClazzTestRun(clazzez, (Class<?> clazz) -> {
 			System.out.printf("\t(private fileds):\n");
 
-			doFieldTestCondition(clazz.getDeclaredFields(), 
-					(Field f1) ->  {assertFalse("Field cannot be accesible for public", f1.isAccessible());});
+			doFieldTestCondition(clazz.getDeclaredFields(), test);
 			
 			
 			// test superclasses fiels
 			recursiveClazzTestRun(clazz.getSuperclass(), (Class<?> clzz) -> {
 							System.out.printf("\t(private fileds):\n");
-
-							doFieldTestCondition(clzz.getDeclaredFields(), 
-									(Field f2) ->  {assertFalse("Field cannot be accesible for public", f2.isAccessible());});
-							return;
+							doFieldTestCondition(clzz.getDeclaredFields(), test);
+							
 						}, (Class<?> own) -> { 
 							if(own.getSuperclass().equals(Object.class))
 								return null;
@@ -95,6 +94,14 @@ public class BASEEntityTest {
 			return;
 		});
 	} 
+	
+	private class FieldTest implements FieldTestCondition
+	{
+		@Override
+		public void testField(Field field) {
+			assertTrue("Field cannot be accesible for public", Modifier.isPrivate(field.getModifiers()));
+		}
+	}
 	
 	/**
 	 * Tests entities for create by private constructor for JPA
