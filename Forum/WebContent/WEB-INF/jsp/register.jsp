@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<div class="container">
+<div class="container" align="center">
 	<form method='post' name="regi" id="register">
 		<div class="main_div">
 			<label id="label">New User Registration:</label> <br> <br>

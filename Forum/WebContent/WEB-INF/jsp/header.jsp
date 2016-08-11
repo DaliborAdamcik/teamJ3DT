@@ -39,15 +39,13 @@
 					<ul class="nav navbar-nav navbar-right">
 						<c:choose>
 							<c:when test="${loggeduser!= null}">
-								<li>logged as: ${loggeduser.userName} (${loggeduser.role})
-								</li>
-								<li><a href="/Forum/Useroptions">Options</a></li>
+								<li><a href="/Forum/Useroptions">${loggeduser.userName} (${loggeduser.role})</a></li>
 
 								<li><a href="Welcome?parameter=logout"><span
 										class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 							</c:when>
 							<c:otherwise>
-								<li>not logged in</li>
+								
 								<li><a href="Register"><span
 										class="glyphicon glyphicon-user"></span> Register</a></li>
 								<li><a href="SignIn"><span
