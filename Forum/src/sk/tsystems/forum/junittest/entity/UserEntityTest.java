@@ -2,9 +2,7 @@ package sk.tsystems.forum.junittest.entity;
 
 import static org.junit.Assert.*;
 
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,21 +24,38 @@ public class UserEntityTest {
 	@Before
 	public void setUp() throws Exception {
 		actualDate = new Date();
-		userName = TestHelper.randomString(20, 0);
+		userName = TestHelper.randomString(20, 0).toLowerCase();
 		realName = TestHelper.randomString(20);
 		password = TestHelper.randomString(20);
 		birthDate = TestHelper.randomDate();
 	}
 
 	@Test
-	public void userNameTest() throws NickNameException {
+	public void userNameTest() throws NickNameException { // OK, dalik 11.8.2016
 		User user = TestHelper.nonParaConstructor(User.class);
 		assertNotNull("User is badly initialized", user);
 
 		assertNull("Username set without constructor", user.getUserName());
-		user.setUserName(userName);
+		assertTrue("Cant set user name to null", userDoTestException(user, null));
+		assertTrue("Cant set user name to empty string", userDoTestException(user, ""));
+		assertTrue("User name length must be 4+", userDoTestException(user, "usr"));
+		assertTrue("User name cant start with number", userDoTestException(user, "0usr"));
+		assertTrue("User name cant contain uppercases", userDoTestException(user, "usrAK"));
+		assertTrue("User name cant contain invalid characters", userDoTestException(user, "@/**+-sd"));
+		assertFalse("Cant set valid username", userDoTestException(user, userName));
 		assertEquals("Username does not match", user.getUserName(), userName);
 	}
+	
+	public boolean userDoTestException(User user, String name) { // OK, dalik, 11.8.2016
+		try {
+			user.setUserName(name);
+			return false;
+		} catch (NickNameException e) {
+			System.out.println("** User name check exception: "+e.getMessage()+ " (is OK)");
+			return true;
+		}
+	}
+	
 	
 	@Test
 	public void RealNameTest() {
@@ -89,14 +104,16 @@ public class UserEntityTest {
 		user.setBirthDate(birthDate);
 		assertEquals("Birthdate does not match", user.getBirthDate(), birthDate);
 	}
+	
+	// TODO test string birth date
 
 	@Test
 	public void registrationDateTest() {
 		User user = TestHelper.nonParaConstructor(User.class);
 		assertNotNull("User is badly initialized", user);
 
-		assertNotNull("regDate is null", user.getRegistrationDate());
-		assertEquals("regdate not equal", user.getRegistrationDate().getTime() / 100, actualDate.getTime() / 100);
+		assertNotNull("regDate is null", user.getCreated());
+		assertEquals("regdate not equal", user.getCreated().getTime() / 100, actualDate.getTime() / 100);
 	}
 
 	@Test

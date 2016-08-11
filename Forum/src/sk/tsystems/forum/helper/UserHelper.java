@@ -79,7 +79,7 @@ public class UserHelper {
 	 * @author Dalibor
 	 */
 	public static boolean nickNameValidator(String userName) throws NickNameException {
-		if (userName.length() < 4)
+		if (userName==null || userName.length() < 4)
 			throw new NickNameException("Nickname must be 4 characters long");
 
 		Pattern testValidNickName = Pattern.compile("^([a-z][a-z0-9]{3,})$");
