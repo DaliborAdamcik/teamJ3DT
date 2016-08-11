@@ -13,12 +13,6 @@ body {
 	padding: 15px;
 }
 
-.list-group{
-    background-opacity: 0.6;
-    filter: alpha(opacity=60); For IE8 and earlier
-    background-color: #000 transparent;
-}
-
 .footer {
 	color: white;
 }
