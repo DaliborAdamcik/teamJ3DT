@@ -95,7 +95,7 @@ public class Comment extends BlockableEntity {
 	/**
 	 * Setter for topic
 	 * 
-	 * @param isPublic
+	 * @param topic
 	 */
 	public void setTopic(Topic topic) {
 		this.topic = topic;
