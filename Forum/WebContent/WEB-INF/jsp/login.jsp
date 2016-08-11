@@ -3,10 +3,10 @@
 
 <jsp:include page="header.jsp"></jsp:include>
 
-<div class="container">
+<div class="container" align="center">
 	<form method='post'>
 		<div class="main_div">
-			<label id="label">Log in:</label> <br> <br> <input
+			<label id="label"><span class="glyphicon glyphicon-log-in"></span> Login:</label> <br> <br> <input
 				type="text" required="required" id="user_login" name="user_login"
 				placeholder="Nick Name" autofocus> <br> <br> <input
 				type="password" required="required" id="user_pass" name="user_pass"
