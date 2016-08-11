@@ -58,7 +58,7 @@ public class Welcome extends MasterServlet {
 			if (request.getParameter("parameter").equals("logout")) {
 				helpser.logoutUser();
 				System.out.println("User was logged out...");
-				request.setAttribute("loggeduser", null);
+				
 			}
 		}
 		
@@ -69,7 +69,6 @@ public class Welcome extends MasterServlet {
 		request.setAttribute("topics", topics.iterator());
 
 		// Atribut logged user, vyuizity pri jsp kde je menu
-		request.setAttribute("loggeduser", helpser.getLoggedUser());
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);

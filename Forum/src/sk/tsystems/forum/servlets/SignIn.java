@@ -82,10 +82,11 @@ public class SignIn extends MasterServlet implements Servlet {
 			
 				response.getWriter().println("I am " + user);
 				svHelper.setLoggedUser(user);
+				svHelper.setSessionObject("loggeduser", user);
 				//red
 				//response.sendRedirect("/Welcome"); 
-				request.getRequestDispatcher("/Welcome").forward(request, response);
-			
+				//request.getRequestDispatcher("/Welcome").forward(request, response);
+				response.sendRedirect("/Forum/");
 
 		} finally {
 
