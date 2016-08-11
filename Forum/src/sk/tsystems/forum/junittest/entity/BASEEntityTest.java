@@ -2,8 +2,10 @@ package sk.tsystems.forum.junittest.entity;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,12 +20,8 @@ import javax.persistence.OneToOne;
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.Assert;
-import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.helper.TestHelper;
-import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 
 /**
@@ -36,6 +34,10 @@ public class BASEEntityTest {
 	 * List of mapped classes to test
 	 */
 	private List<Class<?>> clazzez; 
+	/**
+	 * List of superclasses to test (clazzez extends supeclazzes)
+	 */
+	private List<Class<?>> superClazzez;
 	
 	/**
 	 * Simulate failure of object test
@@ -49,7 +51,20 @@ public class BASEEntityTest {
 		try(JpaConnector jpac = new JpaConnector()){
 			clazzez = jpac.getMappedClasses();
 		}
-
+		
+		superClazzez = new ArrayList<>();
+		for (Class<?> clazz : clazzez)
+		{
+			recursiveClazzTestRun(clazz.getSuperclass(), (Class<?> clzz) -> {
+					superClazzez.add(clzz);
+			}, (Class<?> own) -> { 
+				if(own.getSuperclass().equals(Object.class))
+					return null;
+				
+				return own.getSuperclass(); 
+			});
+		
+		}
 		// adds failure class to list of tested classes
 		if(simulateFailureObjects)
 			clazzez.add(Object.class); // this class is not mapped
@@ -74,14 +89,51 @@ public class BASEEntityTest {
 	} 
 
 	/**
+	 * Test entity classes for private constructor
+	 */
+	@Test
+	public void emptyConstructorIsPrivateTest() throws InstantiationException, SecurityException {
+		for(Class<?> clazz: clazzez)
+		{
+			try {
+				assertTrue("Empty constructor for '"+clazz.getSimpleName()+"' is not private", Modifier.isPrivate(clazz.getDeclaredConstructor().getModifiers()));
+				
+				clazz.newInstance(); // try to use, this must throw exception
+				fail("Empty constructor for '"+clazz.getSimpleName()+"' is not private");
+			} catch ( IllegalAccessException e) {} // we require this exception 
+			
+			catch (NoSuchMethodException e) {
+				fail("Empty constructor for '"+clazz.getSimpleName()+"' is not implemented");
+			} 
+		}
+	} 
+
+	
+	/**
+	 * Test superclasses constructor for protected
+	 */
+	@Test
+	public void superClassesTest() throws InstantiationException, SecurityException {
+		for(Class<?> clazz: superClazzez)
+		{
+			for(Constructor<?> cns : clazz.getConstructors())
+			{
+				assertTrue("Constructor '"+cns.getName()+"' for '"+clazz.getSimpleName()+"' is not protected", 
+						Modifier.isProtected(cns.getModifiers()));
+			}
+		}
+	} 
+	
+	/**
 	 * Tests entities for fields is limited to private
+	 * Also test usage of annotations (for hibernate)
 	 */
 	@Test
 	public void entityFieldsTest() {
 		System.out.println("* Test mapped classes for: private fields");
 		
 		foreachClazzTestRun(clazzez, (Class<?> clazz) -> {
-			System.out.printf("\t(private fileds):\n");
+			System.out.printf("\t(private fields):\n");
 			FieldTest test = new FieldTest(); // field test is for one class instead
 
 			doFieldTestCondition(clazz.getDeclaredFields(), test);
@@ -97,7 +149,10 @@ public class BASEEntityTest {
 							
 							return own.getSuperclass(); 
 						});
+			
 			// sem placnut dalsie checky
+			assertEquals("@Id must be assigned to entity only one time", 1, test.getIdCount());
+			assertEquals("@GeneratedValue must be assigned to entity only one time", 1, test.getGeneratedCount());
 			
 			return;
 		});
