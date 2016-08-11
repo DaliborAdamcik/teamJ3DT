@@ -96,7 +96,12 @@ public class UserHelper {
 	 * @author Tuomas
 	 */
 	public static Date stringToDate(String dateString) throws BadDateException {
-		DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH);
+	
+		return stringToDate(dateString,"dd.MM.yyyy");
+	}
+	
+	public static Date stringToDate(String dateString, String dateFormat) throws BadDateException {
+		DateFormat format = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
 		Date date;
 
 		try {

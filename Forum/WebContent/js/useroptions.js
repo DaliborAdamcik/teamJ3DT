@@ -16,18 +16,16 @@ if (pass1.value == pass2.value) {
 
 
 function hidePersonalInfoField(){
-
-$('form#personalinfo_change').toggle();
-
-
+	$('form#personalinfo_change').toggle();
 }
 
 function hidePasswordField(){
-	
 	$('form#password_change').toggle();
+}
 
-
-	}
+function hideButtonField(){
+	$('form#topic_change').toggle();
+}
 
 
 
