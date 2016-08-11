@@ -68,7 +68,9 @@ public class UserJPATest {
 	public void testAddUser() throws UserEntityException {
 		// create a new user
 		Date regDate = new Date();
+		
 		User user = new User(userName, password, birthDate, realName);
+		System.out.println(user);
 
 		// add user
 		userservice.addUser(user);
@@ -98,9 +100,9 @@ public class UserJPATest {
 	 */
 	@Test
 	public void testAddUserDuplicity() throws UserEntityException {
-		userName = TestHelper.randomString(30);
+		userName = TestHelper.randomString(30,0).toLowerCase();
 		realName = TestHelper.randomString(20);
-		password = TestHelper.randomString(20);
+		password = TestHelper.randomString(10,10)+"./*-";
 		
 		// create a new user
 		User user = new User(userName, password, birthDate, realName);
@@ -133,7 +135,7 @@ public class UserJPATest {
 		System.out.print(listOfTemporaryObjects);
 		int userid = user.getId();
 		//change password
-		String newPassword=TestHelper.randomString(20);
+		String newPassword=TestHelper.randomString(5,5)+"./";
 		user.setPassword(newPassword);
 		userservice.updateUser(user);
 		assertEquals("BAD USER ID!!", user.getId(), userid);
@@ -203,7 +205,7 @@ public class UserJPATest {
 		
 		
 		//User2 - with topics topic2,topic3
-		User user2 = new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
+		User user2 = new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+"./*", TestHelper.randomDate(), TestHelper.randomString(20));
 		String topic2Name = TestHelper.randomString(20);
 		Topic topic2 = new Topic(topic2Name,true);
 		topicservice.addTopic(topic2);
@@ -218,7 +220,7 @@ public class UserJPATest {
 		
 		
 		//user3 with topics topic1,topic2,topic3
-		User user3 = new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
+		User user3 = new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+"./*", TestHelper.randomDate(), TestHelper.randomString(20));
 		user3.addTopic(topic1);
 		user3.addTopic(topic2);
 		user3.addTopic(topic3);

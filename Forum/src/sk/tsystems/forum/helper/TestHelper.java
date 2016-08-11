@@ -171,16 +171,17 @@ public class TestHelper {
 	}
 	
 	/**
-	 * Creates random date since Unix epoch to now
+	 * Creates random date since 2001 to now
 	 * @author Dalik
 	 * @return random date limited by today
 	 */
 	public static Date randomDate() {
 		Random rand = new Random();
 		Date now = new Date();
-		long timestamp = 0;
+		long timestamp;
 		do{
 			timestamp = rand.nextLong();
+			timestamp = (timestamp<0?timestamp*-1:timestamp);
 		} while(timestamp > now.getTime());
 		
 		return new Date(timestamp);
