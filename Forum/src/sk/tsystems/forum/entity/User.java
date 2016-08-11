@@ -231,4 +231,10 @@ public class User extends BlockableEntity {
 		return getCreated();
 	}
 
+	@Override
+	public String toString() {
+		return String.format("User [userName=%s, password=%s, birthDate=%s, realName=%s, role=%s, topics=%s]", userName,
+				password, birthDate, realName, role, topics);
+	}
+
 }

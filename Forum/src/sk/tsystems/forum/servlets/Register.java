@@ -94,10 +94,6 @@ public class Register extends MasterServlet {
 		// TODO do some check on name, eg length and so on... // nick, bith, pass
 		try { 
         	String userName = req.getString("nick"); // get nickname from user
-        	UserHelper.nickNameValidator(userName); // validate nickname
-			 UserHelper.passwordOverallControll(req.getString("pass")); 
-			
-        	
         	resp.put("exists", helper.getUserService().getUser(userName)!=null); // check user exists
 			
 			
@@ -105,11 +101,12 @@ public class Register extends MasterServlet {
 			User usr = new User(req.getString("nick"), req.getString("pass"), new Date(), req.getString("nick")+"real"); // TODO !! len tak nabuchane to je
 			if(helper.getUserService().addUser(usr))
 			{
-				resp.put("registered", true);
 				helper.setLoggedUser(usr);
+				helper.setSessionObject("loggeduser", usr);
+				resp.put("registered", true);
 			}
 		}
-        catch(JSONException ex)
+        catch(JSONException | NullPointerException ex)
         {
             resp.put("error", "requested parameters not found"); // an error occured getting username
         }		

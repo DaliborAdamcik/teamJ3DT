@@ -20,7 +20,15 @@ $('#register').submit(function(ev){
         data: JSON.stringify(sendobj),
         success: function (response) {
         	console.log(response);
-        	
+        	if(response.error)
+        	{
+        		document.getElementById('confirmMessage').innerHTML = response.error;
+        		document.getElementById('confirmMessage').style.color = 'red';
+        		return;
+        	}
+
+        	if(response.registered)
+        		window.location.href = window.location.href.replace('/Register', '');        	
 /*            if(response.id){
                 console.log(response.id);
                 $frm.trigger('reset');
@@ -76,7 +84,7 @@ $('#reg_login').keyup(function(e){
 		return;
 	}
 	
-	stateMessage('reg_login', 'Validating availibility onlione', 'load');
+	stateMessage('reg_login', 'Validating availibility online', 'load');
 	
     var jsobj = {};
     jsobj.checknick = {};

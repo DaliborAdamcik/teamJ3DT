@@ -16,12 +16,14 @@ import org.hibernate.exception.ConstraintViolationException;
 public class JpaConnector implements AutoCloseable { // class selector is package
 	
 	private static final String persistenceUnitName = "hibernatePersistenceUnit";
+	private static long connectionCount = 0;
 	
 	private EntityManagerFactory factory = null;
 	private EntityManager entityManager = null;
 
 	public JpaConnector() {
 		super();
+		System.out.println("#HibConCnt: "+(connectionCount++));
 	}
 
 	private EntityManagerFactory getFactory() {
