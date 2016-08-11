@@ -5,7 +5,7 @@ package sk.tsystems.forum.helper.exceptions;
  * Auto-generated code 
  * @author Dalibor
  */
-public class NickNameException extends Exception {
+public class NickNameException extends UserEntityException {
 
 	private static final long serialVersionUID = 1L;
 

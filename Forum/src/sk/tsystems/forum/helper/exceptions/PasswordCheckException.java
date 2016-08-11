@@ -5,7 +5,7 @@ package sk.tsystems.forum.helper.exceptions;
  * Auto-generated code 
  * @author Dalibor
  */
-public class PasswordCheckException extends Exception {
+public class PasswordCheckException extends UserEntityException {
 	private static final long serialVersionUID = 1L;
 
 	public PasswordCheckException() {
