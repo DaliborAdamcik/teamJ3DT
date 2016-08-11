@@ -24,7 +24,7 @@
 <body>
 	<div class="main_div" align="center">
 		<div class="brand">
-			<img src="images/header.png">
+			<img src="images/grayForumLogo.png">
 		</div>
 
 		<!-- Navigation -->
