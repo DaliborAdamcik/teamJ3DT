@@ -23,8 +23,8 @@ public class Theme  extends BlockableEntity {
 	 * theme
 	 */
 	@ManyToOne
-	@JoinColumn(name = "THEMEID")
-	private Theme theme;
+	@JoinColumn(name = "TOPICID")
+	private Topic topic;
 
 	/**
 	 * description of topic
@@ -54,10 +54,10 @@ public class Theme  extends BlockableEntity {
 	// @OneToMany
 	// List<Comment> comments;
 
-	public Theme(String name, Theme theme, String description, int rating, User author, boolean isPublic) {
+	public Theme(String name, Topic theme, String description, int rating, User author, boolean isPublic) {
 		this();
 		setName(name);
-		setTheme(theme);
+		setTopic(theme);
 		setDescription(description);
 		setRating(rating);
 		setAuthor(author);
@@ -94,8 +94,8 @@ public class Theme  extends BlockableEntity {
 	 * 
 	 * @return theme
 	 */
-	public Theme getTheme() {
-		return theme;
+	public Topic getTopic() {
+		return topic;
 	}
 
 	/**
@@ -103,8 +103,8 @@ public class Theme  extends BlockableEntity {
 	 * 
 	 * @param theme
 	 */
-	public void setTheme(Theme theme) {
-		this.theme = theme;
+	public void setTopic(Topic topic) {
+		this.topic= topic;
 	}
 
 	/**
