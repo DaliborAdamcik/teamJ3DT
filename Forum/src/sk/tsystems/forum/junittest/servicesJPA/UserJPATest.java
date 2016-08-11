@@ -13,6 +13,9 @@ import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.exceptions.NickNameException;
+import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
+import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
@@ -26,11 +29,11 @@ public class UserJPATest {
 	@Before
 	public void setUp() throws Exception {
 		userservice = new UserJPA(); // start tested service
-		userName = TestHelper.randomString(20);
+		userName = TestHelper.randomString(20, 0).toLowerCase();
 		realName = TestHelper.randomString(20);
-		password = TestHelper.randomString(20);
-		birthDate = new Date();
-	listOfTemporaryObjects = new ArrayList<Object>();
+		password = TestHelper.randomString(10,10)+"@./";
+		birthDate = TestHelper.randomDate();
+		listOfTemporaryObjects = new ArrayList<Object>();
 	}
 
 	@After
@@ -62,7 +65,7 @@ public class UserJPATest {
 	}
 
 	@Test
-	public void testAddUser() {
+	public void testAddUser() throws UserEntityException {
 		// create a new user
 		Date regDate = new Date();
 		User user = new User(userName, password, birthDate, realName);
@@ -84,15 +87,17 @@ public class UserJPATest {
 		assertEquals("Bad password", userTest.getPassword(), password);
 		assertNull("User cant be blocked", userTest.getBlocked());
 		assertEquals("BAD role", userTest.getRole(), UserRole.GUEST);
-		assertEquals("Bad reg date", userTest.getRegistrationDate().getTime() / 1000, regDate.getTime() / 1000);
+		assertEquals("Bad reg date", userTest.getCreated().getTime() / 1000, regDate.getTime() / 1000);
 	}
 
 	/**
 	 * Test service to duplicate add of user into database.
 	 * @author Dalibor
+	 * @throws PasswordCheckException 
+	 * @throws NickNameException 
 	 */
 	@Test
-	public void testAddUserDuplicity() {
+	public void testAddUserDuplicity() throws UserEntityException {
 		userName = TestHelper.randomString(30);
 		realName = TestHelper.randomString(20);
 		password = TestHelper.randomString(20);
@@ -117,12 +122,10 @@ public class UserJPATest {
 		
 		assertTrue("Remove temporary User", userservice.removeUser(user));
 		assertNull("Failed to remove user / Duplicate entries in DB", userservice.getUser(user.getId()));
-		
-		
 	}
 	
 	@Test
-	public void testUpdateUser() { // toto dat viac krat ako napriklad testUpdateUserPassword, testUpdateUserName atï
+	public void testUpdateUser() throws UserEntityException { // toto dat viac krat ako napriklad testUpdateUserPassword, testUpdateUserName atï
 		User user = new User(userName, password, birthDate, realName);
 		// add user
 		userservice.addUser(user);
@@ -143,9 +146,7 @@ public class UserJPATest {
 	}
 
 	@Test
-	public void testGetUserString() {
-		
-		
+	public void testGetUserString() throws UserEntityException {
 		Date regDate = new Date();
 		User user = new User(userName, password, birthDate, realName);
 		// add user
@@ -160,13 +161,13 @@ public class UserJPATest {
 		assertEquals("Bad password", userTest.getPassword(), password);
 		assertEquals("User can't be blocked", userTest.getBlocked(), null);
 		assertEquals("BAD role", userTest.getRole(), UserRole.GUEST);
-		assertEquals("Bad registration date", userTest.getRegistrationDate().getTime() / 1000, regDate.getTime() / 1000);
+		assertEquals("Bad registration date", userTest.getCreated().getTime() / 1000, regDate.getTime() / 1000);
 		assertTrue("Bad ID in DB", userTest.getId()>0);
 		
 	}
 
 	@Test
-	public void testGetUserInt() {
+	public void testGetUserInt() throws UserEntityException {
 	//	Date regDate = new Date();
 		User user = new User(userName, password, birthDate, realName);
 		//add user
@@ -184,12 +185,11 @@ public class UserJPATest {
 		List<User> userList = userservice.getUsers(UserRole.GUEST);
 		for (User user:userList){
 			assertEquals("User role is not guest", user.getRole(), UserRole.GUEST);
-			
 		}
 	}
 
 	@Test
-	public void testGetUsersTopic() {
+	public void testGetUsersTopic() throws UserEntityException {
 		
 		TopicJPA topicservice = new TopicJPA();
 		//User1 - With topic "topic1"

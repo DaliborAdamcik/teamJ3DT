@@ -3,7 +3,6 @@ package sk.tsystems.forum.junittest.servicesJPA;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.After;
@@ -14,6 +13,7 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
@@ -35,7 +35,7 @@ public class CommentJPATest {
 		topicservice = new TopicJPA();
 		comment = TestHelper.randomString(20);
 		topic = new Topic(TestHelper.randomString(20), false);
-		owner = new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
+		owner = new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+"@/*", TestHelper.randomDate(), TestHelper.randomString(20));
 		isPublic = false;
 		toRemove = new ArrayList<>();
 		userservice.addUser(owner);
@@ -183,11 +183,11 @@ public class CommentJPATest {
 		}
 	}
 	@Test
-	public void testGetCommentsByOwner() {
+	public void testGetCommentsByOwner() throws UserEntityException {
 	
-		User owner1= new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
-		User owner2= new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
-		User owner3= new User(TestHelper.randomString(20), TestHelper.randomString(20), new Date(), TestHelper.randomString(20));
+		User owner1= new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+".@", TestHelper.randomDate(), TestHelper.randomString(20));
+		User owner2= new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+".@", TestHelper.randomDate(), TestHelper.randomString(20));
+		User owner3= new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+".@", TestHelper.randomDate(), TestHelper.randomString(20));
 		userservice.addUser(owner1);
 		userservice.addUser(owner2);
 		userservice.addUser(owner3);

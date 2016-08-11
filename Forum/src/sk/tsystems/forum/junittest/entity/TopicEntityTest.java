@@ -60,7 +60,7 @@ public class TopicEntityTest {
 	public void getCreationDate() {
 		Date creationDatei = new Date();
 		Topic randomTopic = new Topic(name, isPublic);
-		assertEquals("Bad creation date", creationDatei, randomTopic.getCreationDate());
+		assertEquals("Bad creation date", creationDatei, randomTopic.getCreated());
 	}
 
 }
