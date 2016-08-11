@@ -55,7 +55,7 @@ public class User extends BlockableEntity {
 	/**
 	 * Many-to-many connection between topics and users
 	 */
-	@ManyToMany(cascade = CascadeType.DETACH) // , fetch = FetchType.LAZY
+	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
 	private List<Topic> topics;
 
 	// /**
