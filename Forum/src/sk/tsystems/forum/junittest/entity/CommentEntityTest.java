@@ -24,8 +24,7 @@ public class CommentEntityTest {
 	public void setUp() throws Exception {
 		comment = TestHelper.randomString(20);
 		topic = new Topic("topic", false);
-		//creationDate = new Date();
-		owner = new User("Tester", "tester", new Date(), "Tester");
+		owner = new User("tester", "tester1234/*", TestHelper.randomDate(), "Tester");
 		isPublic = false;
 	}
 	
@@ -92,7 +91,7 @@ public class CommentEntityTest {
 	public void getCreationDate() {
 		Date creationDatei = new Date();
 		Comment randomComment = new Comment(comment, topic, owner, isPublic);
-		assertEquals("Bad creation date", creationDatei, randomComment.getCreationDate());
+		assertEquals("Bad creation date", creationDatei.getTime()/100, randomComment.getCreated().getTime()/100);
 	}
 
 }

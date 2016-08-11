@@ -2,6 +2,7 @@ package sk.tsystems.forum.junittest;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -114,6 +115,17 @@ public class TESTtestHelper {
 			String tested = TestHelper.randomString(strLen);
 			assertEquals("Invalid string legth", strLen, tested.length());
 			assertTrue("Invalid characters found", pat.matcher(tested).matches());
+		}
+	}
+
+	@Test
+	public final void testRandomDate() {
+		Date now = new Date();
+		for(int i =0; i<numTests;i++)
+		{
+			Date test = TestHelper.randomDate();
+			assertTrue("Invalid lower range", test.getTime()>0);
+			assertTrue("Invalid lower range", test.getTime()<now.getTime());
 		}
 	}
 

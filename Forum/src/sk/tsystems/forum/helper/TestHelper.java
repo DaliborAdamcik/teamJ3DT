@@ -177,12 +177,16 @@ public class TestHelper {
 	 */
 	public static Date randomDate() {
 		Random rand = new Random();
-		Date now = new Date();
+		long maxTimeStamp = (new Date()).getTime();
 		long timestamp;
+		int i = 0;
 		do{
 			timestamp = rand.nextLong();
-			timestamp = (timestamp<0?timestamp*-1:timestamp);
-		} while(timestamp > now.getTime());
+			timestamp = (timestamp<0?timestamp*-1:timestamp)+1;
+			timestamp &= maxTimeStamp;
+			if(i++ >1000)
+				throw new RuntimeException("Failed to generate random date");
+		} while(timestamp > maxTimeStamp);
 		
 		return new Date(timestamp);
 	}
