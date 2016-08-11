@@ -166,18 +166,17 @@ public class ColdStart {
 		Topic topic = new Topic("Test Theme", true);
 		topicService.addTopic(topic);
 		
-		Theme theme1 = new Theme("Test topic 1", topic, "Test description 1", 0, user, true);
-		Theme theme2 = new Theme("Test topic 2", topic, "Test description 2", 0, user, true);
-		Theme theme3 = new Theme("Test topic 3", topic, "Test description 3", 0, user, true);
+		Topic topic1 = new Topic("Test topic 1",  true);
+		Topic topic2 = new Topic("Test topic 1",  true);
+		Topic topic3 = new Topic("Test topic 1",  true);
 		
+		topicService.addTopic(topic1);
+		topicService.addTopic(topic2);
+		topicService.addTopic(topic3);
 		
-		themeService.addTheme(theme1);
-		themeService.addTheme(theme2);
-		themeService.addTheme(theme3);
-		
-		user.addTopic(topic);
-		user.addTopic(topic);
-		user.addTopic(topic);
+		user.addTopic(topic1);
+		user.addTopic(topic2);
+		user.addTopic(topic3);
 		
 		userService.updateUser(user);
 	}
