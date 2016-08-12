@@ -220,17 +220,6 @@ public class User extends BlockableEntity {
 		this.realName = realName;
 	}
 
-	/**
-	 * Getter for registrationDate
-	 * <p>This method returns date of user registration</p>
-	 * <p><b><i>DEPRECATED</i></b> Please use getCreated() instead.</p>
-	 * @return registrationDate (return value is same as getCreated)
-	 */
-	@Deprecated
-	public Date getRegistrationDate() {
-		return getCreated();
-	}
-
 	@Override
 	public String toString() {
 		return String.format("User [userName=%s, password=%s, birthDate=%s, realName=%s, role=%s, topics=%s]", userName,

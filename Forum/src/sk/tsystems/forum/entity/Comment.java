@@ -1,12 +1,10 @@
 package sk.tsystems.forum.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 //import javax.persistence.GeneratedValue;
 //import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+//import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,19 +21,25 @@ public class Comment extends BlockableEntity {
 	private String comment;
 
 	/**
-	 * topic
+	 * theme
 	 */
 	@ManyToOne
-	@JoinColumn(name = "TOPICID")
-	private Topic topic;
+	//@JoinColumn(name = "THEMEID")
+	private Theme theme;
 
 	/**
 	 * owner
 	 */
 	@ManyToOne
-	@JoinColumn(name = "USERID")
+	//@JoinColumn(name = "USERID")
 	private User owner;
 
+	/**
+	 * rating of comment (default = 0) modified by up / down votes
+	 */
+	@Column(name = "RATING", nullable = false)
+	private int rating;
+	
 	/**
 	 * public status
 	 */
@@ -46,16 +50,17 @@ public class Comment extends BlockableEntity {
 	 * constructor
 	 * 
 	 * @param comment
-	 * @param topic
+	 * @param theme
 	 * @param owner
 	 * @param isPublic
 	 */
-	public Comment(String comment, Topic topic, User owner, boolean isPublic) {
+	public Comment(String comment, Theme theme, User owner, boolean isPublic) {
 		this();
-		setComment(comment);
-		setTopic(topic);
-		setPublic(isPublic);
+		this.theme = theme;
 		this.owner = owner;
+		setComment(comment);
+		setRating(0);
+		setPublic(isPublic);
 	}
 
 	/**
@@ -84,21 +89,12 @@ public class Comment extends BlockableEntity {
 	}
 
 	/**
-	 * Getter for topic
+	 * Getter for theme
 	 * 
-	 * @return topic
+	 * @return theme
 	 */
-	public Topic getTopic() {
-		return topic;
-	}
-
-	/**
-	 * Setter for topic
-	 * 
-	 * @param topic
-	 */
-	public void setTopic(Topic topic) {
-		this.topic = topic;
+	public Theme getTheme() {
+		return theme;
 	}
 
 	/**
@@ -109,7 +105,25 @@ public class Comment extends BlockableEntity {
 	public User getOwner() {
 		return owner;
 	}
+	
+	/**
+	 * Getter for rating
+	 * 
+	 * @return rating
+	 */
+	public int getRating() {
+		return rating;
+	}
 
+	/**
+	 * Setter for rating
+	 * 
+	 * @param rating
+	 */
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	
 	/**
 	 * Getter for public
 	 * 
@@ -126,17 +140,6 @@ public class Comment extends BlockableEntity {
 	 */
 	public void setPublic(boolean isPublic) {
 		this.isPublic = isPublic;
-	}
-
-	/**
-	 * Getter for creationDate
-	 * <p>This method returns date of Theme create</p>
-	 * <p><b><i>DEPRECATED</i></b> Please use getCreated() instead.</p>
-	 * @return creationDate (return value is same as getCreated)
-	 */
-	@Deprecated
-	public Date getCreationDate() {
-		return getCreated();
 	}
 
 }

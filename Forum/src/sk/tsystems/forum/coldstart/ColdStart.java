@@ -116,50 +116,73 @@ public class ColdStart {
 		Topic topic = new Topic("Lietadla", true);
 		topicService.addTopic(topic);
 		
-		themeService.addTheme(new Theme("Airbus A360", topic, "Mile pilotky, mily piloti, letusky, letusi, co si myslite o A360ke??", 0, user, true));
-		themeService.addTheme(new Theme("Guma na Boeingu", topic, "Mam sfuknutu gumu na 747micke, staci mi pumpa na galuzkovy ventil??", 0, user, true));
+		Theme theme1 = new Theme("Airbus A360", topic, "Mile pilotky, mily piloti, letusky, letusi, co si myslite o A360ke??", user, true);
+		Theme theme2 = new Theme("Guma na Boeingu", topic, "Mam sfuknutu gumu na 747micke, staci mi pumpa na galuzkovy ventil??", user, true);
 		
-		commentService.addComment(new Comment("Sehr schon", topic, user, true));
+		themeService.addTheme(theme1);
+		themeService.addTheme(theme2);
+		
+		commentService.addComment(new Comment("JJ super stroj, balim na to caje...", theme1, user, true));
+		commentService.addComment(new Comment("Hej, s hustilkou to pojde super...", theme2, user, true));
+
 	}
 	
 	public void janoInitialize(User user){
-		Topic topic = new Topic("Auta", false);
+		Topic topic = new Topic("Auta", true);
 		topicService.addTopic(topic);
 		
-		themeService.addTheme(new Theme("Nova MBcka", topic, "Ako sa radi 6tka na MBcke??", 0, user, false));
-		themeService.addTheme(new Theme("120cina pred Irkutskou", topic, "Kto mi prehol plech na mojej 120cine?", 0, user, false));
+		Theme theme1 = new Theme("Nova MBcka", topic, "Ako sa radi 6tka na MBcke??", user, true);
+		Theme theme2 = new Theme("120cina pred Irkutskou", topic, "Kto mi prehol plech na mojej 120cine?", user, true);
 		
-		commentService.addComment(new Comment("Paraaada", topic, user, false));
+		themeService.addTheme(theme1);
+		themeService.addTheme(theme2);
+		
+		commentService.addComment(new Comment("Dolava hore...", theme1, user, true));
+		commentService.addComment(new Comment("Ten co nam robi didzeja v kulturaku. Ved vies, ten s tymi nohami...", theme2, user, true));
+
 	} 
 	
 	public void jozoInitialize(User user){
-		Topic topic = new Topic("Motorky", false);
+		Topic topic = new Topic("Motorky", true);
 		topicService.addTopic(topic);
 		
-		themeService.addTheme(new Theme("Kawa alebo Jawa", topic, "Na com skor vyturujem 300km/h", 0, user, true));
-		themeService.addTheme(new Theme("Kolobezky", topic, "Aj kolobezky su len motorky...", 0, user, true));
+		Theme theme1 = new Theme("Kawa alebo Jawa", topic, "Na com skor vyturujem 300km/h", user, true);
+		Theme theme2 = new Theme("Kolobezky", topic, "Aj kolobezky su len motorky...", user, true);
 		
-		commentService.addComment(new Comment("zuum zuuumm", topic, user, false));
+		themeService.addTheme(theme1);
+		themeService.addTheme(theme2);
+		
+		commentService.addComment(new Comment("Kup si kulmofen", theme1, user, true));
+		commentService.addComment(new Comment("Mas halunaacie??", theme2, user, true));
+
 	}
 	
-	public void daliborInitialize(User user){
+	public void daliborInitialize(User user){	
 		Topic topic = new Topic("Vlaky", true);
 		topicService.addTopic(topic);
 		
-		themeService.addTheme(new Theme("Trakcia", topic, "Ake napatia su v trakcii na slovensku?", 0, user, true));
-		themeService.addTheme(new Theme("Nove Elephanty", topic, "Zas som si roztrieskal hlavu o batozinovy priestor...", 0, user, true));
+		Theme theme1 = new Theme("Trakcia", topic, "Ake napatia su v trakcii na slovensku?", user, true);
+		Theme theme2 = new Theme("Nove Elephanty", topic, "Zas som si roztrieskal hlavu o batozinovy priestor...", user, true);
 		
-		commentService.addComment(new Comment("Dobree", topic, user, true));
+		themeService.addTheme(theme1);
+		themeService.addTheme(theme2);
+		
+		commentService.addComment(new Comment("Take jak na kulmofen", theme1, user, true));
+		commentService.addComment(new Comment("Ja som si tam zodral hrb", theme2, user, true));
 	}
 	
 	public void tomasInitialize(User user){
 		Topic topic = new Topic("Tazke stroje", true);
 		topicService.addTopic(topic);
 		
-		themeService.addTheme(new Theme("Bager na predaj", topic, "Predam bager, plastovy, 30cm...", 0, user, true));
-		themeService.addTheme(new Theme("Nove Elephanty", topic, "Zas som si roztrieskal hlavu o batozinovy priestor...", 0, user, true));
+		Theme theme1 = new Theme("Bager na predaj", topic, "Predam bager, plastovy, 30cm...", user, true);
+		Theme theme2 = new Theme("Kupim tlcik na maso", topic, "Ale riadne rizky chcem klepat", user, true);
 		
-		commentService.addComment(new Comment("Paradne", topic, user, true));
+		themeService.addTheme(theme1);
+		themeService.addTheme(theme2);
+		
+		commentService.addComment(new Comment("Kupim 4", theme1, user, true));
+		commentService.addComment(new Comment("Skus obuvnicke kladivo...", theme2, user, true));	
 	}
 	
 	public void topicUserInitialize(User user) {

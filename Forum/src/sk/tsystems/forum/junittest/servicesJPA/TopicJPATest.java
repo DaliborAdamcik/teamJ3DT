@@ -53,7 +53,7 @@ public class TopicJPATest {
 
 		assertNotNull("Selecting from database failed", testTopic);
 		assertEquals("Bad name", testTopic.getName(), name);
-		assertEquals("Bad creation date", testTopic.getCreationDate().getTime() / 1000, creationDate.getTime() / 1000);
+		assertEquals("Bad creation date", testTopic.getCreated().getTime() / 1000, creationDate.getTime() / 1000);
 		assertEquals("Topic cant be blocked", testTopic.getBlocked(), null);
 		assertTrue("Bad ID in DB", testTopic.getId() > 0);
 	}

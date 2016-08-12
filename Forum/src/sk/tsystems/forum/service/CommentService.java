@@ -3,7 +3,7 @@ package sk.tsystems.forum.service;
 import java.util.List;
 
 import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.entity.Topic;
+import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 
 public interface CommentService {
@@ -38,12 +38,12 @@ public interface CommentService {
 	Comment getComment(int ident);
 	
 	/**
-	 * Returns all comments <b> that are listed with specific topic</b>
+	 * Returns all comments <b> that are listed with specific theme</b>
 	 * 
-	 * @param topic
-	 * @return list of comments on specific topic
+	 * @param theme
+	 * @return list of comments on specific theme
 	 */
-	List<Comment> getComments(Topic topic);
+	List<Comment> getComments(Theme theme);
 	
 	
 	/**

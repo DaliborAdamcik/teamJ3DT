@@ -1,6 +1,5 @@
 package sk.tsystems.forum.entity;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,26 +14,20 @@ import sk.tsystems.forum.entity.common.BlockableEntity;
 public class Topic extends BlockableEntity {
 
 	/**
-	 * Name of the theme
+	 * Name of the topic
 	 * 
 	 */
 	@Column(name = "NAME", nullable = false)
 	private String name;
 
 	/**
-	 * Public status for theme
+	 * Public status for topic
 	 */
 	@Column(name = "ISPUBLIC", nullable = false)
 	private boolean isPublic;
 
 	/**
-	 * List of topics
-	 */
-	@OneToMany
-	private List<Topic> topics;
-
-	/**
-	 * Theme constructor
+	 * Topic constructor
 	 * 
 	 * @param name
 	 * @param isPublic
@@ -56,7 +49,7 @@ public class Topic extends BlockableEntity {
 	}
 
 	/**
-	 * Getter for theme name
+	 * Getter for topic name
 	 * 
 	 * @return name
 	 */
@@ -91,23 +84,4 @@ public class Topic extends BlockableEntity {
 		this.isPublic = isPublic;
 	}
 
-	/**
-	 * Getter for creationDate
-	 * <p>This method returns date of Theme create</p>
-	 * <p><b><i>DEPRECATED</i></b> Please use getCreated() instead.</p>
-	 * @return creationDate (return value is same as getCreated)
-	 */
-	@Deprecated
-	public Date getCreationDate() {
-		return getCreated();
-	}
-
-	/**
-	 * Getter for topics
-	 * 
-	 * @return topics
-	 */
-	public List<Topic> getTopics() {
-		return topics;
-	}
 }

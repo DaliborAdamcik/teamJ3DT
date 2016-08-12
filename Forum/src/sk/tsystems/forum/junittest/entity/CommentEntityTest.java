@@ -8,14 +8,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.entity.Topic;
+import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.TestHelper;
 
 
 public class CommentEntityTest {
 	private String comment;
-	private Topic topic;
+	private Theme theme;
 	//private Date creationDate;
 	private User owner;
 	private boolean isPublic;
@@ -23,14 +23,14 @@ public class CommentEntityTest {
 	@Before
 	public void setUp() throws Exception {
 		comment = TestHelper.randomString(20);
-		topic = new Topic("topic", false);
+		theme = new Theme("theme", null, comment, owner, false);
 		owner = new User("tester", "tester1234/*", TestHelper.randomDate(), "Tester");
 		isPublic = false;
 	}
 	
 	@Test
 	public void getCommentTest() {
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		String testComment = randomComment.getComment();
 
 		assertEquals("Bad comment", comment, testComment);
@@ -38,7 +38,7 @@ public class CommentEntityTest {
 	
 	@Test
 	public void setCommentTest() {
-		Comment randomComment = new Comment(TestHelper.randomString(20), topic, owner, isPublic);
+		Comment randomComment = new Comment(TestHelper.randomString(20), theme, owner, isPublic);
 		randomComment.setComment(comment);
 		String testComment = randomComment.getComment();
 
@@ -47,10 +47,10 @@ public class CommentEntityTest {
 
 	@Test
 	public void getTopicTest() {
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
-		Topic testTopic = randomComment.getTopic();
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Theme testTheme = randomComment.getTheme();
 
-		assertEquals("Bad topic", topic, testTopic);
+		assertEquals("Bad theme", theme, testTheme);
 	}
 
 //	@Test
@@ -64,7 +64,7 @@ public class CommentEntityTest {
 
 	@Test
 	public void getOwner() {
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		User testOwner = randomComment.getOwner();
 
 		assertEquals("Bad owner", owner, testOwner);
@@ -72,7 +72,7 @@ public class CommentEntityTest {
 
 	@Test
 	public void isPublic() {
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		boolean testIsPublic = randomComment.isIsPublic();
 		
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
@@ -80,7 +80,7 @@ public class CommentEntityTest {
 
 	@Test	
 	public void setPublic() {
-		Comment randomComment = new Comment(comment, topic, owner, true);
+		Comment randomComment = new Comment(comment, theme, owner, true);
 		randomComment.setPublic(isPublic);
 		boolean testIsPublic = randomComment.isIsPublic();
 		
@@ -90,7 +90,7 @@ public class CommentEntityTest {
 	@Test
 	public void getCreationDate() {
 		Date creationDatei = new Date();
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		assertEquals("Bad creation date", creationDatei.getTime()/100, randomComment.getCreated().getTime()/100);
 	}
 

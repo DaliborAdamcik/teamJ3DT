@@ -10,20 +10,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.entity.Topic;
+import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.service.jpa.CommentJPA;
-import sk.tsystems.forum.service.jpa.TopicJPA;
+import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class CommentJPATest {
 	private CommentJPA commentservice;
 	private UserJPA userservice;
-	private TopicJPA topicservice;
+	private ThemeJPA themeService;
 	private String comment;
-	private Topic topic;
+	private Theme theme;
 	private User owner;
 	private boolean isPublic;
 	private List<Object> toRemove;
@@ -32,22 +32,22 @@ public class CommentJPATest {
 	public void setUp() throws Exception {
 		commentservice = new CommentJPA();
 		userservice = new UserJPA();
-		topicservice = new TopicJPA();
+		themeService = new ThemeJPA();
 		comment = TestHelper.randomString(20);
-		topic = new Topic(TestHelper.randomString(20), false);
+		theme = new Theme(TestHelper.randomString(20), null, comment, owner, false);
 		owner = new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+"@/*", TestHelper.randomDate(), TestHelper.randomString(20));
 		isPublic = false;
 		toRemove = new ArrayList<>();
 		userservice.addUser(owner);
 		
-		topicservice.addTopic(topic);
+		themeService.addTheme(theme);
 						
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		toRemove.add(owner);
-		toRemove.add(topic);
+		toRemove.add(theme);
 		TestHelper.removeTemporaryObjects(toRemove);
 	}
 
@@ -61,7 +61,7 @@ public class CommentJPATest {
 	@Test
 	public void testAddComment() {
 
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
 
@@ -69,7 +69,7 @@ public class CommentJPATest {
 
 		assertNotNull("Selecting from database failed", testComment);
 		assertEquals("Bad comment", testComment.getComment(), comment);
-		assertEquals("Bad topic", testComment.getTopic().getId(), topic.getId());
+		assertEquals("Bad theme", testComment.getTheme().getId(), theme.getId());
 		assertEquals("Bad owner", testComment.getOwner().getId(), owner.getId());
 		assertEquals("Comment cant be blocked", testComment.getBlocked(), null);
 		assertTrue("Bad ID in DB", testComment.getId() > 0);
@@ -77,7 +77,7 @@ public class CommentJPATest {
 
 	@Test
 	public void testUpdateCommentComment() {
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
 
@@ -100,19 +100,17 @@ public class CommentJPATest {
 
 	@Test
 	public void testUpdateCommentTopic() {
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
 
 		int commentId = randomComment.getId();
 
-		Topic newTopic = new Topic(TestHelper.randomString(20), false);
+		Theme newTheme = new Theme(TestHelper.randomString(20), null, comment, owner, false);
 
-		topicservice.addTopic(newTopic);
-		toRemove.add(newTopic);
-
-		randomComment.setTopic(newTopic);
+		themeService.addTheme(newTheme);
+		toRemove.add(newTheme);
 
 		commentservice.updateComment(randomComment);
 
@@ -121,13 +119,13 @@ public class CommentJPATest {
 		Comment updatedComment = commentservice.getComment(randomComment.getId());
 
 		assertNotNull("Selecting from database failed", updatedComment);
-		assertEquals("Bad topic", updatedComment.getTopic().getId(), newTopic.getId());
+		assertEquals("Bad topic", updatedComment.getTheme().getId(), newTheme.getId());
 		assertEquals("BAD COMMENT ID", randomComment.getId(), commentId);
 	}
 
 	@Test
 	public void testUpdateCommentIsPublic() {
-		Comment randomComment = new Comment(comment, topic, owner, true);
+		Comment randomComment = new Comment(comment, theme, owner, true);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
 		randomComment.setPublic(isPublic);
@@ -139,7 +137,7 @@ public class CommentJPATest {
 
 	@Test
 	public void testGetComment() {
-		Comment randomComment = new Comment(comment, topic, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
 		int ident = randomComment.getId();
@@ -150,11 +148,11 @@ public class CommentJPATest {
 
 	@Test
 	public void testGetCommentsByToopic() {
-		Comment randomComment1 = new Comment(comment, topic, owner, isPublic);
+		Comment randomComment1 = new Comment(comment, theme, owner, isPublic);
 		String comment2 = TestHelper.randomString(20);
 		String comment3 = TestHelper.randomString(20);
-		Comment randomComment2 = new Comment(comment2, topic, owner, isPublic);
-		Comment randomComment3 = new Comment(comment3, topic, owner, true);
+		Comment randomComment2 = new Comment(comment2, theme, owner, isPublic);
+		Comment randomComment3 = new Comment(comment3, theme, owner, true);
 		
 		commentservice.addComment(randomComment1);
 		commentservice.addComment(randomComment2);
@@ -163,7 +161,7 @@ public class CommentJPATest {
 		toRemove.add(randomComment2);
 		toRemove.add(randomComment3);
 
-		List<Comment> testComments = commentservice.getComments(topic);
+		List<Comment> testComments = commentservice.getComments(theme);
 
 		assertNotNull("Selecting from database failed", testComments);
 
@@ -191,10 +189,10 @@ public class CommentJPATest {
 		userservice.addUser(owner1);
 		userservice.addUser(owner2);
 		userservice.addUser(owner3);
-			Comment randomComment1 = new Comment(comment, topic, owner1, isPublic);
+			Comment randomComment1 = new Comment(comment, theme, owner1, isPublic);
 			
-			Comment randomComment2 = new Comment(comment, topic, owner2, isPublic);
-			Comment randomComment3 = new Comment(comment, topic, owner3, true);
+			Comment randomComment2 = new Comment(comment, theme, owner2, isPublic);
+			Comment randomComment3 = new Comment(comment, theme, owner3, true);
 			
 			commentservice.addComment(randomComment1);
 			commentservice.addComment(randomComment2);

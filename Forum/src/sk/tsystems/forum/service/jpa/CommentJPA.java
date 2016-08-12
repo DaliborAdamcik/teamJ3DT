@@ -3,7 +3,7 @@ package sk.tsystems.forum.service.jpa;
 import java.util.List;
 
 import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.entity.Topic;
+import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.service.CommentService;
 
@@ -46,9 +46,9 @@ public class CommentJPA implements CommentService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Comment> getComments(Topic topic) {
+	public List<Comment> getComments(Theme theme) {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.createQuery("SELECT c FROM Comment c WHERE c.topic=:topic").setParameter("topic", topic).getResultList();
+			return jpa.createQuery("SELECT c FROM Comment c WHERE c.theme=:theme").setParameter("theme", theme).getResultList();
 		}
 	}
 	

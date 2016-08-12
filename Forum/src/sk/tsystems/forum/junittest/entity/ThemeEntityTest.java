@@ -12,8 +12,8 @@ import sk.tsystems.forum.helper.TestHelper;
 
 public class ThemeEntityTest {
 	
-	// SAMA RYZA
-/*	private String name;
+	
+	private String name;
 	private boolean isPublic;
 	
 	@Before
@@ -25,7 +25,7 @@ public class ThemeEntityTest {
 
 	@Test
 	public void getNameTest() {
-		Theme randomTheme = new Theme(name, isPublic);
+		Theme randomTheme = new Theme(name, null, name, null, isPublic);
 		String testName = randomTheme.getName();
 
 		assertEquals("Bad name", name, testName);
@@ -33,7 +33,7 @@ public class ThemeEntityTest {
 	
 	@Test
 	public void setNameTest() {
-		Theme randomTheme = new Theme(TestHelper.randomString(20), isPublic);
+		Theme randomTheme = new Theme(TestHelper.randomString(20), null, name, null, isPublic);
 		randomTheme.setName(name);
 		String testName = randomTheme.getName();
 
@@ -42,7 +42,7 @@ public class ThemeEntityTest {
 	
 	@Test
 	public void isPublic() {
-		Theme randomTheme = new Theme(name, isPublic);
+		Theme randomTheme = new Theme(name, null, name, null, isPublic);
 		boolean testIsPublic = randomTheme.isIsPublic();
 
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
@@ -50,7 +50,7 @@ public class ThemeEntityTest {
 	
 	@Test
 	public void setPublic() {
-		Theme randomTheme = new Theme(name, true);
+		Theme randomTheme = new Theme(name, null, name, null, true);
 		randomTheme.setPublic(isPublic);
 		boolean testIsPublic = randomTheme.isIsPublic();
 
@@ -60,8 +60,8 @@ public class ThemeEntityTest {
 	@Test
 	public void getCreationDate() {
 		Date creationDate = new Date();
-		Theme randomTheme = new Theme(name, isPublic);
+		Theme randomTheme = new Theme(name, null, name, null, isPublic);
 		assertEquals("Bad creation date", creationDate, randomTheme.getCreated());
 	}
-*/
+
 }
