@@ -24,7 +24,7 @@
 <body>
 	<div class="main_div" align="center">
 		<div class="brand">
-			<img src="images/grayForumLogo.png" min-width="20px">
+			<img id="forumLogo" src="images/grayForumLogo.png">
 		</div>
 
 		<!-- Navigation -->
