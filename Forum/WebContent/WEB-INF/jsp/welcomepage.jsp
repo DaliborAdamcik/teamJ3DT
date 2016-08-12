@@ -8,7 +8,7 @@
 
 <div class="container" align=center>
 	<c:choose>
-		<c:when test="${loggeduser.role == 'ADMIN'}">
+		<c:when test="${CURRENT_USER.role == 'ADMIN'}">
 			<form method='post'>
 				<label id="label">Add new topic:</label> <br> <br> <input
 					type="text" required="required" name="new_topic"

@@ -57,7 +57,6 @@ public class Welcome extends MasterServlet {
 		if (request.getParameter("parameter") != null) {
 			if (request.getParameter("parameter").equals("logout")) {
 				helpser.logoutUser();
-				helpser.setSessionObject("loggeduser", null);
 				System.out.println("User was logged out...");
 				
 			}

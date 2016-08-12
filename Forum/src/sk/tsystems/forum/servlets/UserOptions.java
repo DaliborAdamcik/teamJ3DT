@@ -92,7 +92,7 @@ public class UserOptions extends MasterServlet {
 				loggedUser.setRealName(newRealName);
 			}
 			servletHelper.getUserService().updateUser(loggedUser);
-			servletHelper.setSessionObject("loggeduser", servletHelper.getLoggedUser());
+			
 		}
 		return true;
 

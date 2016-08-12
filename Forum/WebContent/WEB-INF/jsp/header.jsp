@@ -38,8 +38,8 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<c:choose>
-							<c:when test="${loggeduser!= null}">
-								<li><a href="/Forum/Useroptions">${loggeduser.userName} (${loggeduser.role})</a></li>
+							<c:when test="${CURRENT_USER!= null}">
+								<li><a href="/Forum/Useroptions">${CURRENT_USER.userName} (${CURRENT_USER.role})</a></li>
 
 								<li><a href="Welcome?parameter=logout"><span
 										class="glyphicon glyphicon-log-out"></span> Logout</a></li>
@@ -54,7 +54,7 @@
 						</c:choose>
 
 						<c:choose>
-							<c:when test="${loggeduser.role == 'ADMIN'}">
+							<c:when test="${CURRENT_USER.role == 'ADMIN'}">
 								<li><a href="Admin">Admin</a></li>
 							</c:when>
 						</c:choose>

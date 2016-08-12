@@ -11,7 +11,7 @@
 	<div class="container">
 		<%-- <jsp:include page="header.jsp"></jsp:include> --%>
 		<c:choose>
-			<c:when test="${loggeduser==null ||loggeduser.role !='ADMIN'}">
+			<c:when test="${CURRENT_USER==null ||CURRENT_USER.role !='ADMIN'}">
 				<h1>Only admins can view this page</h1>
 			</c:when>
 			<c:otherwise>

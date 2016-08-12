@@ -6,8 +6,8 @@
 
 
 <c:choose>
-	<c:when test="${loggeduser!=null}">
-		<h3>Currently logged as ${loggeduser.userName}</h3>
+	<c:when test="${CURRENT_USER!=null}">
+		<h3>Currently logged as ${CURRENT_USER.userName}</h3>
 	</c:when>
 </c:choose>
 
@@ -26,7 +26,7 @@
 		<tr>
 			<td>Real name:
 			<td><input type="text" required="required" name="new_username"
-				value="${loggeduser.realName}" id="userinfo_realname" autofocus><br>
+				value="${CURRENT_USER.realName}" id="userinfo_realname" autofocus><br>
 		<tr>
 			<td>Date of birth:
 			<td><input type="date" required="required" name="new_date"
