@@ -2,7 +2,6 @@ package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sk.tsystems.forum.entity.Comment;
+import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.helper.ServletHelper;
-import sk.tsystems.forum.service.CommentService;
 import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
@@ -42,8 +41,6 @@ public class CommentServlet extends MasterServlet {
 		PrintWriter out = response.getWriter();
 
 		try {
-			// UserInterface usrSvc = svHelper.getUserService();
-			CommentService commentservice = svHelper.getCommentService();
 			TopicService topicservice = svHelper.getTopicService();
 			int topic_id = 0;
 			try {
@@ -60,14 +57,13 @@ public class CommentServlet extends MasterServlet {
 				if (svHelper.getLoggedUser() == null) {
 					out.println("You are not sign in or maybe you are blocked");
 				} else {
-					commentservice.addComment(new Comment(request.getParameter("comment"),
-							topicservice.getTopic(topic_id), svHelper.getLoggedUser(), true));
+/*					commentservice.addComment(new Comment(request.getParameter("comment"), // TODO piatok repir
+							topicservice.getTopic(topic_id), svHelper.getLoggedUser(), true));*/
 				}
 			}
-
-			List<Comment> comments = new ArrayList<>();
-			comments = commentservice.getComments(topicservice.getTopic(topic_id));
-			request.setAttribute("topicName", topicservice.getTopic(topic_id).getName());
+			Theme theme = svHelper.getThemeService().getTheme(topic_id);
+			List<Comment> comments = svHelper.getCommentService().getComments(theme);
+			request.setAttribute("topicName", theme);
 			request.setAttribute("comments", comments.iterator());
 
 		} finally {

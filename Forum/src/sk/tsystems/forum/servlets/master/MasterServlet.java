@@ -16,6 +16,7 @@ import sk.tsystems.forum.helper.BlockHelper;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.jpa.CommentJPA;
+import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
@@ -44,10 +45,12 @@ public abstract class MasterServlet extends HttpServlet {
 																		// production
 																		// mode
 		ServletHelper servletHelper = new ServletHelper(request);
-		servletHelper.setService(new UserJPA()); // Put all services we need to
-													// run
+		// Put all services we need to use		
+		servletHelper.setService(new UserJPA()); 
 		servletHelper.setService(new TopicJPA());
 		servletHelper.setService(new CommentJPA());
+		servletHelper.setService(new ThemeJPA());
+		
 
 		if (servletHelper.getSessionRole() == UserRole.ADMIN) {
 			// block and unblock

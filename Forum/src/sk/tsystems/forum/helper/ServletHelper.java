@@ -11,6 +11,7 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.exceptions.GetServiceException;
 import sk.tsystems.forum.service.CommentService;
+import sk.tsystems.forum.service.ThemeService;
 import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.UserService;
 
@@ -35,6 +36,11 @@ public class ServletHelper {
 	private static final String COMMENT_SERVICE_IDENT = "COMMENT_SERVICE_INSTANCE";
 
 	/**
+	 * ThemeService identifier (for getAttribute)
+	 */
+	private static final String THEME_SERVICE_IDENT = "THEME_SERVICE_INSTANCE";
+
+	/**
 	 * CommentService identifier (for session.getAttribute)
 	 */
 	private static final String USER_SESSION_IDENT = "USER_ID";
@@ -53,7 +59,7 @@ public class ServletHelper {
 
 	/* An services part for Servlets */
 
-	/**
+	/** // TODO piatok refaktor na reflexiu 
 	 * Gets object from servletRequest by name This method checks getted object
 	 * is instance of requested class
 	 * 
@@ -77,7 +83,7 @@ public class ServletHelper {
 	/**
 	 * Gets pre-initialized service object from request attributes.
 	 * 
-	 * @return An instance of UserInterface service, otherwise an runtime
+	 * @return An instance of User service, otherwise an runtime
 	 *         exception is thrown
 	 */
 	public final UserService getUserService() {
@@ -87,7 +93,7 @@ public class ServletHelper {
 	/**
 	 * Gets pre-initialized service object from request attributes.
 	 * 
-	 * @return An instance of TopicInterface service, otherwise an runtime
+	 * @return An instance of Topic service, otherwise an runtime
 	 *         exception is thrown
 	 */
 	public final TopicService getTopicService() {
@@ -97,7 +103,17 @@ public class ServletHelper {
 	/**
 	 * Gets pre-initialized service object from request attributes.
 	 * 
-	 * @return An instance of CommentInterface service, otherwise an runtime
+	 * @return An instance of Comment service, otherwise an runtime
+	 *         exception is thrown
+	 */
+	public final ThemeService getThemeService() {
+		return (ThemeService) getService(THEME_SERVICE_IDENT, ThemeService.class);
+	}
+
+	/**
+	 * Gets pre-initialized service object from request attributes.
+	 * 
+	 * @return An instance of Theme service, otherwise an runtime
 	 *         exception is thrown
 	 */
 	public final CommentService getCommentService() {
@@ -134,6 +150,8 @@ public class ServletHelper {
 			return setService(serviceInstance, TOPIC_SERVICE_IDENT);
 		else if (serviceInstance instanceof CommentService)
 			return setService(serviceInstance, COMMENT_SERVICE_IDENT);
+		else if (serviceInstance instanceof ThemeService)
+			return setService(serviceInstance, THEME_SERVICE_IDENT);
 		else
 			throw new GetServiceException(
 					"Unknown service " + serviceInstance.getClass().getSimpleName() + " to save.");

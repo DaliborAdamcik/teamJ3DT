@@ -27,7 +27,7 @@
 						<div class="commentText">
 							<p class="">${comment.getComment()}</p>
 							<span class="date sub-text">from
-								${comment.owner.getUserName()} on ${comment.getCreationDate()}</span>
+								${comment.owner.getUserName()} on ${comment.getCreated()}</span>
 
 						</div>
 					</li>
