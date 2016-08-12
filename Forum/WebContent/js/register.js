@@ -1,48 +1,51 @@
 $('#register').submit(function(ev){
+	try {
+		if($('#reg_pass1').val()!=$('#reg_pass2').val())
+		{
+    		document.getElementById('confirmMessage').innerHTML = "Password and its confirmation is incorrect. Please retype.";
+    		document.getElementById('confirmMessage').style.color = 'red';
+			return false;
+		}
+		
+		var jsobj = {};
+	    jsobj.nick = $('#reg_login').val();
+	    jsobj.realname = $('#reg_real').val();
 	
-    //var $form = $('#register');
-    var jsobj = {};
-    jsobj.nick = $('#reg_login').val();
+	    //jsobj.name = $('#reg_email');
+	    jsobj.birth =  date2str($( "#reg_birthdate" ).datepicker( "getDate" ), "dd.MM.yyyy");//TODO check for valid date
+	    jsobj.pass = $('#reg_pass1').val(); //TODO check for valid format
+	    
+	    //confirmMessage
+	    var sendobj = {};
+	    sendobj.register = jsobj;
+	    console.log(sendobj);
+	    $.ajax({
+	        type: "POST",
+	        url: "Register",
+	        contentType:"application/json;charset=UTF-8",
+	        dataType: "json",
+	        data: JSON.stringify(sendobj),
+	        success: function (response) {
+	        	console.log(response);
+	        	if(response.error)
+	        	{
+	        		document.getElementById('confirmMessage').innerHTML = response.error;
+	        		document.getElementById('confirmMessage').style.color = 'red';
+	        		return;
+	        	}
+	
+	        	if(response.registered && response.registered == true )
+	        		window.location.href = window.location.href.replace('/Register', '');       
+	        },
+	        error: function (jxhr) {
+	            window.alert("Spracovanie neúspešné. Údaje neboli zapísané. Kód chyby:" + status + "\n" + jxhr.statusText + "\n" + jxhr.responseText);
+	        }
+	    });
 
-    //jsobj.name = $('#reg_email');
-    jsobj.birth = $('#reg_birthdate').val(); //TODO check for valid date
-    jsobj.pass = $('#reg_pass1').val(); //TODO check for valid format
-    
-    //confirmMessage
-    var sendobj = {};
-    sendobj.register = jsobj;
-    console.log(sendobj);
-    $.ajax({
-        type: "POST",
-        url: "Register",
-        contentType:"application/json;charset=UTF-8",
-        dataType: "json",
-        data: JSON.stringify(sendobj),
-        success: function (response) {
-        	console.log(response);
-        	if(response.error)
-        	{
-        		document.getElementById('confirmMessage').innerHTML = response.error;
-        		document.getElementById('confirmMessage').style.color = 'red';
-        		return;
-        	}
-
-        	if(response.registered)
-        		window.location.href = window.location.href.replace('/Register', '');        	
-/*            if(response.id){
-                console.log(response.id);
-                $frm.trigger('reset');
-                loadAnk(response.id);
-                localStorage.setItem(localStorageName, "anketoval");
-                $frm.hide();
-                $('#hlasujzas').show();
-            }*/
-        },
-        error: function (jxhr) {
-            window.alert("Spracovanie neúspešné. Údaje neboli zapísané. Kód chyby:" + status + "\n" + jxhr.statusText + "\n" + jxhr.responseText);
-        }
-    });
-
+	}
+	catch(err) {
+	    console.log(err);
+	} 
     return false; // prevent subnit form
 });
 
@@ -139,3 +142,19 @@ function checkPass() {
 	}
 }
 
+function date2str(x, y) {
+    var z = {
+        M: x.getMonth() + 1,
+        d: x.getDate(),
+        h: x.getHours(),
+        m: x.getMinutes(),
+        s: x.getSeconds()
+    };
+    y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+        return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+    });
+
+    return y.replace(/(y+)/g, function(v) {
+        return x.getFullYear().toString().slice(-v.length)
+    });
+}

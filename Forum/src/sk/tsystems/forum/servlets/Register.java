@@ -1,7 +1,6 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +14,7 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
-import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
+import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -91,14 +90,11 @@ public class Register extends MasterServlet {
 	{
         resp.put("register", "doRegister");
 		resp.put("registered", false);
-		// TODO do some check on name, eg length and so on... // nick, bith, pass
 		try { 
         	String userName = req.getString("nick"); // get nickname from user
         	resp.put("exists", helper.getUserService().getUser(userName)!=null); // check user exists
 			
-			
-			
-			User usr = new User(req.getString("nick"), req.getString("pass"), new Date(), req.getString("nick")+"real"); // TODO !! len tak nabuchane to je
+			User usr = new User(req.getString("nick"), req.getString("pass"), req.getString("birth"), req.getString("realname")); // TODO !! len tak nabuchane to je
 			if(helper.getUserService().addUser(usr))
 			{
 				helper.setLoggedUser(usr);
@@ -110,7 +106,7 @@ public class Register extends MasterServlet {
         {
             resp.put("error", "requested parameters not found"); // an error occured getting username
         }		
-		catch (PasswordCheckException | NickNameException e) {
+		catch (UserEntityException e) {
 			resp.put("error", e.getMessage()); 
 		}
 	}
