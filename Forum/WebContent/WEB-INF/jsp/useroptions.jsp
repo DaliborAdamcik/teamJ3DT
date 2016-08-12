@@ -4,93 +4,81 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-
-<c:choose>
-	<c:when test="${CURRENT_USER!=null}">
-		<h3>Currently logged as ${CURRENT_USER.userName}</h3>
-	</c:when>
-</c:choose>
-
-
-
-<button id="personalinfo_button" onclick="hidePersonalInfoField();">Change
-	Personal Information</button>
-<br>
-<br>
-<br>
+<div class="container">
+	<c:choose>
+		<c:when test="${CURRENT_USER!=null}">
+			<h3>Currently logged as ${CURRENT_USER.userName}</h3>
+		</c:when>
+	</c:choose>
 
 
-<form id="personalinfo_change" method="post" action="Useroptions"
-	hidden="true">
-	<table>
-		<tr>
-			<td>Real name:
-			<td><input type="text" required="required" name="new_username"
-				value="${CURRENT_USER.realName}" id="userinfo_realname" autofocus><br>
-		<tr>
-			<td>Date of birth:
-			<td><input type="date" required="required" name="new_date"
-				value="${formatteddate}" id="userinfo_birthdate"><br>
-	</table>
-	<span id="userinfo_message" class="confirmMessage"></span> <input
-		type="submit" value="Submit">
 
-</form>
-<br>
-<br>
-<br>
-<br>
-<button id="password_button" onclick="hidePasswordField();">Change
-	password</button>
-<br>
-<br>
-<br>
-<form id="password_change" method="post" action="Useroptions"
-	hidden="true">
-	<h5> ${passwordmessage}</h5>
-	<table>
-		<tr>
-			<td>New password
-			<td><input type="password" required="required" name="new_password"
-				id="userinfo_password" autofocus><br>
-		<tr>
-			<td>Confirm new password
-			<td><input type="password" required="required" name="new_confirmpassword"
-				id="userinfo_confirmpassword"><br>
-	</table>
-	
-	<span id="pass_message" class="confirmMessage"></span> <input
-		type="submit" value="Change password">
+	<button id="personalinfo_button" onclick="hidePersonalInfoField();">Change
+		Personal Information</button>
+	<button id="password_button" onclick="hidePasswordField();">Change
+		password</button>
+	<button id="topic_button" onclick="hideButtonField();">Choose
+		favorite topics</button>
 
-</form>
+	<br> <br> <br> <br>
 
-
-<br>
-<br>
-<br>
-<br>
-<button id="topic_button" onclick="hideButtonField();">Choose
-	favorite topics</button>
-<br>
-<br>
-<br>
-<form id="topic_change" method="post" action="Useroptions" hidden="true">
-	<table>
-		<c:forEach items="${listofusertopics}" var="topicOfUser">
-
+	<form id="personalinfo_change" method="post" action="Useroptions"
+		hidden="true">
+		<table>
 			<tr>
-				<td><input type="checkbox" name="favourite_topic"
-					value="${topicOfUser.id}" checked>${topicOfUser.name}
-		</c:forEach>
-		<c:forEach items="${listofalltopics}" var="topic">
+				<td>Real name:
+				<td><input type="text" required="required" name="new_username"
+					value="${CURRENT_USER.realName}" id="userinfo_realname" autofocus><br>
 			<tr>
-				<td><input type="checkbox" name="favourite_topic"
-					value="${topic.id}">${topic.name}
-		</c:forEach>
+				<td>Date of birth:
+				<td><input type="date" required="required" name="new_date"
+					value="${formatteddate}" id="userinfo_birthdate"><br>
+		</table>
+		<span id="userinfo_message" class="confirmMessage"></span> <input
+			type="submit" value="Submit">
 
-	</table>
-	<input type="submit" value="Change topic">
+	</form>
 
-</form>
+
+	<form id="password_change" method="post" action="Useroptions"
+		hidden="true">
+		<h5>${passwordmessage}</h5>
+		<table>
+			<tr>
+				<td>New password
+				<td><input type="password" required="required"
+					name="new_password" id="userinfo_password" autofocus><br>
+			<tr>
+				<td>Confirm new password
+				<td><input type="password" required="required"
+					name="new_confirmpassword" id="userinfo_confirmpassword"><br>
+		</table>
+
+		<span id="pass_message" class="confirmMessage"></span> <input
+			type="submit" value="Change password">
+
+	</form>
+
+
+	<form id="topic_change" method="post" action="Useroptions"
+		hidden="true">
+		<table>
+			<c:forEach items="${listofusertopics}" var="topicOfUser">
+
+				<tr>
+					<td><input type="checkbox" name="favourite_topic"
+						value="${topicOfUser.id}" checked>${topicOfUser.name}
+			</c:forEach>
+			<c:forEach items="${listofalltopics}" var="topic">
+				<tr>
+					<td><input type="checkbox" name="favourite_topic"
+						value="${topic.id}">${topic.name}
+			</c:forEach>
+
+		</table>
+		<input type="submit" value="Change topic">
+
+	</form>
+</div>
 
 <script src="js/useroptions.js"></script>
