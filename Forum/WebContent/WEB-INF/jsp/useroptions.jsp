@@ -15,8 +15,12 @@
 
 	<button id="personalinfo_button" onclick="hidePersonalInfoField();">Change
 		Personal Information</button>
-	<br> <br> <br>
+	<button id="password_button" onclick="hidePasswordField();">Change
+		password</button>
+	<button id="topic_button" onclick="hideButtonField();">Choose
+		favorite topics</button>
 
+	<br> <br> <br> <br>
 
 	<form id="personalinfo_change" method="post" action="Useroptions"
 		hidden="true">
@@ -34,10 +38,8 @@
 			type="submit" value="Submit">
 
 	</form>
-	<br> <br> <br> <br>
-	<button id="password_button" onclick="hidePasswordField();">Change
-		password</button>
-	<br> <br> <br>
+
+
 	<form id="password_change" method="post" action="Useroptions"
 		hidden="true">
 		<h5>${passwordmessage}</h5>
@@ -58,10 +60,6 @@
 	</form>
 
 
-	<br> <br> <br> <br>
-	<button id="topic_button" onclick="hideButtonField();">Choose
-		favorite topics</button>
-	<br> <br> <br>
 	<form id="topic_change" method="post" action="Useroptions"
 		hidden="true">
 		<table>
