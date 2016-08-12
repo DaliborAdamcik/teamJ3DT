@@ -30,7 +30,8 @@
 										<td>${user.role}<c:choose>
 												<c:when test="${user.blocked!=null}">
 
-													<td class="bannedReason">banned for: ${user.blocked.reason} by
+													<td class="bannedReason">banned for:
+														${user.blocked.reason} by
 														${user.blocked.blockedBy.userName}</td>
 
 												</c:when>
@@ -67,58 +68,62 @@
 					</div>
 				</div>
 
-
+				<br>
 				<!-- Table for topics -->
 				<h2>TOPICS</h2>
-				<table>
-					<c:forEach items="${listoftopics}" var="topic">
-						<tr>
-							<td>${topic.name}<c:choose>
-									<c:when test="${topic.blocked!=null}">
-										<td>banned for: ${topic.blocked.reason} by
-											${topic.blocked.blockedBy.userName}
-									</c:when>
-									<c:otherwise>
-										<td>
-									</c:otherwise>
-								</c:choose>
-							<td><c:choose>
-									<c:when test="${topic.blocked ==null}">
-										<td>
-											<form method="post" action="Admin">
-												<input type="text" name="block_reason"
-													placeholder="block reason" required="required">
-												<button name="block" value="${topic.id}">block</button>
-											</form>
-									</c:when>
-									<c:otherwise>
+				<div style='overflow: auto; width: 100%; height: 300px;'>
+					<div class="table-responsive">
+						<table class="table table-bordered" align="left">
+							<tbody>
+								<c:forEach items="${listoftopics}" var="topic">
+									<tr>
+										<td>${topic.name}</td>
+										<c:choose>
+											<c:when test="${topic.blocked!=null}">
+												<td>banned for: ${topic.blocked.reason} by
+													${topic.blocked.blockedBy.userName}</td>
+											</c:when>
+											<c:otherwise>
+												<td></td>
+											</c:otherwise>
+										</c:choose>
+										<td><c:choose>
+												<c:when test="${topic.blocked ==null}">
+														<form method="post" action="Admin">
+															<input type="text" name="block_reason"
+																placeholder="block reason" required="required">
+															<button name="block" value="${topic.id}">block</button>
+														</form>
+												</c:when>
+												<c:otherwise>
 
-										<form method="post" action="Admin">
-											<button name="unblock" value="${topic.id}">unblock</button>
-										</form>
-										<td>
-									</c:otherwise>
-								</c:choose> <c:choose>
-									<c:when test="${topic.isPublic}">
-										<td>
-											<form method="post" action="Admin">
-												<button name="mark_public" value="${topic.id}">mark
-													non-public</button>
-											</form>
-									</c:when>
-									<c:otherwise>
-										<td>
-											<form method="post" action="Admin">
-												<button name="mark_public" value="${topic.id}">mark
-													public</button>
-											</form>
-									</c:otherwise>
-								</c:choose>
-					</c:forEach>
-
-
-
-				</table>
+													<form method="post" action="Admin">
+														<button name="unblock" value="${topic.id}">unblock</button>
+													</form>
+												</c:otherwise>
+											</c:choose></td>
+										<td><c:choose>
+												<c:when test="${topic.isPublic}">
+													
+														<form method="post" action="Admin">
+															<button name="mark_public" value="${topic.id}">mark
+																non-public</button>
+														</form>
+												</c:when>
+												<c:otherwise>
+													
+														<form method="post" action="Admin">
+															<button name="mark_public" value="${topic.id}">mark
+																public</button>
+														</form>
+												</c:otherwise>
+											</c:choose></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
 
 				<!-- add new topic from -->
 				<form method='post'>
