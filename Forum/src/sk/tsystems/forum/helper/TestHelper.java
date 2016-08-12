@@ -186,7 +186,7 @@ public class TestHelper {
 			timestamp &= maxTimeStamp;
 			if(i++ >1000)
 				throw new RuntimeException("Failed to generate random date");
-		} while(timestamp > maxTimeStamp);
+		} while(timestamp >= maxTimeStamp);
 		
 		return new Date(timestamp);
 	}
