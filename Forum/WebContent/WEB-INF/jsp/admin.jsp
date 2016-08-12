@@ -5,59 +5,68 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Admin</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 	<div class="container">
 		<%-- <jsp:include page="header.jsp"></jsp:include> --%>
 		<c:choose>
 			<c:when test="${CURRENT_USER==null ||CURRENT_USER.role !='ADMIN'}">
-				<h1>Only admins can view this page</h1>
+				<h1 align="center">Only admins can view this page</h1>
 			</c:when>
 			<c:otherwise>
 				<!-- Table for users -->
 				<h2>USERS</h2>
-				<table>
-					<c:forEach items="${listofusers}" var="user">
-						<tr>
-							<td>${user.userName}
-							<td>${user.role}<c:choose>
-									<c:when test="${user.blocked!=null}">
-										<td>banned for: ${user.blocked.reason} by
-											${user.blocked.blockedBy.userName}
-									</c:when>
-									<c:otherwise>
-										<td>
-									</c:otherwise>
-								</c:choose>
-							<td><c:choose>
-									<c:when test="${user.blocked ==null}">
-										<td>
-											<form method="post" action="Admin">
-												<input type="text" name="block_reason"
-													placeholder="block reason" required="required">
-												<button name="block" value="${user.id}">block</button>
-											</form>
-									</c:when>
-									<c:otherwise>
+				<div style='overflow: auto; width: 100%; height: 300px;'>
+					<div class="table-responsive">
+						<table class="table table-bordered" align="left">
+							<tbody>
+								<c:forEach items="${listofusers}" var="user">
+									<tr>
+										<td>${user.userName}</td>
+										<td>${user.role}<c:choose>
+												<c:when test="${user.blocked!=null}">
 
-										<form method="post" action="Admin">
-											<button name="unblock" value="${user.id}">unblock</button>
-										</form>
-										<td>
-									</c:otherwise>
-								</c:choose> <c:choose>
-									<c:when test="${user.role == 'GUEST'}">
-										<td>
-											<form method="post" action="Admin">
-												<button name="promote_to_regular" value="${user.id}">promote
-													to regular</button>
-											</form>
-									</c:when>
+													<td class="bannedReason">banned for: ${user.blocked.reason} by
+														${user.blocked.blockedBy.userName}</td>
 
-								</c:choose>
-					</c:forEach>
-				</table>
+												</c:when>
+												<c:otherwise>
+													<td></td>
+												</c:otherwise>
+											</c:choose>
+										<td><c:choose>
+												<c:when test="${user.blocked ==null}">
+													<form method="post" action="Admin">
+														<input type="text" name="block_reason"
+															placeholder="block reason" required="required">
+														<button name="block" value="${user.id}">block</button>
+													</form>
+												</c:when>
+												<c:otherwise>
+													<form method="post" action="Admin">
+														<button name="unblock" value="${user.id}">unblock</button>
+													</form>
+												</c:otherwise>
+											</c:choose></td>
+										<td><c:choose>
+												<c:when test="${user.role == 'GUEST'}">
+													<form method="post" action="Admin">
+														<button name="promote_to_regular" value="${user.id}">promote
+															to regular</button>
+													</form>
+												</c:when>
+											</c:choose></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
 
 				<!-- Table for topics -->
 				<h2>TOPICS</h2>

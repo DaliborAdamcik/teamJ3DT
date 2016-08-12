@@ -87,6 +87,7 @@ public class Admin extends MasterServlet {
 //		}
 		
 		request.getRequestDispatcher("/WEB-INF/jsp/admin.jsp").include(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 	}
 
 	/**

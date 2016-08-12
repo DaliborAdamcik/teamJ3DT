@@ -5,18 +5,23 @@ body {
 	padding-bottom: 6rem;
 	min-height: 100%;
 	background-image: url("./../images/NYWebsiteBackground.png");
-	
-	background: window 100%
-    background-repeat: repeat-y;
-    
 /* 	background-opacity: 0.6; */
 	color: #534d53;
 }
 
-#forumLogo {width: 20%; min-width: 250px;}
-
 .main_div {
 	padding: 15px;
+}
+
+
+table{
+    table-layout: fixed;
+    width: 800px;
+}
+
+.bannedReason {
+	max-width: 10px;
+	
 }
 
 .footer {
