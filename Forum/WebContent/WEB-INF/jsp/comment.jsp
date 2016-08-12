@@ -18,6 +18,8 @@
 			<ul class="commentList">
 				<c:forEach items="${comments}" var="comment">
 					<li>
+						<button type="button" class="close" aria-hidden="true">&Xi;</button>
+						
 						<div class="commenterImage">
 							<img src="images/userPicture.png" alt=userPicture height=30
 								width=30 />
@@ -51,3 +53,46 @@
 		</div>
 	</div>
 </div>
+
+<ul id="mousemenu">
+  <li class="ui-state-disabled"><div>Toys (n/a)</div></li>
+  <li><div>Books</div></li>
+  <li><div>Clothing</div></li>
+  <li><div>Electronics</div>
+    <ul>
+      <li class="ui-state-disabled"><div>Home Entertainment</div></li>
+      <li><div>Car Hifi</div></li>
+      <li><div>Utilities</div></li>
+    </ul>
+  </li>
+  <li><div>Movies</div></li>
+  <li><div>Music</div>
+    <ul>
+      <li><div>Rock</div>
+        <ul>
+          <li><div>Alternative</div></li>
+          <li><div>Classic</div></li>
+        </ul>
+      </li>
+      <li><div>Jazz</div>
+        <ul>
+          <li><div>Freejazz</div></li>
+          <li><div>Big Band</div></li>
+          <li><div>Modern</div></li>
+        </ul>
+      </li>
+      <li><div>Pop</div></li>
+    </ul>
+  </li>
+  <li class="ui-state-disabled"><div>Specials (n/a)</div></li>
+</ul>
+
+<script>
+  $( function() {
+    $( "#mousemenu" ).menu();
+  } );
+ </script>
+ <style>
+  .ui-menu { width: 150px; }
+ </style>
+
