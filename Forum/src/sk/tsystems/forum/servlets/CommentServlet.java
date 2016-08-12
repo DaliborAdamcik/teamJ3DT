@@ -3,6 +3,8 @@ package sk.tsystems.forum.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +20,7 @@ import sk.tsystems.forum.servlets.master.MasterServlet;
 /**
  * Servlet implementation class Register
  */
-@WebServlet("/Comment")
+@WebServlet("/Comment/*")
 public class CommentServlet extends MasterServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -42,10 +44,12 @@ public class CommentServlet extends MasterServlet {
 
 		try {
 			TopicService topicservice = svHelper.getTopicService();
+			Theme theme = null;
 			int topic_id = 0;
 			try {
 				topic_id = Integer.parseInt(request.getParameter("topicid"));
 				request.setAttribute("topicid", topic_id);
+				theme = svHelper.getThemeService().getTheme(topic_id);
 			} catch (NullPointerException | NumberFormatException e) {
 				e.printStackTrace();
 			}
@@ -57,11 +61,11 @@ public class CommentServlet extends MasterServlet {
 				if (svHelper.getLoggedUser() == null) {
 					out.println("You are not sign in or maybe you are blocked");
 				} else {
-/*					commentservice.addComment(new Comment(request.getParameter("comment"), // TODO piatok repir
-							topicservice.getTopic(topic_id), svHelper.getLoggedUser(), true));*/
+					svHelper.getCommentService().addComment(new Comment(request.getParameter("comment"), 
+							theme, svHelper.getLoggedUser(), true));
 				}
 			}
-			Theme theme = svHelper.getThemeService().getTheme(topic_id);
+			 
 			List<Comment> comments = svHelper.getCommentService().getComments(theme);
 			request.setAttribute("topicName", theme);
 			request.setAttribute("comments", comments.iterator());
@@ -72,14 +76,5 @@ public class CommentServlet extends MasterServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
+	
 }
