@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
@@ -31,6 +33,7 @@ public class User extends BlockableEntity {
 	/**
 	 * Password
 	 */
+	@JsonIgnore
 	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 

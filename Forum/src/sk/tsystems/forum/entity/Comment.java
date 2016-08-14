@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import sk.tsystems.forum.entity.common.BlockableEntity;
 
 @Entity
@@ -23,6 +25,7 @@ public class Comment extends BlockableEntity {
 	/**
 	 * theme
 	 */
+	@JsonIgnore
 	@ManyToOne
 	//@JoinColumn(name = "THEMEID")
 	private Theme theme;
