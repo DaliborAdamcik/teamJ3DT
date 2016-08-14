@@ -2,19 +2,31 @@ package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
+import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.ServletHelper;
-import sk.tsystems.forum.service.TopicService;
+import sk.tsystems.forum.helper.URLParser;
+import sk.tsystems.forum.helper.exceptions.URLParserException;
+import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -29,21 +41,91 @@ public class CommentServlet extends MasterServlet {
 	 */
 	public CommentServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		boolean callOld = false;
+		
+		if(callOld)
+		{
+			doGetOld(request, response);
+			return;
+		}
+		
+		ServletHelper svHelper = new ServletHelper(request);
+		URLParser pars;
+		try {
+			pars = svHelper.getURLParser();
+			if(pars.getParrentID()<0) // we not specified parent, we need to return page template
+			{
+				request.setAttribute("themeid", request.getParameter("topicid"));
+				request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
+				request.getRequestDispatcher("/WEB-INF/jsp/commentnew.jsp").include(request, response);
+				request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
+				return;
+			}
+
+			 // get Theme for parrent - ... /Comment/10/ ...
+			Theme theme = svHelper.getThemeService().getTheme(pars.getParrentID());
+			
+			// theme not exixsts or is blocked (can see only admin)
+			if(theme == null || theme.getBlocked()!=null && !svHelper.getSessionRole().equals(UserRole.ADMIN))  
+				throw new UnknownActionException("Theme not found.");
+			
+			// check privileges
+			if(!theme.isIsPublic() && svHelper.getSessionRole().equals(UserRole.GUEST))
+				throw new UnknownActionException("Theme is private.");
+			
+			if(pars.getAction()==null) // we need to return list of coments
+			{
+				List<Comment> comments = svHelper.getCommentService().getComments(theme);
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.setSerializationInclusion(Include.NON_NULL);
+				//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+				// TODO filter comments by blocked
+				Map<String, Object> resp = new HashMap<>();
+				resp.put("comments", comments);
+				resp.put("theme", theme);
+				resp.put("role", svHelper.getSessionRole());
+				
+				
+				response.setContentType("application/json");
+				mapper.writeValue(response.getWriter(), resp);
+				return;
+			}
+
+			if(pars.getAction().compareTo("single")==0) // get single comment
+			{
+				throw new UnknownActionException("not yet implemented");
+				
+			}
+			else 
+				throw new UnknownActionException("Anknown action: "+pars.getAction());
+			
+		} catch (URLParserException e) {
+			response.getWriter().println(e.getMessage());
+		} catch (UnknownActionException e) {
+			response.getWriter().println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	private void doGetOld(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		ServletHelper svHelper = new ServletHelper(request);
 		PrintWriter out = response.getWriter();
 
 		try {
-			TopicService topicservice = svHelper.getTopicService();
 			Theme theme = null;
 			int topic_id = 0;
 			try {
@@ -76,5 +158,62 @@ public class CommentServlet extends MasterServlet {
 		}
 	}
 
+	// edit
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		ServletHelper svHelper = new ServletHelper(request);
+		URLParser pars;
+		try {
+			pars =  svHelper.getURLParser();
+		} catch (URLParserException e) {
+			response.getWriter().println(e.getMessage());
+			return;
+		}
+		response.getWriter().println(pars);
+	}
+
+	// remove
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	}
+
+	// add
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ServletHelper svHelper = new ServletHelper(request);
+		URLParser pars;
+		try {
+			pars = svHelper.getURLParser();
+			if(pars.getParrentID()<0) 
+				throw new UnknownActionException("Theme ID not specified.");
+
+			 // get Theme for parrent - ... /Comment/10/ ...
+			Theme theme = svHelper.getThemeService().getTheme(pars.getParrentID());
+			
+			// theme not exixsts or is blocked (can see only admin)
+			if(theme == null || theme.getBlocked()!=null)  
+				throw new UnknownActionException("Theme not found.");
+			
+			// check privileges
+			if(svHelper.getSessionRole().equals(UserRole.GUEST))
+				throw new UnknownActionException("You must be signed in / confirmed user to add comment.");
+			
+			JSONObject obj = svHelper.getJSON();
+			
+			Comment comment = new Comment(obj.getString("comment"), theme, svHelper.getLoggedUser(), true);
+			svHelper.getCommentService().addComment(comment);
+			
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Include.NON_NULL);
+			Map<String, Object> resp = new HashMap<>();
+			resp.put("comment", comment);
+			
+			response.setContentType("application/json");
+			mapper.writeValue(response.getWriter(), resp);
+		} catch (URLParserException e) {
+			response.getWriter().println(e.getMessage());
+		} catch (UnknownActionException e) {
+			response.getWriter().println(e.getMessage());
+		}
+	}
 	
 }
