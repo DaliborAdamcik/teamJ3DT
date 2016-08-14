@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.exceptions.GetServiceException;
+import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.service.CommentService;
 import sk.tsystems.forum.service.ThemeService;
 import sk.tsystems.forum.service.TopicService;
@@ -241,6 +242,11 @@ public class ServletHelper {
 		return user.getRole();
 	}
 	
+	/**
+	 * Parses JSON object from request
+	 * @return JSON object from request or null if not present
+	 * @author Dalibor
+	 */
 	public final JSONObject getJSON()
 	{
     	StringBuilder sb = new StringBuilder();
@@ -254,7 +260,7 @@ public class ServletHelper {
         }
         catch(IOException ex)
         {
-        	throw new RuntimeException("Cand read JSON from frequest: IO error", ex);
+        	throw new RuntimeException("Cand read JSON from request: IO error", ex);
         }
         catch(JSONException ex) // an error in json or not available
         {
@@ -262,5 +268,35 @@ public class ServletHelper {
         	return null;
         }
 	}
+	
+	/**
+	 * Parses request URL of actual request
+	 * @param getParam true = include GET paraemeter in URL, false = pure URL 
+	 * @return request URL
+	 * @author Dalibor
+	 */
+	public final String requestURL(boolean getParam)
+	{
+		StringBuffer requestURL = servletRequest.getRequestURL();
+		if (getParam && servletRequest.getQueryString() != null) {
+		    requestURL.append("?").append(servletRequest.getQueryString());
+		}
+		return requestURL.toString();	
+	}
 
+	/**
+	 * Parses request URL of actual request
+	 * @return request URL
+	 * @author Dalibor
+	 */
+	public final String requestURL()
+	{
+		return requestURL(false);
+	}
+	
+	public final URLParser getURLParser() throws URLParserException
+	{
+		return new URLParser(requestURL());
+	}
+	
 }
