@@ -1,7 +1,5 @@
 package sk.tsystems.forum.coldstart.dto;
 
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import sk.tsystems.forum.entity.Comment;
@@ -11,7 +9,6 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.service.jpa.CommentJPA;
-import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class testovaniedto {
