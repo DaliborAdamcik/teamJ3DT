@@ -10,6 +10,7 @@ import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
+import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.service.UserService;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.UserJPA;
@@ -50,6 +51,44 @@ public static void main(String[] args) {
 			jpa.merge(objectToBeBlocked);
 			return true;
 		}	
+	}
+	
+	public static boolean isBlockable(int id){
+
+		try(JpaConnector jpa = new JpaConnector())
+		{
+			BlockableEntity objectToBeBlocked= null;
+			for(Class<?> clz:jpa.getMappedClasses(BlockableEntity.class))
+			{
+				objectToBeBlocked = (BlockableEntity) jpa.getEntityManager().find(clz, id);
+				if(objectToBeBlocked!= null)
+					break;
+			}
+
+			if(objectToBeBlocked== null){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean isInDatabase(int id){
+
+		try(JpaConnector jpa = new JpaConnector())
+		{
+			CommonEntity object= null;
+			for(Class<?> clz:jpa.getMappedClasses(BlockableEntity.class))
+			{
+				object = (CommonEntity) jpa.getEntityManager().find(clz, id);
+				if(object!= null)
+					break;
+			}
+
+			if(object== null){
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public static void  unblock(int id){

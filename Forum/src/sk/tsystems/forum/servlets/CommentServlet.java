@@ -1,8 +1,6 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
@@ -50,14 +45,6 @@ public class CommentServlet extends MasterServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		boolean callOld = false;
-		
-		if(callOld)
-		{
-			doGetOld(request, response);
-			return;
-		}
-		
 		ServletHelper svHelper = new ServletHelper(request);
 		URLParser pars;
 		try {
@@ -72,7 +59,7 @@ public class CommentServlet extends MasterServlet {
 			}
 
 			 // get Theme for parrent - ... /Comment/10/ ...
-			Theme theme = svHelper.getThemeService().getTheme(pars.getParrentID());
+			Theme theme = pars.getParentObject(Theme.class);
 			
 			// theme not exixsts or is blocked (can see only admin)
 			if(theme == null || theme.getBlocked()!=null && !svHelper.getSessionRole().equals(UserRole.ADMIN))  
@@ -115,61 +102,40 @@ public class CommentServlet extends MasterServlet {
 		}
 	}
 	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	private void doGetOld(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
-		ServletHelper svHelper = new ServletHelper(request);
-		PrintWriter out = response.getWriter();
-
-		try {
-			Theme theme = null;
-			int topic_id = 0;
-			try {
-				topic_id = Integer.parseInt(request.getParameter("topicid"));
-				request.setAttribute("topicid", topic_id);
-				theme = svHelper.getThemeService().getTheme(topic_id);
-			} catch (NullPointerException | NumberFormatException e) {
-				e.printStackTrace();
-			}
-
-			String action = request.getParameter("action");
-
-			if ("insert_comment".equals(action)) {
-				// if (svHelper.getSessionRole().equals(UserRole.GUEST))
-				if (svHelper.getLoggedUser() == null) {
-					out.println("You are not sign in or maybe you are blocked");
-				} else {
-					svHelper.getCommentService().addComment(new Comment(request.getParameter("comment"), 
-							theme, svHelper.getLoggedUser(), true));
-				}
-			}
-			 
-			List<Comment> comments = svHelper.getCommentService().getComments(theme);
-			request.setAttribute("topicName", theme);
-			request.setAttribute("comments", comments.iterator());
-
-		} finally {
-			request.getRequestDispatcher("/WEB-INF/jsp/comment.jsp").include(request, response);
-			request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
-		}
-	}
-
 	// edit
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ServletHelper svHelper = new ServletHelper(request);
 		URLParser pars;
 		try {
-			pars =  svHelper.getURLParser();
+			if(svHelper.getSessionRole().equals(UserRole.GUEST))
+				throw new UnknownActionException("Guest cant edit comment");
+			
+			pars = svHelper.getURLParser();
+			Comment comment = pars.getParentObject(Comment.class);
+			
+			if(comment == null || comment.getBlocked()!=null && !svHelper.getSessionRole().equals(UserRole.ADMIN))  
+				throw new UnknownActionException("Comment not found.");
+			
+			if(!svHelper.getSessionRole().equals(UserRole.ADMIN) && svHelper.getLoggedUser().getId()!=comment.getOwner().getId())  
+				throw new UnknownActionException("Comment not found.");
+
+			JSONObject obj = svHelper.getJSON();
+			comment.setComment(obj.getString("comment"));
+			svHelper.getCommentService().updateComment(comment);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Include.NON_NULL);
+			Map<String, Object> resp = new HashMap<>();
+			resp.put("comment", comment);
+			
+			response.setContentType("application/json");
+			mapper.writeValue(response.getWriter(), resp);
 		} catch (URLParserException e) {
 			response.getWriter().println(e.getMessage());
-			return;
+		} catch (UnknownActionException e) {
+			response.getWriter().println(e.getMessage());
 		}
-		response.getWriter().println(pars);
 	}
 
 	// remove
@@ -181,20 +147,21 @@ public class CommentServlet extends MasterServlet {
 		ServletHelper svHelper = new ServletHelper(request);
 		URLParser pars;
 		try {
+			// check privileges
+			if(svHelper.getSessionRole().equals(UserRole.GUEST))
+				throw new UnknownActionException("You must be signed in / confirmed user to add comment.");
+
 			pars = svHelper.getURLParser();
 			if(pars.getParrentID()<0) 
 				throw new UnknownActionException("Theme ID not specified.");
 
 			 // get Theme for parrent - ... /Comment/10/ ...
-			Theme theme = svHelper.getThemeService().getTheme(pars.getParrentID());
+			Theme theme = pars.getParentObject(Theme.class);
 			
 			// theme not exixsts or is blocked (can see only admin)
 			if(theme == null || theme.getBlocked()!=null)  
 				throw new UnknownActionException("Theme not found.");
 			
-			// check privileges
-			if(svHelper.getSessionRole().equals(UserRole.GUEST))
-				throw new UnknownActionException("You must be signed in / confirmed user to add comment.");
 			
 			JSONObject obj = svHelper.getJSON();
 			

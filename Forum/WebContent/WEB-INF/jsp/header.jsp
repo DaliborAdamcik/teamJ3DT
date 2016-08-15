@@ -19,6 +19,12 @@
 	integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
 	crossorigin="anonymous"></script>
 <jsp:include page="jqueryui.jsp" />
+<script type="text/javascript" >
+	var user = {};
+	user.role = "GUEST";
+	user.id = -1;
+</script>
+
 </head>
 
 <body>
@@ -40,9 +46,12 @@
 						<c:choose>
 							<c:when test="${CURRENT_USER!= null}">
 								<li><a href="/Forum/Useroptions">${CURRENT_USER.userName} (${CURRENT_USER.role})</a></li>
-
 								<li><a href="Welcome?parameter=logout"><span
 										class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+								<script type="text/javascript" >
+									user.role = "${CURRENT_USER.role}";
+									user.id = ${CURRENT_USER.getId()};
+								</script>
 							</c:when>
 							<c:otherwise>
 								
