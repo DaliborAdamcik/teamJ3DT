@@ -2,29 +2,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%><!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<title>FORUM</title>
+	<meta charset="UTF-8">
+	<title>J3DT FORUM</title>
+	
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	
+	<!-- <link rel="stylesheet" href="css/normalize.css" /> -->
+	<!-- 	common page style -->
+	<link rel="stylesheet" href="css/style.css" />
 
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-<!-- <link rel="stylesheet" href="css/normalize.css" /> -->
-<link rel="stylesheet" href="css/style.css" />
-
-
-<script type="text/javascript" src="js/script.js"></script>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"
-	integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
-	crossorigin="anonymous"></script>
-<jsp:include page="jqueryui.jsp" />
-<script type="text/javascript" >
-	var user = {};
-	user.role = "GUEST";
-	user.id = -1;
-</script>
-
+	<!-- Jquery UI default syle -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+	
+	<!-- include Jquery and JqueryUI -->
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"
+		integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+		crossorigin="anonymous"></script>
+	  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+	
+	<!-- Forum web page script -->
+	<script type="text/javascript" src="js/script.js"></script>
 </head>
 
 <body>
