@@ -133,17 +133,9 @@ $commentEditForm.submit(function(ev){
 	        dataType: "json",
 	        data: JSON.stringify(jsobj),
 	        success: function (response) {
+	        	$commentEditDlg.dialog('close');
 	        	console.log(response);
-	        	var simul = {};
-	        	simul.comments= [response.comment];
-	        	console.log(simul);
-	        	
-	        	var template = $('#commentTemplate').html();
-	            var html = Mustache.to_html(template, simul);
-	            var $cobo = $('#commentBoxer')
-	            
-	            $cobo.html($cobo.html()+html);
-	            $cobo.scrollTop($cobo.prop("scrollHeight"));
+	        	$('#comment_'+commentMenuChildID+'_txt').html(response.comment.comment);
 	        },
 	        error: function (jxhr) {
 	            window.alert("Spracovanie neúspešné. Údaje neboli zapísané. Kód chyby:" + status + "\n" + jxhr.statusText + "\n" + jxhr.responseText);

@@ -1,8 +1,6 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,14 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.boot.model.source.internal.hbm.Helper;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
@@ -111,7 +105,7 @@ public class CommentServlet extends MasterServlet {
 	// edit
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		/*ServletHelper svHelper = new ServletHelper(request);
+		ServletHelper svHelper = new ServletHelper(request);
 		URLParser pars;
 		try {
 			if(svHelper.getSessionRole().equals(UserRole.GUEST))
@@ -123,18 +117,12 @@ public class CommentServlet extends MasterServlet {
 			if(comment == null || comment.getBlocked()!=null && !svHelper.getSessionRole().equals(UserRole.ADMIN))  
 				throw new UnknownActionException("Comment not found.");
 			
-			if(!svHelper.getSessionRole().equals(UserRole.ADMIN) && comment.getOwner() getBlocked()!=null && !svHelper.getSessionRole().equals(UserRole.ADMIN))  
+			if(!svHelper.getSessionRole().equals(UserRole.ADMIN) && svHelper.getLoggedUser().getId()!=comment.getOwner().getId())  
 				throw new UnknownActionException("Comment not found.");
 
-			if(!svHelper.getSessionRole().equals(UserRole.ADMIN) && comment.getOwner() getBlocked()!=null && !svHelper.getSessionRole().equals(UserRole.ADMIN))  
-				throw new UnknownActionException("Comment not found.");
-
-			
 			JSONObject obj = svHelper.getJSON();
-			
-			Comment comment = new Comment(obj.getString("comment"), theme, svHelper.getLoggedUser(), true);
-			svHelper.getCommentService().addComment(comment);
-			
+			comment.setComment(obj.getString("comment"));
+			svHelper.getCommentService().updateComment(comment);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Include.NON_NULL);
@@ -147,7 +135,7 @@ public class CommentServlet extends MasterServlet {
 			response.getWriter().println(e.getMessage());
 		} catch (UnknownActionException e) {
 			response.getWriter().println(e.getMessage());
-		}*/
+		}
 	}
 
 	// remove
