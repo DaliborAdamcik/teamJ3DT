@@ -32,8 +32,8 @@
 
 
 <script id="commentTemplate" type="text/template">
-{{#comments}}<li id="comment_{{id}}">
-	<button type="button" class="close" aria-hidden="true" onclick="commentMenuPopup('{{id}}');">&Xi;</button>
+{{#comments}}<li id="comment_{{id}}" data-owner="{{#owner}}{{id}}{{/owner}}">
+	<button type="button" class="close commentmenucls" aria-hidden="true" onclick="commentMenuPopup('{{id}}');">&Xi;</button>
 	
 	<div class="commenterImage">
 		<img src="images/userPicture.png" alt=userPicture height=30
@@ -50,28 +50,25 @@
 
 <ul id="commentMenu" style="display:none;">
 	<li onclick="commentMenuItemClick('close');"><div>Close menu</div></li>
-	<li onclick="commentMenuItemClick('edit');"><div>Edit</div></li>
-	<li onclick="commentMenuItemClick('remove');"><div>Remove</div></li>
+	<li onclick="commentMenuItemClick('edit');" class="commentMenuOwnerOption"><div>Edit</div></li>
+	<li onclick="commentMenuItemClick('remove');" class="commentMenuOwnerOption"><div>Remove</div></li>
 
-	<li><div>Admin options</div>
+	<li id="commentMenuItemClose" class="commentMenuAdminOption"><div>Admin options</div>
 	  <ul>
-	    <li class="ui-state-disabled"><div>Home Entertainment</div></li>
-	    <li><div>Car Hifi</div></li>
-	    <li><div>Utilities</div></li>
+		<li onclick="commentMenuItemClick('block');" class="commentMenuAdminOption"><div>Block</div></li>
 	  </ul>
 	</li>
 </ul>
 
 <div id="editCommentDlg" title="Edit comment">
-	<form class="form-inline" role="form" id="editCommentFrm">
-		<div class="form-group">
-			<input
-				class="form-control" type="text" name="editCommentVal" placeholder="Your comment" />
-		</div>
-		<div class="form-group">
-			<button class="btn btn-default">Add</button>
-		</div>
-	</form>
+	<p>
+		Modify comment:<br/>
+		<input class="form-control" type="text" placeholder="Your comment" />
+	</p>
+</div>
+
+<div id="eraseCommentDlg" title="Erase comment">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Do you want erase this comment?<br/><span id="eraseComment_txt"></span></p>
 </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>

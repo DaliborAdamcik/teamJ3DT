@@ -142,7 +142,6 @@ function blockCommonDlg_BlockSucces(response) {
  * this is called after ajax failure response
  */
 function ajaxFailureMessage(jxhr) {
-	console.log(jxhr);
 	var $ajxErrorDlg = $('#ajaxErrorDlg')
 	
     $ajxErrorDlg.html(Mustache.to_html($('#ajaxErrorDlg_tmpl').html(), jxhr));
