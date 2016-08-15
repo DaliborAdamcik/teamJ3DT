@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import sk.tsystems.forum.helper.exceptions.URLParserException;
+import sk.tsystems.forum.service.jpa.JpaConnector;
 
 /**
  * Parses URL string into parameters
@@ -102,5 +103,38 @@ public class URLParser {
 	 */
 	public String getCaller() {
 		return caller;
+	}
+	
+	/**
+	 * Returns Entity by ident
+	 * @param clazz entity class
+	 * @param ident unique ID
+	 * @return an entity object / otherwise null
+	 */
+	private <T> T getJPAobjetc(Class<T> clazz, int ident) {
+		try(JpaConnector jpa = new JpaConnector())
+		{
+			return jpa.getEntityManager().find(clazz, ident);
+		}
+	}
+	
+	/**
+	 * gets object assigned to child IDennt
+	 * Function checks object is instance of class
+	 * @param clazz Required class to be instance of object
+	 * @return entity object / null
+	 */
+	public <T> T getChildObject(Class<T> clazz) {
+		return getJPAobjetc(clazz, getChildID());
+	}
+	
+	/**
+	 * gets object assigned to parent IDennt
+	 * Function checks object is instance of class
+	 * @param clazz Required class to be instance of object
+	 * @return entity object / null
+	 */
+	public <T> T getParentObject(Class<T> clazz) {
+		return getJPAobjetc(clazz, getParrentID());
 	}
 }
