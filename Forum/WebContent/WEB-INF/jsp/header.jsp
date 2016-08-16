@@ -21,6 +21,9 @@
 		integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
 		crossorigin="anonymous"></script>
 	  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+	  
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
+	  
 	
 	<!-- Forum web page script -->
 	<script type="text/javascript" src="js/script.js"></script>
