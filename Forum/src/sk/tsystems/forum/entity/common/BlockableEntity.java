@@ -44,6 +44,6 @@ public abstract class BlockableEntity extends CommonEntity {
 	 */
 	public final boolean isBlocked()
 	{
-		return this != null; 
+		return this.blocked != null; 
 	}
 }
