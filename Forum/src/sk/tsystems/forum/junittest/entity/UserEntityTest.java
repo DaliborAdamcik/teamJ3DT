@@ -46,18 +46,18 @@ public class UserEntityTest {
 		assertFalse("Cant set valid username", userDoTestException(user, userName));
 		assertEquals("Username does not match", user.getUserName(), userName);
 	}
-	
-	public boolean userDoTestException(User user, String name) { // OK, dalik, 11.8.2016
+
+	public boolean userDoTestException(User user, String name) { // OK, dalik,
+																	// 11.8.2016
 		try {
 			user.setUserName(name);
 			return false;
 		} catch (NickNameException e) {
-			System.out.println("** User name check exception: "+e.getMessage()+ " (is OK)");
+			System.out.println("** User name check exception: " + e.getMessage() + " (is OK)");
 			return true;
 		}
 	}
-	
-	
+
 	@Test
 	public void RealNameTest() throws UserEntityException {
 		User user = TestHelper.nonParaConstructor(User.class);
@@ -69,7 +69,8 @@ public class UserEntityTest {
 	}
 
 	@Test
-	public void passwordTest() throws PasswordCheckException { // OK, dalik 11.8.2016
+	public void passwordTest() throws PasswordCheckException { // OK, dalik
+																// 11.8.2016
 		User user = TestHelper.nonParaConstructor(User.class);
 		assertNotNull("User is badly initialized", user);
 
@@ -82,20 +83,22 @@ public class UserEntityTest {
 		assertTrue("Cant set simple with special", passwordDoTestException(user, "abcdefgh/"));
 		assertNull("Password must be null", user.getPassword());
 
-		assertFalse("Cant set valid password", passwordDoTestException(user, password+"12@/"));
-		assertEquals("Password does not match", password+"12@/", user.getPassword());
+		assertFalse("Cant set valid password", passwordDoTestException(user, password + "12@/"));
+		assertEquals("Password does not match", password + "12@/", user.getPassword());
 	}
 
-	public boolean passwordDoTestException(User user, String password) { // OK, dalik, 11.8.2016
+	public boolean passwordDoTestException(User user, String password) { // OK,
+																			// dalik,
+																			// 11.8.2016
 		try {
 			user.setPassword(password);
 			return false;
 		} catch (PasswordCheckException e) {
-			System.out.println("** Password check exception: "+e.getMessage()+ " (is OK)");
+			System.out.println("** Password check exception: " + e.getMessage() + " (is OK)");
 			return true;
 		}
 	}
-	
+
 	@Test
 	public void birthDateTest() { // set birth date
 		User user = TestHelper.nonParaConstructor(User.class);
@@ -105,7 +108,7 @@ public class UserEntityTest {
 		user.setBirthDate(birthDate);
 		assertEquals("Birthdate does not match", user.getBirthDate(), birthDate);
 	}
-	
+
 	// TODO test string birth date
 
 	@Test
@@ -137,13 +140,14 @@ public class UserEntityTest {
 		role = UserRole.ADMIN;
 		user.setRole(role);
 		assertEquals("role not equal", user.getRole(), role);
-	} 
-	
-	@Test
-	public void equalsTest() {
-		User user = TestHelper.nonParaConstructor(User.class);
-		
-		
 	}
+
+	// TODO
+	// @Test
+	// public void equalsTest() {
+	// User user = TestHelper.nonParaConstructor(User.class);
+	//
+	//
+	// }
 
 }
