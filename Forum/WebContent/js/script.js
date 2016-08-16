@@ -78,6 +78,7 @@ $( document ).ready(function() {
  * Show block dialog
  * Administrative option
  * @param ident an unique ID of entity to be blocked
+ * @param callback an function to be called after success ajax (function (response, ident))
  * @returns void
  * @author Dalibor Adamcik
  */
@@ -135,23 +136,19 @@ function blockCommonDlg_DoBlock()
  * Called after success of ajax call for block
  */
 function blockCommonDlg_BlockSucces(response) {
-	console.log(response);
+	console.log("blockCommonDlg_BlockSucces response:", response);
 	try
 	{
 		var $dlg = $('#blockCommonDlg');
-		var cbc = $dlg.data('calltome');
-		console.log(cbc);
-		window[cbc](response, $blockDlg.data('ident'));
+		if($dlg.data('calltome')!=undefined)
+		$dlg.data('calltome')(response, $dlg.data('ident'));
 	}
-	catch(err) {console.log("cant call callback");}
-	alert("TODO: not yet implemented / script.js: blockCommonDlg_BlockSucces();");	
+	catch(err) {console.log("cant call callback", err);}
 }
 
-function bajkolajko(a,b)
+function bajkolajko(aber, burde)
 {
-	alert(a);
-	alert(b);
-
+	console.log("callback", aber, burde);
 }
 
 
