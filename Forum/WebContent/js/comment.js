@@ -146,7 +146,7 @@ function commentMenuPopup(ident) {
 	
 	var e = window.event;
 	$commentMenu.css({'top':e.pageY-50,'left':e.pageX, 'position':'absolute', 'border':'1px solid black', 'padding':'5px'});
-	var owner = $('#comment_'+commentMenuChildID).data("owner");
+	var owner = $('#ent_'+commentMenuChildID).data("owner");
 
 	console.log(user.id, owner);
 	if(user.id!=owner && user.role!='ADMIN')
@@ -249,5 +249,6 @@ function commentRemoveDlgPopup() {
  */
 function commentRemoveDlgRemove() {
 	// TODO not yet implemented
+	alert("not yet implemented");
 	$commentRemoveDlg.dialog('close');
 }

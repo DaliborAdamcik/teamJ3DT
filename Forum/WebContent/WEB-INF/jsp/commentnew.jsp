@@ -32,7 +32,7 @@
 
 
 <script id="commentTemplate" type="text/template">
-{{#comments}}<li id="comment_{{id}}" data-owner="{{#owner}}{{id}}{{/owner}}">
+{{#comments}}<li id="ent_{{id}}" data-owner="{{#owner}}{{id}}{{/owner}}">
 	<button type="button" class="close commentmenucls" aria-hidden="true" onclick="commentMenuPopup('{{id}}');">&Xi;</button>
 	
 	<div class="commenterImage">
