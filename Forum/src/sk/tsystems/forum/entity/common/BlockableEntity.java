@@ -37,4 +37,13 @@ public abstract class BlockableEntity extends CommonEntity {
 	public final void setBlocked(Blocked blocked) {
 		this.blocked = blocked;
 	}
+	
+	/**
+	 * Check blocked is set
+	 * @return true if blocked otherwise false
+	 */
+	public final boolean isBlocked()
+	{
+		return !this.blocked.equals(null); 
+	}
 }
