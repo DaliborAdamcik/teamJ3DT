@@ -107,11 +107,6 @@ public class CommentJPATest {
 
 		int commentId = randomComment.getId();
 
-		Theme newTheme = new Theme(TestHelper.randomString(20), null, comment, owner, false);
-
-		themeService.addTheme(newTheme);
-		toRemove.add(newTheme);
-
 		commentservice.updateComment(randomComment);
 
 		assertEquals("BAD COMMENT ID", randomComment.getId(), commentId);
@@ -119,7 +114,7 @@ public class CommentJPATest {
 		Comment updatedComment = commentservice.getComment(randomComment.getId());
 
 		assertNotNull("Selecting from database failed", updatedComment);
-		assertEquals("Bad topic", updatedComment.getTheme().getId(), newTheme.getId());
+		assertEquals("Bad topic", updatedComment.getTheme().getId(), theme.getId());
 		assertEquals("BAD COMMENT ID", randomComment.getId(), commentId);
 	}
 
