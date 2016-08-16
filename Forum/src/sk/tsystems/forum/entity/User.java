@@ -226,13 +226,13 @@ public class User extends BlockableEntity {
 		if (!realName.equals(null)) {
 			this.realName = realName;
 		} else {
-			throw new UserEntityException("real name missing");
+			throw new UserEntityException("real name is missing");
 		}
 	}
 
 	public boolean checkPassword(String password) throws PasswordCheckException {
 		if (password.equals(null)) {
-			throw new PasswordCheckException();
+			throw new PasswordCheckException("password is missing");
 		}
 
 		if (password.equals(this.password)) {
