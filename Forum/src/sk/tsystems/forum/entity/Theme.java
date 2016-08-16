@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
+import sk.tsystems.forum.helper.exceptions.CommonEntityException;
 
 @Entity
 @Table(name = "THEME")
@@ -46,8 +47,11 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	@Column(name = "ISPUBLIC", nullable = false)
 	private boolean isPublic;
 
-	public Theme(String name, Topic topic, String description, User author, boolean isPublic) {
+	public Theme(String name, Topic topic, String description, User author, boolean isPublic) throws CommonEntityException {
 		this();
+		if(name==null || topic==null || description==null || author==null)
+			throw new CommonEntityException("Parameters in constructor cant be null", new NullPointerException("Someone didnt work properly."));
+			
 		setName(name);
 		setTopic(topic);
 		setDescription(description);

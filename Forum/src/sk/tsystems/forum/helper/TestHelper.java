@@ -9,7 +9,10 @@ import java.util.Random;
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.entity.common.CommonEntity;
+import sk.tsystems.forum.helper.exceptions.CommonEntityException;
 import sk.tsystems.forum.service.jpa.CommentJPA;
+import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
@@ -50,31 +53,17 @@ public class TestHelper {
 	 * 
 	 * @return true if successful, false otherwise
 	 */
-	@SuppressWarnings("deprecation")
 	public static boolean removeTemporaryObjects(List<Object> listOfTemporaryObjects) {
-		UserJPA userservice = new UserJPA();
-		CommentJPA commentservice = new CommentJPA();
-		TopicJPA topicservice = new TopicJPA();
-		System.out.println(listOfTemporaryObjects);
-
-		for (Object object : listOfTemporaryObjects) {
-			if (object.getClass().equals(User.class)) {
-
-				userservice.removeUser(userservice.getUser(((User) object).getId()));
-				System.out.print(object + " deleted");
+		try(JpaConnector jpa = new JpaConnector())
+		{
+			for (Object object : listOfTemporaryObjects) {
+				if(!(object instanceof CommonEntity))
+					continue;
+				jpa.remove(object);
 			}
-			if (object.getClass().equals(Topic.class)) {
-				topicservice.removeTopic(topicservice.getTopic(((Topic) object).getId()));
-				System.out.print(object + " deleted");
-			}
-			if (object.getClass().equals(Comment.class)) {
-				commentservice.removeComment(commentservice.getComment(((Comment) object).getId()));
-				System.out.print(object + " deleted");
-			}
-
 		}
 		// listOfTemporaryObjects.clear();
-		return true;
+		return true; // TODO RZYAAAA
 	}
 
 	/**

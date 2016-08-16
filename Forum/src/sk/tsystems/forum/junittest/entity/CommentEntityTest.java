@@ -32,9 +32,8 @@ public class CommentEntityTest {
 		isPublic = false;
 		
 		topic = new Topic(name, isPublic);
-		theme = new Theme("theme", topic, comment, owner, isPublic);
 		owner = new User(name, pass, TestHelper.randomDate(), "Tester");
-		
+		theme = new Theme("theme", topic, comment, owner, isPublic);
 	}
 	
 	@Test

@@ -11,43 +11,53 @@ import org.junit.Test;
 
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
+import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
+import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
+import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class CommentJPATest {
 	private CommentJPA commentservice;
 	private UserJPA userservice;
 	private ThemeJPA themeService;
+	private TopicJPA topicService;
 	private String comment;
 	private Theme theme;
 	private User owner;
+	private Topic topic;
 	private boolean isPublic;
 	private List<Object> toRemove;
 
 	@Before
 	public void setUp() throws Exception {
+		toRemove = new ArrayList<>();
 		commentservice = new CommentJPA();
 		userservice = new UserJPA();
 		themeService = new ThemeJPA();
-		comment = TestHelper.randomString(20);
-		theme = new Theme(TestHelper.randomString(20), null, comment, owner, false);
-		owner = new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+"@/*", TestHelper.randomDate(), TestHelper.randomString(20));
-		isPublic = false;
-		toRemove = new ArrayList<>();
-		userservice.addUser(owner);
+		topicService = new TopicJPA();
 		
+		
+		topic = new Topic(TestHelper.randomString(20), true);
+		topicService.addTopic(topic);
+		
+		comment = TestHelper.randomString(20);
+		owner = new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+"@/*", TestHelper.randomDate(), TestHelper.randomString(20));
+		theme = new Theme(TestHelper.randomString(20), topic, comment, owner, false);
+		isPublic = false;
+		userservice.addUser(owner);
 		themeService.addTheme(theme);
-						
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		toRemove.add(owner);
 		toRemove.add(theme);
+		toRemove.add(topic);
+		toRemove.add(owner);
 		TestHelper.removeTemporaryObjects(toRemove);
 	}
 

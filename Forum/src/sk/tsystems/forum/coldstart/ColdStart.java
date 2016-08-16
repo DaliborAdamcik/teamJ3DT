@@ -8,7 +8,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.helper.exceptions.UserEntityException;
+import sk.tsystems.forum.helper.exceptions.CommonEntityException;
 import sk.tsystems.forum.service.BlockedService;
 import sk.tsystems.forum.service.CommentService;
 import sk.tsystems.forum.service.ThemeService;
@@ -42,7 +42,7 @@ public class ColdStart {
 		this.blockedService = new BlockedJPA();
 	}
 
-	public void run() throws UserEntityException {
+	public void run() throws CommonEntityException {
 		// as a first we drop all old data and create new structure for database
 		try(JpaConnector connJPA = new JpaConnector())
 		{
@@ -112,7 +112,7 @@ public class ColdStart {
 		userService.updateUser(banned);
 	}
 	
-	public void jankaInitialize(User user){
+	public void jankaInitialize(User user) throws CommonEntityException {
 		Topic topic = new Topic("Lietadla", true);
 		topicService.addTopic(topic);
 		
@@ -127,7 +127,7 @@ public class ColdStart {
 
 	}
 	
-	public void janoInitialize(User user){
+	public void janoInitialize(User user) throws CommonEntityException {
 		Topic topic = new Topic("Auta", true);
 		topicService.addTopic(topic);
 		
@@ -142,7 +142,7 @@ public class ColdStart {
 
 	} 
 	
-	public void jozoInitialize(User user){
+	public void jozoInitialize(User user) throws CommonEntityException {
 		Topic topic = new Topic("Motorky", true);
 		topicService.addTopic(topic);
 		
@@ -157,7 +157,7 @@ public class ColdStart {
 
 	}
 	
-	public void daliborInitialize(User user){	
+	public void daliborInitialize(User user) throws CommonEntityException {	
 		Topic topic = new Topic("Vlaky", true);
 		topicService.addTopic(topic);
 		
@@ -171,7 +171,7 @@ public class ColdStart {
 		commentService.addComment(new Comment("Ja som si tam zodral hrb", theme2, user, true));
 	}
 	
-	public void tomasInitialize(User user){
+	public void tomasInitialize(User user) throws CommonEntityException {
 		Topic topic = new Topic("Tazke stroje", true);
 		topicService.addTopic(topic);
 		
@@ -185,7 +185,7 @@ public class ColdStart {
 		commentService.addComment(new Comment("Skus obuvnicke kladivo...", theme2, user, true));	
 	}
 	
-	public void topicUserInitialize(User user) {
+	public void topicUserInitialize(User user)  throws CommonEntityException {
 		Topic topic = new Topic("Test Theme", true);
 		topicService.addTopic(topic);
 		

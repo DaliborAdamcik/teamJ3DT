@@ -138,5 +138,12 @@ public class UserEntityTest {
 		user.setRole(role);
 		assertEquals("role not equal", user.getRole(), role);
 	} 
+	
+	@Test
+	public void equalsTest() {
+		User user = TestHelper.nonParaConstructor(User.class);
+		
+		
+	}
 
 }

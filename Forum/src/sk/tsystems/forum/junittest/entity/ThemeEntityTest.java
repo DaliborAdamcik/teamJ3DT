@@ -11,6 +11,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.exceptions.CommonEntityException;
 
 public class ThemeEntityTest {
 	
@@ -36,7 +37,7 @@ public class ThemeEntityTest {
 	}
 
 	@Test
-	public void getNameTest() {
+	public void getNameTest() throws CommonEntityException {
 		Theme randomTheme = new Theme(name, topic, description, author, isPublic);
 		String testName = randomTheme.getName();
 
@@ -44,7 +45,7 @@ public class ThemeEntityTest {
 	}
 	
 	@Test
-	public void setNameTest() {
+	public void setNameTest() throws CommonEntityException {
 		Theme randomTheme = new Theme(name, topic, description, author, isPublic);
 		randomTheme.setName(name);
 		String testName = randomTheme.getName();
@@ -53,7 +54,7 @@ public class ThemeEntityTest {
 	}
 	
 	@Test
-	public void isPublic() {
+	public void isPublic()  throws CommonEntityException {
 		Theme randomTheme = new Theme(name, topic, description, author, isPublic);
 		boolean testIsPublic = randomTheme.isIsPublic();
 
@@ -61,7 +62,7 @@ public class ThemeEntityTest {
 	}
 	
 	@Test
-	public void setPublic() {
+	public void setPublic()  throws CommonEntityException {
 		Theme randomTheme = new Theme(name, topic, description, author, isPublic);
 		randomTheme.setPublic(isPublic);
 		boolean testIsPublic = randomTheme.isIsPublic();
@@ -70,7 +71,7 @@ public class ThemeEntityTest {
 	}
 	
 	@Test
-	public void getCreationDate() {
+	public void getCreationDate()  throws CommonEntityException {
 		Date creationDate = new Date();
 		Theme randomTheme = new Theme(name, topic, description, author, isPublic);
 		assertEquals("Bad creation date", creationDate.getTime()/100, randomTheme.getCreated().getTime()/100);
