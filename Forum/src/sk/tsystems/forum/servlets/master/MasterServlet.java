@@ -7,10 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.loader.collection.OneToManyJoinWalker;
 
 import sk.tsystems.forum.entity.Topic;
-import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.BlockHelper;
 import sk.tsystems.forum.helper.ServletHelper;
@@ -34,16 +32,8 @@ public abstract class MasterServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("**** Master SERVLET initialization *****"); // TODO
-																		// only
-																		// for
-																		// debug
-																		// purposes,
-																		// please
-																		// remove
-																		// in
-																		// production
-																		// mode
+		// TODO only for debug purposes, please remove in production mode
+		System.out.println("**** Master SERVLET initialization *****"); 
 		ServletHelper servletHelper = new ServletHelper(request);
 		// Put all services we need to use		
 		servletHelper.setService(new UserJPA()); 
@@ -54,7 +44,11 @@ public abstract class MasterServlet extends HttpServlet {
 
 		if (servletHelper.getSessionRole() == UserRole.ADMIN) {
 			// block and unblock
-			blockAndUnblock(request, servletHelper);
+			if(blockAndUnblock(request, servletHelper))
+			{
+				response.getWriter().print("blocked");
+				return;
+			}
 			// mark/unmark object as public
 			mark(request, servletHelper);
 			// promote user
@@ -73,14 +67,14 @@ public abstract class MasterServlet extends HttpServlet {
 											// case of any situation
 	}
 
-	private void blockAndUnblock(HttpServletRequest request, ServletHelper servletHelper) {
+	private boolean blockAndUnblock(HttpServletRequest request, ServletHelper servletHelper) {
 		try {
 			String blockID;
 			String blockReason;
 			if ((blockID = request.getParameter("block")) != null
 					&& (blockReason = request.getParameter("block_reason")) != null) {
 				int idOfObjectToBeBlocked = Integer.parseInt(blockID);
-				BlockHelper.block(idOfObjectToBeBlocked, blockReason, servletHelper.getLoggedUser());
+				return BlockHelper.block(idOfObjectToBeBlocked, blockReason, servletHelper.getLoggedUser());
 			}
 			if ((blockID = request.getParameter("unblock")) != null) {
 				int idOfObjectToBeUnbanned = Integer.parseInt(blockID);
@@ -90,6 +84,7 @@ public abstract class MasterServlet extends HttpServlet {
 		} catch (NumberFormatException e) {
 			System.err.println("*****Master Servlet block Exception: " + e.getMessage());
 		}
+		return false;
 	}
 
 	private void promoteUser(HttpServletRequest request, ServletHelper servletHelper) {
