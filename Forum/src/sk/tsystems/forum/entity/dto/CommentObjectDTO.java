@@ -15,8 +15,11 @@ public class CommentObjectDTO {
 
 	public static CommentObjectDTO getDTO(Comment comment) {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.getEntityManager().createQuery("SELECT NEW sk.tsystems.forum.coldstart.dto.CommentObjectDTO(count(c), sum(c.rating)) FROM CommentRating c "
+			return jpa.getEntityManager().createQuery("SELECT NEW sk.tsystems.forum.entity.dto.CommentObjectDTO(count(c), sum(c.rating)) FROM CommentRating c "
 					+ "WHERE c.comment = :comment GROUP BY c.comment", CommentObjectDTO.class).setParameter("comment", comment).getSingleResult();
+		}
+		catch(javax.persistence.NoResultException e) {
+			return new CommentObjectDTO(0, 0);
 		}
 	}
 

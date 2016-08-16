@@ -27,10 +27,13 @@ public class ThemeObjectDTO {
 		try (JpaConnector jpa = new JpaConnector()) {
 			return jpa.getEntityManager()
 					.createQuery(
-							"SELECT NEW sk.tsystems.forum.coldstart.dto.ThemeObjectDTO(sum(c.rating), count(c.rating), count(c.comment), count(c.owner), max(c.created)) FROM CommentRating c "
+							"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(sum(c.rating), count(c.rating), count(c.comment), count(c.owner), max(c.created)) FROM CommentRating c "
 									+ "WHERE c.theme = :theme GROUP BY c.theme",
 							ThemeObjectDTO.class)
 					.setParameter("theme", theme).getSingleResult();
+		}
+		catch(javax.persistence.NoResultException e) {
+			return new ThemeObjectDTO(0, 0, 0, 0, null);
 		}
 	}
 
