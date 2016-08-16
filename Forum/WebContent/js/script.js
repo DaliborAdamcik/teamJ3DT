@@ -81,10 +81,11 @@ $( document ).ready(function() {
  * @returns void
  * @author Dalibor Adamcik
  */
-function blockCommonDlgPopup(ident)
+function blockCommonDlgPopup(ident, callback)
 {
 	var $blockDlg = $('#blockCommonDlg'); 
 	$blockDlg.data('ident', ident);
+	$blockDlg.data('calltome', callback);
 	$blockDlg.find("input").val('');
 	$blockDlg.dialog('open');
 }
@@ -135,8 +136,24 @@ function blockCommonDlg_DoBlock()
  */
 function blockCommonDlg_BlockSucces(response) {
 	console.log(response);
+	try
+	{
+		var $dlg = $('#blockCommonDlg');
+		var cbc = $dlg.data('calltome');
+		console.log(cbc);
+		window[cbc](response, $blockDlg.data('ident'));
+	}
+	catch(err) {console.log("cant call callback");}
 	alert("TODO: not yet implemented / script.js: blockCommonDlg_BlockSucces();");	
 }
+
+function bajkolajko(a,b)
+{
+	alert(a);
+	alert(b);
+
+}
+
 
 /**
  * this is called after ajax failure response
