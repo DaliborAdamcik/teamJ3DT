@@ -223,11 +223,22 @@ public class User extends BlockableEntity {
 	 * @throws UserEntityException
 	 */
 	public void setRealName(String realName) throws UserEntityException {
-		if (realName != null) {
+		if (!realName.equals(null)) {
 			this.realName = realName;
 		} else {
 			throw new UserEntityException("real name missing");
 		}
+	}
+
+	public boolean checkPassword(String password) throws PasswordCheckException {
+		if (password.equals(null)) {
+			throw new PasswordCheckException();
+		}
+
+		if (password.equals(this.password)) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
