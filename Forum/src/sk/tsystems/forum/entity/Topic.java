@@ -1,17 +1,14 @@
 package sk.tsystems.forum.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 
 @Entity
 @Table(name = "TOPIC")
-public class Topic extends BlockableEntity {
+public class Topic extends BlockableEntity implements Comparable<Topic>{
 
 	/**
 	 * Name of the topic
@@ -84,4 +81,29 @@ public class Topic extends BlockableEntity {
 		this.isPublic = isPublic;
 	}
 
+	/**
+	 * Overrides java.lang.Object.equals 
+	 *
+	 * @param object
+	 * @return boolean
+	 */	
+	public boolean equals(Object object) {
+		if (object instanceof Topic) {
+			if (this.getId() == ((Topic) object).getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Implements Comparable<Topic>.compareTo
+	 * 
+	 * @param Topic
+	 * @return integer
+	 */
+	@Override
+	public int compareTo(Topic o) {
+		return this.name.compareTo(o.getName());
+	}
 }

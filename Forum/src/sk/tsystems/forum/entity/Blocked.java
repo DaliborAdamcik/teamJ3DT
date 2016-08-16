@@ -1,7 +1,5 @@
 package sk.tsystems.forum.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -9,7 +7,7 @@ import javax.persistence.OneToOne;
 import sk.tsystems.forum.entity.common.CommonEntity;
 
 @Entity
-public class Blocked extends CommonEntity{
+public class Blocked extends CommonEntity implements Comparable<Blocked>{
 
 	/**
 	 * User(admin) that created the block
@@ -70,4 +68,29 @@ public class Blocked extends CommonEntity{
 		this.reason = reason;
 	}
 
+	/**
+	 * Overrides java.lang.Object.equals 
+	 *
+	 * @param object
+	 * @return boolean
+	 */	
+	public boolean equals(Object object) {
+		if (object instanceof Blocked) {
+			if (this.getId() == ((Blocked) object).getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Implements Comparable<Blocked>.compareTo
+	 * 
+	 * @param Blocked
+	 * @return integer
+	 */
+	@Override
+	public int compareTo(Blocked b) {
+		return this.reason.compareTo(b.getReason());
+	}
 }

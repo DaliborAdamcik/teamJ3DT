@@ -12,7 +12,7 @@ import sk.tsystems.forum.service.jpa.JpaConnector;
 
 @Entity
 @Table(name = "COMMENT_RATING")
-public class CommentRating extends CommonEntity {
+public class CommentRating extends CommonEntity implements Comparable<CommentRating> {
 
 	@Column(name = "RATING", nullable = false)
 	private int rating;
@@ -86,5 +86,32 @@ public class CommentRating extends CommonEntity {
 	
 	public void unVote() {
 		updateRating(0);
+	}
+	
+
+	/**
+	 * Overrides java.lang.Object.equals 
+	 *
+	 * @param object
+	 * @return boolean
+	 */	
+	public boolean equals(Object object) {
+		if (object instanceof CommentRating) {
+			if (this.getId() == ((CommentRating) object).getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Implements Comparable<CommentRating>.compareTo
+	 * 
+	 * @param CommentRating
+	 * @return integer
+	 */
+	@Override
+	public int compareTo(CommentRating r) {
+		return this.rating - r.getRating();
 	}
 }

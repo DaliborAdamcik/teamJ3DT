@@ -15,7 +15,7 @@ import sk.tsystems.forum.entity.dto.CommentObjectDTO;
 
 @Entity
 @Table(name = "COMMENTARY")
-public class Comment extends BlockableEntity {
+public class Comment extends BlockableEntity implements Comparable<Comment> {
 
 	/**
 	 * comment
@@ -124,5 +124,31 @@ public class Comment extends BlockableEntity {
 
 	public CommentObjectDTO getRating(){
 		return CommentObjectDTO.getDTO(this);
+	}
+	
+	/**
+	 * Overrides java.lang.Object.equals 
+	 *
+	 * @param object
+	 * @return boolean
+	 */	
+	public boolean equals(Object object) {
+		if (object instanceof Comment) {
+			if (this.getId() == ((Comment) object).getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Implements Comparable<Comment>.compareTo
+	 * 
+	 * @param Comment
+	 * @return integer
+	 */
+	@Override
+	public int compareTo(Comment c) {
+		return this.comment.compareTo(c.getComment());
 	}
 }

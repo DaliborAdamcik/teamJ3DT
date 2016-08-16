@@ -11,7 +11,7 @@ import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
 
 @Entity
 @Table(name = "THEME")
-public class Theme  extends BlockableEntity {
+public class Theme extends BlockableEntity implements Comparable<Theme> {
 
 	/**
 	 * name of the theme
@@ -155,5 +155,31 @@ public class Theme  extends BlockableEntity {
 	
 	public ThemeObjectDTO getRating() {
 		return ThemeObjectDTO.getDTO(this);
+	}
+
+	/**
+	 * Overrides java.lang.Object.equals 
+	 *
+	 * @param object
+	 * @return boolean
+	 */	
+	public boolean equals(Object object) {
+		if (object instanceof Theme) {
+			if (this.getId() == ((Theme) object).getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Implements Comparable<Theme>.compareTo
+	 * 
+	 * @param Theme
+	 * @return integer
+	 */
+	@Override
+	public int compareTo(Theme o) {
+		return this.name.compareTo(o.getName());
 	}
 }

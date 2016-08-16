@@ -23,7 +23,7 @@ import sk.tsystems.forum.helper.exceptions.UserEntityException;
 
 @Entity
 @Table(name = "JPA_USER")
-public class User extends BlockableEntity {
+public class User extends BlockableEntity implements Comparable<User> {
 
 	/**
 	 * User Name
@@ -230,6 +230,13 @@ public class User extends BlockableEntity {
 		}
 	}
 
+	/**
+	 * Check passwords
+	 * 
+	 * @param password
+	 * @return boolean
+	 * @throws PasswordCheckException
+	 */
 	public boolean checkPassword(String password) throws PasswordCheckException {
 		if (this.password.equals(password)) {
 			return true;
@@ -243,4 +250,29 @@ public class User extends BlockableEntity {
 				password, birthDate, realName, role, topics);
 	}
 
+	/**
+	 * Overrides java.lang.Object.equals 
+	 *
+	 * @param object
+	 * @return boolean
+	 */	
+	public boolean equals(Object object) {
+		if (object instanceof User) {
+			if (this.getId() == ((User) object).getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Implements Comparable<User>.compareTo
+	 * 
+	 * @param User
+	 * @return integer
+	 */
+	@Override
+	public int compareTo(User user) {
+		return this.userName.compareTo(user.getUserName());
+	}
 }
