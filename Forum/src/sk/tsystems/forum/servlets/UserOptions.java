@@ -19,6 +19,7 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
+import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -89,7 +90,12 @@ public class UserOptions extends MasterServlet {
 				loggedUser.setBirthDate(newDate);
 			}
 			if (newRealName != null) {
-				loggedUser.setRealName(newRealName);
+				try {
+					loggedUser.setRealName(newRealName);
+				} catch (UserEntityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			servletHelper.getUserService().updateUser(loggedUser);
 			
