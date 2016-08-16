@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import sk.tsystems.forum.coldstart.dto.CommentObjectDTO;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 
 @Entity
@@ -36,12 +37,6 @@ public class Comment extends BlockableEntity {
 	@ManyToOne
 	//@JoinColumn(name = "USERID")
 	private User owner;
-
-	/**
-	 * rating of comment (default = 0) modified by up / down votes
-	 */
-	@Column(name = "RATING", nullable = false)
-	private int rating;
 	
 	/**
 	 * public status
@@ -62,7 +57,6 @@ public class Comment extends BlockableEntity {
 		this.theme = theme;
 		this.owner = owner;
 		setComment(comment);
-		setRating(0);
 		setPublic(isPublic);
 	}
 
@@ -109,24 +103,7 @@ public class Comment extends BlockableEntity {
 		return owner;
 	}
 	
-	/**
-	 * Getter for rating
-	 * 
-	 * @return rating
-	 */
-	public int getRating() {
-		return rating;
-	}
 
-	/**
-	 * Setter for rating
-	 * 
-	 * @param rating
-	 */
-	public void setRating(int rating) {
-		this.rating = rating;
-	}
-	
 	/**
 	 * Getter for public
 	 * 
@@ -145,4 +122,7 @@ public class Comment extends BlockableEntity {
 		this.isPublic = isPublic;
 	}
 
+	public CommentObjectDTO getRating(){
+		return CommentObjectDTO.getDTO(this);
+	}
 }
