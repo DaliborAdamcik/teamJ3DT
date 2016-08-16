@@ -19,6 +19,7 @@ import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
+import sk.tsystems.forum.helper.exceptions.UserEntityException;
 
 @Entity
 @Table(name = "JPA_USER")
@@ -27,7 +28,7 @@ public class User extends BlockableEntity {
 	/**
 	 * User Name
 	 */
-	@Column(name = "USERNAME", nullable = false, unique=true)
+	@Column(name = "USERNAME", nullable = false, unique = true)
 	private String userName;
 
 	/**
@@ -66,9 +67,9 @@ public class User extends BlockableEntity {
 	// */
 	// @OneToMany
 	// List<Comment> comments; // TODO implementovat list ak nam ho bude treba
-	
 
-	public User(String userName, String password, Date birthDate, String realName) throws NickNameException, PasswordCheckException {
+	public User(String userName, String password, Date birthDate, String realName)
+			throws NickNameException, PasswordCheckException, UserEntityException {
 		this();
 		setUserName(userName);
 		setPassword(password);
@@ -76,10 +77,11 @@ public class User extends BlockableEntity {
 		setRealName(realName);
 	}
 
-	public User(String userName, String password, String birthDate, String realName) throws NickNameException, PasswordCheckException, BadDateException {
+	public User(String userName, String password, String birthDate, String realName)
+			throws NickNameException, PasswordCheckException, BadDateException, UserEntityException {
 		this(userName, password, UserHelper.stringToDate(birthDate), realName);
 	}
-	
+
 	/**
 	 * Constructor for JPA
 	 */
@@ -131,7 +133,7 @@ public class User extends BlockableEntity {
 	 * Setter for userName
 	 * 
 	 * @param userName
-	 * @throws NickNameException 
+	 * @throws NickNameException
 	 */
 	public void setUserName(String userName) throws NickNameException {
 		UserHelper.nickNameValidator(userName);
@@ -151,7 +153,7 @@ public class User extends BlockableEntity {
 	 * Setter for password
 	 * 
 	 * @param password
-	 * @throws PasswordCheckException 
+	 * @throws PasswordCheckException
 	 */
 	public void setPassword(String password) throws PasswordCheckException {
 		UserHelper.passwordOverallControll(password);
@@ -177,10 +179,11 @@ public class User extends BlockableEntity {
 	}
 
 	/**
-	 * Setter for birthDate
-	 * This setter parses string to date and saves (if conversion is sucess)
+	 * Setter for birthDate This setter parses string to date and saves (if
+	 * conversion is sucess)
+	 * 
 	 * @param birthDate
-	 * @throws BadDateException 
+	 * @throws BadDateException
 	 */
 	public void setBirthDate(String birthDate) throws BadDateException {
 		this.birthDate = UserHelper.stringToDate(birthDate);
@@ -217,10 +220,14 @@ public class User extends BlockableEntity {
 	 * Setter for realName
 	 * 
 	 * @param RealName
+	 * @throws UserEntityException
 	 */
-	public void setRealName(String realName) {
-		// TODO do some check here
-		this.realName = realName;
+	public void setRealName(String realName) throws UserEntityException {
+		if (realName != null) {
+			this.realName = realName;
+		} else {
+			throw new UserEntityException("real name missing");
+		}
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
+import sk.tsystems.forum.helper.exceptions.UserEntityException;
 
 public class UserEntityTest {
 
@@ -58,7 +59,7 @@ public class UserEntityTest {
 	
 	
 	@Test
-	public void RealNameTest() {
+	public void RealNameTest() throws UserEntityException {
 		User user = TestHelper.nonParaConstructor(User.class);
 		assertNotNull("User is badly initialized", user);
 
