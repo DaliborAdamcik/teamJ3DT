@@ -2,6 +2,7 @@ package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.ServletHelper;
@@ -62,41 +64,21 @@ public class Welcome extends MasterServlet {
 			}
 		}
 		
-		TopicService topicService = helpser.getTopicService();
+		HashMap<Topic, List<Theme>> topicThemeList= new HashMap<>();
 		
-		List<Topic> topics = new ArrayList<>();
-		topics = topicService.getTopics();
-		request.setAttribute("topics", topics.iterator());
+		for (Topic topic : helpser.getTopicService().getTopics()) {
+			topicThemeList.put(topic, helpser.getThemeService().getTheme(topic));
+		}
+		
+		System.out.println(topicThemeList);
+		
+		
+		request.setAttribute("topthemlis", topicThemeList);
 
 		// Atribut logged user, vyuizity pri jsp kde je menu
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
-
-		// TODO presunute do JSP, uz to nebude treba
-		// response.getWriter().printf("<a
-		// href=\"Welcome?parameter=logout\">Logout</a>");
-
-	//	if (helpser.getLoggedUser() != null)
-
-			// TODO netreba to uz pravdepodobne
-			// response.getWriter().print("<h1>Logged: " +
-			// helpser.getLoggedUser().getUserName() + "</h1>");
-
-		//	request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
-
-
-			// response.getWriter().printf("<br><b>TOPICS:</b><br><br>");
-			//
-			// for (Topic t : topicService.getTopics()) {
-			// response.getWriter().printf("\nTopic: <a
-			// href=\"Comment?topicid=%d\">%s<a><br>", t.getId(), t.getName());
-			// }
-
-			// TODO toto sa uz asi nebude pouzivat, uz je to v inom jsp
-			// request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request,
-			// response);		
-
 	}
 
 	/**
