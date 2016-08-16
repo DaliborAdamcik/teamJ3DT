@@ -3,6 +3,7 @@ package sk.tsystems.forum.service.jpa;
 import java.util.List;
 
 import sk.tsystems.forum.entity.Theme;
+import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.service.ThemeService;
 
 /**
@@ -53,4 +54,12 @@ public class ThemeJPA implements ThemeService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Theme> getTheme(Topic topic) {
+		try (JpaConnector jpa = new JpaConnector()) {
+			return jpa.createQuery("select t from Theme t where t.topic = :topic").setParameter("topic", topic).getResultList(); 
+		}
+	}
+	
 }

@@ -3,6 +3,7 @@ package sk.tsystems.forum.service;
 import java.util.List;
 
 import sk.tsystems.forum.entity.Theme;
+import sk.tsystems.forum.entity.Topic;
 
 public interface ThemeService {
 	/**
@@ -43,4 +44,11 @@ public interface ThemeService {
 	 * @return List of all themes
 	 */
 	List<Theme> getTheme();
+	
+	/**
+	 * Reads list of all themes for topic from the database
+	 * 
+	 * @return List of themes by themes
+	 */
+	public List<Theme> getTheme(Topic topic);
 }
