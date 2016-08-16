@@ -231,11 +231,7 @@ public class User extends BlockableEntity {
 	}
 
 	public boolean checkPassword(String password) throws PasswordCheckException {
-		if (password.equals(null)) {
-			throw new PasswordCheckException("password is missing");
-		}
-
-		if (password.equals(this.password)) {
+		if (this.password.equals(password)) {
 			return true;
 		}
 		return false;
