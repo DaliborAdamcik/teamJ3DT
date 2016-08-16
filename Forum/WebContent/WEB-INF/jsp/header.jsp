@@ -38,8 +38,7 @@
 				<div class="collapse navbar-collapse"
 					id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li><a href="/Forum/">Home</a></li>
-						<li><a href="/Forum/">Topics</a></li>
+						<li><a onclick="showWelcomePage();">Topics</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<c:choose>

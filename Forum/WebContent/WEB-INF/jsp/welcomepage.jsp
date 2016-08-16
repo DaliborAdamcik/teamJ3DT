@@ -22,26 +22,20 @@
 
 
 <div class="container" align="center">
-	<h2>TOPICS</h2>
-<div id="topicList" align="left">
-	<c:forEach var="topics" items="${topthemlis}">
-		<h3>${topics.key.getName()}</h3>
-		<div>
-			<c:forEach items="${topics.value}" var="theme">
-				<p><a href="Comment?topicid=${theme.getId()}" class="list-group-item">${theme.getName()}</a></p>
-			</c:forEach>
-		</div>
-	</c:forEach>
-</div>
-
-<!-- <div style='overflow: auto; width: 800px; height: 300px;'>
-
-		<div class="list-group" align="left">
-			<c:forEach items="${topics}" var="topics">
-				<a href="Comment?topicid=${topics.getId()}" class="list-group-item">${topics.getName()}</a>
-			</c:forEach>
-		</div>
-	</div> -->	
+	<div id="topicList" align="left">
+		<c:forEach var="topics" items="${topthemlis}">
+			<h3>${topics.key.getName()}</h3>
+			<div>
+				<c:forEach items="${topics.value}" var="theme">
+					<div class="list-group-item" onclick="loadComments(${theme.getId()});">
+						<a href="Comment?topicid=${theme.getId()}">${theme.getName()}</a> <span>${theme.getAuthor().getUserName()}</span>
+						<p>${theme.getDescription()}</p>
+					</div>
+				</c:forEach>
+			</div>
+		</c:forEach>
+	</div>
+	<!-- <div style='overflow: auto; width: 800px; height: 300px;'></div> -->	
 </div>
 <script type="text/javascript" src="js/welcome.js"></script>
 <script>

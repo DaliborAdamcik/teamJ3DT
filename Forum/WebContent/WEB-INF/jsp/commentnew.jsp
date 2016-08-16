@@ -76,5 +76,4 @@
 
 <script>
 	commentUIinit();
-	loadComments(${themeid});
 </script>

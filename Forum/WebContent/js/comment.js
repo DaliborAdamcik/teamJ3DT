@@ -13,6 +13,9 @@ function loadComments(themeId)
         success: comments2page,
         error: ajaxFailureMessage
     });
+	
+	$("#welcome_pg").hide("slow");
+	$("#comments_pg").show("slow");
 }
 
 /**

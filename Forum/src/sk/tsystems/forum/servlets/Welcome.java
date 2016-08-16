@@ -1,7 +1,6 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.ServletHelper;
-import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
@@ -77,7 +75,12 @@ public class Welcome extends MasterServlet {
 
 		// Atribut logged user, vyuizity pri jsp kde je menu
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
+		response.getWriter().print("<div id=\"welcome_pg\">");
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
+		response.getWriter().print("</div><div id=\"comments_pg\" style=\"display: none;\">");
+		request.getRequestDispatcher("/WEB-INF/jsp/commentnew.jsp").include(request, response);
+		response.getWriter().print("</div>");
+		
 		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 	}
 

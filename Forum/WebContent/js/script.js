@@ -148,4 +148,16 @@ function ajaxFailureMessage(jxhr) {
 	$ajxErrorDlg.dialog('open');
 }
 
-
+function showWelcomePage()
+{
+	var formumname = 'Forum';
+	var loc = window.location.href;
+	loc = loc.substring(loc.indexOf(formumname)+formumname.length).replace('/', '').replace('Welcome', '');
+	if(loc.length>0)
+		window.location.href= "Welcome";
+	else {
+		$("#welcome_pg").show("slow");
+		$("#comments_pg").hide("slow");
+	}
+	return false;
+}
