@@ -71,7 +71,6 @@
   <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Do you want erase this comment?<br/><span id="eraseComment_txt"></span></p>
 </div>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
 <script type="text/javascript" src="js/comment.js"></script>
 
 <script>

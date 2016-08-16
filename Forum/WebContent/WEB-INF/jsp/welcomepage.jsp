@@ -20,6 +20,7 @@
 	</c:choose>
 </div>
 
+<button onclick="editThemeDlgPopup(0);">New theme</button>
 
 <div class="container" align="center">
 	<div id="topicList" align="left">
@@ -37,8 +38,20 @@
 	</div>
 	<!-- <div style='overflow: auto; width: 800px; height: 300px;'></div> -->	
 </div>
+
+<div id="editThemeDlg" title="Edit theme">
+	<p>
+		<label for="editThemeDlg_name">Name</label>
+		<input class="form-control" type="text" placeholder="Name" id="editThemeDlg_name" />
+		<label for="editThemeDlg_desc">Description</label>
+		<input class="form-control" type="text" placeholder="Description" id="editThemeDlg_desc" />
+		<label for="editThemeDlg_pub">Public</label>
+		<input class="form-control"  type="checkbox" id="editThemeDlg_pub" />
+	</p>
+</div>
+
+
 <script type="text/javascript" src="js/welcome.js"></script>
 <script>
 	welcomeUIinit();
-	
 </script>
