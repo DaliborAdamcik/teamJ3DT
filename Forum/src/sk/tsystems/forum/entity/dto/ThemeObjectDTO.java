@@ -1,4 +1,4 @@
-package sk.tsystems.forum.coldstart.dto;
+package sk.tsystems.forum.entity.dto;
 
 import java.util.Date;
 

@@ -10,8 +10,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import sk.tsystems.forum.coldstart.dto.CommentObjectDTO;
 import sk.tsystems.forum.entity.common.BlockableEntity;
+import sk.tsystems.forum.entity.dto.CommentObjectDTO;
 
 @Entity
 @Table(name = "COMMENTARY")

@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
+import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
 
 @Entity
 @Table(name = "THEME")
@@ -33,12 +34,6 @@ public class Theme  extends BlockableEntity {
 	private String description;
 
 	/**
-	 * rating of theme (default = 0) modified by up / down votes
-	 */
-	@Column(name = "RATING", nullable = false)
-	private int rating;
-
-	/**
 	 * author
 	 */
 	//@Column(name = "AUTHOR", nullable = false)
@@ -56,7 +51,7 @@ public class Theme  extends BlockableEntity {
 		setName(name);
 		setTopic(topic);
 		setDescription(description);
-		setRating(0);
+//		setRating(0);
 		setAuthor(author);
 		setPublic(isPublic);
 	}
@@ -123,38 +118,6 @@ public class Theme  extends BlockableEntity {
 	}
 
 	/**
-	 * Getter for rating
-	 * 
-	 * @return rating
-	 */
-	public int getRating() {
-		return rating;
-	}
-
-	/**
-	 * Setter for rating
-	 * 
-	 * @param rating
-	 */
-	public void setRating(int rating) {
-		this.rating = rating;
-	}
-
-	/**
-	 * Rating increase
-	 */
-	public void ratingIncrease() {
-		rating++;
-	}
-
-	/**
-	 * Rating decrease
-	 */
-	public void ratingDecrease() {
-		rating--;
-	}
-
-	/**
 	 * Getter for author
 	 * 
 	 * @return author
@@ -188,5 +151,9 @@ public class Theme  extends BlockableEntity {
 	 */
 	public void setPublic(boolean isPublic) {
 		this.isPublic = isPublic;
+	}
+	
+	public ThemeObjectDTO getRating() {
+		return ThemeObjectDTO.getDTO(this);
 	}
 }

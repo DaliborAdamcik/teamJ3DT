@@ -1,4 +1,4 @@
-package sk.tsystems.forum.coldstart.dto;
+package sk.tsystems.forum.entity.dto;
 
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.service.jpa.JpaConnector;

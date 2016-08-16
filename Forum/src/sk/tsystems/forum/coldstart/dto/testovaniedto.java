@@ -7,6 +7,7 @@ import sk.tsystems.forum.entity.CommentRating;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
+import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
