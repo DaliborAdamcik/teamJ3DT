@@ -15,7 +15,7 @@ import sk.tsystems.forum.service.jpa.JpaConnector;
 public class CommentRating extends CommonEntity {
 
 	@Column(name = "RATING", nullable = false)
-	private CommentRatingEnum rating;
+	private int rating;
 
 	@OneToOne
 	private User owner;
@@ -25,10 +25,10 @@ public class CommentRating extends CommonEntity {
 
 	@ManyToOne
 	private Comment comment;
-
-	public CommentRating(Comment comment, User owner, CommentRatingEnum rating) throws UserEntityException {
+	
+	public CommentRating(Comment comment, User owner, int rating) throws UserEntityException {
 		this();
-		if (comment == null || owner == null || rating.equals(CommentRatingEnum.ZERO))
+		if (comment == null || owner == null || (rating != -1 && rating != 1))
 			throw new UserEntityException("Required fields are not set properly");
 
 		this.rating = rating;
@@ -45,16 +45,8 @@ public class CommentRating extends CommonEntity {
 		super();
 	}
 
-	public CommentRatingEnum getRating() {
+	public int getRating() {
 		return rating;
-	}
-
-	public void setRating(CommentRatingEnum rating) {
-		this.rating = rating;
-
-		try (JpaConnector jpa = new JpaConnector()) {
-			jpa.merge(this);
-		}
 	}
 
 	public User getOwner() {
@@ -75,5 +67,24 @@ public class CommentRating extends CommonEntity {
 					.createQuery("SELECT r FROM CommentRating r WHERE r.owner=:owner AND r.comment=:comment")
 					.setParameter("owner", owner).setParameter("comment", comment).getSingleResult();
 		}
+	}
+
+	private void updateRating(int rating) {
+		this.rating = rating;
+		try (JpaConnector jpa = new JpaConnector()) {
+			jpa.merge(this);
+		}
+	}
+	
+	public void upVote() {
+		updateRating(1);
+	}
+
+	public void downVote() {
+		updateRating(-1);
+	}
+	
+	public void unVote() {
+		updateRating(0);
 	}
 }

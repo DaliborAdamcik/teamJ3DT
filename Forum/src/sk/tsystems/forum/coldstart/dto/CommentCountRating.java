@@ -5,9 +5,9 @@ import sk.tsystems.forum.service.jpa.JpaConnector;
 
 public class CommentCountRating {
 	private long count;
-	private double rating;
+	private long rating;
 	
-	public CommentCountRating(long count, double rating) {
+	public CommentCountRating(long count, long rating) {
 		super();
 		this.count = count;
 		this.rating = rating;
@@ -15,7 +15,7 @@ public class CommentCountRating {
 
 	public static CommentCountRating getDTO(Comment comment) {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.getEntityManager().createQuery("SELECT NEW sk.tsystems.forum.coldstart.dto.CommentCountRating(count(c.comment), avg(c.rating)) FROM CommentRating c "
+			return jpa.getEntityManager().createQuery("SELECT NEW sk.tsystems.forum.coldstart.dto.CommentCountRating(count(c), sum(c.rating)) FROM CommentRating c "
 					+ "WHERE c.comment = :comment GROUP BY c.comment", CommentCountRating.class).setParameter("comment", comment).getSingleResult();
 		}
 	}
@@ -24,7 +24,7 @@ public class CommentCountRating {
 		return count;
 	}
 
-	public double getRating() {
+	public long getRating() {
 		return rating;
 	}
 
