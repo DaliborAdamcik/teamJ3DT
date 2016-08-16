@@ -32,7 +32,7 @@ public class TopicEntityTest {
 
 	@Test
 	public void setNameTest() {
-		Topic randomTopic = new Topic(TestHelper.randomString(20), isPublic);
+		Topic randomTopic = new Topic(name, isPublic);
 		randomTopic.setName(name);
 		String testName = randomTopic.getName();
 
@@ -60,7 +60,7 @@ public class TopicEntityTest {
 	public void getCreationDate() {
 		Date creationDatei = new Date();
 		Topic randomTopic = new Topic(name, isPublic);
-		assertEquals("Bad creation date", creationDatei, randomTopic.getCreated());
+		assertEquals("Bad creation date", creationDatei.getTime()/100, randomTopic.getCreated().getTime()/100);
 	}
 
 }

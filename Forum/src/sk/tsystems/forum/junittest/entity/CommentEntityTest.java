@@ -9,23 +9,32 @@ import org.junit.Test;
 
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
+import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.TestHelper;
 
 
 public class CommentEntityTest {
+	private String name;
+	private String pass;
 	private String comment;
 	private Theme theme;
+	private Topic topic;
 	//private Date creationDate;
 	private User owner;
 	private boolean isPublic;
 	
 	@Before
 	public void setUp() throws Exception {
-		comment = TestHelper.randomString(20);
-		theme = new Theme("theme", null, comment, owner, false);
-		owner = new User("tester", "tester1234/*", TestHelper.randomDate(), "Tester");
+		name = TestHelper.randomString(20,0).toLowerCase();
+		pass = TestHelper.randomString(5,5) + "Aa.1";
+		comment = TestHelper.randomString(20,20);
 		isPublic = false;
+		
+		topic = new Topic(name, isPublic);
+		theme = new Theme("theme", topic, comment, owner, isPublic);
+		owner = new User(name, pass, TestHelper.randomDate(), "Tester");
+		
 	}
 	
 	@Test
@@ -38,7 +47,7 @@ public class CommentEntityTest {
 	
 	@Test
 	public void setCommentTest() {
-		Comment randomComment = new Comment(TestHelper.randomString(20), theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		randomComment.setComment(comment);
 		String testComment = randomComment.getComment();
 

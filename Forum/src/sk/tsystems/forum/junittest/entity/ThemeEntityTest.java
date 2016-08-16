@@ -25,14 +25,14 @@ public class ThemeEntityTest {
 	@Before
 	public void setUp() throws Exception {
 		name = TestHelper.randomString(20,0).toLowerCase();
-		//pass = TestHelper.randomString(10,10) + ".";
-		pass = "AbcdEfgh.123456789";
+		pass = TestHelper.randomString(5,5) + "Aa.1";
 		description = TestHelper.randomString(40);
+		isPublic = false;
 		
 		topic = new Topic(name, isPublic);
 		author = new User(name, pass, TestHelper.randomDate(), name);
 		
-		isPublic = false;
+		
 	}
 
 	@Test
