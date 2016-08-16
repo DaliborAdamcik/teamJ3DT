@@ -28,8 +28,10 @@
 			<h3>${topics.key.getName()}</h3>
 			<div>
 				<c:forEach items="${topics.value}" var="theme">
-					<div class="list-group-item" onclick="loadComments(${theme.getId()});">
-						<a href="Comment?topicid=${theme.getId()}">${theme.getName()}</a> <span>${theme.getAuthor().getUserName()}</span>
+					<div class="list-group-item">
+						<span style="cursor:pointer; text-decoration: underline;" onclick="loadComments(${theme.getId()});">${theme.getName()}</span> 
+						<span>${theme.getAuthor().getUserName()}</span> 
+						<button type="button" class="close thememenucls" aria-hidden="true" onclick="themeMenuPopup(${theme.getId()});">&Xi;</button>
 						<p>${theme.getDescription()}</p>
 					</div>
 				</c:forEach>
@@ -38,9 +40,10 @@
 	</div>
 	<!-- <div style='overflow: auto; width: 800px; height: 300px;'></div> -->	
 </div>
-
+<!-- DO NOT MODIFY / REMOVE -->
 <div id="editThemeDlg" title="Edit theme">
 	<p>
+		<span id="editThemeDlg_ownerInfo"></span>
 		<label for="editThemeDlg_name">Name</label>
 		<input class="form-control" type="text" placeholder="Name" id="editThemeDlg_name" />
 		<label for="editThemeDlg_desc">Description</label>
@@ -49,6 +52,29 @@
 		<input class="form-control"  type="checkbox" id="editThemeDlg_pub" />
 	</p>
 </div>
+<script id="editThemeDlg_ownerInfo_tmpl" type="text/template">
+<dl>
+  <dt>Created by:</dt>
+  <dd>{{#author}}{{userName}}{{/author}}</dd>
+  <dt>Created at:</dt>
+  <dd>{{created}}</dd>
+  <dt>Topic:</dt>
+  <dd>{{#topic}}{{name}}{{/topic}}</dd>
+</dl>
+</script>
+
+<ul id="themeMenu" style="display:none;">
+	<li onclick="themeMenuItemClick('close');"><div>Close menu</div></li>
+	<li onclick="themeMenuItemClick('edit');" class="MenuOwnerOption"><div>Edit</div></li>
+	<li onclick="themeMenuItemClick('remove');" class="MenuOwnerOption"><div>Remove</div></li>
+
+	<li id="commentMenuItemClose" class="MenuAdminOption"><div>Admin options</div>
+	  <ul>
+		<li onclick="themeMenuItemClick('block');" class="MenuAdminOption"><div>Block</div></li>
+		<li onclick="themeMenuItemClick('unblock');" class="MenuAdminOption"><div>UnBlock</div></li>
+	  </ul>
+	</li>
+</ul>
 
 
 <script type="text/javascript" src="js/welcome.js"></script>
