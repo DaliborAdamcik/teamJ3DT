@@ -7,9 +7,11 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.exceptions.CommonEntityException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
@@ -27,7 +29,7 @@ public class UserEntityTest {
 		actualDate = new Date();
 		userName = TestHelper.randomString(20, 0).toLowerCase();
 		realName = TestHelper.randomString(20);
-		password = TestHelper.randomString(20);
+		password = TestHelper.randomString(20) + "Aa.1";
 		birthDate = TestHelper.randomDate();
 	}
 
@@ -142,12 +144,25 @@ public class UserEntityTest {
 		assertEquals("role not equal", user.getRole(), role);
 	}
 
-	// TODO
-	// @Test
-	// public void equalsTest() {
-	// User user = TestHelper.nonParaConstructor(User.class);
-	//
-	//
-	// }
+	@Test
+	public void equalsTest() throws NickNameException, PasswordCheckException, UserEntityException {
+		Object o = new User(userName, password, birthDate, realName);
+		System.out.println(o + userName);
+		User randomUser = new User(userName, password, birthDate, realName);
+
+		assertTrue("method equals doesnt work", randomUser.equals(o));
+	}
+ 
+	@Test
+	public void compareToTest() throws NickNameException, PasswordCheckException, UserEntityException {
+		User randomUser1 = new User(TestHelper.randomString(20, 0).toLowerCase(), password, birthDate, realName);
+		User randomUser2 = new User(userName, password, birthDate, realName);
+		User randomUser3 = new User(userName, password, birthDate, realName);
+
+		assertEquals("method compareTo doesnt work", randomUser1.compareTo(randomUser2),
+				randomUser1.getUserName().compareTo(randomUser2.getUserName()));
+		assertEquals("method compareTo doesnt work", randomUser2.compareTo(randomUser3), 0);
+
+	}
 
 }

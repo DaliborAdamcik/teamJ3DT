@@ -3,6 +3,7 @@ package sk.tsystems.forum.junittest.entity;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,29 +14,28 @@ import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.TestHelper;
 
-
 public class CommentEntityTest {
 	private String name;
 	private String pass;
 	private String comment;
 	private Theme theme;
 	private Topic topic;
-	//private Date creationDate;
+	// private Date creationDate;
 	private User owner;
 	private boolean isPublic;
-	
+
 	@Before
 	public void setUp() throws Exception {
-		name = TestHelper.randomString(20,0).toLowerCase();
-		pass = TestHelper.randomString(5,5) + "Aa.1";
-		comment = TestHelper.randomString(20,20);
+		name = TestHelper.randomString(20, 0).toLowerCase();
+		pass = TestHelper.randomString(5, 5) + "Aa.1";
+		comment = TestHelper.randomString(20, 20);
 		isPublic = false;
-		
+
 		topic = new Topic(name, isPublic);
 		owner = new User(name, pass, TestHelper.randomDate(), "Tester");
 		theme = new Theme("theme", topic, comment, owner, isPublic);
 	}
-	
+
 	@Test
 	public void getCommentTest() {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
@@ -43,7 +43,7 @@ public class CommentEntityTest {
 
 		assertEquals("Bad comment", comment, testComment);
 	}
-	
+
 	@Test
 	public void setCommentTest() {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
@@ -61,14 +61,15 @@ public class CommentEntityTest {
 		assertEquals("Bad theme", theme, testTheme);
 	}
 
-//	@Test
-//	public void setTopic() {
-//		Comment randomComment = new Comment(comment, new Topic(), owner, isPublic);
-//		randomComment.setTopic(topic);
-//		Topic testTopic = randomComment.getTopic();
-//
-//		assertEquals("Bad topic", topic, testTopic);
-//	}
+	// @Test
+	// public void setTopic() {
+	// Comment randomComment = new Comment(comment, new Topic(), owner,
+	// isPublic);
+	// randomComment.setTopic(topic);
+	// Topic testTopic = randomComment.getTopic();
+	//
+	// assertEquals("Bad topic", topic, testTopic);
+	// }
 
 	@Test
 	public void getOwner() {
@@ -82,16 +83,16 @@ public class CommentEntityTest {
 	public void isPublic() {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		boolean testIsPublic = randomComment.isIsPublic();
-		
+
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}
 
-	@Test	
+	@Test
 	public void setPublic() {
 		Comment randomComment = new Comment(comment, theme, owner, true);
 		randomComment.setPublic(isPublic);
 		boolean testIsPublic = randomComment.isIsPublic();
-		
+
 		assertEquals("Bad isPublic", isPublic, testIsPublic);
 	}
 
@@ -99,7 +100,27 @@ public class CommentEntityTest {
 	public void getCreationDate() {
 		Date creationDatei = new Date();
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
-		assertEquals("Bad creation date", creationDatei.getTime()/100, randomComment.getCreated().getTime()/100);
+		assertEquals("Bad creation date", creationDatei.getTime() / 100, randomComment.getCreated().getTime() / 100);
+	}
+
+	@Test
+	public void equalsTest() {
+		Object o = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+
+		assertTrue("method equals doesnt work", randomComment.equals(o));
+	}
+
+	@Test
+	public void compareToTest() {
+		Comment randomComment1 = new Comment(TestHelper.randomString(20, 20), theme, owner, isPublic);
+		Comment randomComment2 = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment3 = new Comment(comment, theme, owner, isPublic);
+
+		assertEquals("method compareTo doesnt work", randomComment1.compareTo(randomComment2),
+				randomComment1.getComment().compareTo(randomComment2.getComment()));
+		assertEquals("method compareTo doesnt work", randomComment2.compareTo(randomComment3), 0);
+
 	}
 
 }
