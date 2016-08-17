@@ -20,6 +20,7 @@ import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
+import sk.tsystems.forum.service.jpa.JpaConnector;
 
 @Entity
 @Table(name = "JPA_USER")
@@ -118,6 +119,15 @@ public class User extends BlockableEntity implements Comparable<User> {
 	public void addTopicList(List<Topic> list) {
 		topics.addAll(list);
 
+	}
+	
+	/**
+	 *remove topic from the list of topics.
+	 * 
+	 * @param Topic
+	 */
+	public void removeTopic(Topic topic){
+		topics.remove(topic);
 	}
 
 	/**

@@ -84,3 +84,9 @@ body {
 .blockedentity {
 	background-color: #ff99ff; 	
 }
+
+.removetopic_button {
+	background: #79da58;
+	background: -webkit-linear-gradient(#79da58, #fff);
+	background: linear-gradient(#79da58, #fff);
+}

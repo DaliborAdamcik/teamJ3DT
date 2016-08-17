@@ -1,38 +1,179 @@
-//var pass1 = document.getElementById('userinfo_password');
-//var pass2 = document.getElementById('userinfo_confirmpassword');
-//var message = document.getElementById('pass_message');
-//var goodColor = "#009933";
-//var badColor = "#990000";
-//
-//if (pass1.value == pass2.value) {
-//	pass2.style.backgroundColor = goodColor;
-//	message.style.color = goodColor;
-//	message.innerHTML = "Passwords Match!"
-//} else {
-//	pass2.style.backgroundColor = badColor;
-//	message.style.color = badColor;
-//	message.innerHTML = "Passwords Do Not Match!"
-//}
+$(function() {
+	$("#userinfo_birthdate").datepicker({
+		dateFormat : "dd.mm.yy"
+	});
+});
+//$(function() {
+//	$("input.checkbox").checkboxradio();
+//});
+
+function loadOptionsPage() {
+	$.ajax({
+		type : "GET",
+		url : "Useroptions/0/",
+		contentType : "application/json;charset=UTF-8",
+		success : makeOptionsPage,
+		error : ajaxFailureMessage
+	});
+}
+
+function makeOptionsPage(response) {
+	console.log(response);
+	if (response.user == null) {
+		$('#title').html("you need to  log in first");
+		// break;
+	} else {
+		$('#options_menu').show();
+	}
+	$('#options_menu').show();
+	$('#userinfo_realname').val(response.user.realName);
+	$('#userinfo_birthdate').val(response.datestring);
+	putAllTopics(response);
+
+}
+
+function putAllTopics(response) {
+	var userTemplate = $('#topicTemplate').html();
+	var topicHTML = Mustache.to_html(userTemplate, response);
+	$('#topic_change').html(topicHTML);
+	
+}
+
+$("#personalinfo_change").submit(
+		function(ev) {
+			var jsobj = {};
+			jsobj.newdate = date2str($('#userinfo_birthdate').datepicker(
+					"getDate"), "dd.MM.yyyy");
+			jsobj.newrealname = $('#userinfo_realname').val();
+			if (jsobj.newrealname.length == 0) {
+				alert("specify new name");
+				return false;
+			}
+			console.log(jsobj);
+			$.ajax({
+				type : "PUT",
+				url : "Useroptions/1/changeinfo",
+				contentType : "application/json;charset=UTF-8",
+				dataType : "json",
+				data : JSON.stringify(jsobj),
+				success : function(response) {
+					console.log(response);
+					alert("personal info changed sucessfully");
+					$('#userinfo_birthdate').val(response.date);
+					$('#userinfo_realname').val(response.realname);
+
+				}
+			});
+			return false;
+
+		});
+
+$("#password_change").submit(function(ev) {
+	var jsobj = {};
+	jsobj.oldpassword = $('#userinfo_oldpassword').val();
+	jsobj.newpassword = $('#userinfo_password').val();
+	jsobj.confirmpassword = $('#userinfo_confirmpassword').val();
+	console.log(jsobj);
+	$.ajax({
+		type : "PUT",
+		url : "Useroptions/1/changepassword",
+		contentType : "application/json;charset=UTF-8",
+		dataType : "json",
+		data : JSON.stringify(jsobj),
+		success : function(response) {
+			$("#pass_message").html(response.errMessage);
+			if (response.errMessage == "success") {
+				$('#userinfo_oldpassword').val("");
+				$('#userinfo_password').val("");
+				$('#userinfo_confirmpassword').val("");
+			}
+		}
+	});
+	return false;
+});
+
+function date2str(x, y) {
+	var z = {
+		M : x.getMonth() + 1,
+		d : x.getDate(),
+		h : x.getHours(),
+		m : x.getMinutes(),
+		s : x.getSeconds()
+	};
+	y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+		return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+	});
+
+	return y.replace(/(y+)/g, function(v) {
+		return x.getFullYear().toString().slice(-v.length)
+	});
+}
 
 
-function hidePersonalInfoField(){
+function addtopic(id, button, name){
+	
+	var jsobj = {};
+	jsobj.id = id;
+	console.log(jsobj);
+	$.ajax({
+		type : "PUT",
+		url : "Useroptions/" + id + "/addtopic",
+		contentType : "application/json;charset=UTF-8",
+		dataType : "json",
+		data : JSON.stringify(jsobj),
+		success : function(response) {
+			console.log(response);
+			var promid = "topic_change_"+id
+			var td = document.getElementById(promid);
+		
+				td.innerHTML = "<button class=\"removetopic_button\" onclick=\"removetopic("+id+", this,'"+name+"');\">"+name+"</button>";
+				console.log("sucess add")
+		},
+		error : ajaxFailureMessage
+
+	});
+
+}
+
+function removetopic(id, button, name){
+	
+	var jsobj = {};
+	jsobj.id = id;
+	console.log(jsobj);
+	$.ajax({
+		type : "PUT",
+		url : "Useroptions/" + id + "/removetopic",
+		contentType : "application/json;charset=UTF-8",
+		dataType : "json",
+		data : JSON.stringify(jsobj),
+		success : function(response) {
+			console.log(response);
+			var promid = "topic_change_"+id
+			var td = document.getElementById(promid);
+		
+				td.innerHTML = "<button class=\"addtopic_button\" onclick=\"addtopic("+id+", this,'"+name+"');\">"+name+"</button>";
+				console.log("sucess remove")
+		},
+		error : ajaxFailureMessage
+
+	});
+
+}
+
+function hidePersonalInfoField() {
 	$('form#personalinfo_change').toggle();
 	$('form#password_change').hide();
-	$('form#topic_change').hide();
+	$('div#topic_change').hide();
 }
 
-function hidePasswordField(){
+function hidePasswordField() {
 	$('form#password_change').toggle();
 	$('form#personalinfo_change').hide();
-	$('form#topic_change').hide();
+	$('div#topic_change').hide();
 }
 
-function hideButtonField(){
-	$('form#topic_change').toggle();
+function hideButtonField() {
+	$('div#topic_change').toggle();
 	$('form#password_change').hide();
 	$('form#personalinfo_change').hide();
 }
-
-
-
-
