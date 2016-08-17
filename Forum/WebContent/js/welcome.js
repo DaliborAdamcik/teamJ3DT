@@ -24,7 +24,7 @@ function welcomeUIinit()
 
 function editThemeDlgPopup(themeid){
 	var $edthdlg = $( "#editThemeDlg" );
-	$edthdlg.dialog('option', 'title', (themeid==0?'New':'Edit')+' theme');
+	$edthdlg.dialog('option', 'title', 'Edit theme');
 	$edthdlg.data('themeid', themeid)
 	
 	if(themeid>0)
@@ -40,13 +40,10 @@ function editThemeDlgPopup(themeid){
         error: ajaxFailureMessage
     });
 	else
-	{
-		editThemeDlg_data2field();
-		$edthdlg.dialog('open');
-	}
+		alert('theme must be specified. Backward compatibility error.');
 }
 
-function editThemeDlg_data2field(){
+function editThemeDlg_erase() {
 	var $edthdlg = $('#editThemeDlg');
 
 	if($edthdlg.data('themeid')==0) // empty dlg, erase
@@ -57,7 +54,10 @@ function editThemeDlg_data2field(){
 		$('#editThemeDlg_ownerInfo').hide();
 		return;
 	}
-	
+}
+
+function editThemeDlg_data2field() {
+	var $edthdlg = $('#editThemeDlg');
 	var theme = $edthdlg.data("theme");
 	$('#editThemeDlg_name').val(theme.name);
 	$('#editThemeDlg_desc').val(theme.description);
@@ -67,7 +67,30 @@ function editThemeDlg_data2field(){
 }
 
 function editThemeDlg_save(){
+	var $edthdlg = $("#editThemeDlg");
+	
+	var thsend = {
+		name: $('#editThemeDlg_name').val().trim(),
+		description: $('#editThemeDlg_desc').val().trim(),
+		isPublic: $('#editThemeDlg_pub').prop('checked')
+	};
+	
+	
+	console.log(thsend);
+	
+	var theme = $edthdlg.data("theme");
+
+	
+
+	
+	$edthdlg.dialog('close');
+}
+
+function newThemeDlgPopup(topicId){
 	var $edthdlg = $( "#editThemeDlg" );
+	$edthdlg.dialog('option', 'title', 'New theme');
+	$edthdlg.data('topicid', topicId)
+	editThemeDlg_erase();
 	$edthdlg.dialog('open');
 }
 

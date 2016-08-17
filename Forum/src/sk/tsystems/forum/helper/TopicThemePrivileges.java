@@ -1,0 +1,132 @@
+package sk.tsystems.forum.helper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import sk.tsystems.forum.entity.Comment;
+import sk.tsystems.forum.entity.Theme;
+import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.entity.UserRole;
+import sk.tsystems.forum.entity.common.BlockableEntity;
+import sk.tsystems.forum.helper.exceptions.UnknownActionException;
+import sk.tsystems.forum.helper.exceptions.WEBNoPermissionException;
+
+public class TopicThemePrivileges {
+	private ServletHelper svHelper;
+	private URLParser pars;
+	private HttpServletResponse response;
+	private Class<?> clazz;
+	
+	/**
+	 * @param svHelper
+	 * @param pars
+	 * @param response
+	 * @param clazz
+	 */
+	public TopicThemePrivileges(ServletHelper svHelper, URLParser pars, HttpServletResponse response, Class<?> clazz) {
+		super();
+		if(!clazz.equals(Theme.class) || !clazz.equals(Comment.class))
+			throw new RuntimeException(getClass().getSimpleName()+" cant work with "+clazz.getSimpleName());
+		
+		this.svHelper = svHelper;
+		this.pars = pars;
+		this.response = response;
+		this.clazz = clazz;
+	}
+	
+	private void checkNotGuest() throws WEBNoPermissionException, UnknownActionException
+	{
+		if(svHelper.getSessionRole().equals(UserRole.GUEST))
+			throw new WEBNoPermissionException("You must be signed in / regular user to add / edit "+clazz.getSimpleName().toLowerCase());
+
+		if(pars.getParrentID()<0) 
+			throw new UnknownActionException(clazz.getSimpleName()+" ID not specified.");
+	}
+	
+	private void checkBlocked(List<BlockableEntity> toCheck) throws WEBNoPermissionException {
+		if(svHelper.getSessionRole().equals(UserRole.ADMIN))
+			return;
+		
+		for (BlockableEntity blo: toCheck) {
+			if(blo==null || blo.isBlocked())  
+				throw new WEBNoPermissionException(clazz.getSimpleName()+" not found / deleted.");
+		}
+	}
+		
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getStoredObject() throws WEBNoPermissionException, UnknownActionException {
+		checkNotGuest();
+
+		Object obj = pars.getParentObject(clazz);
+
+		if(obj == null)  
+			throw new WEBNoPermissionException(clazz.getSimpleName()+" not found.");
+		
+		if(!obj.getClass().equals(clazz))
+			throw new UnknownActionException("Unexpected object. Requested '"+clazz.getSimpleName()+
+					"' bud received '"+obj.getClass().getSimpleName()+"'.");
+
+		List<BlockableEntity> blockables = new ArrayList<>();
+		
+		blockables.add((BlockableEntity) obj);
+		
+		User owner = null;
+
+		if(obj instanceof Comment)
+		{
+			blockables.add(((Comment) obj).getTheme());
+			blockables.add(((Comment) obj).getOwner());
+			blockables.add(((Comment) obj).getTheme().getTopic());
+			owner = ((Comment) obj).getOwner();
+		}
+		
+		if(obj instanceof Theme)
+		{
+			blockables.add(((Theme) obj).getAuthor());
+			blockables.add(((Theme) obj).getTopic());
+			owner = ((Theme) obj).getAuthor();
+		}
+		
+		checkBlocked(blockables);
+		
+		if(!svHelper.getSessionRole().equals(UserRole.ADMIN) && svHelper.getLoggedUser().getId()!=owner.getId())  
+			throw new WEBNoPermissionException("No permission to edit "+clazz.getSimpleName());
+		
+		return (T) obj;
+	} 
+
+	
+	public void store(BlockableEntity obj) throws UnknownActionException, JsonGenerationException, JsonMappingException, IOException {
+		if(!obj.getClass().equals(clazz))
+			throw new UnknownActionException("Unexpected object. Requested '"+clazz.getSimpleName()+
+					"' bud received '"+obj.getClass().getSimpleName()+"'.");
+
+		if(obj instanceof Comment)
+			svHelper.getCommentService().addComment((Comment) obj);
+		else
+		if(obj instanceof Theme)
+			svHelper.getThemeService().addTheme((Theme) obj);
+		else
+			throw new UnknownActionException("Cant strore object '"+obj.getClass().getSimpleName()+"'.");
+			
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		Map<String, Object> resp = new HashMap<>();
+		resp.put(obj.getClass().getSimpleName(), obj);
+		response.setContentType("application/json");
+		mapper.writeValue(response.getWriter(), resp);
+	}
+}

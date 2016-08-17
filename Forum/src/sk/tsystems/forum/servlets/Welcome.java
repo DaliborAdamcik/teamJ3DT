@@ -11,9 +11,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
@@ -21,6 +24,8 @@ import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
+import sk.tsystems.forum.helper.exceptions.UnknownActionException;
+import sk.tsystems.forum.helper.exceptions.WEBNoPermissionException;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
@@ -157,6 +162,7 @@ public class Welcome extends MasterServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	// edit theme
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -175,5 +181,11 @@ public class Welcome extends MasterServlet {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	// add theme
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ServletHelper svHelper = new ServletHelper(request);
+		URLParser pars;
 
+	}
 }
