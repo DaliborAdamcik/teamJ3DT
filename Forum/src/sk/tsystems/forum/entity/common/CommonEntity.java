@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PreUpdate;
 
 /**
  * Common entity properties class
@@ -32,6 +33,14 @@ public abstract class CommonEntity {
 	@Column(name = "CREATEDATE", nullable = false)
 	private final Date created;
 
+
+	/**
+	 * Modify date
+	 * Date and time of last modify
+	 */
+	@Column(name = "MODIFYDATE", nullable = false)
+	private Date modified;
+	
 	/**
 	 * Default constructor for Common Entity
 	 * This constructor assigns creation time + date to current time + date
@@ -40,8 +49,18 @@ public abstract class CommonEntity {
 		super();
 		this.id =0;
 		this.created = new Date();
+		this.modified = this.created;
 	}
 
+	/**
+	 * Update entity modified in DB
+	 */
+	@PreUpdate
+    //@PrePersist
+    private void setLastUpdate() {
+		this.modified = new Date();
+    }	
+	
 	/**
 	 * Getter for ID
 	 * Gets an unique ID of entity.
@@ -65,4 +84,17 @@ public abstract class CommonEntity {
 	public final Date getCreated() {
 		return created;
 	}
+
+	/**
+	 * Getter for Date of entity last modification
+	 * <p>An <b>non - persisted entity<b> has assigned current date and time on creation.</i></p>
+	 * <p>An <b>persisted entity<b> has assigned an stored date and time of persistence call.</i></p>
+	 * <p>Value is changing after persistence. </p>
+	 * @return Date and time of last modification
+	 */
+	public Date getModified() {
+		return modified;
+	}
+	
+	
 }
