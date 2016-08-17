@@ -8,7 +8,10 @@
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+
+
 	<div class="container">
+<h1 id="title"></h1>
 		<div class="col-md-6">
 			<table class="table" >
 			<tbody id="table_of_users">

@@ -10,6 +10,11 @@ function loadAdminPage() {
 
 function makeAdminPage(response) {
 	console.log(response);
+	if(response.users==null||response.topics==null){
+		var title = document.getElementById("title");
+		title.innerHTML=response;
+		return;
+	}
 	response.users.forEach(function(item) {
 		if (item.role == "GUEST") {
 			item.promotebutton = "<button onclick=\"promoteuser(" + item.id
