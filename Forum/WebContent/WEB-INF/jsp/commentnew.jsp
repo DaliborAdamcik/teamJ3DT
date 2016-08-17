@@ -12,7 +12,7 @@
 <div class="container">
 	<div class="detailBox">
 		<div class="titleBox">
-			<label id="themeName"></label>
+			<label id="themeName"></label><button type="button" class="close entitymenucls" aria-hidden="true" onclick="entityMenuPopup(themeIdentForComments);">&Xi;</button>
 		</div>
 		<div class="commentBox" ><p class="taskDescription" id="themeDescription"></p></div>
 		<div class="actionBox">
@@ -44,7 +44,7 @@
 	<div class="commentText">
 		<p class="" id="ent_{{id}}_txt">{{comment}}</p>
 		<span class="date sub-text">from {{#owner}}{{userName}}{{/owner}} on {{created}}</span>
-
+		{{#blocked}}<div class="sub-text" title="{{reason}}">Blocked by <b>{{#blockedBy}}{{userName}}{{/blockedBy}}</b> at <i>{{created}}</i></div>{{/blocked}}
 	</div>
 </li>
 </script>
