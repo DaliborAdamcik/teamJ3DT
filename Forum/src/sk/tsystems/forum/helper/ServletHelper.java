@@ -1,8 +1,10 @@
 package sk.tsystems.forum.helper;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -298,5 +300,28 @@ public class ServletHelper {
 	{
 		return new URLParser(requestURL());
 	}
-	
+
+	/**
+	 * Converts exception into JSON and writes into response. 
+	 * @param exception An exception 
+	 * @param response An servlet response to be written to
+	 * @param append true - append into output, false - try to arase output ease output
+	 * @throws IOException Thrown on unsucces write to reponse
+	 * @author Dalibor Adamcik
+	 */
+	public static void ExceptionToResponseJson(Throwable exception, HttpServletResponse response, boolean append) throws IOException
+	{
+		HashMap<String, String> excinfo = new HashMap<>();
+		excinfo.put("message", exception.getMessage());
+		excinfo.put("type", exception.getClass().getSimpleName());
+		JSONObject excson = new JSONObject();
+		excson.put("error", excinfo);
+		if (!append) {
+			try{	
+				response.resetBuffer();
+			} catch(IllegalStateException e) {}
+		}
+		response.setContentType("application/json");
+		response.getWriter().print(excson);
+	}
 }
