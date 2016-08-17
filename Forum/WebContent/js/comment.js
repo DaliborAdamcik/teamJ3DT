@@ -16,6 +16,7 @@ function loadComments(themeId)
 	
 	$("#welcome_pg").hide("slow");
 	$("#comments_pg").show("slow");
+	entityMenuButtonHide();
 }
 
 /**
@@ -35,15 +36,13 @@ function comments2page(response)
     $('#themeName').html(response.theme.topic.name + ' &gt; '+response.theme.name);
     $('#themeDescription').text(response.theme.description);
     
+    entityMenuButtonShow();
+    
     if(user.role=="GUEST")
-    {
     	$('#addComment').hide();
-    	$('.commentmenucls').hide();
-    }
     else
-    {
     	$('#addComment').show();
-    }
+    
 }
 
 /**
@@ -98,13 +97,8 @@ $('#addComment').submit(function(ev){
     return false; // prevent subnit form
 });
 
-var $commentMenu = $('#commentMenu'); // comment menu
 var $commentEditDlg = $('#editCommentDlg'); // dialog, edit comment
 var $commentEditForm = $('#editCommentFrm'); // form inside dialog edit comment
-
-var $commentRemoveDlg = $('#eraseCommentDlg'); // dialog, edit comment
-
-var commentMenuChildID = null; // currently selected comment (popup menu opened)
 
 /**
  * Initiates  visual components on page (visual style)
@@ -112,8 +106,6 @@ var commentMenuChildID = null; // currently selected comment (popup menu opened)
  */
 function commentUIinit()
 {
-	$commentMenu.menu(); // comment menu
-	// edit dialog
 	$commentEditDlg.dialog($.extend({ 
 		height: "auto",
 		width: "auto",
@@ -124,75 +116,17 @@ function commentUIinit()
 			}
 		}
 	}, $comonDlgOpts));
-	  
-	// remove dialog
-	$commentRemoveDlg.dialog($.extend({
-		resizable: true,
-		height: "auto",
-		width: 400,
-		buttons: {
-			"Yes": commentRemoveDlgRemove,
-			"No": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	}, $comonDlgOpts));
-}
-
-/**
- * Shows menu for comment
- * @param ident unique identifier of comment
- * @returns void
- */
-function commentMenuPopup(ident) {
-	commentMenuChildID = ident;
-	
-	var e = window.event;
-	$commentMenu.css({'top':e.pageY-50,'left':e.pageX, 'position':'absolute', 'border':'1px solid black', 'padding':'5px'});
-	var owner = $('#ent_'+commentMenuChildID).data("owner");
-
-	console.log(user.id, owner);
-	if(user.id!=owner && user.role!='ADMIN')
-		$commentMenu.find('.commentMenuOwnerOption').addClass('ui-state-disabled');
-	
-	if(user.id==owner || user.role=='ADMIN')
-		$commentMenu.find('.commentMenuOwnerOption').removeClass('ui-state-disabled');
-
-	if(user.role=='ADMIN')
-		$commentMenu.find('.commentMenuAdminOption').removeClass('ui-state-disabled');
-	else
-		$commentMenu.find('.commentMenuAdminOption').addClass('ui-state-disabled');
-	
-	$commentMenu.show();
-}
-
-/**
- * An logic for what to do on menu item click
- * @param itemname an name of clicked item.
- * @returns void
- */
-function commentMenuItemClick(itemname)
-{
-	$commentMenu.hide();
-	switch(itemname)
-	{
-		case 'close': break; // we dont need to do nothing there
-		case 'edit': commentEditDlgPopup(); break;
-		case 'remove': commentRemoveDlgPopup(); break;
-		case 'block': blockCommonDlgPopup(commentMenuChildID); break;
-		
-		default:
-			alert('menu action not implemented: '+itemname);
-	}
 }
 
 /**
  * Show edit dialog for comment
+ * @parameter ident an Unique ID of comment
  * @returns
  */
-function commentEditDlgPopup()
+function commentEditDlgPopup(ident)
 {
-	$commentEditDlg.find("input").val($('#comment_'+commentMenuChildID+'_txt').html());
+	$commentEditDlg.find("input").val($('#comment_'+ident+'_txt').html());
+	$commentEditDlg.data('ident', ident);
 	$commentEditDlg.dialog('open');
 }
 
@@ -203,9 +137,10 @@ function commentEditDlgPopup()
 function commentEditDlgModify(){
 	// TODO disable form
 	try {
+		var ident = $commentEditDlg.data('ident');
 		var jsobj = {};
 	    jsobj.comment = $commentEditDlg.find("input").val().trim();
-	    jsobj.id = commentMenuChildID;
+	    jsobj.id = ident;
 	    
 	    if(jsobj.comment.length==0)
     	{
@@ -216,14 +151,14 @@ function commentEditDlgModify(){
 	    console.log(jsobj);
 	    $.ajax({
 	        type: "POST",
-	        url: "Comment/"+ commentMenuChildID +"/",
+	        url: "Comment/"+ ident +"/",
 	        contentType:"application/json;charset=UTF-8",
 	        dataType: "json",
 	        data: JSON.stringify(jsobj),
 	        success: function (response) {
 	        	$commentEditDlg.dialog('close');
 	        	console.log(response);
-	        	$('#comment_'+commentMenuChildID+'_txt').html(response.comment.comment);
+	        	$('#comment_'+ident+'_txt').html(response.comment.comment);
 	        },
 	        error: ajaxFailureMessage
 	    });
@@ -237,21 +172,4 @@ function commentEditDlgModify(){
 	}
 }
 
-/**
- * Show remove dialog
- * @returns void
- */
-function commentRemoveDlgPopup() {
-	$commentRemoveDlg.find('#eraseComment_txt').html($('#comment_'+commentMenuChildID+'_txt').html());
-	$commentRemoveDlg.dialog('open');
-}
-
-/**
- * This is called when remove is confirmed
- * @returns
- */
-function commentRemoveDlgRemove() {
-	// TODO not yet implemented
-	alert("not yet implemented");
-	$commentRemoveDlg.dialog('close');
-}
+commentUIinit();

@@ -7,6 +7,8 @@
  .ui-menu { width: 150px; }
 </style>
 
+<div id="comments_pg" style="display: none;"> <!-- Begin of comments page content, DO NOT REMOVE/MODIFY THIS TAG --> 
+
 <div class="container">
 	<div class="detailBox">
 		<div class="titleBox">
@@ -29,11 +31,11 @@
 		</div>
 	</div>
 </div>
-
+</div><!-- end of comment page content, DO NOT REMOVE THIS TAG -->
 
 <script id="commentTemplate" type="text/template">
-{{#comments}}<li id="ent_{{id}}" data-owner="{{#owner}}{{id}}{{/owner}}">
-	<button type="button" class="close commentmenucls" aria-hidden="true" onclick="commentMenuPopup('{{id}}');">&Xi;</button>
+{{#comments}}<li id="ent_{{id}}" data-owner="{{#owner}}{{id}}{{/owner}}" data-etype="comment">
+	<button type="button" class="close entitymenucls" aria-hidden="true" onclick="entityMenuPopup('{{id}}');">&Xi;</button>
 	
 	<div class="commenterImage">
 		<img src="images/userPicture.png" alt=userPicture height=30
@@ -47,19 +49,6 @@
 </li>{{/comments}}
 </script>
 
-
-<ul id="commentMenu" style="display:none;">
-	<li onclick="commentMenuItemClick('close');"><div>Close menu</div></li>
-	<li onclick="commentMenuItemClick('edit');" class="commentMenuOwnerOption"><div>Edit</div></li>
-	<li onclick="commentMenuItemClick('remove');" class="commentMenuOwnerOption"><div>Remove</div></li>
-
-	<li id="commentMenuItemClose" class="commentMenuAdminOption"><div>Admin options</div>
-	  <ul>
-		<li onclick="commentMenuItemClick('block');" class="commentMenuAdminOption"><div>Block</div></li>
-	  </ul>
-	</li>
-</ul>
-
 <div id="editCommentDlg" title="Edit comment">
 	<p>
 		Modify comment:<br/>
@@ -67,12 +56,4 @@
 	</p>
 </div>
 
-<div id="eraseCommentDlg" title="Erase comment">
-  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Do you want erase this comment?<br/><span id="eraseComment_txt"></span></p>
-</div>
-
 <script type="text/javascript" src="js/comment.js"></script>
-
-<script>
-	commentUIinit();
-</script>
