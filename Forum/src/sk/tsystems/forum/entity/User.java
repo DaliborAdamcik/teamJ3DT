@@ -237,7 +237,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * @return boolean
 	 * @throws PasswordCheckException
 	 */
-	public boolean checkPassword(String password) throws PasswordCheckException {
+	public boolean authentificate(String password) throws PasswordCheckException {
 		if (this.password.equals(password)) {
 			return true;
 		}
