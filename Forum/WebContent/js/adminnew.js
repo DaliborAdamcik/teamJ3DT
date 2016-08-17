@@ -1,3 +1,7 @@
+/**
+ * function called in jsp, calls ajax from admin servlet
+ * 
+ */
 function loadAdminPage() {
 	$.ajax({
 		type : "GET",
@@ -8,6 +12,10 @@ function loadAdminPage() {
 	});
 }
 
+/**
+ * Puts data from ajax to elements specified in jsp
+ * @param response
+ */
 function makeAdminPage(response) {
 	console.log(response);
 	if(response.users==null||response.topics==null){
@@ -54,7 +62,12 @@ function makeAdminPage(response) {
 	$('#table_of_users').html(userHTML);
 	$('#table_of_topics').html(topicHTML);
 }
-
+/**
+ * calleda after clicking on "promote to regular user" button. Uses the put method to send data to servlet, which tries to 
+ * handle it and returns success/failure status
+ * @param id
+ * @param button
+ */
 function promoteuser(id, button) {
 	var jsobj = {};
 	jsobj.id = id;
@@ -72,7 +85,12 @@ function promoteuser(id, button) {
 
 	});
 }
-
+/**
+ * called after clicking on "mark" button. Sends JSON to servlet, receives response of success/failure
+ * @param id
+ * @param button
+ * @param isMarked
+ */
 function mark(id, button, isMarked) {
 
 	var jsobj = {};
@@ -102,7 +120,10 @@ function mark(id, button, isMarked) {
 
 	});
 }
-
+/**
+ * unblocking function
+ * @param id
+ */
 function unblock(id) {
 
 	var jsobj = {};
@@ -126,12 +147,21 @@ function unblock(id) {
 		error : ajaxFailureMessage
 	});
 }
-
+/**
+ * blocking function. calls function from script.js
+ * @param id
+ */
 function block(id) {
 	blockCommonDlgPopup(id,successBlock);
 
 	
 }
+/**
+ * callback function for blockCommonDlgPopup.executed on successful block
+ * @param response
+ * @param id
+ * @param reason
+ */
 function successBlock( response,id, reason){
 	var tid = "block_" + id;
 	console.log("jebat");

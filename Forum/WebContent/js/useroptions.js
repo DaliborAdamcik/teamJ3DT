@@ -1,3 +1,4 @@
+//date initialization
 $(function() {
 	$("#userinfo_birthdate").datepicker({
 		dateFormat : "dd.mm.yy"
@@ -6,7 +7,10 @@ $(function() {
 //$(function() {
 //	$("input.checkbox").checkboxradio();
 //});
-
+/**
+ * function called in jsp, calls ajax from the servlet
+ * 
+ */
 function loadOptionsPage() {
 	$.ajax({
 		type : "GET",
@@ -16,7 +20,10 @@ function loadOptionsPage() {
 		error : ajaxFailureMessage
 	});
 }
-
+/**
+ * Puts data from ajax to elements specified in jsp
+ * @param response
+ */
 function makeOptionsPage(response) {
 	console.log(response);
 	if (response.user == null) {
@@ -31,14 +38,19 @@ function makeOptionsPage(response) {
 	putAllTopics(response);
 
 }
-
+/**
+ * puts all topics into form
+ * @param response
+ */
 function putAllTopics(response) {
 	var userTemplate = $('#topicTemplate').html();
 	var topicHTML = Mustache.to_html(userTemplate, response);
 	$('#topic_change').html(topicHTML);
 	
 }
-
+/**
+ * called after submitting the form for changing user basic info
+ */
 $("#personalinfo_change").submit(
 		function(ev) {
 			var jsobj = {};
@@ -67,7 +79,9 @@ $("#personalinfo_change").submit(
 			return false;
 
 		});
-
+/**
+ * called after submitting the form for changing password
+ */
 $("#password_change").submit(function(ev) {
 	var jsobj = {};
 	jsobj.oldpassword = $('#userinfo_oldpassword').val();
@@ -91,7 +105,9 @@ $("#password_change").submit(function(ev) {
 	});
 	return false;
 });
-
+/**
+ * Parses date to string in proper format
+ */
 function date2str(x, y) {
 	var z = {
 		M : x.getMonth() + 1,
@@ -109,7 +125,12 @@ function date2str(x, y) {
 	});
 }
 
-
+/**
+ * adds topic
+ * @param id
+ * @param button
+ * @param name
+ */
 function addtopic(id, button, name){
 	
 	var jsobj = {};
@@ -134,7 +155,12 @@ function addtopic(id, button, name){
 	});
 
 }
-
+/**
+ * remove topic specified by ID from currently logged user
+ * @param id
+ * @param button
+ * @param name
+ */
 function removetopic(id, button, name){
 	
 	var jsobj = {};
