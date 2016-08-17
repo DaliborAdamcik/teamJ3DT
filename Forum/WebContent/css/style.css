@@ -1,118 +1,124 @@
-
 body {
 	position: relative;
 	margin: 0;
 	padding-bottom: 6rem;
 	min-height: 100%;
 	background-image: url("./../images/NYWebsiteBackground.png");
-/* 	background-opacity: 0.6; */
-background: window 100%
- background-repeat: repeat-y;
+	/* 	background-opacity: 0.6; */
+	background: window 100% background-repeat: repeat-y;
 	color: #534d53;
 }
 
-#forumLogo {width: 20%; min-width: 250px;}
+#forumLogo {
+	width: 20%;
+	min-width: 250px;
+}
 
 .main_div {
 	padding: 15px;
 }
 
-
 /* table{ */
 /*     table-layout: fixed; */
 /*     width: 800px; */
 /* } */
-
 .bannedReason {
 	max-width: 10px;
-	
 }
 
 .footer {
 	color: white;
 }
 
-/* #block_{ */
+.block_button {
+	background: #ff7070;
+	background: -webkit-linear-gradient(#ff7070, #fff);
+	background: linear-gradient(#ff7070, #fff);
+	border: 1px solid #444;
+	border-radius: 5px;
+	box-shadow: 0 0px 0 0 #444;
+	color: #444;
+	display: inline-block;
+	width: 91px;
+	height: 24px;
+	font: normal 400 15px/24px "Open Sans", sans-serif;
+	text-align: center;
+	text-shadow: 0px 0px 0 #000;
+}
 
-/* background:    #f00; */
-/* background:    -webkit-linear-gradient(#f00, #864848); */
-/* background:    linear-gradient(#f00, #864848); */
-/* border:        1px solid #02050e; */
-/* border-radius: 5px; */
-/* box-shadow:    0 0px 0 0 #444; */
-/* color:         #fff; */
-/* display:       inline-block; */
-/* padding:       8px 20px; */
-/* font:          normal 700 24px/1 "Calibri", sans-serif; */
-/* text-align:    center; */
-/* text-shadow:   1px 1px 0 #000; */
-
-/* } */
-
-
-/* .navbar { */
-/* 	background-color: transparent; */
-/*    background: transparent; */
-/* /*    border-color: transparent; */ */
-	
-/* } */
-
-
-
-
-
-/* input { */
-/* 	color: black; */
-/* } */
-
-/* h1 { */
-/* 	font-family: verdana; */
-/* 	padding: 2rem; */
-/* } */
-
-/* div.main_div { */
+.unblock_button {
+/* 	background: #6fa7f7; */
+/* 	background: -webkit-linear-gradient(#6fa7f7, #fff); */
+/* 	background: linear-gradient(#6fa7f7, #fff); */
+/* 	border: 1px solid #444; */
+/* 	border-radius: 5px; */
+/* 	box-shadow: 0 0px 0 0 #444; */
+/* 	color: #444; */
+/* 	display: inline-block; */
+/* 	width: 91px; */
+/* 	height: 24px; */
+/* 	font: normal 400 15px/24px "Open Sans", sans-serif; */
 /* 	text-align: center; */
-/* } */
+/* 	text-shadow: 0px 0px 0 #000; */
+	
+	background: #79da58;
+	background: -webkit-linear-gradient(#79da58, #fff);
+	background: linear-gradient(#79da58, #fff);
+	border: 1px solid #444;
+	border-radius: 5px;
+	box-shadow: 0 0px 0 0 #444;
+	color: #444;
+	display: inline-block;
+	width: 91px;
+	height: 24px;
+	font: normal 400 15px/24px "Open Sans", sans-serif;
+	text-align: center;
+	text-shadow: 0px 0px 0 #000;
+}
 
-/* #label { */
-/* 	color: white; */
-/* } */
+.marknonpublic_button {
+	background: #c3c3c3;
+	background: -webkit-linear-gradient(#c3c3c3, #fff);
+	background: linear-gradient(#c3c3c3, #fff);
+	border: 1px solid #444;
+	border-radius: 5px;
+	box-shadow: 0 0px 0 0 #444;
+	color: #444;
+	display: inline-block;
+	width: 91px;
+	height: 24px;
+	font: normal 400 15px/24px "Open Sans", sans-serif;
+	text-align: center;
+	text-shadow: 0px 0px 0 #000;
+}
 
-/* .tg { */
-/* 	border-collapse: collapse; */
-/* 	border-spacing: 0; */
-/* 	margin: 0px auto; */
-/* 	align: center; */
-/* } */
-
-/* .tg td { */
-/* 	font-family: Arial, sans-serif; */
-/* 	font-size: 14px; */
-/* 	padding: 10px 5px; */
-/* 	border-style: solid; */
-/* 	border-width: 1px; */
-/* 	overflow: hidden; */
-/* 	word-break: normal; */
-/* } */
-
-/* .tg th { */
-/* 	font-family: Arial, sans-serif; */
-/* 	font-size: 14px; */
-/* 	font-weight: normal; */
-/* 	padding: 10px 5px; */
-/* 	border-style: solid; */
-/* 	border-width: 1px; */
-/* 	overflow: hidden; */
-/* 	word-break: normal; */
-/* } */
-
-/* .tg .tg-bold { */
-/* 	font-weight: bold; */
-/* 	background-color: #000000; */
-/* 	color: #ffffff */
-/* } */
-
-/* .tg .tg-normal { */
-/* 	background-color: #000000; */
-/* 	color: #ffffff */
-/* } */
+.markpublic_button {
+		background: #6fa7f7;
+	background: -webkit-linear-gradient(#6fa7f7, #fff);
+	background: linear-gradient(#6fa7f7, #fff);
+	border: 1px solid #444;
+	border-radius: 5px;
+	box-shadow: 0 0px 0 0 #444;
+	color: #444;
+	display: inline-block;
+	width: 91px;
+	height: 24px;
+	font: normal 400 15px/24px "Open Sans", sans-serif;
+	text-align: center;
+	text-shadow: 0px 0px 0 #000;
+}
+.promote_button {
+	background: #fafa7e;
+	background: -webkit-linear-gradient(#fafa7e, #fff);
+	background: linear-gradient(#fafa7e, #fff);
+	border: 1px solid #444;
+	border-radius: 5px;
+	box-shadow: 0 0px 0 0 #444;
+	color: #444;
+	display: inline-block;
+	width: 91px;
+	height: 24px;
+	font: normal 400 15px/24px "Open Sans", sans-serif;
+	text-align: center;
+	text-shadow: 0px 0px 0 #000;
+}

@@ -23,28 +23,28 @@ function makeAdminPage(response) {
 
 		if (item.blocked == null) {
 			item.blockbutton = "<button class=\"block_button\" onclick=\"block(" + item.id
-					+ ");\">block</button>";
+					+ ");\">BLOCK</button>";
 		} else {
 			item.blockbutton = "<button class=\"unblock_button\" onclick=\"unblock(" + item.id
-					+ ");\">unblock</button>";
+					+ ");\">UNBLOCK</button>";
 		}
 
 	});
 	response.topics.forEach(function(item) {
 		if (item.isPublic) {
 			item.markbutton = "<button class=\"marknonpublic_button\" onclick=\"mark(" + item.id
-					+ ", this,false);\">mark non public</button>";
+					+ ", this,false);\">PRIVATE</button>";
 		} else {
 			item.markbutton = "<button class=\"markpublic_button\" onclick=\"mark(" + item.id
-					+ ", this,true);\">mark public</button>";
+					+ ", this,true);\">PUBLIC</button>";
 		}
 
 		if (item.blocked == null) {
 			item.blockbutton = "<button class=\"block_button\"onclick=\"block(" + item.id
-					+ ");\">block</button>";
+					+ ");\">BLOCK</button>";
 		} else {
 			item.blockbutton = "<button class=\"unblock_button\" onclick=\"unblock(" + item.id
-					+ ");\">unblock</button>";
+					+ ");\">UNBLOCK</button>";
 		}
 	});
 	var userTemplate = $('#userTemplate').html();
@@ -114,7 +114,7 @@ function unblock(id) {
 			console.log(tid);
 			var td = document.getElementById(tid);
 			td.innerHTML = "<button class=\"block_button\" onclick=\"block(" + id
-					+ ");\">block</button>";
+					+ ");\">BLOCK</button>";
 			var blockedfor = document.getElementById("blockedfor_"+id);
 			blockedfor.innerHTML = "";
 		},
@@ -133,7 +133,7 @@ function successBlock( response,id, reason){
 	console.log(response);
 	console.log(tid);
 	var td = document.getElementById(tid);
-	td.innerHTML = "<button class=\"unblock_button\" onclick=\"unblock(" + id + ");\">unblock</button>";
+	td.innerHTML = "<button class=\"unblock_button\" onclick=\"unblock(" + id + ");\">UNBLOCK</button>";
 	var blockedfor = document.getElementById("blockedfor_"+id);
 	blockedfor.innerHTML = reason;
 	
