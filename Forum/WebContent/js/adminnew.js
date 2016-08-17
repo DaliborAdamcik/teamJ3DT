@@ -18,7 +18,7 @@ function makeAdminPage(response) {
 	response.users.forEach(function(item) {
 		if (item.role == "GUEST") {
 			item.promotebutton = "<button class=\"promote_button\" onclick=\"promoteuser(" + item.id
-					+ ", this);\">promote to regular</button>";
+					+ ", this);\">PROMOTE</button>";
 		}
 
 		if (item.blocked == null) {
