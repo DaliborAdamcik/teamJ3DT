@@ -1,11 +1,20 @@
+/**
+ * An timer to start receive of fresh data
+ */
 var commentRefreshTimeout= undefined;
+/**
+ * Identifier of opened theme
+ */
 var themeIdentForComments= undefined;
+/**
+ * template for comments (mustache) 
+ */
 var commentTemplate=undefined;
 /**
- * Reteive list of comments and topic (json, ajax call)
- * Result of ajax call is passed into function comments2page  
+ * Prepares comment wiew to show and autorefresh webpage
  * @param themeId Unique ID of theme to show
  * @returns void
+ * @author Dalibor Adamcik
  */
 function loadComments(themeId)
 {
@@ -18,6 +27,11 @@ function loadComments(themeId)
 	entityMenuButtonHide();
 }
 
+/**
+ * Stops automatic synchronization of comments
+ * @returns void
+ * @author Dalibor Adamcik
+ */
 function stopCommentSynchonize() {
 	if(commentRefreshTimeout)
 	{
@@ -26,47 +40,88 @@ function stopCommentSynchonize() {
 	}
 }
 
+/**
+ * Calls servlet and receive comments
+ * After first call (receive all) receives only changes  
+ * @param news undefined = only news
+ * @returns void
+ * @author Dalibor Adamcik
+ */
 function ajaxComments(news) {
 	$.ajax({
         type: "GET",
         url: "Comment/"+themeIdentForComments+"/"+(news===undefined?'newonly/':''),
         contentType:"application/json;charset=UTF-8",
         success: comments2page,
-        error: ajaxFailureMessage
+        error: function(resp) {ajaxFailureMessage(resp); showWelcomePage();}
     });
 }
 
 /**
- * Parses ajax response of call loadComments(thmeId)
- * Adds visual elemnts to page, sets visibility of visual components (menu and so on) 
+ * Parses ajax response of call ajaxComments()
+ * Adds visual elements to page, sets visibility of visual components (menu and so on)
  * @param response JSON representation of objects
  * @returns void
  */
 function comments2page(response)
 {
-	console.log(response);
-    response.comments.forEach(comment2page);    
-    
-    $('#themeId').val(response.theme.id);
-    $('#themeName').html(response.theme.topic.name + ' &gt; '+response.theme.name);
-    $('#themeDescription').text(response.theme.description);
-    
-    entityMenuButtonShow();
-    
-    if(user.role=="GUEST")
-    	$('#addComment').hide();
-    else
-    	$('#addComment').show();
+	try	{
+		console.log(response);
+		console.log("err", response.error, response.error.type, response.error.type==='WEBNoPermissionException');
+		
+	    if(response.error && response.error.type==='WEBNoPermissionException')
+    	{
+	    	showWelcomePage();
+	    	alert("Sorry: "+response.error.message);
+    	}
+
+		if(response.comments) // draw received comments
+			response.comments.forEach(comment2page);    
+	    
+		if(response.theme){
+		    $('#themeId').val(response.theme.id);
+		    $('#themeName').html(response.theme.topic.name + ' &gt; '+response.theme.name);
+		    $('#themeDescription').text(response.theme.description);
+		}
+		
+		if(response.deleted && response.deleted.length>0) 
+			response.deleted.forEach( function(ident){
+				var $old = $('#commentBoxer').find('#ent_'+ident);
+				if($old.length!==0)
+					$old.remove();
+			});
+		
+	
+		entityMenuButtonShow();
+	    
+	    if(user.role=="GUEST" || response.theme && response.theme.blocked)
+	    	$('#addComment').hide();
+	    else
+	    	$('#addComment').show();
+	}
+	catch(err) {
+		console.error("comments2page: ", err);
+	}
 }
 
+/**
+ * Draws comments on webpage 
+ * @param comment An comment JSON to add to page in HTML format
+ * @returns void
+ */
 function comment2page(comment){
-	console.log(comment);
-    var html = Mustache.to_html(commentTemplate, comment);
-	var $old = $('#commentBoxer').find('#ent_'+comment.id);
-	if($old!=undefined)
-	//	$('#commentBoxer').replace();
-	else
-    $('#commentBoxer').append($(html));
+	try {
+		console.log(comment);
+	    var html = Mustache.to_html(commentTemplate, comment);
+		var $old = $('#commentBoxer').find('#ent_'+comment.id);
+		if($old.length!==0)
+		$old.replaceWith(html);
+		else
+	    $('#commentBoxer').append($(html));
+	}
+	catch(err) {
+		console.error("comment2page: ", err);
+	}
 }
 
 /**
@@ -76,7 +131,6 @@ function comment2page(comment){
  */
 $('#addComment').submit(function(ev){
 	//TODO disable form
-	
 	try {
 		var jsobj = {};
 	    jsobj.comment = $('#newComment').val().trim();
@@ -98,11 +152,7 @@ $('#addComment').submit(function(ev){
 	        	console.log(response);
 	        	comment2page(response.comment);
 
-	        	var simul = {};
-	        	simul.comments= [response.comment];
-	        	console.log(simul);
-
-	            var $cobo = $('#commentBoxer'); 
+	        	var $cobo = $('#commentBoxer'); 
 	            $cobo.scrollTop($cobo.prop("scrollHeight"));
 	            $('#newComment').val("");
 	        },
@@ -182,7 +232,7 @@ function commentEditDlgModify(){
 	        success: function (response) {
 	        	$commentEditDlg.dialog('close');
 	        	console.log(response);
-	        	$('#ent_'+ident+'_txt').html(response.comment.comment);
+	        	comment2page(response.comment);
 	        },
 	        error: ajaxFailureMessage
 	    });

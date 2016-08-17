@@ -1,8 +1,10 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,7 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
+import sk.tsystems.forum.helper.exceptions.WEBNoPermissionException;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -51,52 +54,57 @@ public class CommentServlet extends MasterServlet {
 		URLParser pars;
 		try {
 			pars = svHelper.getURLParser();
-			if(pars.getParrentID()<0) // we not specified parent, we need to return page template
-			{
-				request.setAttribute("themeid", request.getParameter("topicid"));
-				request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
-				request.getRequestDispatcher("/WEB-INF/jsp/commentnew.jsp").include(request, response);
-				request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
-				return;
-			}
-
 			 // get Theme for parrent - ... /Comment/10/ ...
 			Theme theme = pars.getParentObject(Theme.class);
 			
 			// theme not exixsts or is blocked (can see only admin)
-			if(theme == null || theme.getBlocked()!=null && !svHelper.getSessionRole().equals(UserRole.ADMIN))  
-				throw new UnknownActionException("Theme not found.");
+			if(theme == null || theme.isBlocked() && !svHelper.getSessionRole().equals(UserRole.ADMIN))  
+				throw new WEBNoPermissionException("Theme not found or deleted.");
 			
-			// check privileges
+			// check privileges for theme
 			if(!theme.isIsPublic() && svHelper.getSessionRole().equals(UserRole.GUEST))
-				throw new UnknownActionException("Theme is private.");
+				throw new WEBNoPermissionException("Theme is private.");
 			
-			if(pars.getAction()==null || "newonly".equals(pars.getAction())) // we need to return list of coments
+			if(pars.getAction()==null || "newonly".equals(pars.getAction())) // we need to return list of comments
 			{
 				Map<String, Object> resp = new HashMap<>();
 				Date filterDate;
-				if((filterDate = (Date) svHelper.getSessionObject("comment_filter_date"))==null || pars.getAction()==null)
-					filterDate = new Date(0);
-				
-				List<Comment> comments = svHelper.getCommentService().getComments(theme);
-				// filter by date 
-				if(pars.getAction()!=null) {
-					final Date filterByDate = filterDate;
-					System.out.println("filter date "+ filterByDate);
-					resp.put("filterbydate", comments.removeIf(c -> c.getModified().compareTo(filterByDate) <= 0));
+				List<Comment> comments;
+				if(pars.getAction()==null || (filterDate = (Date) svHelper.getSessionObject("comment_filter_date"))==null)
+				{
+					comments = svHelper.getCommentService().getComments(theme);
 				}
+				else
+					comments = svHelper.getCommentService().getComments(theme, filterDate);
 
-				if(!comments.isEmpty())
+				if(!comments.isEmpty()) // save filter or last item
 					svHelper.setSessionObject("comment_filter_date", comments.get(comments.size()-1).getModified());
+
+				// list of blocked (erased) items for GUEST, USER
+				List<Integer> erased = new ArrayList<>();  
 				
-				//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-				// TODO filter comments by blocked
+				// create list of blocked, remove blocked (erased) 
+				if(!svHelper.getSessionRole().equals(UserRole.ADMIN))
+				{
+					System.out.println("bujko");
+					for (Iterator<Comment> iterator = comments.iterator(); iterator.hasNext();) {
+						Comment comment = iterator.next();
+						if(comment.isBlocked()) {
+							erased.add(comment.getId());
+							iterator.remove();
+							System.out.println("biik");
+						}
+					}
+				}
+				
 				resp.put("comments", comments);
 				resp.put("theme", theme);
+				if(pars.getAction()!=null && !erased.isEmpty()) // request updated items, send blocked list
+					resp.put("deleted", erased);
 
-				
 				response.setContentType("application/json");
 				ObjectMapper mapper = new ObjectMapper();
+				//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 				mapper.setSerializationInclusion(Include.NON_NULL);
 				mapper.writeValue(response.getWriter(), resp);
 				return;
@@ -104,17 +112,14 @@ public class CommentServlet extends MasterServlet {
 
 			if(pars.getAction().compareTo("single")==0) // get single comment
 			{
-				throw new UnknownActionException("not yet implemented");
-				
+				throw new UnknownActionException("Sorry. At this time we cant get single comment. Not yet implemented.");
 			}
 			else 
 				throw new UnknownActionException("Anknown action: "+pars.getAction());
 			
-		} catch (URLParserException e) {
-			response.getWriter().println(e.getMessage());
-		} catch (UnknownActionException e) {
-			response.getWriter().println(e.getMessage());
-		}
+		} catch (URLParserException | UnknownActionException | WEBNoPermissionException e) {
+			ServletHelper.ExceptionToResponseJson(e, response, false);
+		} 
 	}
 	
 	// edit
@@ -124,7 +129,7 @@ public class CommentServlet extends MasterServlet {
 		URLParser pars;
 		try {
 			if(svHelper.getSessionRole().equals(UserRole.GUEST))
-				throw new UnknownActionException("Guest cant edit comment");
+				throw new WEBNoPermissionException("Only regular user can edit comment");
 			
 			pars = svHelper.getURLParser();
 			Comment comment = pars.getParentObject(Comment.class);
@@ -133,7 +138,7 @@ public class CommentServlet extends MasterServlet {
 				throw new UnknownActionException("Comment not found.");
 			
 			if(!svHelper.getSessionRole().equals(UserRole.ADMIN) && svHelper.getLoggedUser().getId()!=comment.getOwner().getId())  
-				throw new UnknownActionException("Comment not found.");
+				throw new WEBNoPermissionException("No permission to edit comment.");
 
 			JSONObject obj = svHelper.getJSON();
 			comment.setComment(obj.getString("comment"));
@@ -146,15 +151,9 @@ public class CommentServlet extends MasterServlet {
 			
 			response.setContentType("application/json");
 			mapper.writeValue(response.getWriter(), resp);
-		} catch (URLParserException e) {
-			response.getWriter().println(e.getMessage());
-		} catch (UnknownActionException e) {
-			response.getWriter().println(e.getMessage());
-		}
-	}
-
-	// remove
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		} catch (URLParserException | UnknownActionException | WEBNoPermissionException e) {
+			ServletHelper.ExceptionToResponseJson(e, response, false);
+		} 
 	}
 
 	// add
@@ -164,7 +163,7 @@ public class CommentServlet extends MasterServlet {
 		try {
 			// check privileges
 			if(svHelper.getSessionRole().equals(UserRole.GUEST))
-				throw new UnknownActionException("You must be signed in / confirmed user to add comment.");
+				throw new WEBNoPermissionException("You must be signed in / regular user to add comment.");
 
 			pars = svHelper.getURLParser();
 			if(pars.getParrentID()<0) 
@@ -173,16 +172,14 @@ public class CommentServlet extends MasterServlet {
 			 // get Theme for parrent - ... /Comment/10/ ...
 			Theme theme = pars.getParentObject(Theme.class);
 			
-			// theme not exixsts or is blocked (can see only admin)
+			// theme not exixsts or is blocked anyone cant add new comment
 			if(theme == null || theme.getBlocked()!=null)  
-				throw new UnknownActionException("Theme not found.");
-			
+				throw new WEBNoPermissionException("Theme not found.");
 			
 			JSONObject obj = svHelper.getJSON();
 			
 			Comment comment = new Comment(obj.getString("comment"), theme, svHelper.getLoggedUser(), true);
 			svHelper.getCommentService().addComment(comment);
-			
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Include.NON_NULL);
@@ -191,11 +188,9 @@ public class CommentServlet extends MasterServlet {
 			
 			response.setContentType("application/json");
 			mapper.writeValue(response.getWriter(), resp);
-		} catch (URLParserException e) {
-			response.getWriter().println(e.getMessage());
-		} catch (UnknownActionException e) {
-			response.getWriter().println(e.getMessage());
-		}
+		} catch (URLParserException | UnknownActionException | WEBNoPermissionException e) {
+			ServletHelper.ExceptionToResponseJson(e, response, false);
+		} 
 	}
 	
 }
