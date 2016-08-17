@@ -18,7 +18,7 @@ function makeAdminPage(response) {
 	response.users.forEach(function(item) {
 		if (item.role == "GUEST") {
 			item.promotebutton = "<button class=\"promote_button\" onclick=\"promoteuser(" + item.id
-					+ ", this);\">promote to regular</button>";
+					+ ", this);\">PROMOTE</button>";
 		}
 
 		if (item.blocked == null) {
@@ -85,11 +85,16 @@ function mark(id, button, isMarked) {
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
-
-			if ($(button).html() == "mark non public") {
-				$(button).html('mark public');
-			} else if ($(button).html() == "mark public") {
-				$(button).html('mark non public');
+			var promid = "promote_"+id
+			var td = document.getElementById(promid);
+		//	td.innerHTML = "<button class=\"markpublic_button\" onclick=\"mark(" + id + ",this);\">PUBLIC</button>";
+			
+			
+			
+			if ($(button).html() == "PRIVATE") {
+				td.innerHTML = "<button class=\"markpublic_button\" onclick=\"mark(" + id + ",this);\">PUBLIC</button>";
+			} else if ($(button).html() == "PUBLIC") {
+				td.innerHTML = "<button class=\"marknonpublic_button\" onclick=\"mark(" + id + ",this);\">PRIVATE</button>";
 			}
 
 		},

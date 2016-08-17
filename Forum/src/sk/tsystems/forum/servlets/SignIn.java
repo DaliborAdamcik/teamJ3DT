@@ -72,7 +72,7 @@ public class SignIn extends MasterServlet implements Servlet {
 			
 
 			User user = userService.getUser(userName);
-			if (user == null || user.getPassword().compareTo(password)!=0) {
+			if (user == null || user.authentificate(password)) {
 				response.getWriter().println("<h4 align = \"center\">Invalid username and password combination.</h4>");
 				return;
 			}
