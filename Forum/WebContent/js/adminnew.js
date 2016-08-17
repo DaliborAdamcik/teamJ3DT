@@ -17,33 +17,33 @@ function makeAdminPage(response) {
 	}
 	response.users.forEach(function(item) {
 		if (item.role == "GUEST") {
-			item.promotebutton = "<button onclick=\"promoteuser(" + item.id
+			item.promotebutton = "<button class=\"promote_button\" onclick=\"promoteuser(" + item.id
 					+ ", this);\">promote to regular</button>";
 		}
 
 		if (item.blocked == null) {
-			item.blockbutton = "<button onclick=\"block(" + item.id
+			item.blockbutton = "<button class=\"block_button\" onclick=\"block(" + item.id
 					+ ");\">block</button>";
 		} else {
-			item.blockbutton = "<button onclick=\"unblock(" + item.id
+			item.blockbutton = "<button class=\"unblock_button\" onclick=\"unblock(" + item.id
 					+ ");\">unblock</button>";
 		}
 
 	});
 	response.topics.forEach(function(item) {
 		if (item.isPublic) {
-			item.markbutton = "<button onclick=\"mark(" + item.id
+			item.markbutton = "<button class=\"marknonpublic_button\" onclick=\"mark(" + item.id
 					+ ", this,false);\">mark non public</button>";
 		} else {
-			item.markbutton = "<button onclick=\"mark(" + item.id
+			item.markbutton = "<button class=\"markpublic_button\" onclick=\"mark(" + item.id
 					+ ", this,true);\">mark public</button>";
 		}
 
 		if (item.blocked == null) {
-			item.blockbutton = "<button onclick=\"block(" + item.id
+			item.blockbutton = "<button class=\"block_button\"onclick=\"block(" + item.id
 					+ ");\">block</button>";
 		} else {
-			item.blockbutton = "<button onclick=\"unblock(" + item.id
+			item.blockbutton = "<button class=\"unblock_button\" onclick=\"unblock(" + item.id
 					+ ");\">unblock</button>";
 		}
 	});
@@ -113,7 +113,7 @@ function unblock(id) {
 			var tid = "block_" + id;
 			console.log(tid);
 			var td = document.getElementById(tid);
-			td.innerHTML = "<button onclick=\"block(" + id
+			td.innerHTML = "<button class=\"block_button\" onclick=\"block(" + id
 					+ ");\">block</button>";
 			var blockedfor = document.getElementById("blockedfor_"+id);
 			blockedfor.innerHTML = "";
@@ -133,7 +133,7 @@ function successBlock( response,id, reason){
 	console.log(response);
 	console.log(tid);
 	var td = document.getElementById(tid);
-	td.innerHTML = "<button onclick=\"unblock(" + id + ");\">unblock</button>";
+	td.innerHTML = "<button class=\"unblock_button\" onclick=\"unblock(" + id + ");\">unblock</button>";
 	var blockedfor = document.getElementById("blockedfor_"+id);
 	blockedfor.innerHTML = reason;
 	
