@@ -1,6 +1,7 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,8 +130,13 @@ public class Welcome extends MasterServlet {
 		
 		// TODO potom to vyrucic
 		HashMap<Topic, List<Theme>> topicThemeList= new HashMap<>();
-		for (Topic topic : helpser.getTopicService().getTopics()) {
-			topicThemeList.put(topic, helpser.getThemeService().getTheme(topic));
+		List<Topic> topics = helpser.getTopicService().getTopics();
+		Collections.sort(topics);
+		
+		for (Topic topic : topics) {
+			List<Theme> themes = helpser.getThemeService().getTheme(topic);
+			Collections.sort(themes);
+			topicThemeList.put(topic, themes);
 		}
 		
 		request.setAttribute("topthemlis", topicThemeList);

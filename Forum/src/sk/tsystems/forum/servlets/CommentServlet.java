@@ -1,6 +1,7 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.boot.model.source.internal.hbm.Helper;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -69,20 +71,33 @@ public class CommentServlet extends MasterServlet {
 			if(!theme.isIsPublic() && svHelper.getSessionRole().equals(UserRole.GUEST))
 				throw new UnknownActionException("Theme is private.");
 			
-			if(pars.getAction()==null) // we need to return list of coments
+			if(pars.getAction()==null || "newonly".equals(pars.getAction())) // we need to return list of coments
 			{
+				Map<String, Object> resp = new HashMap<>();
+				Date filterDate;
+				if((filterDate = (Date) svHelper.getSessionObject("comment_filter_date"))==null || pars.getAction()==null)
+					filterDate = new Date(0);
+				
 				List<Comment> comments = svHelper.getCommentService().getComments(theme);
-				ObjectMapper mapper = new ObjectMapper();
-				mapper.setSerializationInclusion(Include.NON_NULL);
+				// filter by date 
+				if(pars.getAction()!=null) {
+					final Date filterByDate = filterDate;
+					System.out.println("filter date "+ filterByDate);
+					resp.put("filterbydate", comments.removeIf(c -> c.getModified().compareTo(filterByDate) <= 0));
+				}
+
+				if(!comments.isEmpty())
+					svHelper.setSessionObject("comment_filter_date", comments.get(comments.size()-1).getModified());
+				
 				//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 				// TODO filter comments by blocked
-				Map<String, Object> resp = new HashMap<>();
 				resp.put("comments", comments);
 				resp.put("theme", theme);
-				resp.put("role", svHelper.getSessionRole());
-				
+
 				
 				response.setContentType("application/json");
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.setSerializationInclusion(Include.NON_NULL);
 				mapper.writeValue(response.getWriter(), resp);
 				return;
 			}

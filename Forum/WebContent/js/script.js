@@ -304,6 +304,7 @@ function showWelcomePage()
 		$("#welcome_pg").show("slow");
 		$("#comments_pg").hide("slow");
 		entityMenuButtonHide();
+		stopCommentSynchonize();
 	}
 	return false;
 }

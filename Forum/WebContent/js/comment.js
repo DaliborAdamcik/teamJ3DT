@@ -1,3 +1,6 @@
+var commentRefreshTimeout= undefined;
+var themeIdentForComments= undefined;
+var commentTemplate=undefined;
 /**
  * Reteive list of comments and topic (json, ajax call)
  * Result of ajax call is passed into function comments2page  
@@ -6,17 +9,31 @@
  */
 function loadComments(themeId)
 {
+	$('#commentBoxer').html('');
+	themeIdentForComments = themeId;
+	ajaxComments(false);
+	commentRefreshTimeout = setInterval(ajaxComments, 30000);
+	$("#welcome_pg").hide("slow");
+	$("#comments_pg").show("slow");
+	entityMenuButtonHide();
+}
+
+function stopCommentSynchonize() {
+	if(commentRefreshTimeout)
+	{
+		clearInterval(commentRefreshTimeout);
+		commentRefreshTimeout = undefined;
+	}
+}
+
+function ajaxComments(news) {
 	$.ajax({
         type: "GET",
-        url: "Comment/"+themeId+"/",
+        url: "Comment/"+themeIdentForComments+"/"+(news===undefined?'newonly/':''),
         contentType:"application/json;charset=UTF-8",
         success: comments2page,
         error: ajaxFailureMessage
     });
-	
-	$("#welcome_pg").hide("slow");
-	$("#comments_pg").show("slow");
-	entityMenuButtonHide();
 }
 
 /**
@@ -28,9 +45,7 @@ function loadComments(themeId)
 function comments2page(response)
 {
 	console.log(response);
-	var template = $('#commentTemplate').html();
-    var html = Mustache.to_html(template, response);
-    $('#commentBoxer').html(html);
+    response.comments.forEach(comment2page);    
     
     $('#themeId').val(response.theme.id);
     $('#themeName').html(response.theme.topic.name + ' &gt; '+response.theme.name);
@@ -42,7 +57,16 @@ function comments2page(response)
     	$('#addComment').hide();
     else
     	$('#addComment').show();
-    
+}
+
+function comment2page(comment){
+	console.log(comment);
+    var html = Mustache.to_html(commentTemplate, comment);
+	var $old = $('#commentBoxer').find('#ent_'+comment.id);
+	if($old!=undefined)
+	//	$('#commentBoxer').replace();
+	else
+    $('#commentBoxer').append($(html));
 }
 
 /**
@@ -72,15 +96,13 @@ $('#addComment').submit(function(ev){
 	        data: JSON.stringify(jsobj),
 	        success: function (response) {
 	        	console.log(response);
+	        	comment2page(response.comment);
+
 	        	var simul = {};
 	        	simul.comments= [response.comment];
 	        	console.log(simul);
-	        	
-	        	var template = $('#commentTemplate').html();
-	            var html = Mustache.to_html(template, simul);
-	            var $cobo = $('#commentBoxer')
-	            
-	            $cobo.html($cobo.html()+html);
+
+	            var $cobo = $('#commentBoxer'); 
 	            $cobo.scrollTop($cobo.prop("scrollHeight"));
 	            $('#newComment').val("");
 	        },
@@ -116,6 +138,8 @@ function commentUIinit()
 			}
 		}
 	}, $comonDlgOpts));
+	
+	commentTemplate = $('#commentTemplate').html();
 }
 
 /**

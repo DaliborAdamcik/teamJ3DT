@@ -21,15 +21,13 @@
 	</c:choose>
 </div>
 
-<button onclick="editThemeDlgPopup(0);">New theme</button>
-
 <div class="container" align="center">
 	<div id="topicList" align="left">
 		<c:forEach var="topics" items="${topthemlis}">
-			<h3>${topics.key.getName()}</h3>
+			<h3>${topics.key.getName()} <button type="button" class="close entitymenucls" aria-hidden="true" onclick="newThemeDlgPopup(${topics.key.getId()});">New theme</button></h3>
 			<div>
 				<c:forEach items="${topics.value}" var="theme">
-					<div class="list-group-item" id="ent_${theme.getId()}" data-etype="theme" data-owner="${theme.getAuthor().getId()}">
+					<div class="list-group-item<c:choose><c:when test="${theme.getBlocked()!= null}"> blockedentity</c:when></c:choose>" id="ent_${theme.getId()}" data-etype="theme" data-owner="${theme.getAuthor().getId()}">
 						<span style="cursor:pointer; text-decoration: underline;" onclick="loadComments(${theme.getId()});" id="ent_${theme.getId()}_name">${theme.getName()}</span> 
 						<span>${theme.getAuthor().getUserName()}</span> 
 						<button type="button" class="close entitymenucls" aria-hidden="true" onclick="entityMenuPopup(${theme.getId()});">&Xi;</button>

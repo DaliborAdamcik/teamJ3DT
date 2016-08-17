@@ -34,7 +34,7 @@
 </div><!-- end of comment page content, DO NOT REMOVE THIS TAG -->
 
 <script id="commentTemplate" type="text/template">
-{{#comments}}<li id="ent_{{id}}" data-owner="{{#owner}}{{id}}{{/owner}}" data-etype="comment">
+<li id="ent_{{id}}" data-owner="{{#owner}}{{id}}{{/owner}}" data-etype="comment"{{#blocked}} class="blockedentity"{{/blocked}}>
 	<button type="button" class="close entitymenucls" aria-hidden="true" onclick="entityMenuPopup('{{id}}');">&Xi;</button>
 	
 	<div class="commenterImage">
@@ -46,7 +46,7 @@
 		<span class="date sub-text">from {{#owner}}{{userName}}{{/owner}} on {{created}}</span>
 
 	</div>
-</li>{{/comments}}
+</li>
 </script>
 
 <div id="editCommentDlg" title="Edit comment">
