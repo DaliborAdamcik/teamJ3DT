@@ -42,7 +42,7 @@
 			width=30 />
 	</div>
 	<div class="commentText">
-		<p class="" id="comment_{{id}}_txt">{{comment}}</p>
+		<p class="" id="ent_{{id}}_txt">{{comment}}</p>
 		<span class="date sub-text">from {{#owner}}{{userName}}{{/owner}} on {{created}}</span>
 
 	</div>

@@ -138,12 +138,8 @@ public class Welcome extends MasterServlet {
 		
 		// Atribut logged user, vyuizity pri jsp kde je menu
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
-		response.getWriter().print("<div id=\"welcome_pg\">");
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
-		response.getWriter().print("</div><div id=\"comments_pg\" style=\"display: none;\">");
 		request.getRequestDispatcher("/WEB-INF/jsp/commentnew.jsp").include(request, response);
-		response.getWriter().print("</div>");
-		
 		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 		return;		
 	}

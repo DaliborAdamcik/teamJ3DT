@@ -7,6 +7,7 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css" />
 
+<div id="welcome_pg"><!-- Begin of welcome page content, DO NOT REMOVE THIS TAG -->
 <div class="container" align=center>
 	<c:choose>
 		<c:when test="${CURRENT_USER.role == 'ADMIN'}">
@@ -28,10 +29,10 @@
 			<h3>${topics.key.getName()}</h3>
 			<div>
 				<c:forEach items="${topics.value}" var="theme">
-					<div class="list-group-item">
-						<span style="cursor:pointer; text-decoration: underline;" onclick="loadComments(${theme.getId()});">${theme.getName()}</span> 
+					<div class="list-group-item" id="ent_${theme.getId()}" data-etype="theme" data-owner="${theme.getAuthor().getId()}">
+						<span style="cursor:pointer; text-decoration: underline;" onclick="loadComments(${theme.getId()});" id="ent_${theme.getId()}_name">${theme.getName()}</span> 
 						<span>${theme.getAuthor().getUserName()}</span> 
-						<button type="button" class="close thememenucls" aria-hidden="true" onclick="themeMenuPopup(${theme.getId()});">&Xi;</button>
+						<button type="button" class="close entitymenucls" aria-hidden="true" onclick="entityMenuPopup(${theme.getId()});">&Xi;</button>
 						<p>${theme.getDescription()}</p>
 					</div>
 				</c:forEach>
@@ -40,7 +41,9 @@
 	</div>
 	<!-- <div style='overflow: auto; width: 800px; height: 300px;'></div> -->	
 </div>
-<!-- DO NOT MODIFY / REMOVE -->
+</div> <!-- end of welcome page content, DO NOT REMOVE THIS TAG -->
+
+<!-- DO NOT MODIFY / REMOVE comon html dialogs -->
 <div id="editThemeDlg" title="Edit theme">
 	<p>
 		<span id="editThemeDlg_ownerInfo"></span>
@@ -63,21 +66,21 @@
 </dl>
 </script>
 
-<ul id="themeMenu" style="display:none;">
-	<li onclick="themeMenuItemClick('close');"><div>Close menu</div></li>
-	<li onclick="themeMenuItemClick('edit');" class="MenuOwnerOption"><div>Edit</div></li>
-	<li onclick="themeMenuItemClick('remove');" class="MenuOwnerOption"><div>Remove</div></li>
+<ul id="entityMenu" style="display:none;">
+	<li onclick="entityMenuItemClick('close');"><div>Close menu</div></li>
+	<li id="entityMenu_iEdit" class="entMenuOwnerOption"><div>Edit</div></li>
+	<li onclick="entityMenuItemClick('owner.remove');" class="entMenuOwnerOption"><div>Remove</div></li>
 
-	<li id="commentMenuItemClose" class="MenuAdminOption"><div>Admin options</div>
+	<li id="commentMenuItemClose" class="entMenuAdminOption"><div>Admin options</div>
 	  <ul>
-		<li onclick="themeMenuItemClick('block');" class="MenuAdminOption"><div>Block</div></li>
-		<li onclick="themeMenuItemClick('unblock');" class="MenuAdminOption"><div>UnBlock</div></li>
+		<li onclick="entityMenuItemClick('admin.block');" class="entMenuAdminOption"><div>Block</div></li>
+		<li onclick="entityMenuItemClick('admin.unblock');" class="entMenuAdminOption"><div>UnBlock</div></li>
 	  </ul>
 	</li>
 </ul>
 
-
+<script type="text/javascript" src="js/popupmenu.js"></script>
 <script type="text/javascript" src="js/welcome.js"></script>
 <script>
-	welcomeUIinit();
+	
 </script>

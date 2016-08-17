@@ -72,6 +72,16 @@ $( document ).ready(function() {
 		}
 	}, $comonDlgOpts));	
 	
+	// common YesNo dlg
+	$('#yesNoCommonDlg').dialog($.extend({
+			resizable: true,
+			height: "auto",
+			width: "auto",
+			buttons: {
+				"Yes": yesNoCommonDlg_answer_yes,
+				"No": yesNoCommonDlg_answer_no
+			}
+		}, $comonDlgOpts));
 });
 
 /**
@@ -146,12 +156,132 @@ function blockCommonDlg_BlockSucces(response) {
 	catch(err) {console.log("cant call callback", err);}
 }
 
-function bajkolajko(aber, burde)
-{
-	console.log("callback", aber, burde);
+/**
+ * Unblock entity
+ * Administrative option
+ * @param ident an unique ID of entity to be unblocked
+ * @param callback an function to be called after success ajax (function (response, ident))
+ * @returns void
+ * @author 
+ */
+function unblockCommonDlgPopup(ident, callback){
+	alert('unblock');	
+}
+
+/**
+ * Remove entity dialog
+ * User option
+ * @param ident an unique ID of entity to be removed
+ * @param callback an function to be called after success ajax (function (response, ident))
+ * @returns void
+ * @author Dalibor Adamcik
+ */
+function removeCommonDlgPopup(ident, callback){
+	if(callback === undefined)
+		callback = removeCommonDlg_defaultCallBack;
+	
+	// TODO get entity information and show (eg coment or other)
+	var type = $('#ent_'+ident).data('etype');
+	var subtext = undefined;
+	switch(type) {
+		case 'comment': subtext = $('#ent_'+ident+'_txt').html(); break;
+		case 'theme': subtext = $('#ent_'+ident+'_name').html(); break;
+	}
+
+	yesNoCommonDlg('Remove '+type, 'Do you want remove '+type+(subtext===undefined?'':' "'+subtext+'"')+'?', 
+			removeCommonDlg_answer, {id: ident, cbc: callback});
 }
 
 
+/**
+ * An default callback function for remove entity common dialog
+ * @param response an response from server
+ * @param ident an ident of removed entity
+ */
+function removeCommonDlg_defaultCallBack(response, ident) {
+	console.log(response, ident);
+	// todo check response here
+	$('#ent_'+ident).hide('slow');	
+}
+
+
+/**
+ * Callback function to remomoveCommonDlgPopup()
+ * @param answer boolean 
+ * @param cbcparam call back parameter (to remove callback)
+ */
+function removeCommonDlg_answer(answer, cbcparam)
+{
+	if(!answer)
+		return;
+
+	$.ajax({
+        type: "POST",
+        url: "./Welcome",
+	    data: { 
+	    	block: cbcparam.id, 
+	    	block_reason: 'Erased by OWNER'
+	    },
+        success: function (resp) {
+        	try {
+        		console.log(cbcparam);
+        		cbcparam.cbc(resp, cbcparam.id);
+        	}
+        	catch(err) {
+        		console.error("Cant call callback in removeCommonDlg_answer / ajax: ", err);
+        	}
+        },
+        error: ajaxFailureMessage
+    });
+}
+// YES / NO dialog ---------------------------------------------------------
+/**
+ * Shows common yes no dialog. 
+ * Callback template: function(bool answer, function cbcparam){}
+ * @param title Dialog title
+ * @param message Message in dialog
+ * @param cbcfunc An function to be called after click on yes/no button
+ * @param cbcparam Parameters to be send to callback function
+ * @author Dalibor Adamcik
+ */
+function yesNoCommonDlg(title, message, cbcfunc, cbcparam) {
+	var $dlg = $('#yesNoCommonDlg');
+	$dlg.dialog('option', 'title', title);
+	$('#yesNoCommonDlg_message').html(message);
+	$dlg.data('callback', cbcfunc);
+	$dlg.data('backparam', cbcparam);
+	$dlg.dialog('open');
+}
+
+function yesNoCommonDlg_answer_yes()
+{
+	yesNoCommonDlg_answer(true);
+}
+function yesNoCommonDlg_answer_no()
+{
+	yesNoCommonDlg_answer(false);	
+}
+
+/**
+ * Call callback for YES/NO dialog
+ * @param answer an option YES / NO
+ * @author Dalibor Adamcik
+ */
+function yesNoCommonDlg_answer(answer) {
+	var $dlg = $('#yesNoCommonDlg');
+	$dlg.dialog('close');
+	
+	var cbcfunc = $dlg.data('callback');
+	var cbcparam = 	$dlg.data('backparam');
+	try { 
+		cbcfunc(answer, cbcparam);
+	}
+	catch(err) {
+		console.error("Yes/No dialog: error calling callback ", err);
+	}
+}
+
+// ajax failure dialog ---------------------------------------------------------
 /**
  * this is called after ajax failure response
  */
@@ -162,6 +292,7 @@ function ajaxFailureMessage(jxhr) {
 	$ajxErrorDlg.dialog('open');
 }
 
+//Welcome page show / hide ---------------------------------------------------------
 function showWelcomePage()
 {
 	var formumname = 'Forum';
@@ -172,6 +303,7 @@ function showWelcomePage()
 	else {
 		$("#welcome_pg").show("slow");
 		$("#comments_pg").hide("slow");
+		entityMenuButtonHide();
 	}
 	return false;
 }

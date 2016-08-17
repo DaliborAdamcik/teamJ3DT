@@ -125,7 +125,7 @@ function commentUIinit()
  */
 function commentEditDlgPopup(ident)
 {
-	$commentEditDlg.find("input").val($('#comment_'+ident+'_txt').html());
+	$commentEditDlg.find("input").val($('#ent_'+ident+'_txt').html());
 	$commentEditDlg.data('ident', ident);
 	$commentEditDlg.dialog('open');
 }
@@ -158,7 +158,7 @@ function commentEditDlgModify(){
 	        success: function (response) {
 	        	$commentEditDlg.dialog('close');
 	        	console.log(response);
-	        	$('#comment_'+ident+'_txt').html(response.comment.comment);
+	        	$('#ent_'+ident+'_txt').html(response.comment.comment);
 	        },
 	        error: ajaxFailureMessage
 	    });

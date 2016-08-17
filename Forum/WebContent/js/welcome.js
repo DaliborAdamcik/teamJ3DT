@@ -20,36 +20,7 @@ function welcomeUIinit()
 			}
 		}
 	}, $comonDlgOpts));
-    
-    // theme menu
-    $('#themeMenu').menu(); 
 }
-
-function themeMenuPopup(themeid)
-{
-	var $thmenu = $('#themeMenu'); 
-	$thmenu.data('ident', themeid);
-	// save ident to data
-	var e = window.event;
-	$thmenu.css({'top':e.pageY-50,'left':e.pageX, 'position':'absolute', 'border':'1px solid black', 'padding':'5px'});
-	$thmenu.show();
-}
-
-function themeMenuItemClick(itemname)
-{
-	var $thmenu = $('#themeMenu'); 
-	$thmenu.hide();
-	var ident = $thmenu.data('ident');
-	switch(itemname)
-	{
-		case 'close': break; // we dont need to do nothing there
-		case 'edit': editThemeDlgPopup(ident); break;
-		
-		default:
-			alert('menu action not implemented: '+itemname);
-	}
-}
-
 
 function editThemeDlgPopup(themeid){
 	var $edthdlg = $( "#editThemeDlg" );
@@ -99,3 +70,6 @@ function editThemeDlg_save(){
 	var $edthdlg = $( "#editThemeDlg" );
 	$edthdlg.dialog('open');
 }
+
+/* do not remove */
+welcomeUIinit();

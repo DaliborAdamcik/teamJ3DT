@@ -15,13 +15,18 @@
 
 
 <!--  DO NOT REMOVE THEESE TAGS -->
-
 <div id="blockCommonDlg" title="Block">
 	<p>
 		Block reason:<br/>
 		<input class="form-control" type="text" placeholder="Block reason" />
 	</p>
 </div>
+
+<div id="yesNoCommonDlg" title="Yes No title">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+  <span id="yesNoCommonDlg_message"></span></p>
+</div>
+
 
 <div id="ajaxErrorDlg" title="Error during AJAX request" style="background-color: #ff9999;"></div>
 <script id="ajaxErrorDlg_tmpl" type="text/template">
