@@ -67,7 +67,6 @@ function comments2page(response)
 {
 	try	{
 		console.log(response);
-		console.log("err", response.error, response.error.type, response.error.type==='WEBNoPermissionException');
 		
 	    if(response.error && response.error.type==='WEBNoPermissionException')
     	{
