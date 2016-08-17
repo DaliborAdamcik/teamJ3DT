@@ -29,7 +29,7 @@
 <tr><th> User Name<th>Role<th> Blocked For<th><th>
 {{#users}} <tr><td id="username">{{userName}} 
 <td>{{role}}
- <td  id="blockedfor">{{blocked.reason}} 
+ <td  id="blockedfor_{{id}}">{{blocked.reason}} 
 <td id="block_{{id}}" >{{{blockbutton}}}
 <td id="promote_{{id}}">{{{promotebutton}}}
 {{/users}}
@@ -38,7 +38,7 @@
 <script id="topicTemplate" type="text/template">
 <tr><th> Topic Name<th> Blocked For<th><th>
 {{#topics}} <tr><td>{{name}} 
- <td >{{blocked.reason}} 
+ <td id="blockedfor_{{id}}">{{blocked.reason}} 
 <td id="block_{{id}}">{{{blockbutton}}}
 <td id="promote_{{id}}">{{{markbutton}}}
 {{/topics}}
@@ -46,7 +46,7 @@
 
 
 
-	</div>
+	
 
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>

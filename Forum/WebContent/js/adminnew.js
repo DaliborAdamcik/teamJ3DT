@@ -110,15 +110,26 @@ function unblock(id) {
 			var td = document.getElementById(tid);
 			td.innerHTML = "<button onclick=\"block(" + id
 					+ ");\">block</button>";
-
+			var blockedfor = document.getElementById("blockedfor_"+id);
+			blockedfor.innerHTML = "";
 		},
 		error : ajaxFailureMessage
 	});
 }
 
 function block(id) {
-	blockCommonDlgPopup(id);
-	location.reload();
+	blockCommonDlgPopup(id,successBlock);
+
 	
+}
+function successBlock( response,id, reason){
+	var tid = "block_" + id;
+	console.log("jebat");
+	console.log(response);
+	console.log(tid);
+	var td = document.getElementById(tid);
+	td.innerHTML = "<button onclick=\"unblock(" + id + ");\">unblock</button>";
+	var blockedfor = document.getElementById("blockedfor_"+id);
+	blockedfor.innerHTML = reason;
 	
 }

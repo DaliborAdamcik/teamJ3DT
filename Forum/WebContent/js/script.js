@@ -141,7 +141,7 @@ function blockCommonDlg_BlockSucces(response) {
 	{
 		var $dlg = $('#blockCommonDlg');
 		if($dlg.data('calltome')!=undefined)
-		$dlg.data('calltome')(response, $dlg.data('ident'));
+		$dlg.data('calltome')(response, $dlg.data('ident'), $dlg.find("input").val().trim());
 	}
 	catch(err) {console.log("cant call callback", err);}
 }

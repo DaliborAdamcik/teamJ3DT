@@ -1,6 +1,7 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,30 +62,25 @@ public class Admin extends MasterServlet {
 			// servletHelper.getLoggedUser().getRole() != UserRole.ADMIN) {
 			if (pars.getParrentID() < 0) {
 				request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
-				response.getWriter().print("<h1>Only admins can view this page</h1>");
 				request.getRequestDispatcher("/WEB-INF/jsp/admin.jsp").include(request, response);
 				request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 
 				return;
 			}
+			
+			if(servletHelper.getSessionRole()!=UserRole.ADMIN){
+				response.getWriter().print("<h1>Only admins can view this page</h1>");
+				return;
+			}
 			String action = pars.getAction();
-			// Integer objId = pars.getParrentID();
-			// //ak je zadane nespravne ID
-			// if(objId == 0 ) {
-			// throw new UnknownActionException("Invalid id selected.");
-			// }
-			// // check privileges
-			// if(!BlockHelper.isInDatabase(objId)){
-			// throw new UnknownActionException("Object with selected id is not
-			// in database.");
-			// }
-
-			if (action == null) {
+						if (action == null) {
 				List<User> users = servletHelper.getUserService().getAllUsers();
 				List<Topic> topics = servletHelper.getTopicService().getTopics();
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.setSerializationInclusion(Include.NON_NULL);
 				Map<String, Object> resp = new HashMap<>();
+				Collections.sort(users);
+				Collections.sort(topics);
 				resp.put("users", users);
 				resp.put("topics", topics);
 				resp.put("role", servletHelper.getSessionRole());
@@ -93,38 +89,28 @@ public class Admin extends MasterServlet {
 				mapper.writeValue(response.getWriter(), resp);
 				return;
 			}
-			// if(action.equals("block")){
-			// BlockHelper.block(objId, blockReason,
-			// servletHelper.getLoggedUser());
-			// ObjectMapper mapper = new ObjectMapper();
-			// mapper.setSerializationInclusion(Include.NON_NULL);
-			//
-			// }
 		} catch (URLParserException e) {
 			response.getWriter().println(e.getMessage());
 		}
-		// catch (UnknownActionException e) {
-		// response.getWriter().println(e.getMessage());
-		// }
+		
 
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ServletHelper svHelper = new ServletHelper(request);
+		ServletHelper servletHelper = new ServletHelper(request);
 		URLParser pars;
 		try {
-			// check privileges
-			// if(svHelper.getSessionRole().equals(UserRole.GUEST))
-			// throw new UnknownActionException("You must be signed in /
-			// confirmed user to add comment.");
+			if(servletHelper.getSessionRole()!=UserRole.ADMIN){
+				return;
+			}
 
-			pars = svHelper.getURLParser();
+			pars = servletHelper.getURLParser();
 			if (pars.getParrentID() < 0)
 				throw new UnknownActionException("ID not specified.");
 			String action = pars.getAction();
 
-			JSONObject obj = svHelper.getJSON();
+			JSONObject obj = servletHelper.getJSON();
 			if (obj == null) {
 				throw new UnknownActionException("did not receive parameters");
 			}
@@ -134,7 +120,7 @@ public class Admin extends MasterServlet {
 
 			switch (action) {
 			case "promote":
-				promoteUser(response, svHelper, obj);
+				promoteUser(response, servletHelper, obj);
 				break;
 			case "mark":
 				mark(response, obj);
