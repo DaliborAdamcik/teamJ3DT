@@ -1,6 +1,9 @@
 package sk.tsystems.forum.service.jpa;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.TemporalType;
 
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
@@ -54,11 +57,19 @@ public class CommentJPA implements CommentService {
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<Comment> getComments(Theme theme, Date modifiedAfter) {
+		try (JpaConnector jpa = new JpaConnector()) {
+			return jpa.createQuery("SELECT c FROM Comment c WHERE c.theme=:theme AND c.modified>:modified").
+					setParameter("theme", theme).setParameter("modified", modifiedAfter, TemporalType.DATE).getResultList();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<Comment> getComments(User owner) {
 		try (JpaConnector jpa = new JpaConnector()) {
 			return jpa.createQuery("SELECT c FROM Comment c join c.owner o WHERE o=:owner").setParameter("owner", owner).getResultList();
 		}
 		
 	}
-
 }

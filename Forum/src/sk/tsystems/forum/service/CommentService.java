@@ -1,5 +1,6 @@
 package sk.tsystems.forum.service;
 
+import java.util.Date;
 import java.util.List;
 
 import sk.tsystems.forum.entity.Comment;
@@ -45,6 +46,15 @@ public interface CommentService {
 	 */
 	List<Comment> getComments(Theme theme);
 	
+	/**
+	 * Returns all comments <b> that are listed with specific theme</b> 
+	 * and modified after specified date
+	 * 
+	 * @param theme
+	 * @param modifiedAfter Date of modification
+	 * @return list of comments on specific theme
+	 */
+	List<Comment> getComments(Theme theme, Date modifiedAfter);
 	
 	/**
 	 * Returns all comments that were created by certain user
