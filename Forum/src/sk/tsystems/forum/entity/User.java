@@ -274,4 +274,12 @@ public class User extends BlockableEntity implements Comparable<User> {
 	public int compareTo(User user) {
 		return this.userName.compareTo(user.getUserName());
 	}
+	
+	@Override
+	public final void setBlocked(Blocked blocked) {
+		if(equals(blocked.getBlockedBy()))
+			throw new RuntimeException("YOU CAND DO THIS ANYTIME!!!!!!!!!!!!!!!!!!! RYS(Z)AAA");
+		super.setBlocked(blocked);
+	}
+	
 }

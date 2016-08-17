@@ -34,7 +34,7 @@ public abstract class BlockableEntity extends CommonEntity {
 	 * Setter for blocked
 	 * @param blocked
 	 */
-	public final void setBlocked(Blocked blocked) {
+	public void setBlocked(Blocked blocked) {
 		this.blocked = blocked;
 	}
 	
