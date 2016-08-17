@@ -11,24 +11,22 @@
 
 
 	<div class="container">
-<h1 id="title"></h1>
+		<h1 id="title"></h1>
 		<div class="col-md-6">
-			<table class="table" >
-			<tbody id="table_of_users">
-			
-			
+			<table class="table">
+				<tbody id="table_of_users">
 			</table>
 		</div>
 		<div class="col-md-6">
-			<table class="table" >
-			<tbody id="table_of_topics">
-			
-			</tbody>
+			<table class="table">
+				<tbody id="table_of_topics">
+
+				</tbody>
 			</table>
 		</div>
+	</div>
 
-
-<script id="userTemplate" type="text/template">
+	<script id="userTemplate" type="text/template">
 <tr><th> User Name<th>Role<th> Blocked For<th><th>
 {{#users}} <tr><td id="username">{{userName}} 
 <td>{{role}}
@@ -38,7 +36,7 @@
 {{/users}}
 </script>
 
-<script id="topicTemplate" type="text/template">
+	<script id="topicTemplate" type="text/template">
 <tr><th> Topic Name<th> Blocked For<th><th>
 {{#topics}} <tr><td>{{name}} 
  <td id="blockedfor_{{id}}">{{blocked.reason}} 
@@ -49,12 +47,13 @@
 
 
 
-	
 
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
-<script type="text/javascript" src="js/adminnew.js"></script>
 
-<script>
-	loadAdminPage();
-</script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
+	<script type="text/javascript" src="js/adminnew.js"></script>
+
+	<script>
+		loadAdminPage();
+	</script>
