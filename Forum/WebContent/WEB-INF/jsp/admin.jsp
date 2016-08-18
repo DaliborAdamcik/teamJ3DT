@@ -27,7 +27,7 @@
 	</div>
 
 	<script id="userTemplate" type="text/template">
-<tr><th> User Name<th>Role<th> Blocked For<th><th>
+<tr><th> User Name<th>Role<th> Blocked For<th>Block<th>Promote
 {{#users}} <tr><td id="username">{{userName}} 
 <td>{{role}}
  <td  id="blockedfor_{{id}}">{{blocked.reason}} 
@@ -37,7 +37,7 @@
 </script>
 
 	<script id="topicTemplate" type="text/template">
-<tr><th> Topic Name<th> Blocked For<th><th>
+<tr><th> Topic Name<th> Blocked For<th>Block<th>Mark
 {{#topics}} <tr><td>{{name}} 
  <td id="blockedfor_{{id}}">{{blocked.reason}} 
 <td id="block_{{id}}">{{{blockbutton}}}
