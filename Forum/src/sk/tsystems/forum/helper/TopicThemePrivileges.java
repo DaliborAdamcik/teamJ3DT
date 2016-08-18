@@ -37,7 +37,7 @@ public class TopicThemePrivileges {
 	 */
 	public TopicThemePrivileges(ServletHelper svHelper, URLParser pars, HttpServletResponse response, Class<?> clazz) {
 		super();
-		if(!clazz.equals(Theme.class) || !clazz.equals(Comment.class) || !clazz.equals(Topic.class))
+		if(!clazz.equals(Theme.class) && !clazz.equals(Comment.class) && !clazz.equals(Topic.class))
 			throw new RuntimeException(getClass().getSimpleName()+" cant work with "+clazz.getSimpleName());
 		
 		this.svHelper = svHelper;

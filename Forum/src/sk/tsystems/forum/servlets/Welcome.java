@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -22,7 +23,9 @@ import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.helper.ServletHelper;
+import sk.tsystems.forum.helper.TopicThemePrivileges;
 import sk.tsystems.forum.helper.URLParser;
+import sk.tsystems.forum.helper.exceptions.CommonEntityException;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.helper.exceptions.WEBNoPermissionException;
@@ -151,12 +154,12 @@ public class Welcome extends MasterServlet {
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/commentnew.jsp").include(request, response);
+		response.getWriter().print("<script id=\"themesFirst\" type=\"text/template\">");
+		//request.getRequestDispatcher("/Welcome/0/").include(request, response);
+		response.getWriter().print("</script>");
 		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 		return;		
 	}
-
-	
-	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -165,7 +168,50 @@ public class Welcome extends MasterServlet {
 	// edit theme
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		ServletHelper svHelper = new ServletHelper(request);
+		try {
+			URLParser url = svHelper.getURLParser();
+			if(url.getAction()==null)
+				throw new URLParserException("Required parameter action is not supplied.");
+			
+			JSONObject json = svHelper.getJSON();
+			if(json==null)
+				throw new UnknownActionException("We request an JSON object into an input.");
+			
+			if("theme".equals(url.getAction()))
+			{
+				TopicThemePrivileges prioper = new TopicThemePrivileges(svHelper, url, response, Theme.class);
+				Theme theme = prioper.getStoredObject(true);
+				
+				theme.setDescription(json.getString("description"));
+				theme.setName(json.getString("name"));
+				theme.setPublic(json.getBoolean("isPublic"));
+				
+				prioper.store(theme);
+				return;
+			}
 
+			if("topic".equals(url.getAction()))
+			{
+				/*TopicThemePrivileges prioper = new TopicThemePrivileges(svHelper, url, response, Theme.class);
+				Theme theme = prioper.getStoredObject(true);
+				
+				theme.setDescription(json.getString("description"));
+				theme.setName(json.getString("name"));
+				theme.setPublic(json.getBoolean("isPublic"));
+				
+				prioper.store(theme);
+				return;*/
+				throw new RuntimeException("Not yet implemented");
+			}
+			
+			throw new UnknownActionException("Uknknown action taken");
+			
+		} catch (URLParserException | WEBNoPermissionException | UnknownActionException e) {
+			ServletHelper.ExceptionToResponseJson(e, response, false);
+		}
+		
+		
 /*
 		if (request.getParameter("new_topic_name") != null) {
 			if (!request.getParameter("new_topic_name").equals("")) {
@@ -185,7 +231,39 @@ public class Welcome extends MasterServlet {
 	// add theme
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletHelper svHelper = new ServletHelper(request);
-		URLParser pars;
+		try {
+			URLParser url = svHelper.getURLParser();
+			if(url.getAction()==null)
+				throw new URLParserException("Required parameter action is not supplied.");
+			
+			JSONObject json = svHelper.getJSON();
+			if(json==null)
+				throw new UnknownActionException("We request an JSON object into an input.");
+			
+			if("theme".equals(url.getAction()))
+			{
+				TopicThemePrivileges prioper = new TopicThemePrivileges(svHelper, url, response, Topic.class);
+				Topic topic = prioper.getStoredObject(false); // we add new theme to topic, no need to check ownership
+				Theme newTheme = new Theme(json.getString("name"), topic, json.getString("description"), svHelper.getLoggedUser(), json.getBoolean("isPublic"));
+				prioper.store(newTheme);
+				return;
+			}
 
+			if("topic".equals(url.getAction()))
+			{
+				/*TopicThemePrivileges prioper = new TopicThemePrivileges(svHelper, url, response, Theme.class);
+				Theme theme = prioper.getStoredObject(true);
+				
+				theme.setDescription(json.getString("description"));
+				theme.setName(json.getString("name"));
+				theme.setPublic(json.getBoolean("isPublic"));
+				
+				prioper.store(theme);
+				return;*/
+				throw new RuntimeException("Not yet implemented");
+			}
+		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | JSONException | CommonEntityException e) {
+			ServletHelper.ExceptionToResponseJson(e, response, false);
+		}
 	}
 }
