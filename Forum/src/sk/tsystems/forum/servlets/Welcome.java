@@ -1,8 +1,11 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -63,22 +67,7 @@ public class Welcome extends MasterServlet {
 			
 			if(url.getParrentID()==0) // list of themes with topic
 			{
-				List<Theme> themes = helpser.getThemeService().getTheme();
-				
-				Map<String, Object> resp = new HashMap<>();
-				if(!helpser.getSessionRole().equals(UserRole.ADMIN))
-					resp.put("filterbyblock", themes.removeIf(t -> t.isBlocked() || t.getTopic().isBlocked() ));
-				
-				if(helpser.getSessionRole().equals(UserRole.GUEST))
-					resp.put("filterpublic", themes.removeIf(t -> !t.isIsPublic() || !t.getTopic().isIsPublic()));
-
-				resp.put("themes", themes);
-				resp.put("resultcount", themes.size());
-				
-				response.setContentType("application/json");
-				ObjectMapper mapper = new ObjectMapper();
-				mapper.setSerializationInclusion(Include.NON_NULL);
-				mapper.writeValue(response.getWriter(), resp);
+				doGetListOfThemeTopic(helpser, response, true, "news".equals(url.getAction()));
 				return;
 			}
 			
@@ -123,6 +112,68 @@ public class Welcome extends MasterServlet {
 		}
 	}
 	
+	private void doGetListOfThemeTopic(ServletHelper helpser, HttpServletResponse response, boolean flushmode, boolean newsonly)
+			throws ServletException, IOException {
+		Map<String, Object> resp = new HashMap<>();
+		
+		Date filterDate;
+		List<Theme> themes; 
+		if(!newsonly || (filterDate = (Date) helpser.getSessionObject("theme_filter_date"))==null)
+		{
+			themes = helpser.getThemeService().getTheme();
+		}
+		else
+			themes = helpser.getThemeService().getTheme(filterDate);
+
+		if(!themes.isEmpty()) // save filter or last item
+			helpser.setSessionObject("theme_filter_date", themes.get(themes.size()-1).getModified());
+		
+		List<Integer> erased = new ArrayList<>();  
+		List<Topic> topics = new ArrayList<>();
+		// create list of blocked, remove blocked (erased) 
+		if(!helpser.getSessionRole().equals(UserRole.ADMIN))
+		{
+			UserRole currRole = helpser.getSessionRole();
+			for (Iterator<Theme> iterator = themes.iterator(); iterator.hasNext();) {
+				Theme theme = iterator.next();
+				if(theme.isBlocked() ||
+						theme.getTopic().isBlocked() || 
+						!(theme.isIsPublic()&&theme.getTopic().isIsPublic()) && currRole.equals(UserRole.GUEST)) {
+					erased.add(theme.getId());
+					iterator.remove();
+				} else {
+					if(!topics.contains(theme.getTopic()))
+						topics.add(theme.getTopic());
+				}
+			}
+		} else {
+			for (Theme theme: themes) {
+				if(!topics.contains(theme.getTopic()))
+					topics.add(theme.getTopic());
+			}
+		}
+		
+		resp.put("themes", themes);
+		resp.put("topics", topics);
+		resp.put("topicCount", topics.size());
+		resp.put("themeCount", themes.size());
+		if(newsonly)
+			resp.put("erased", erased);
+		
+		if(flushmode)
+			response.setContentType("application/json");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		mapper.addMixIn(Theme.class, MixIn.class);
+		
+		if(!flushmode) {
+			mapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+			mapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT, false);
+		}
+		mapper.writeValue(response.getWriter(), resp);
+	}
+	
 	private void responsePageHTML(HttpServletRequest request, HttpServletResponse response, ServletHelper helpser)
 			throws ServletException, IOException {
 		
@@ -137,7 +188,7 @@ public class Welcome extends MasterServlet {
 		}
 		
 		// TODO potom to vyrucic
-		HashMap<Topic, List<Theme>> topicThemeList= new HashMap<>();
+		/*HashMap<Topic, List<Theme>> topicThemeList= new HashMap<>();
 		List<Topic> topics = helpser.getTopicService().getTopics();
 		Collections.sort(topics);
 		
@@ -148,15 +199,16 @@ public class Welcome extends MasterServlet {
 		}
 		
 		request.setAttribute("topthemlis", topicThemeList);
-		// TODO potom to vyrucic po tadzzi
+		*/// TODO potom to vyrucic po tadzzi
 		
 		// Atribut logged user, vyuizity pri jsp kde je menu
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/commentnew.jsp").include(request, response);
-		response.getWriter().print("<script id=\"themesFirst\" type=\"text/template\">");
-		//request.getRequestDispatcher("/Welcome/0/").include(request, response);
+		response.getWriter().print("<script id=\"themesFirst\" type=\"application/json\">");
+		doGetListOfThemeTopic(helpser, response, false, false);
 		response.getWriter().print("</script>");
+		response.getWriter().print("<script>welcomeUIinit();</script>");
 		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 		return;		
 	}
@@ -265,5 +317,9 @@ public class Welcome extends MasterServlet {
 		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | JSONException | CommonEntityException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}
+	}
+	
+	abstract class MixIn {
+		  @JsonIgnore abstract public Topic getTopic();  
 	}
 }

@@ -1,4 +1,12 @@
 /**
+ * An timer to start receive of fresh data
+ */
+var welcomeRefreshTimeout= undefined;
+var templateTheme;
+var templateTopic;
+var welcomeDrawObjects;
+
+/**
  * Initiates  visual components on page (visual style)
  * @returns void
  */
@@ -20,25 +28,138 @@ function welcomeUIinit()
 			}
 		}
 	}, $comonDlgOpts));
+    
+    templateTheme = $('#themeTemplate').html();
+    templateTopic = $('#topicTemplate').html();
+    welcomeDrawObjects = JSON.parse($('#themesFirst').html());
+    console.log(welcomeDrawObjects);
+    
+    themes2page();
+    welcomeRefreshTimeout = setInterval(ajaxWelcome, 30000);
 }
 
 /**
- * Draws theme  on webpage 
+ * Calls servlet and receive comments
+ * After first call (receive all) receives only changes  
+ * @param news undefined = only news
+ * @returns void
+ * @author Dalibor Adamcik
+ */
+function ajaxWelcome() {
+	$.ajax({
+        type: "GET",
+        url: "Welcome/0/news",
+        contentType:"application/json;charset=UTF-8",
+        success: renewStoredObject,
+        error: function(resp) {ajaxFailureMessage(resp);stopWelcomeSynchonize();}
+    });
+}
+
+/**
+ * Stops automatic synchronization of comments
+ * @returns void
+ * @author Dalibor Adamcik
+ */
+function stopWelcomeSynchonize() {
+	if(welcomeRefreshTimeout)
+	{
+		clearInterval(welcomeRefreshTimeout);
+		welcomeRefreshTimeout = undefined;
+	}
+}
+
+function indexInArr(array, ident) {
+/*	var elementPos = array.map(function(x) {return x.id; }).indexOf(ident);
+	var objectFound = array[elementPos];*/	
+	return array.map(function(x) {return x.id; }).indexOf(ident);
+}
+
+function renewStoredObject(resp) {
+	console.log(resp);
+	// TODO impelement remove
+	
+	resp.topics.forEach(function (topic) {
+		var index = indexInArr(welcomeDrawObjects.topics, topic.id);
+		if(index===undefined)
+			welcomeDrawObjects.topics.push(topic);
+		else
+			welcomeDrawObjects.topics[index] = topic;
+	});    
+
+	
+/*	welcomeDrawObjects.themes.forEach(paintTheme);    
+	
+	themes
+	erased
+	topics
+	*/
+	
+}
+
+
+/**
+ * Draws themes on webpage 
  * @param theme An theme JSON to add to page in HTML format
  * @returns void
  */
-function theme2page(theme){
+function themes2page(){
 	try {
-		console.log(theme);
-	    var html = Mustache.to_html(commentTemplate, theme);
-		var $old = $('#commentBoxer').find('#ent_'+comment.id);
+		welcomeDrawObjects.topics.forEach(paintTopic);    
+		welcomeDrawObjects.themes.forEach(paintTheme);    
+	}
+	catch(err) {
+		console.error("themes2page: ", err);
+	}
+	finally {
+		$('#topicList').accordion('refresh');
+	}
+}
+
+function paintTheme(theme){
+	try {
+		if(theme.painted)
+			return;
+		theme.painted = true;
+		
+		var html = Mustache.to_html(templateTheme, theme);
+	    
+		var $destobj = $('#topicList').find('#ent_'+theme.topicId+'_cont');
+		if($destobj.length===0)
+		{
+			console.error("Topic not found id:", theme.topicId);
+			theme.topicId
+		}
+	    
+	    $destobj.append($(html));
+	    
+	    
+/*		var $old = 
 		if($old.length!==0)
 		$old.replaceWith(html);
 		else
-	    $('#commentBoxer').append($(html));
+	    $('#commentBoxer').append($(html));*/
 	}
 	catch(err) {
-		console.error("comment2page: ", err);
+		console.error("paintTheme: ", err);
+	}
+}
+
+function paintTopic(topic)
+{
+	try {
+		if(topic.painted)
+			return;
+		topic.painted = true;
+		
+	    var html = Mustache.to_html(templateTopic, topic);
+/*		var $old = $('#topicList').find('#ent_'+comment.id);
+		if($old.length!==0)
+		$old.replaceWith(html);
+		else*/
+	    $('#topicList').append($(html));
+	}
+	catch(err) {
+		console.error("paintTheme: ", err);
 	}
 }
 
@@ -156,5 +277,3 @@ function editThemeDlg_save(){
 	    console.log(err);
 	}
 }
-/* do not remove */
-welcomeUIinit();

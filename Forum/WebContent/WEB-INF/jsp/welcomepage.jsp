@@ -24,8 +24,7 @@
 
 	<div class="container" align="center">
 		<div id="topicList" align="left">
-			<!-- 		<div style='overflow: auto; width: 800px; height: 300px;'> -->
-
+			<!-- 
 			<c:forEach var="topics" items="${topthemlis}">
 				<h3>${topics.key.getName()}
 					<button type="button" class="close entitymenucls"
@@ -72,11 +71,52 @@
 					</c:forEach>
 				</div>
 			</c:forEach>
+			 -->
 		</div>
-		<!-- <div style='overflow: auto; width: 800px; height: 300px;'></div> -->
 	</div>
 </div>
+<script id="topicTemplate" type="text/template">
+<h3 id="ent_{{id}}_tit">{{name}}
+	<button type="button" class="close entitymenucls"
+		aria-hidden="true"
+		onclick="newThemeDlgPopup({{id}});">New	theme</button>
+</h3>
+<div id="ent_{{id}}_cont"></div>
+</script>
+<script id="themeTemplate" type="text/template">
+<div 
+	class="list-group-item{{#blocked}} blockedentity{{/blocked}}"
+	id="ent_{{id}}" data-etype="theme"
+	data-owner="{{#author}}{{id}}{{/author}}">
+	<div class="row">
+		<div class="col-sm-11 col-md-10">
+			<span style="cursor: pointer; text-decoration: underline;"
+				onclick="loadComments({{id}});"
+				id="ent_{{id}}_name">{{name}}</span> <span>by
+				{{#author}}{{userName}}{{/author}}</span>
+			<div class="commenterImage">
+				<img src="images/userPicture.png" alt=userPicture height=30
+					width=30 />
+			</div>
 
+			<br> <span>on {{created}}</span> <br> <br>
+			<p>{{description}}</p>
+		</div>
+		<div class="col-sm-1 col-md-2">
+
+			<button type="button" class="close entitymenucls"
+				aria-hidden="true"
+				onclick="entityMenuPopup({{id}});">&Xi;</button>
+			{{#rating}}
+			<span>{{commentCount}} comments <br></span>
+			<span>{{userCount}} commenters <br></span>
+			<span>{{ratingCount}} ratings <br></span>
+			<span>{{averageRating}} rating </span>
+			{{/rating}}
+		</div>
+	</div>
+</div>
+</script>
 <!-- end of welcome page content, DO NOT REMOVE THIS TAG -->
 
 <!-- DO NOT MODIFY / REMOVE comon html dialogs -->
