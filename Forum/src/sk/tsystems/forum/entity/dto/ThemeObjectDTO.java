@@ -23,17 +23,40 @@ public class ThemeObjectDTO {
 		this.lastCommentDate = lastCommentDate;
 	}
 
+	public ThemeObjectDTO(long averageRating, long ratingCount, long commentCount, long userCount) {
+		this(averageRating, ratingCount, commentCount, userCount, null);
+	}
+	
 	public static ThemeObjectDTO getDTO(Theme theme) {
 		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.getEntityManager()
-					.createQuery(
-							"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(sum(c.rating), count(c.rating), count(c.comment), count(c.owner), max(c.created)) FROM CommentRating c "
-									+ "WHERE c.theme = :theme GROUP BY c.theme",
-							ThemeObjectDTO.class)
-					.setParameter("theme", theme).getSingleResult();
-		}
-		catch(javax.persistence.NoResultException e) {
-			return new ThemeObjectDTO(0, 0, 0, 0, null);
+			ThemeObjectDTO obj1;
+			ThemeObjectDTO obj2;
+
+			try {
+				obj1 = jpa.getEntityManager()
+						.createQuery(
+								"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(sum(c.rating), count(c), 0L, 0L) FROM CommentRating c "
+										+ "WHERE c.theme = :theme GROUP BY c.theme",
+								ThemeObjectDTO.class)
+						.setParameter("theme", theme).getSingleResult();
+			} catch (javax.persistence.NoResultException e) {
+				obj1 = new ThemeObjectDTO(0, 0, 0, 0, null);
+			}
+
+			try {
+				obj2 = jpa.getEntityManager()
+						.createQuery(
+								"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(0L, 0L, count(c.comment), count(c.owner), max(c.created)) FROM Comment c "
+										+ "WHERE c.theme = :theme GROUP BY c.theme",
+								ThemeObjectDTO.class)
+						.setParameter("theme", theme).getSingleResult();
+			} catch (javax.persistence.NoResultException e) {
+				obj2 = new ThemeObjectDTO(0, 0, 0, 0, null);
+			}
+
+			return new ThemeObjectDTO(obj1.getAverageRating(), obj1.getRatingCount(), obj2.getCommentCount(),
+					obj2.getUserCount(), obj2.getLastCommentDate());
+
 		}
 	}
 

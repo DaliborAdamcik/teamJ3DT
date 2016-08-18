@@ -21,17 +21,17 @@ public class testovaniedto {
 		List<User> users = usersvc.getUsers(UserRole.ADMIN);
 		CommentJPA comment = new CommentJPA();
 		ThemeJPA theme = new ThemeJPA();
-		
-		for (User user : users) {
-			List<Comment> komenty = comment.getComments(user);
-			
-			
-			for (Comment comment2 : komenty) {
-				//new CommentRating(comment2, user, 1);
-				System.out.println("test CommentObjectDTO: " + CommentObjectDTO.getDTO(comment2) + " id " + comment2.getId());
-			}			
-			
-		}
+//		
+//		for (User user : users) {
+//			List<Comment> komenty = comment.getComments(user);
+//			
+//			
+//			for (Comment comment2 : komenty) {
+//				//new CommentRating(comment2, user, 1);
+//				System.out.println("test CommentObjectDTO: " + CommentObjectDTO.getDTO(comment2) + " id " + comment2.getId());
+//			}			
+//			
+//		}
 		
 		List<Theme> themes = theme.getTheme();
 		
