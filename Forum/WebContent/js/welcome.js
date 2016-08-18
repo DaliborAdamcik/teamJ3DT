@@ -69,8 +69,6 @@ function stopWelcomeSynchonize() {
 }
 
 function indexInArr(array, ident) {
-/*	var elementPos = array.map(function(x) {return x.id; }).indexOf(ident);
-	var objectFound = array[elementPos];*/	
 	return array.map(function(x) {return x.id; }).indexOf(ident);
 }
 
@@ -79,8 +77,25 @@ function renewStoredObject(resp) {
 	resp.topics.forEach(renewStoredTopic);    
 	resp.themes.forEach(renewStoredTheme);    
 
-	// TODO process erased
-	// TODO impelement remove
+	resp.erased.forEach(function(ident){
+		var $erased = $('#topicList').find('#ent_'+ident);
+		if($erased.length==0)
+		{
+			$erased = $('#topicList').find('#ent_'+ident+'_tit');
+			var $sub = $('#topicList').find('#ent_'+ident+'_cont');
+			if($erased.length>0)
+				$erased.remove();
+
+			if($sub.length>0)
+				$sub.remove();
+		}
+		else
+		$erased.remove();
+		
+		console.log($erased);
+		
+		
+	});    
 	
 	themes2page();
 }
@@ -125,6 +140,7 @@ function themes2page(){
 	}
 	finally {
 		$('#topicList').accordion('refresh');
+		entityMenuButtonShow();
 	}
 }
 
@@ -310,6 +326,7 @@ function addNewTopic() {
 	    	alert("Name is required field.");
 	    	return;
     	}
+		$("#new_topic_txt").val('');
 		
 	    console.log(jsobj);
 	    $.ajax({

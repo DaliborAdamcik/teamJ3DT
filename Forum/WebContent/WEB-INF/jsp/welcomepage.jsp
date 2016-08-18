@@ -100,15 +100,14 @@
 			<p>{{description}}</p>
 		</div>
 		<div class="col-sm-1 col-md-2">
-
 			<button type="button" class="close entitymenucls"
 				aria-hidden="true"
 				onclick="entityMenuPopup({{id}});">&Xi;</button>
 			{{#rating}}
-			<span>{{commentCount}} comments <br></span>
-			<span>{{userCount}} commenters <br></span>
-			<span>{{ratingCount}} ratings <br></span>
-			<span>{{averageRating}} rating </span>
+			<span title="Number of comments">{{commentCount}}<span class="ui-icon ui-icon-comment"></span></span> 
+			<span title="Commenters in theme">{{userCount}}<span class="ui-icon ui-icon-person"></span></span>
+			<!-- <span>{{ratingCount}} ratings <br></span>
+			<span>{{averageRating}} rating </span> -->
 			{{/rating}}
 		</div>
 	</div>
