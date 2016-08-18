@@ -7,6 +7,7 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css" />
 
+
 <div id="welcome_pg"><!-- Begin of welcome page content, DO NOT REMOVE THIS TAG -->
 <div class="container" align=center>
 	<c:choose>

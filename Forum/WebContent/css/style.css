@@ -1,12 +1,13 @@
 body {
 	position: relative;
-	margin: 0;
+	margin: 0 0 100px;
 	padding-bottom: 6rem;
 	min-height: 100%;
 	background-image: url("./../images/NYWebsiteBackground.png");
 	/* 	background-opacity: 0.6; */
 	background: window 100% background-repeat: repeat-y;
 	color: #534d53;
+	margin-bottom: 10%;
 }
 
 #forumLogo {
@@ -89,4 +90,24 @@ body {
 	background: #79da58;
 	background: -webkit-linear-gradient(#79da58, #fff);
 	background: linear-gradient(#79da58, #fff);
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+footer {
+    position: relative;
+    z-index: 1;
+/*     left: 0; */
+/*     bottom: 0; */
+/*     right: 0; */
+/*     height: 10%; */
+/*     margin-bottom: 0; */
+/*     margin-bottom: fixed; */
+/*     text-align: center; */
+
+/*     height: 100px; */
+/*     width: 100%; */
 }
