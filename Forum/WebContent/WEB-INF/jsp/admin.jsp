@@ -26,11 +26,28 @@
 		</div>
 	</div>
 
+	<div id="reasondialog" title="REASON">
+		<table>
+			<tr>
+				<th colspan="3" id="objectname_reason">
+				<td>&nbsp;&nbsp;&nbsp;&nbsp; blocked by&nbsp;&nbsp;
+				<td id="username_reason">druhe meno
+			<tr>
+				<td><br>
+		</table>
+		<table>
+			<tr>
+				<th colspan="5">blocked for:
+			<tr>
+				<td colspan="5" id="reason_field">reason
+		</table>
+	</div>
+
 	<script id="userTemplate" type="text/template">
 <tr><th> User Name<th>Role<th> Blocked For<th>Block<th>Promote
 {{#users}} <tr><td id="username">{{userName}} 
 <td>{{role}}
- <td  id="blockedfor_{{id}}">{{blocked.reason}} 
+<td  id="blockedfor_{{id}}">{{#blocked}}<button class="showreason_button" onclick="showreason('{{userName}}','{{blockedBy.userName}}','{{reason}}',this);">REASON</button>{{/blocked}}
 <td id="block_{{id}}" >{{{blockbutton}}}
 <td id="promote_{{id}}">{{{promotebutton}}}
 {{/users}}
@@ -39,7 +56,7 @@
 	<script id="topicTemplate" type="text/template">
 <tr><th> Topic Name<th> Blocked For<th>Block<th>Mark
 {{#topics}} <tr><td>{{name}} 
- <td id="blockedfor_{{id}}">{{blocked.reason}} 
+<td id="blockedfor_{{id}}">{{#blocked}}<button class="showreason_button" onclick="showreason('{{name}}','{{blockedBy.userName}}','{{reason}}',this);">REASON</button>{{/blocked}}
 <td id="block_{{id}}">{{{blockbutton}}}
 <td id="promote_{{id}}">{{{markbutton}}}
 {{/topics}}

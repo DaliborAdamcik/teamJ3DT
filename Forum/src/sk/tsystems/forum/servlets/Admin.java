@@ -126,7 +126,7 @@ public class Admin extends MasterServlet {
 				mark(response, obj);
 				break;
 			case "unblock":
-				unblock(response, obj);
+				unblock(response, servletHelper,obj);
 				break;
 			default:
 				return;
@@ -140,13 +140,14 @@ public class Admin extends MasterServlet {
 		}
 	}
 
-	private void unblock(HttpServletResponse response, JSONObject obj)
+	private void unblock(HttpServletResponse response,ServletHelper svHelper, JSONObject obj)
 			throws IOException, JsonGenerationException, JsonMappingException {
 		BlockHelper.unblock(obj.getInt("id"));
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, Object> resp = new HashMap<>();
 		resp.put("suc", "suc");
+		resp.put("user", svHelper.getLoggedUser());
 
 		response.setContentType("application/json");
 		mapper.writeValue(response.getWriter(), resp);
