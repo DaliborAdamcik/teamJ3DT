@@ -51,9 +51,10 @@
 				<td>Confirm new password
 				<td><input type="password" required="required"
 					name="new_confirmpassword" id="userinfo_confirmpassword"><br>
+					<tr><td><td><input type="submit" value="Change password" /> <br>
 		</table>
 
-		<input type="submit" value="Change password" /> <br>
+		
 		<h3 id="pass_message" class="confirmMessage"></h3>
 
 	</form>
