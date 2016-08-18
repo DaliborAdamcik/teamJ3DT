@@ -1,6 +1,10 @@
 package sk.tsystems.forum.service.jpa;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.TemporalType;
+
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.service.TopicService;
 
@@ -51,5 +55,15 @@ public class TopicJPA implements TopicService {
 			return jpa.createQuery("select t from Topic t").getResultList(); //TODO JPA treba skontrolovat SELECT
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Topic> getTopics(Date modifiedAfter) {
+		try (JpaConnector jpa = new JpaConnector()) {
+			return jpa.createQuery("select t from Topic t WHERE t.modified>:modified").
+					setParameter("modified", modifiedAfter, TemporalType.DATE).getResultList();
+		}
+	}
+	
 
 }

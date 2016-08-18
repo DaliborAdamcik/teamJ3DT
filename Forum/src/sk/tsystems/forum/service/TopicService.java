@@ -1,5 +1,6 @@
 package sk.tsystems.forum.service;
 
+import java.util.Date;
 import java.util.List;
 
 import sk.tsystems.forum.entity.Topic;
@@ -43,4 +44,13 @@ public interface TopicService {
 	 * @return List of all topics
 	 */
 	List<Topic> getTopics();
+	
+	/**
+	 * Reads list of all topics modified after specified date/time
+	 * 
+	 * @param modifiedAfter Date of modification
+	 * @return List of all topics
+	 */
+	List<Topic> getTopics(Date modifiedAfter);
+
 }
