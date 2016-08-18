@@ -1,5 +1,6 @@
 package sk.tsystems.forum.service;
 
+import java.util.Date;
 import java.util.List;
 
 import sk.tsystems.forum.entity.Theme;
@@ -37,6 +38,13 @@ public interface ThemeService {
 	 * @return Theme with specific ID
 	 */
 	Theme getTheme(int ident);
+
+	/**
+	 * Reads list of all themes from the database
+	 * 
+	 * @return List of all themes
+	 */
+	List<Theme> getTheme(Date modifiedAfter);
 
 	/**
 	 * Reads list of all themes from the database
