@@ -25,6 +25,7 @@ function loadOptionsPage() {
  * @param response
  */
 function makeOptionsPage(response) {
+	
 	if (response.user == null) {
 		$('#title').html("you need to  log in first");
 		return;
