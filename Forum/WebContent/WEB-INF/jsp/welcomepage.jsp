@@ -7,7 +7,6 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css" />
 
-
 <div id="welcome_pg">
 	<!-- Begin of welcome page content, DO NOT REMOVE THIS TAG -->
 	<div class="container" align=center>
@@ -25,6 +24,8 @@
 
 	<div class="container" align="center">
 		<div id="topicList" align="left">
+			<!-- 		<div style='overflow: auto; width: 800px; height: 300px;'> -->
+
 			<c:forEach var="topics" items="${topthemlis}">
 				<h3>${topics.key.getName()}
 					<button type="button" class="close entitymenucls"
@@ -60,10 +61,10 @@
 										aria-hidden="true"
 										onclick="entityMenuPopup(${theme.getId()});">&Xi;</button>
 
-									<span>${ThemeObjectDTO.getCommentCount()} comments <br></span>
-									<span>${ThemeObjectDTO.getUserCount()} commenters <br></span>
-									<span>${ThemeObjectDTO.getRatingCount()} ratings <br></span>
-									<span>${ThemeObjectDTO.getAverageRating()} rating </span>
+									<span>${theme.getRating().getCommentCount()} comments <br></span>
+									<span>${theme.getRating().getUserCount()} commenters <br></span>
+									<span>${theme.getRating().getRatingCount()} ratings <br></span>
+									<span>${theme.getRating().getAverageRating()} rating </span>
 								</div>
 							</div>
 
@@ -75,6 +76,7 @@
 		<!-- <div style='overflow: auto; width: 800px; height: 300px;'></div> -->
 	</div>
 </div>
+
 <!-- end of welcome page content, DO NOT REMOVE THIS TAG -->
 
 <!-- DO NOT MODIFY / REMOVE comon html dialogs -->
