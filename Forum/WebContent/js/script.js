@@ -165,7 +165,22 @@ function blockCommonDlg_BlockSucces(response) {
  * @author 
  */
 function unblockCommonDlgPopup(ident, callback){
-	alert('unblock');	
+	var jsobj = {};
+	jsobj.id = ident;
+	$.ajax({
+		type : "PUT",
+		url : "Admin/" + ident + "/unblock",
+		contentType : "application/json;charset=UTF-8",
+		dataType : "json",
+		data : JSON.stringify(jsobj),
+		success : function(response) {
+			try {
+				callback();
+			}
+			catch(err) {}
+		},
+		error : ajaxFailureMessage
+	});
 }
 
 /**
