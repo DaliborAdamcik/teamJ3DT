@@ -148,8 +148,12 @@ function paintTheme(theme){
 	try {
 		if(theme.painted)
 			return;
-
 		theme.painted = true;
+		
+		theme.created = timeStmp2strDate(theme.created);
+		if(theme.blocked)
+			theme.blocked.created = timeStmp2strDate(theme.blocked.created);
+
 		var html = Mustache.to_html(templateTheme, theme);
 	    
 		var $destobj = $('#topicList').find('#ent_'+theme.topicId+'_cont');
@@ -176,7 +180,9 @@ function paintTopic(topic)
 		if(topic.painted)
 			return;
 		topic.painted = true;
-		
+
+		// TODO
+		console.log("bejka", topic);
 	    var html = Mustache.to_html(templateTopic, topic);
 /*		var $old = $('#topicList').find('#ent_'+comment.id);
 		if($old.length!==0)
@@ -188,7 +194,6 @@ function paintTopic(topic)
 		console.error("paintTheme: ", err);
 	}
 }
-
 
 /**
  * Edit theme dialog

@@ -18,6 +18,11 @@ function checkPass() {
 
 /******* DO NOT REMOVE, DO NOT MODIFY ***/
 
+function timeStmp2strDate(timestamp) {
+	var dat = new Date(timestamp);
+	return dat.toGMTString();
+}
+
 /**
  * Current user state on page
  */

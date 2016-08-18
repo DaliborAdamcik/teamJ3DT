@@ -111,6 +111,10 @@ function comments2page(response)
 function comment2page(comment){
 	try {
 		console.log(comment);
+		comment.created = timeStmp2strDate(comment.created);
+		if(comment.blocked)
+			comment.blocked.created = timeStmp2strDate(comment.blocked.created);
+
 	    var html = Mustache.to_html(commentTemplate, comment);
 		var $old = $('#commentBoxer').find('#ent_'+comment.id);
 		if($old.length!==0)

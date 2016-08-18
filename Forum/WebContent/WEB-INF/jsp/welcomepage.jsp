@@ -98,6 +98,7 @@
 
 			<br> <span>on {{created}}</span> <br> <br>
 			<p>{{description}}</p>
+			{{#blocked}}<div class="sub-text" title="{{reason}}">Blocked by <b>{{#blockedBy}}{{userName}}{{/blockedBy}}</b> at <i>{{created}}</i></div>{{/blocked}}
 		</div>
 		<div class="col-sm-1 col-md-2">
 			<button type="button" class="close entitymenucls"
