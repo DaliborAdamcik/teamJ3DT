@@ -51,12 +51,11 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 		this();
 		if(name==null || topic==null || description==null || author==null)
 			throw new CommonEntityException("Parameters in constructor cant be null", new NullPointerException("Someone didnt work properly."));
-			
+
+		this.author = author;
+		this.topic = topic;
 		setName(name);
-		setTopic(topic);
 		setDescription(description);
-//		setRating(0);
-		setAuthor(author);
 		setPublic(isPublic);
 	}
 
@@ -95,15 +94,6 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	}
 
 	/**
-	 * Setter for theme
-	 * 
-	 * @param theme
-	 */
-	public void setTopic(Topic topic) {
-		this.topic= topic;
-	}
-
-	/**
 	 * Getter for description
 	 * 
 	 * @return description
@@ -128,15 +118,6 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	 */
 	public User getAuthor() {
 		return author;
-	}
-
-	/**
-	 * Setter for author
-	 * 
-	 * @param author
-	 */
-	public void setAuthor(User author) {
-		this.author = author;
 	}
 
 	/**
