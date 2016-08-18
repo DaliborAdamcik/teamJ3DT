@@ -185,21 +185,36 @@ function removetopic(id, button, name){
 	});
 
 }
+$( "#personalinfo_button" ).click(function( event ) {
+	  event.preventDefault();
+	  $('form#personalinfo_change').show();
+		$('form#password_change').hide();
+		$('div#topic_change').hide();
+		$( "#personalinfo_button" ).css("text-decoration", "none");
+		$( "#personalinfo_button" ).css("background-color", "#A0A0A0");
+		$( "#password_button" ).css("background-color", "#C0C0C0");
+		$( "#topic_button" ).css("background-color", "#C0C0C0");
+	});
+$( "#password_button" ).click(function( event ) {
+	  event.preventDefault();
+	  $('form#password_change').show();
+		$('form#personalinfo_change').hide();
+		$('div#topic_change').hide();
+		$( "#password_button" ).css("text-decoration", "none");
+		$( "#personalinfo_button" ).css("background-color", "#C0C0C0");
+		$( "#password_button" ).css("background-color", "#A0A0A0");
+		$( "#topic_button" ).css("background-color", "#C0C0C0");
+	});
 
-function hidePersonalInfoField() {
-	$('form#personalinfo_change').toggle();
-	$('form#password_change').hide();
-	$('div#topic_change').hide();
-}
+$( "#topic_button" ).click(function( event ) {
+	  event.preventDefault();
+	  $('div#topic_change').show();
+		$('form#password_change').hide();
+		$('form#personalinfo_change').hide();
+		$( "#topic_button" ).css("text-decoration", "none");
+		$( "#personalinfo_button" ).css("background-color", "#C0C0C0");
+		$( "#password_button" ).css("background-color", "#C0C0C0");
+		$( "#topic_button" ).css("background-color", "#A0A0A0");
+	});
 
-function hidePasswordField() {
-	$('form#password_change').toggle();
-	$('form#personalinfo_change').hide();
-	$('div#topic_change').hide();
-}
 
-function hideButtonField() {
-	$('div#topic_change').toggle();
-	$('form#password_change').hide();
-	$('form#personalinfo_change').hide();
-}
