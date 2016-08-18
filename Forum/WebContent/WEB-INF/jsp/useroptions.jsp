@@ -5,20 +5,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <div class="container">
-	<c:choose>
-		<c:when test="${CURRENT_USER!=null}">
-			<h3>Currently logged as ${CURRENT_USER.userName}</h3>
-		</c:when>
-	</c:choose>
 
+<h1 id = "title"></h1>
 
-
-	<button id="personalinfo_button" onclick="hidePersonalInfoField();">Change
+<ul class="nav nav-tabs">
+			
+	<li role="presentation"><button id="personalinfo_button" onclick="hidePersonalInfoField();">Change
 		Personal Information</button>
-	<button id="password_button" onclick="hidePasswordField();">Change
+				<li role="presentation"><button id="password_button" onclick="hidePasswordField();">Change
 		password</button>
-	<button id="topic_button" onclick="hideButtonField();">Choose
+			<li role="presentation"><button id="topic_button" onclick="hideButtonField();">Choose
 		favorite topics</button>
+</ul>
 
 	<br> <br> <br> <br>
 
@@ -27,58 +25,64 @@
 		<table>
 			<tr>
 				<td>Real name:
-				<td><input type="text" required="required" name="new_username"
-					value="${CURRENT_USER.realName}" id="userinfo_realname" autofocus><br>
+				<td><input id="userinfo_realname" type="text"
+					required="required" name="new_username" autofocus><br>
 			<tr>
 				<td>Date of birth:
-				<td><input type="date" required="required" name="new_date"
-					value="${formatteddate}" id="userinfo_birthdate"><br>
+				<td><input type="text" required="required" name="new_date"
+					id="userinfo_birthdate"><br>
 		</table>
-		<span id="userinfo_message" class="confirmMessage"></span> <input
-			type="submit" value="Submit">
+		 <input id="submit_changepersonalinfo" type="submit" value="Submit">
 
 	</form>
 
 
 	<form id="password_change" method="post" action="Useroptions"
 		hidden="true">
-		<h5>${passwordmessage}</h5>
+		
 		<table>
+		<tr>
 			<tr>
-				<td>New password
+			<td>Old Password
+			<td><input type="password" required="required"
+					name="old_password" id="userinfo_oldpassword" autofocus><br>
+				<tr><td>New password
 				<td><input type="password" required="required"
-					name="new_password" id="userinfo_password" autofocus><br>
+					name="new_password" id="userinfo_password"><br>
 			<tr>
 				<td>Confirm new password
 				<td><input type="password" required="required"
 					name="new_confirmpassword" id="userinfo_confirmpassword"><br>
 		</table>
 
-		<span id="pass_message" class="confirmMessage"></span> <input
-			type="submit" value="Change password">
+		 <input
+			type="submit" value="Change password"/>
+			<br><h3 id="pass_message" class="confirmMessage"></h3>
 
 	</form>
 
-
-	<form id="topic_change" method="post" action="Useroptions"
-		hidden="true">
-		<table>
-			<c:forEach items="${listofusertopics}" var="topicOfUser">
-
-				<tr>
-					<td><input type="checkbox" name="favourite_topic"
-						value="${topicOfUser.id}" checked>${topicOfUser.name}
-			</c:forEach>
-			<c:forEach items="${listofalltopics}" var="topic">
-				<tr>
-					<td><input type="checkbox" name="favourite_topic"
-						value="${topic.id}">${topic.name}
-			</c:forEach>
-
-		</table>
-		<input type="submit" value="Change topic">
-
-	</form>
+	<div id="topic_change" hidden="true"></div>
 </div>
 
+<script id="topicTemplate" type="text/template">
+
+ <legend>Choose your favourtie topics: </legend>
+<table>
+{{#usertopics}}
+
+   <tr><td id="topic_change_{{id}}"><button class="removetopic_button" onclick="removetopic({{id}}, this,'{{name}}');">{{name}}</button>
+
+ {{/usertopics}}
+{{#alltopics}}
+
+  <tr><td id="topic_change_{{id}}"><button class="addtopic_button" onclick="addtopic({{id}}, this,'{{name}}');">{{name}}</button>
+
+ {{/alltopics}}
+</table>
+</script>
+
 <script src="js/useroptions.js"></script>
+
+<script>
+	loadOptionsPage();
+</script>

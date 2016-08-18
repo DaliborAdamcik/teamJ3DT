@@ -62,7 +62,7 @@ public class UserOptions extends MasterServlet {
 			// servletHelper.getLoggedUser().getRole() != UserRole.ADMIN) {
 			if (pars.getParrentID() < 0) {
 				request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
-				request.getRequestDispatcher("/WEB-INF/jsp/useroptionsnew.jsp").include(request, response);
+				request.getRequestDispatcher("/WEB-INF/jsp/useroptions.jsp").include(request, response);
 				request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
 				return;
 			}
