@@ -259,6 +259,7 @@ function editThemeDlg_data2field() {
 	$('#editThemeDlg_name').val(theme.name);
 	$('#editThemeDlg_desc').val(theme.description);
 	$('#editThemeDlg_pub').prop('checked', theme.isPublic);
+	theme.created = timeStmp2strDate(theme.created);
 	$('#editThemeDlg_ownerInfo').html(Mustache.to_html($('#editThemeDlg_ownerInfo_tmpl').html(), theme));
 	$('#editThemeDlg_ownerInfo').show();
 }
