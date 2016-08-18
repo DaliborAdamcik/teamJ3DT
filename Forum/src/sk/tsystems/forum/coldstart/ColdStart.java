@@ -113,76 +113,83 @@ public class ColdStart {
 	}
 	
 	public void jankaInitialize(User user) throws CommonEntityException {
-		Topic topic = new Topic("Lietadla", true);
+		Topic topic = new Topic("Automobiles", true);
 		topicService.addTopic(topic);
 		
-		Theme theme1 = new Theme("Airbus A360", topic, "Mile pilotky, mily piloti, letusky, letusi, co si myslite o A360ke??", user, true);
-		Theme theme2 = new Theme("Guma na Boeingu", topic, "Mam sfuknutu gumu na 747micke, staci mi pumpa na galuzkovy ventil??", user, true);
+		Theme theme1 = new Theme("Cars for sale", topic, "Find out what your car is worth. Get the value for your used car or trade-in vehicle.", user, true);
+		Theme theme2 = new Theme("Cleaning, washing, etc.", topic, "How to clean a car headliner?", user, true);
 		
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("JJ super stroj, balim na to caje...", theme1, user, true));
-		commentService.addComment(new Comment("Hej, s hustilkou to pojde super...", theme2, user, true));
+		commentService.addComment(new Comment("I dont need a car, I ride a horse.", theme1, user, true));
+		commentService.addComment(new Comment("I dont even wash myself...", theme2, user, true));
 
 	}
 	
 	public void janoInitialize(User user) throws CommonEntityException {
-		Topic topic = new Topic("Auta", true);
+		Topic topic = new Topic("Movies", true);
 		topicService.addTopic(topic);
 		
-		Theme theme1 = new Theme("Nova MBcka", topic, "Ako sa radi 6tka na MBcke??", user, true);
-		Theme theme2 = new Theme("120cina pred Irkutskou", topic, "Kto mi prehol plech na mojej 120cine?", user, true);
+		Theme theme1 = new Theme("Your TOP 10 movies", topic, "Write here your favourite movies, Ladies.", user, true);
+		Theme theme2 = new Theme("Worst movies ever...", topic, "What is the worst movie you have ever seen?", user, true);
 		
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("Dolava hore...", theme1, user, true));
-		commentService.addComment(new Comment("Ten co nam robi didzeja v kulturaku. Ved vies, ten s tymi nohami...", theme2, user, true));
+		commentService.addComment(new Comment("Mission Imposible is the best...", theme1, user, true));
+		commentService.addComment(new Comment("I like Spiderman", theme1, user, true));
+		commentService.addComment(new Comment("Third is the Shawshank redemption", theme1, user, true));
+		commentService.addComment(new Comment("4. Inception", theme1, user, true));
+		commentService.addComment(new Comment("Every film from Rosamunde Pilcher, how sweeeet", theme2, user, true));
 
 	} 
 	
 	public void jozoInitialize(User user) throws CommonEntityException {
-		Topic topic = new Topic("Motorky", true);
+		Topic topic = new Topic("Hiking", true);
 		topicService.addTopic(topic);
 		
-		Theme theme1 = new Theme("Kawa alebo Jawa", topic, "Na com skor vyturujem 300km/h", user, true);
-		Theme theme2 = new Theme("Kolobezky", topic, "Aj kolobezky su len motorky...", user, true);
+		Theme theme1 = new Theme("High Tatras", topic, "What is the favourite place you ever visit in High Tatras?", user, true);
+		Theme theme2 = new Theme("Items for hiking", topic, "Everything what you need for hiking", user, true);
 		
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("Kup si kulmofen", theme1, user, true));
-		commentService.addComment(new Comment("Mas halunaacie??", theme2, user, true));
+		commentService.addComment(new Comment("Mount Everest, I was there 10 times", theme1, user, true));
+		commentService.addComment(new Comment("Swim dress is what you need the most ", theme2, user, true));
+		commentService.addComment(new Comment("Hair dryer is very important", theme2, user, true));
+		commentService.addComment(new Comment("Money, all you need is only money.", theme2, user, true));
 
 	}
 	
 	public void daliborInitialize(User user) throws CommonEntityException {	
-		Topic topic = new Topic("Vlaky", true);
+		Topic topic = new Topic("Travelling", true);
 		topicService.addTopic(topic);
 		
-		Theme theme1 = new Theme("Trakcia", topic, "Ake napatia su v trakcii na slovensku?", user, true);
-		Theme theme2 = new Theme("Nove Elephanty", topic, "Zas som si roztrieskal hlavu o batozinovy priestor...", user, true);
+		Theme theme1 = new Theme("Best places to visit", topic, "What is your tips for places to visit", user, true);
+		Theme theme2 = new Theme("Travelling by plane", topic, "Have you ever travelling by plane?", user, true);
 		
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("Take jak na kulmofen", theme1, user, true));
-		commentService.addComment(new Comment("Ja som si tam zodral hrb", theme2, user, true));
+		commentService.addComment(new Comment("Kosice, Lunik IX to visit. You must see this beautiful place!", theme1, user, true));
+		commentService.addComment(new Comment("Yes I have, on the roof", theme2, user, true));
+		commentService.addComment(new Comment("I am the pilot, so yes", theme2, user, true));
 	}
 	
 	public void tomasInitialize(User user) throws CommonEntityException {
-		Topic topic = new Topic("Tazke stroje", true);
+		Topic topic = new Topic("Drinks", true);
 		topicService.addTopic(topic);
 		
-		Theme theme1 = new Theme("Bager na predaj", topic, "Predam bager, plastovy, 30cm...", user, true);
-		Theme theme2 = new Theme("Kupim tlcik na maso", topic, "Ale riadne rizky chcem klepat", user, true);
+		Theme theme1 = new Theme("Summer cocktails", topic, "What is your favourite summer cocktail?", user, true);
+		Theme theme2 = new Theme("Winter teas", topic, "What do you drink?", user, true);
 		
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("Kupim 4", theme1, user, true));
-		commentService.addComment(new Comment("Skus obuvnicke kladivo...", theme2, user, true));	
+		commentService.addComment(new Comment("My favourite cocktail is mix with Vodka and Rum", theme1, user, true));
+		commentService.addComment(new Comment("No! don't mix rum vith vodka, Ladies!", theme1, user, true));
+		commentService.addComment(new Comment("Vodka forever...", theme2, user, true));	
 	}
 	
 	public void topicUserInitialize(User user)  throws CommonEntityException {

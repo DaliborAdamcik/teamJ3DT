@@ -97,6 +97,8 @@ html {
     min-height: 100%;
 }
 
+
+}
 footer {
     position: relative;
     z-index: 1;
@@ -111,3 +113,4 @@ footer {
 /*     height: 100px; */
 /*     width: 100%; */
 }
+
