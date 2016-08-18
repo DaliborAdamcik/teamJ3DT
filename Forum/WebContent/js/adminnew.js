@@ -17,7 +17,6 @@ function loadAdminPage() {
  * @param response
  */
 function makeAdminPage(response) {
-	console.log(response);
 	if(response.users==null||response.topics==null){
 		var title = document.getElementById("title");
 		title.innerHTML=response;
@@ -71,7 +70,6 @@ function makeAdminPage(response) {
 function promoteuser(id, button) {
 	var jsobj = {};
 	jsobj.id = id;
-	console.log(jsobj);
 	$.ajax({
 		type : "PUT",
 		url : "Admin/" + id + "/promote",
@@ -92,10 +90,8 @@ function promoteuser(id, button) {
  * @param isMarked
  */
 function mark(id, button, isMarked) {
-
 	var jsobj = {};
 	jsobj.id = id;
-	console.log(jsobj);
 	$.ajax({
 		type : "PUT",
 		url : "Admin/" + id + "/mark",
@@ -105,19 +101,13 @@ function mark(id, button, isMarked) {
 		success : function(response) {
 			var promid = "promote_"+id
 			var td = document.getElementById(promid);
-		//	td.innerHTML = "<button class=\"markpublic_button\" onclick=\"mark(" + id + ",this);\">PUBLIC</button>";
-			
-			
-			
 			if ($(button).html() == "PRIVATE") {
 				td.innerHTML = "<button class=\"markpublic_button\" onclick=\"mark(" + id + ",this);\">PUBLIC</button>";
 			} else if ($(button).html() == "PUBLIC") {
 				td.innerHTML = "<button class=\"marknonpublic_button\" onclick=\"mark(" + id + ",this);\">PRIVATE</button>";
 			}
-
 		},
 		error : ajaxFailureMessage
-
 	});
 }
 /**
@@ -128,7 +118,6 @@ function unblock(id) {
 
 	var jsobj = {};
 	jsobj.id = id;
-	console.log(jsobj);
 	$.ajax({
 		type : "PUT",
 		url : "Admin/" + id + "/unblock",
@@ -137,7 +126,6 @@ function unblock(id) {
 		data : JSON.stringify(jsobj),
 		success : function(response) {
 			var tid = "block_" + id;
-			console.log(tid);
 			var td = document.getElementById(tid);
 			td.innerHTML = "<button class=\"block_button\" onclick=\"block(" + id
 					+ ");\">BLOCK</button>";
@@ -153,8 +141,6 @@ function unblock(id) {
  */
 function block(id) {
 	blockCommonDlgPopup(id,successBlock);
-
-	
 }
 /**
  * callback function for blockCommonDlgPopup.executed on successful block
@@ -164,12 +150,8 @@ function block(id) {
  */
 function successBlock( response,id, reason){
 	var tid = "block_" + id;
-	console.log("jebat");
-	console.log(response);
-	console.log(tid);
 	var td = document.getElementById(tid);
 	td.innerHTML = "<button class=\"unblock_button\" onclick=\"unblock(" + id + ");\">UNBLOCK</button>";
 	var blockedfor = document.getElementById("blockedfor_"+id);
 	blockedfor.innerHTML = reason;
-	
 }
