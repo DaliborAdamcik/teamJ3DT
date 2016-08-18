@@ -12,12 +12,9 @@
 	<div class="container" align=center>
 		<c:choose>
 			<c:when test="${CURRENT_USER.role == 'ADMIN'}">
-				<form method='post'>
-					<label id="label">Add new topic:</label> <br> <br> <input
-						type="text" required="required" name="new_topic"
-						placeholder="Topic name" autofocus> <br> <br> <input
-						type="submit" value="Submit"> <br> <br>
-				</form>
+					<label for="new_topic_txt">Add new topic:</label> <br> <br> <input
+						type="text" required="required" id="new_topic_txt"
+						placeholder="Topic name" /> <br> <br> <button onclick="addNewTopic();">Add topic</button><br> <br>
 			</c:when>
 		</c:choose>
 	</div>

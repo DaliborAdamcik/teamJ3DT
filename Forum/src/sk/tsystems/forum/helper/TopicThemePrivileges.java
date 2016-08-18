@@ -123,8 +123,15 @@ public class TopicThemePrivileges {
 				svHelper.getThemeService().addTheme((Theme) obj);
 		}
 		else
+		if(obj instanceof Topic)
+		{
+			if(obj.getId()>0)
+				svHelper.getTopicService().updateTopic((Topic) obj);
+			else
+				svHelper.getTopicService().addTopic((Topic) obj);
+		}
+		else
 			throw new UnknownActionException("Cant strore object '"+obj.getClass().getSimpleName()+"'.");
-			
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);

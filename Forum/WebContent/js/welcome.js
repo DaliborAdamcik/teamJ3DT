@@ -284,10 +284,50 @@ function editThemeDlg_save(){
 	        	}
         		if(response.error){
         			console.error(response.error);
-    	        	alert('Error: '+error.type + " "+error.message());
+    	        	alert('Error: '+error.type + " "+error.message);
         		}
 	        		
 	        	
+	        },
+	        error: ajaxFailureMessage
+	    });
+
+	}
+	catch(err) {
+	    console.log(err);
+	}
+}
+
+function addNewTopic() {
+	var jsobj = {
+		name: $("#new_topic_txt").val().trim()
+	//	isPublic: $('#new_topic_che').prop('checked')
+	};
+	
+	try {
+		if(jsobj.name.legth==0)
+    	{
+	    	alert("Name is required field.");
+	    	return;
+    	}
+		
+	    console.log(jsobj);
+	    $.ajax({
+	        type: 'PUT',
+	        url: 'Welcome/0/topic/',
+	        contentType:"application/json;charset=UTF-8",
+	        dataType: "json",
+	        data: JSON.stringify(jsobj),
+	        success: function (response) {
+	        	console.log("new topic resp: ", response);
+	        	if(response.topic) {
+	        		renewStoredTopic(response.topic);
+	        		themes2page();
+	        	}
+        		if(response.error){
+        			console.error(response.error);
+    	        	alert('Error: '+error.type + " "+error.message);
+        		}
 	        },
 	        error: ajaxFailureMessage
 	    });

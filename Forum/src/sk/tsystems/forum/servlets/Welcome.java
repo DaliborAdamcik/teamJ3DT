@@ -165,7 +165,7 @@ public class Welcome extends MasterServlet {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
-		mapper.addMixIn(Theme.class, MixIn.class);
+		mapper.addMixIn(Theme.class, MixInIgnoreTopic.class);
 		
 		if(!flushmode) {
 			mapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
@@ -245,6 +245,9 @@ public class Welcome extends MasterServlet {
 
 			if("topic".equals(url.getAction()))
 			{
+				if (svHelper.getSessionRole() != UserRole.ADMIN)
+					throw new WEBNoPermissionException("Privileged action. Permissions denied.");
+
 				/*TopicThemePrivileges prioper = new TopicThemePrivileges(svHelper, url, response, Theme.class);
 				Theme theme = prioper.getStoredObject(true);
 				
@@ -303,23 +306,21 @@ public class Welcome extends MasterServlet {
 
 			if("topic".equals(url.getAction()))
 			{
-				/*TopicThemePrivileges prioper = new TopicThemePrivileges(svHelper, url, response, Theme.class);
-				Theme theme = prioper.getStoredObject(true);
+				if (svHelper.getSessionRole() != UserRole.ADMIN)
+				throw new WEBNoPermissionException("Privileged action. Permissions denied.");
 				
-				theme.setDescription(json.getString("description"));
-				theme.setName(json.getString("name"));
-				theme.setPublic(json.getBoolean("isPublic"));
+				Topic newtopic = new Topic(json.getString("name"), true);
 				
-				prioper.store(theme);
-				return;*/
-				throw new RuntimeException("Not yet implemented");
+				TopicThemePrivileges prioper = new TopicThemePrivileges(svHelper, url, response, Topic.class);
+				prioper.store(newtopic);
+				return;
 			}
 		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | JSONException | CommonEntityException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}
 	}
 	
-	abstract class MixIn {
+	abstract class MixInIgnoreTopic {
 		  @JsonIgnore abstract public Topic getTopic();  
 	}
 }
