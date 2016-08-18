@@ -7,7 +7,7 @@
 <div class="container">
 
 	<h1 id="title"></h1>
-
+<div id="options_menu" hidden="true">
 	<ul id="navbar">
 
 		<li class="li"><a href="" class="navbarbutton" id="personalinfo_button">Change Personal
@@ -15,10 +15,10 @@
 		<li class="li"><a href="" class="navbarbutton" id="password_button">Change password</a>
 		<li class="li"><a href="" class="navbarbutton" id="topic_button">Choose favorite topics</a>
 	</ul>
-
+</div>
 	<br> <br> <br> <br>
 
-	<form id="personalinfo_change" method="post" action="Useroptions">
+	<form id="personalinfo_change" method="post" action="Useroptions" hidden="true">
 		<table>
 			<tr>
 				<td>Real name:

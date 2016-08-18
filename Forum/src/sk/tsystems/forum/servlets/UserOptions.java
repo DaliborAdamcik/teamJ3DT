@@ -67,10 +67,10 @@ public class UserOptions extends MasterServlet {
 				return;
 			}
 
-//			if (servletHelper.getLoggedUser() == null) {
-//				throw new UnknownActionException("You need to log in first");
-//
-//			}
+			if (servletHelper.getLoggedUser() == null) {
+				throw new UnknownActionException("You need to log in first");
+
+			}
 			String action = pars.getAction();
 			if (action == null) {
 				List<Topic> allTopics = servletHelper.getTopicService().getTopics();
@@ -108,11 +108,11 @@ public class UserOptions extends MasterServlet {
 				return;
 			}
 		} catch (URLParserException e) {
-			response.getWriter().println(e.getMessage());}
+			response.getWriter().println(e.getMessage());
 		
-//		} catch (UnknownActionException e) {
-//			response.getWriter().println(e.getMessage());
-//		}
+		} catch (UnknownActionException e) {
+			response.getWriter().println(e.getMessage());
+		}
 	}
 
 	/**

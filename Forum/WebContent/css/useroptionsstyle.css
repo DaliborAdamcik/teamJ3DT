@@ -44,5 +44,17 @@ a.navbarbutton:active {
 	background-color:#A0A0A0;
 	
 }
+button.addtopic_button{
+	text-align:left;
+	width:180px;
+	background: #A0A0A0;
+	background: -webkit-linear-gradient(#A0A0A0, #fff);
+	background: linear-gradient(#A0A0A0, #fff);
+}
+button.removetopic_button{
+	text-align:left;
+	width:180px;
+	
+}
 
 

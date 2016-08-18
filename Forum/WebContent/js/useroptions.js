@@ -28,11 +28,10 @@ function makeOptionsPage(response) {
 	console.log(response);
 	if (response.user == null) {
 		$('#title').html("you need to  log in first");
-		// break;
-	} else {
-		$('#options_menu').show();
-	}
+		return;
+	} 
 	$('#options_menu').show();
+	$('#personalinfo_change').show();
 	$('#userinfo_realname').val(response.user.realName);
 	$('#userinfo_birthdate').val(response.datestring);
 	putAllTopics(response);
