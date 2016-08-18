@@ -167,4 +167,14 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	public int compareTo(Theme o) {
 		return this.name.compareTo(o.getName());
 	}
+	
+	/**
+	 * Returns topic unique ID
+	 * @return an ID assigned to TOPIC
+	 */
+	public int getTopicId()	{
+		if(getTopic()==null)
+			return 0;
+		return getTopic().getId();
+	}
 }
