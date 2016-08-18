@@ -76,26 +76,39 @@ function indexInArr(array, ident) {
 
 function renewStoredObject(resp) {
 	console.log(resp);
+	resp.topics.forEach(renewStoredTopic);    
+	resp.themes.forEach(renewStoredTheme);    
+
+	// TODO process erased
 	// TODO impelement remove
 	
-	resp.topics.forEach(function (topic) {
-		var index = indexInArr(welcomeDrawObjects.topics, topic.id);
-		if(index===undefined)
-			welcomeDrawObjects.topics.push(topic);
-		else
-			welcomeDrawObjects.topics[index] = topic;
-	});    
-
-	
-/*	welcomeDrawObjects.themes.forEach(paintTheme);    
-	
-	themes
-	erased
-	topics
-	*/
-	
+	themes2page();
 }
 
+
+function renewStoredTheme (theme) {
+	var index = indexInArr(welcomeDrawObjects.themes, theme.id);
+	if(index<0)			
+		welcomeDrawObjects.themes.push(theme);
+	else
+	{
+		if(welcomeDrawObjects.themes[index].modified<theme.modified)
+			welcomeDrawObjects.themes[index] = theme;
+		console.log("repkalop", index, welcomeDrawObjects.themes[index]);
+	}
+}
+
+function renewStoredTopic(topic) {
+	var index = indexInArr(welcomeDrawObjects.topics, topic.id);
+	if(index<0)			
+		welcomeDrawObjects.topics.push(topic);
+	else
+	{
+		if(welcomeDrawObjects.topics[index].modified<topic.modified)
+			welcomeDrawObjects.topics[index] = topic;
+		console.log("repkalop", index, welcomeDrawObjects.topics[index]);
+	}
+}
 
 /**
  * Draws themes on webpage 
@@ -119,25 +132,22 @@ function paintTheme(theme){
 	try {
 		if(theme.painted)
 			return;
+
 		theme.painted = true;
-		
 		var html = Mustache.to_html(templateTheme, theme);
 	    
 		var $destobj = $('#topicList').find('#ent_'+theme.topicId+'_cont');
 		if($destobj.length===0)
 		{
 			console.error("Topic not found id:", theme.topicId);
-			theme.topicId
+			return;
 		}
 	    
-	    $destobj.append($(html));
-	    
-	    
-/*		var $old = 
+		var $old = $destobj.find('#ent_'+theme.id); 
 		if($old.length!==0)
-		$old.replaceWith(html);
+			$old.replaceWith(html);
 		else
-	    $('#commentBoxer').append($(html));*/
+			$destobj.append($(html));
 	}
 	catch(err) {
 		console.error("paintTheme: ", err);
@@ -267,7 +277,17 @@ function editThemeDlg_save(){
 	        data: JSON.stringify(jsobj),
 	        success: function (response) {
 	        	console.log("edit resp: ", response);
-	        	alert('not implementšed succeass of edittheme');
+	        	if(response.theme) {
+	        		renewStoredTopic(response.theme.topic);
+	        		renewStoredTheme(response.theme);
+	        		themes2page();
+	        	}
+        		if(response.error){
+        			console.error(response.error);
+    	        	alert('Error: '+error.type + " "+error.message());
+        		}
+	        		
+	        	
 	        },
 	        error: ajaxFailureMessage
 	    });

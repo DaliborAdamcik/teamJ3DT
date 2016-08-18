@@ -129,7 +129,7 @@ public class TopicThemePrivileges {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, Object> resp = new HashMap<>();
-		resp.put(obj.getClass().getSimpleName(), obj);
+		resp.put(obj.getClass().getSimpleName().toLowerCase(), obj);
 		response.setContentType("application/json");
 		mapper.writeValue(response.getWriter(), resp);
 	}
