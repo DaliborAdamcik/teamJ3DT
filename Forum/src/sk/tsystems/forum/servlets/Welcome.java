@@ -127,9 +127,19 @@ public class Welcome extends MasterServlet {
 
 		if(!themes.isEmpty()) // save filter or last item
 			helpser.setSessionObject("theme_filter_date", themes.get(themes.size()-1).getModified());
+
+		List<Topic> topics;
+		if(!newsonly || (filterDate = (Date) helpser.getSessionObject("topic_filter_date"))==null)
+		{
+			topics = helpser.getTopicService().getTopics();
+		}
+		else
+			topics = helpser.getTopicService().getTopics(filterDate);
+
+		if(!topics.isEmpty()) // save filter or last item
+			helpser.setSessionObject("topic_filter_date", topics.get(topics.size()-1).getModified());
 		
 		List<Integer> erased = new ArrayList<>();  
-		List<Topic> topics = new ArrayList<>();
 		// create list of blocked, remove blocked (erased) 
 		if(!helpser.getSessionRole().equals(UserRole.ADMIN))
 		{
@@ -141,17 +151,17 @@ public class Welcome extends MasterServlet {
 						!(theme.isIsPublic()&&theme.getTopic().isIsPublic()) && currRole.equals(UserRole.GUEST)) {
 					erased.add(theme.getId());
 					iterator.remove();
-				} else {
-					if(!topics.contains(theme.getTopic()))
-						topics.add(theme.getTopic());
-				}
+				} 
 			}
-		} else {
-			for (Theme theme: themes) {
-				if(!topics.contains(theme.getTopic()))
-					topics.add(theme.getTopic());
+
+			for (Iterator<Topic> iterator = topics.iterator(); iterator.hasNext();) {
+				Topic topic = iterator.next();
+				if(topic.isBlocked() || !(topic.isIsPublic()) && currRole.equals(UserRole.GUEST)) {
+					erased.add(topic.getId());
+					iterator.remove();
+				} 
 			}
-		}
+		} 
 		
 		resp.put("themes", themes);
 		resp.put("topics", topics);
