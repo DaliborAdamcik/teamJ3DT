@@ -109,7 +109,6 @@ function renewStoredTheme (theme) {
 	{
 		if(welcomeDrawObjects.themes[index].modified<theme.modified)
 			welcomeDrawObjects.themes[index] = theme;
-		console.log("repkalop", index, welcomeDrawObjects.themes[index]);
 	}
 }
 
@@ -300,9 +299,11 @@ function editThemeDlg_save(){
 	        success: function (response) {
 	        	console.log("edit resp: ", response);
 	        	if(response.theme) {
+	        		response.theme.modified = response.theme.modified+1; 
 	        		renewStoredTopic(response.theme.topic);
 	        		renewStoredTheme(response.theme);
 	        		themes2page();
+	        		console.log("safasdfgsdhd");
 	        	}
         		if(response.error){
         			console.error(response.error);

@@ -96,6 +96,16 @@ li.blockedentity {
 	border: 1px solid #ffff4d;
 }
 
+.pubclassfalse {
+	background: repeating-linear-gradient(
+	  -45deg,
+	  #ffffff,
+	  #ffffff 10px,
+	  #e6f5ff 10px,
+	  #e6f5ff 20px);
+}
+
+
 .removetopic_button {
 	background: #79da58;
 	background: -webkit-linear-gradient(#79da58, #fff);

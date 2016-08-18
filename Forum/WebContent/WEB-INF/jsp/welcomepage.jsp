@@ -82,7 +82,7 @@
 </script>
 <script id="themeTemplate" type="text/template">
 <div 
-	class="list-group-item{{#blocked}} blockedentity{{/blocked}}"
+	class="list-group-item{{#blocked}} blockedentity{{/blocked}} pubclass{{isPublic}}"
 	id="ent_{{id}}" data-etype="theme"
 	data-owner="{{#author}}{{id}}{{/author}}">
 	<div class="row">
