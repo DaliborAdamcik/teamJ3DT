@@ -8,50 +8,85 @@
 <link rel="stylesheet" href="css/style.css" />
 
 
-<div id="welcome_pg"><!-- Begin of welcome page content, DO NOT REMOVE THIS TAG -->
-<div class="container" align=center>
-	<c:choose>
-		<c:when test="${CURRENT_USER.role == 'ADMIN'}">
-			<form method='post'>
-				<label id="label">Add new topic:</label> <br> <br> <input
-					type="text" required="required" name="new_topic"
-					placeholder="Topic name" autofocus> <br> <br> <input
-					type="submit" value="Submit"> <br> <br>
-			</form>
-		</c:when>
-	</c:choose>
-</div>
-
-<div class="container" align="center">
-	<div id="topicList" align="left">
-		<c:forEach var="topics" items="${topthemlis}">
-			<h3>${topics.key.getName()} <button type="button" class="close entitymenucls" aria-hidden="true" onclick="newThemeDlgPopup(${topics.key.getId()});">New theme</button></h3>
-			<div>
-				<c:forEach items="${topics.value}" var="theme">
-					<div class="list-group-item<c:choose><c:when test="${theme.getBlocked()!= null}"> blockedentity</c:when></c:choose>" id="ent_${theme.getId()}" data-etype="theme" data-owner="${theme.getAuthor().getId()}">
-						<span style="cursor:pointer; text-decoration: underline;" onclick="loadComments(${theme.getId()});" id="ent_${theme.getId()}_name">${theme.getName()}</span> 
-						<span>${theme.getAuthor().getUserName()}</span> 
-						<button type="button" class="close entitymenucls" aria-hidden="true" onclick="entityMenuPopup(${theme.getId()});">&Xi;</button>
-						<p>${theme.getDescription()}</p>
-					</div>
-				</c:forEach>
-			</div>
-		</c:forEach>
+<div id="welcome_pg">
+	<!-- Begin of welcome page content, DO NOT REMOVE THIS TAG -->
+	<div class="container" align=center>
+		<c:choose>
+			<c:when test="${CURRENT_USER.role == 'ADMIN'}">
+				<form method='post'>
+					<label id="label">Add new topic:</label> <br> <br> <input
+						type="text" required="required" name="new_topic"
+						placeholder="Topic name" autofocus> <br> <br> <input
+						type="submit" value="Submit"> <br> <br>
+				</form>
+			</c:when>
+		</c:choose>
 	</div>
-	<!-- <div style='overflow: auto; width: 800px; height: 300px;'></div> -->	
+
+	<div class="container" align="center">
+		<div id="topicList" align="left">
+			<c:forEach var="topics" items="${topthemlis}">
+				<h3>${topics.key.getName()}
+					<button type="button" class="close entitymenucls"
+						aria-hidden="true"
+						onclick="newThemeDlgPopup(${topics.key.getId()});">New
+						theme</button>
+				</h3>
+				<div>
+					<c:forEach items="${topics.value}" var="theme">
+						<div
+							class="list-group-item<c:choose><c:when test="${theme.getBlocked()!= null}"> blockedentity</c:when></c:choose>"
+							id="ent_${theme.getId()}" data-etype="theme"
+							data-owner="${theme.getAuthor().getId()}">
+							<div class="row">
+
+								<div class="col-sm-11 col-md-10">
+
+									<span style="cursor: pointer; text-decoration: underline;"
+										onclick="loadComments(${theme.getId()});"
+										id="ent_${theme.getId()}_name">${theme.getName()}</span> <span>by
+										${theme.getAuthor().getUserName()}</span>
+									<div class="commenterImage">
+										<img src="images/userPicture.png" alt=userPicture height=30
+											width=30 />
+									</div>
+
+									<br> <span>on ${theme.getCreated()}</span> <br> <br>
+									<p>${theme.getDescription()}</p>
+								</div>
+								<div class="col-sm-1 col-md-2">
+
+									<button type="button" class="close entitymenucls"
+										aria-hidden="true"
+										onclick="entityMenuPopup(${theme.getId()});">&Xi;</button>
+
+									<span>${ThemeObjectDTO.getCommentCount()} comments <br></span>
+									<span>${ThemeObjectDTO.getUserCount()} commenters <br></span>
+									<span>${ThemeObjectDTO.getRatingCount()} ratings <br></span>
+									<span>${ThemeObjectDTO.getAverageRating()} rating </span>
+								</div>
+							</div>
+
+						</div>
+					</c:forEach>
+				</div>
+			</c:forEach>
+		</div>
+		<!-- <div style='overflow: auto; width: 800px; height: 300px;'></div> -->
+	</div>
 </div>
-</div> <!-- end of welcome page content, DO NOT REMOVE THIS TAG -->
+<!-- end of welcome page content, DO NOT REMOVE THIS TAG -->
 
 <!-- DO NOT MODIFY / REMOVE comon html dialogs -->
 <div id="editThemeDlg" title="Edit theme">
 	<p>
-		<span id="editThemeDlg_ownerInfo"></span>
-		<label for="editThemeDlg_name">Name</label>
-		<input class="form-control" type="text" placeholder="Name" id="editThemeDlg_name" />
-		<label for="editThemeDlg_desc">Description</label>
-		<input class="form-control" type="text" placeholder="Description" id="editThemeDlg_desc" />
-		<label for="editThemeDlg_pub">Public</label>
-		<input class="form-control"  type="checkbox" id="editThemeDlg_pub" />
+		<span id="editThemeDlg_ownerInfo"></span> <label
+			for="editThemeDlg_name">Name</label> <input class="form-control"
+			type="text" placeholder="Name" id="editThemeDlg_name" /> <label
+			for="editThemeDlg_desc">Description</label> <input
+			class="form-control" type="text" placeholder="Description"
+			id="editThemeDlg_desc" /> <label for="editThemeDlg_pub">Public</label>
+		<input class="form-control" type="checkbox" id="editThemeDlg_pub" />
 	</p>
 </div>
 <script id="editThemeDlg_ownerInfo_tmpl" type="text/template">
@@ -65,17 +100,20 @@
 </dl>
 </script>
 
-<ul id="entityMenu" style="display:none;">
+<ul id="entityMenu" style="display: none;">
 	<li onclick="entityMenuItemClick('close');"><div>Close menu</div></li>
 	<li id="entityMenu_iEdit" class="entMenuOwnerOption"><div>Edit</div></li>
-	<li onclick="entityMenuItemClick('owner.remove');" class="entMenuOwnerOption"><div>Remove</div></li>
+	<li onclick="entityMenuItemClick('owner.remove');"
+		class="entMenuOwnerOption"><div>Remove</div></li>
 
-	<li id="commentMenuItemClose" class="entMenuAdminOption"><div>Admin options</div>
-	  <ul>
-		<li onclick="entityMenuItemClick('admin.block');" class="entMenuAdminOption"><div>Block</div></li>
-		<li onclick="entityMenuItemClick('admin.unblock');" class="entMenuAdminOption"><div>UnBlock</div></li>
-	  </ul>
-	</li>
+	<li id="commentMenuItemClose" class="entMenuAdminOption"><div>Admin
+			options</div>
+		<ul>
+			<li onclick="entityMenuItemClick('admin.block');"
+				class="entMenuAdminOption"><div>Block</div></li>
+			<li onclick="entityMenuItemClick('admin.unblock');"
+				class="entMenuAdminOption"><div>UnBlock</div></li>
+		</ul></li>
 </ul>
 
 <script type="text/javascript" src="js/popupmenu.js"></script>
