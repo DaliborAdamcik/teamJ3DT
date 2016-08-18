@@ -9,8 +9,8 @@
 
 <div id="comments_pg" style="display: none;"> <!-- Begin of comments page content, DO NOT REMOVE/MODIFY THIS TAG --> 
 
-<div class="container">
-	<div class="detailBox">
+<div class="container" align=center>
+	<div class="detailBox" align=left>
 		<div class="titleBox">
 			<label id="themeName"></label><button type="button" class="close entitymenucls" aria-hidden="true" onclick="entityMenuPopup(themeIdentForComments);">&Xi;</button>
 		</div>
