@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
+import sk.tsystems.forum.helper.exceptions.EmptyFieldException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
@@ -286,7 +287,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	}
 	
 	@Override
-	public final void setBlocked(Blocked blocked) {
+	public final void setBlocked(Blocked blocked) throws EmptyFieldException {
 		if(equals(blocked.getBlockedBy()))
 			throw new RuntimeException("YOU CAND DO THIS ANYTIME!!!!!!!!!!!!!!!!!!! RYS(Z)AAA");
 		super.setBlocked(blocked);

@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PreUpdate;
+import javax.persistence.Transient;
 
 import sk.tsystems.forum.helper.exceptions.EmptyFieldException;
 
@@ -106,7 +107,8 @@ public abstract class CommonEntity {
 	}
 	
 	/** Max string length */
-	private final int MAX_STR_LEN = 254;
+	@Transient
+	private final int MAX_STR_LEN = 255;
 	/**
 	 * Checks object (field) is empty.
 	 * In case field is String, also is checked for empty string.
