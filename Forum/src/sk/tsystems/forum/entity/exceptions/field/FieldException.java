@@ -1,4 +1,4 @@
-package sk.tsystems.forum.helper.exceptions;
+package sk.tsystems.forum.entity.exceptions.field;
 
 import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 

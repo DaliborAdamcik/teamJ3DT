@@ -7,7 +7,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.CommonEntity;
-import sk.tsystems.forum.helper.exceptions.UserEntityException;
+import sk.tsystems.forum.entity.exceptions.field.FieldException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 
 @Entity
@@ -25,12 +25,22 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 
 	@ManyToOne
 	private Comment comment;
-	
-	public CommentRating(Comment comment, User owner, int rating) throws UserEntityException {
-		this();
-		if (comment == null || owner == null || (rating != -1 && rating != 1))
-			throw new UserEntityException("Required fields are not set properly");
 
+	/**
+	 * Creates new rating for specified {@link Comment} by owner {@link User}
+	 * @param comment {@link Comment}
+	 * @param owner {@link User}
+	 * @param rating {@link Integer}
+	 * @throws FieldException
+	 */
+	public CommentRating(Comment comment, User owner, int rating) throws FieldException {
+		this();
+		testNotEmpty(owner, "owner", false);
+		testNotEmpty(comment, "comment", false);
+		
+		if (rating != -1 && rating != 1)
+			throw new FieldException("Can't set rating for comment. Rating can be -1, 1 only.");
+		
 		this.rating = rating;
 		this.owner = owner;
 		this.theme = comment.getTheme();
@@ -69,7 +79,7 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 		}
 	}
 
-	private void updateRating(int rating) {
+	private void setRating(int rating) {
 		this.rating = rating;
 		try (JpaConnector jpa = new JpaConnector()) {
 			jpa.merge(this);
@@ -77,15 +87,15 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 	}
 	
 	public void upVote() {
-		updateRating(1);
+		setRating(1);
 	}
 
 	public void downVote() {
-		updateRating(-1);
+		setRating(-1);
 	}
 	
 	public void unVote() {
-		updateRating(0);
+		setRating(0);
 	}
 	
 

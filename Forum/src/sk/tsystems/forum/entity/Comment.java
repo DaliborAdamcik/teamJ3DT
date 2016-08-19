@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.dto.CommentObjectDTO;
-import sk.tsystems.forum.helper.exceptions.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldException;
 
 @Entity
 @Table(name = "COMMENTARY")

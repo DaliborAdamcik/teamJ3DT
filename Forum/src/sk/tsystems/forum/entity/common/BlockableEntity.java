@@ -4,7 +4,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
 import sk.tsystems.forum.entity.Blocked;
-import sk.tsystems.forum.helper.exceptions.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldException;
 
 @MappedSuperclass
 public abstract class BlockableEntity extends CommonEntity {

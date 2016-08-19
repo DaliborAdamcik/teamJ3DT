@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 
-import sk.tsystems.forum.helper.exceptions.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldException;
 
 /**
  * Common entity properties class

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
-import sk.tsystems.forum.helper.exceptions.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldException;
 
 @Entity
 @Table(name = "TOPIC")

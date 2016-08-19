@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sk.tsystems.forum.entity.Topic;
+import sk.tsystems.forum.entity.exceptions.field.FieldException;
 import sk.tsystems.forum.helper.TestHelper;
-import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 
 public class TopicJPATest {

@@ -11,7 +11,7 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.common.CommonEntity;
-import sk.tsystems.forum.helper.exceptions.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldException;
 import sk.tsystems.forum.service.UserService;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.UserJPA;

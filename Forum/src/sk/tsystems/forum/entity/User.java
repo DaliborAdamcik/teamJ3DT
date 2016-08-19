@@ -15,9 +15,9 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
+import sk.tsystems.forum.entity.exceptions.field.FieldException;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
-import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
