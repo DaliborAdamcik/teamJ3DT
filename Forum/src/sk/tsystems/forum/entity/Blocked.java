@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import sk.tsystems.forum.entity.common.CommonEntity;
+import sk.tsystems.forum.helper.exceptions.EmptyFieldException;
 
 @Entity
 public class Blocked extends CommonEntity implements Comparable<Blocked>{
@@ -21,7 +22,7 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	@Column(name = "REASON", nullable = false)
 	private String reason;
 
-	public Blocked(User blockedBy, String reason) {
+	public Blocked(User blockedBy, String reason) throws EmptyFieldException {
 		this();
 		setBlockedBy(blockedBy);
 		setReason(reason);
@@ -45,9 +46,11 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 
 	/**
 	 * setter for blockedBy
-	 * @param blockedBy
+	 * @param {@linkUser}blockedBy
+	 * @throws EmptyFieldException 
 	 */
-	public void setBlockedBy(User blockedBy) {
+	private void setBlockedBy(User blockedBy) throws EmptyFieldException {
+		testNotEmpty(reason, "reason", true);
 		this.blockedBy = blockedBy;
 	}
 
@@ -63,8 +66,10 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	/**
 	 * Setter for reason
 	 * @param reason
+	 * @throws EmptyFieldException 
 	 */
-	public void setReason(String reason) {
+	public void setReason(String reason) throws EmptyFieldException {
+		testNotEmpty(reason, "reason", true);
 		this.reason = reason;
 	}
 

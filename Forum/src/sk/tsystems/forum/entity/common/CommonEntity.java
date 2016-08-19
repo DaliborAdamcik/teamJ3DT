@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PreUpdate;
 
+import sk.tsystems.forum.helper.exceptions.EmptyFieldException;
+
 /**
  * Common entity properties class
  * This is superclass for all entities
@@ -47,17 +49,16 @@ public abstract class CommonEntity {
 	 */
 	protected CommonEntity() {
 		super();
-		this.id =0;
+		this.id = 0;
 		this.created = new Date();
 		this.modified = this.created;
 	}
 
 	/**
-	 * Update entity modified in DB
+	 * Sets modified {@link Date} to current date/time
 	 */
 	@PreUpdate
-    //@PrePersist
-    private void setLastUpdate() {
+    private void setLastModified() {
 		this.modified = new Date();
     }	
 	
@@ -95,6 +96,39 @@ public abstract class CommonEntity {
 	public Date getModified() {
 		return modified;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof CommonEntity) 
+			return this.getId() == ((CommonEntity) obj).getId();
+		
+		return false;
+	}
 	
+	/** Max string length */
+	private final int MAX_STR_LEN = 254;
+	/**
+	 * Checks object (field) is empty.
+	 * In case field is String, also is checked for empty string.
+	 * Use this function in entity setters / constructors. 
+	 * @param valToCheck {@link Object} An object to be checked
+	 * @param fieldName {@link String} description (name of field) for exception
+	 * @param maxLen {@link Boolean} Also checks {@link String} length exeeds MAX_STR_LEN characters
+	 * @throws EmptyFieldException
+	 */
+	protected void testNotEmpty(Object valToCheck, String fieldName, boolean maxLen) throws EmptyFieldException {
+		if(valToCheck==null)
+			throw new EmptyFieldException(String.format(EmptyFieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be null"));
+
+		if(valToCheck instanceof String)
+		{
+			int len = ((String) valToCheck).trim().length(); 
+			if(len ==0)
+				throw new EmptyFieldException(String.format(EmptyFieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be empty"));
+
+			if(maxLen && len > MAX_STR_LEN)
+				throw new EmptyFieldException(String.format(EmptyFieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
+		}
+	}
 	
 }
