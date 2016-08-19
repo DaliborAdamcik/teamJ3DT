@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -169,11 +170,11 @@ public class BASEEntityTest {
 			assertTrue("Field cannot be accesible for public", Modifier.isPrivate(field.getModifiers())); // check field is private
 			
 			Column column = field.getAnnotation(Column.class);
-
 			if( field.getAnnotation(OneToOne.class)==null && 
 				field.getAnnotation(OneToMany.class)==null &&		
 				field.getAnnotation(ManyToMany.class)==null &&		
-				field.getAnnotation(ManyToOne.class)==null ) 		
+				field.getAnnotation(ManyToOne.class)==null &&
+				field.getAnnotation(Transient.class)==null) 		
 			{
 				assertNotNull("@Column (JPA) annotation is missing", column);
 				assertNotEquals("@Column must have property 'name'", 0, column.name().length());
