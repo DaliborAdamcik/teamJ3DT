@@ -1,5 +1,7 @@
 package sk.tsystems.forum.helper.exceptions;
 
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
+
 /**
  * NickNameException
  * Auto-generated code 

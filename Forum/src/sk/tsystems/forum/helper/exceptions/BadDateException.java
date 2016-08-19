@@ -1,5 +1,7 @@
 package sk.tsystems.forum.helper.exceptions;
 
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
+
 public class BadDateException extends UserEntityException {
 	private static final long serialVersionUID = 1L;
 

@@ -9,7 +9,7 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.dto.CommentObjectDTO;
 import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
-import sk.tsystems.forum.helper.exceptions.UserEntityException;
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;

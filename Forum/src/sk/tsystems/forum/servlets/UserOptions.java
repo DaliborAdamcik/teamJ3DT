@@ -27,6 +27,7 @@ import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.UserHelper;
@@ -34,7 +35,6 @@ import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
-import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**

@@ -16,11 +16,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
-import sk.tsystems.forum.helper.exceptions.UserEntityException;
 
 @Entity
 @Table(name = "JPA_USER")
