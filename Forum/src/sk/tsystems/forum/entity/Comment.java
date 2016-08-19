@@ -21,7 +21,7 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	/**
 	 * comment
 	 */
-	@Column(name = "COMMENTARY", nullable = false, columnDefinition="TEXT")
+	@Column(name = "COMMENTARY", nullable = false, columnDefinition="CLOB")
 	private String comment;
 
 	/**

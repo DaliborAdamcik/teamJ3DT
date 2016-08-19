@@ -31,7 +31,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	/**
 	 * description of theme
 	 */
-	@Column(name = "DESCRIPTION", nullable = false, columnDefinition="TEXT")
+	@Column(name = "DESCRIPTION", nullable = false, columnDefinition="CLOB")
 	private String description;
 
 	/**

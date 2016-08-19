@@ -50,7 +50,7 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	 * @throws FieldException 
 	 */
 	private void setBlockedBy(User blockedBy) throws FieldException {
-		testNotEmpty(reason, "reason", true);
+		testNotEmpty(blockedBy, "blocked by", true);
 		this.blockedBy = blockedBy;
 	}
 
