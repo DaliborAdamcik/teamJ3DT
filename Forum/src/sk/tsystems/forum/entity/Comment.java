@@ -18,37 +18,26 @@ import sk.tsystems.forum.helper.exceptions.FieldException;
 @Table(name = "COMMENTARY")
 public class Comment extends BlockableEntity implements Comparable<Comment> {
 
-	/**
-	 * comment
-	 */
+	/** {@link String} field <b>message (of comment)</b> */
 	@Column(name = "COMMENTARY", nullable = false, columnDefinition="CLOB")
 	private String comment;
 
-	/**
-	 * theme
-	 */
+	/** {@link Theme} field for {@link Comment} to be included in */
 	@JsonIgnore
 	@ManyToOne
 	private Theme theme;
 
-	/**
-	 * owner
-	 */
+	/** {@link User} field of <b>owner<b> */
 	@ManyToOne
 	private User owner;
 	
 	/**
-	 * public status // TODO !!!!!remove
-	 */
-
-	/**
-	 * constructor
-	 * 
-	 * @param comment
-	 * @param theme
-	 * @param owner
-	 * @param isPublic
-	 * @throws FieldException 
+	 * Create new comment
+	 * @
+	 * @param comment {@link String} message of comment
+	 * @param theme {@link Theme} to be included in
+	 * @param owner {@link User} owner of this comment
+	 * @throws FieldException  
 	 */
 	public Comment(String comment, Theme theme, User owner) throws FieldException {
 		this();
@@ -59,17 +48,14 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 		setComment(comment);
 	}
 
-	/**
-	 * constructor only for JPA.
-	 */
+	/** constructor only for hibernate. Must be private. */
 	private Comment() {
 		super();
 	}
 
 	/**
 	 * Getter for comment
-	 * 
-	 * @return comment
+	 * @return {@link String} message (of comment) - field {@link #comment}
 	 */
 	public String getComment() {
 		return comment;
@@ -77,8 +63,7 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 
 	/**
 	 * Setter for comment
-	 * 
-	 * @param comment
+	 * @param comment {@link String} message (of comment)
 	 * @throws FieldException 
 	 */
 	public void setComment(String comment) throws FieldException {
