@@ -13,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.boot.model.source.internal.hbm.Helper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -183,7 +182,7 @@ public class CommentServlet extends MasterServlet {
 			
 			JSONObject obj = svHelper.getJSON();
 			
-			Comment comment = new Comment(obj.getString("comment"), theme, svHelper.getLoggedUser(), true);
+			Comment comment = new Comment(obj.getString("comment"), theme, svHelper.getLoggedUser());
 			svHelper.getCommentService().addComment(comment);
 			
 			ObjectMapper mapper = new ObjectMapper();

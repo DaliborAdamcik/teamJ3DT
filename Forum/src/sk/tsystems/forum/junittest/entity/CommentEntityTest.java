@@ -3,7 +3,6 @@ package sk.tsystems.forum.junittest.entity;
 import static org.junit.Assert.*;
 
 import java.util.Date;
-import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +38,7 @@ public class CommentEntityTest {
 
 	@Test
 	public void getCommentTest() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner);
 		String testComment = randomComment.getComment();
 
 		assertEquals("Bad comment", comment, testComment);
@@ -47,7 +46,7 @@ public class CommentEntityTest {
 
 	@Test
 	public void setCommentTest() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner);
 		randomComment.setComment(comment);
 		String testComment = randomComment.getComment();
 
@@ -56,7 +55,7 @@ public class CommentEntityTest {
 
 	@Test
 	public void getTopicTest() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner);
 		Theme testTheme = randomComment.getTheme();
 
 		assertEquals("Bad theme", theme, testTheme);
@@ -74,49 +73,32 @@ public class CommentEntityTest {
 
 	@Test
 	public void getOwner() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner);
 		User testOwner = randomComment.getOwner();
 
 		assertEquals("Bad owner", owner, testOwner);
 	}
 
 	@Test
-	public void isPublic() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
-		boolean testIsPublic = randomComment.isIsPublic();
-
-		assertEquals("Bad isPublic", isPublic, testIsPublic);
-	}
-
-	@Test
-	public void setPublic() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, true);
-		randomComment.setPublic(isPublic);
-		boolean testIsPublic = randomComment.isIsPublic();
-
-		assertEquals("Bad isPublic", isPublic, testIsPublic);
-	}
-
-	@Test
 	public void getCreationDate() throws FieldException {
 		Date creationDatei = new Date();
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner);
 		assertEquals("Bad creation date", creationDatei.getTime() / 100, randomComment.getCreated().getTime() / 100);
 	}
 
 	@Test
 	public void equalsTest() throws FieldException {
-		Object o = new Comment(comment, theme, owner, isPublic);
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Object o = new Comment(comment, theme, owner);
+		Comment randomComment = new Comment(comment, theme, owner);
 
 		assertTrue("method equals doesnt work", randomComment.equals(o));
 	}
 
 	@Test
 	public void compareToTest() throws FieldException {
-		Comment randomComment1 = new Comment(TestHelper.randomString(20, 20), theme, owner, isPublic);
-		Comment randomComment2 = new Comment(comment, theme, owner, isPublic);
-		Comment randomComment3 = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment1 = new Comment(TestHelper.randomString(20, 20), theme, owner);
+		Comment randomComment2 = new Comment(comment, theme, owner);
+		Comment randomComment3 = new Comment(comment, theme, owner);
 
 		assertEquals("method compareTo doesnt work", randomComment1.compareTo(randomComment2),
 				randomComment1.getComment().compareTo(randomComment2.getComment()));
