@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
+import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 import sk.tsystems.forum.helper.TestHelper;
-import sk.tsystems.forum.helper.exceptions.CommonEntityException;
 import sk.tsystems.forum.helper.exceptions.FieldException;
 
 public class TopicEntityTest {

@@ -11,8 +11,8 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 import sk.tsystems.forum.helper.TestHelper;
-import sk.tsystems.forum.helper.exceptions.CommonEntityException;
 
 public class ThemeEntityTest {
 

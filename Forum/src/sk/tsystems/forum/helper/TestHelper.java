@@ -10,7 +10,7 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.common.CommonEntity;
-import sk.tsystems.forum.helper.exceptions.CommonEntityException;
+import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.TopicJPA;

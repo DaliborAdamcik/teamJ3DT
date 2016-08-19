@@ -8,7 +8,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.helper.exceptions.CommonEntityException;
+import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 import sk.tsystems.forum.service.BlockedService;
 import sk.tsystems.forum.service.CommentService;
 import sk.tsystems.forum.service.ThemeService;

@@ -1,5 +1,7 @@
 package sk.tsystems.forum.helper.exceptions;
 
+import sk.tsystems.forum.entity.exceptions.CommonEntityException;
+
 public class UserEntityException extends CommonEntityException {
 	private static final long serialVersionUID = 1L;
 

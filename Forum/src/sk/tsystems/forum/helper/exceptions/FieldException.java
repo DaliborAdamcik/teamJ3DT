@@ -1,5 +1,7 @@
 package sk.tsystems.forum.helper.exceptions;
 
+import sk.tsystems.forum.entity.exceptions.CommonEntityException;
+
 /***
  * This exception is thrown in general check of field values. 
  * @author Dalibor Adamcik

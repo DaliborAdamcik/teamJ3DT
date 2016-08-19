@@ -1,4 +1,4 @@
-package sk.tsystems.forum.helper.exceptions;
+package sk.tsystems.forum.entity.exceptions;
 
 /**
  * An common exception in entity
