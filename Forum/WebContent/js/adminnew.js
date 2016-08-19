@@ -196,3 +196,24 @@ function showreason(objName, blockedby, reason, button) {
 	$("#reasondialog").dialog("open");
 	return false;
 }
+
+$("#add_topic").submit(function(ev) {
+	var jsobj = {};
+	jsobj.topicname = $('#topic_newname').val();
+	jsobj.ispublic = document.getElementById('topic_ispublic').checked;
+	console.log("sem dosiel");
+	console.log(jsobj);
+	$.ajax({
+		type : "PUT",
+		url : "Admin/1/addtopic",
+		contentType : "application/json;charset=UTF-8",
+		dataType : "json",
+		data : JSON.stringify(jsobj),
+		success : function(response) {
+			console.log(response);
+			alert("topic added successfuly");
+			}
+		
+	});
+	return false;
+});

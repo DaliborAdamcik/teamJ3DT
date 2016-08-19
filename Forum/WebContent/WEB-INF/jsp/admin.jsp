@@ -12,6 +12,18 @@
 
 	<div class="container">
 		<h1 id="title"></h1>
+		
+		<form id="add_topic" method="post" action="Admin">
+		<table>
+			<tr>
+				<td>new topic:
+				<td><input id="topic_newname" type="text"
+					required="required" name="new_username" autofocus><br>
+			<tr><td><input id="topic_ispublic" type="checkbox" name="ispublic" value="true" checked> public<br>
+		</table>
+		<input id="submit_newtopic" type="submit" value="Submit">
+
+	</form><br><br>
 		<div class="col-md-6">
 			<table class="table">
 				<tbody id="table_of_users">

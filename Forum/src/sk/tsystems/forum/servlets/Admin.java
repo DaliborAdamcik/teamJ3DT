@@ -128,6 +128,17 @@ public class Admin extends MasterServlet {
 			case "unblock":
 				unblock(response, servletHelper,obj);
 				break;
+			case "addtopic":
+				Topic topic = new Topic(obj.getString("topicname"),obj.getBoolean("ispublic"));
+				servletHelper.getTopicService().addTopic(topic);
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.setSerializationInclusion(Include.NON_NULL);
+				Map<String, Object> resp = new HashMap<>();
+				resp.put("topic", "topic");
+
+				response.setContentType("application/json");
+				mapper.writeValue(response.getWriter(), resp);
+				break;
 			default:
 				return;
 
