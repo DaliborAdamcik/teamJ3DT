@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.dto.CommentObjectDTO;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 
 @Entity
 @Table(name = "COMMENTARY")
@@ -20,7 +21,7 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	/**
 	 * comment
 	 */
-	@Column(name = "COMMENTARY", nullable = false)
+	@Column(name = "COMMENTARY", nullable = false, columnDefinition="TEXT")
 	private String comment;
 
 	/**
@@ -28,18 +29,16 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	 */
 	@JsonIgnore
 	@ManyToOne
-	//@JoinColumn(name = "THEMEID")
 	private Theme theme;
 
 	/**
 	 * owner
 	 */
 	@ManyToOne
-	//@JoinColumn(name = "USERID")
 	private User owner;
 	
 	/**
-	 * public status
+	 * public status // TODO !!!!!remove
 	 */
 	@Column(name = "ISPUBLIC", nullable = false)
 	private boolean isPublic;
@@ -51,9 +50,12 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	 * @param theme
 	 * @param owner
 	 * @param isPublic
+	 * @throws FieldException 
 	 */
-	public Comment(String comment, Theme theme, User owner, boolean isPublic) {
+	public Comment(String comment, Theme theme, User owner, boolean isPublic) throws FieldException {
 		this();
+		testNotEmpty(theme, "theme", false);
+		testNotEmpty(owner, "owner", false);
 		this.theme = theme;
 		this.owner = owner;
 		setComment(comment);
@@ -80,8 +82,12 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	 * Setter for comment
 	 * 
 	 * @param comment
+	 * @throws FieldException 
 	 */
-	public void setComment(String comment) {
+	public void setComment(String comment) throws FieldException {
+		testNotEmpty(comment, "comment", false);
+		if(comment.length()>2048)
+			throw new FieldException("Comment lenght cant exceed 2048 characters.");
 		this.comment = comment;
 	}
 

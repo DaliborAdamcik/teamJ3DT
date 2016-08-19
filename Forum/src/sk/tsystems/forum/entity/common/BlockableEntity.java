@@ -38,6 +38,8 @@ public abstract class BlockableEntity extends CommonEntity {
 	 */
 	public void setBlocked(Blocked blocked) throws FieldException {
 		testNotEmpty(blocked, "blocked", false);
+		if(isBlocked())
+			throw new FieldException(String.format("Entity #%d is already blocked. Cant set block.", getId()));
 		this.blocked = blocked;
 	}
 	
