@@ -4,6 +4,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
 import sk.tsystems.forum.entity.Blocked;
+import sk.tsystems.forum.helper.exceptions.EmptyFieldException;
 
 @MappedSuperclass
 public abstract class BlockableEntity extends CommonEntity {
@@ -33,8 +34,10 @@ public abstract class BlockableEntity extends CommonEntity {
 	/**
 	 * Setter for blocked
 	 * @param blocked
+	 * @throws EmptyFieldException 
 	 */
-	public void setBlocked(Blocked blocked) {
+	public void setBlocked(Blocked blocked) throws EmptyFieldException {
+		testNotEmpty(blocked, "blocked", false);
 		this.blocked = blocked;
 	}
 	
@@ -42,8 +45,13 @@ public abstract class BlockableEntity extends CommonEntity {
 	 * Check blocked is set
 	 * @return true if blocked otherwise false
 	 */
-	public final boolean isBlocked()
-	{
-		return this.blocked != null; 
+	public final boolean isBlocked() {
+		return blocked != null; 
+	}
+	/**
+	 * Clears blocked flag for entity
+	 */
+	public final void clearBlocked() {
+		this.blocked = null;
 	}
 }
