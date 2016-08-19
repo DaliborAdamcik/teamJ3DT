@@ -127,12 +127,14 @@ function blockCommonDlg_DoBlock()
 	    
 
 	    $.ajax({
-	        type: "POST",
-	        url: "./Welcome",
-		    data: { 
+	        type: "PUT",
+	        url: "./Welcome/"+$blockDlg.data('ident')+"/block/",
+			contentType : "application/json;charset=UTF-8",
+			dataType : "json",
+			data : JSON.stringify({ 
 		    	block: $blockDlg.data('ident'), 
 		    	block_reason: reason
-		    },
+		    }),
 	        success: blockCommonDlg_BlockSucces,
 	        error: ajaxFailureMessage
 	    });

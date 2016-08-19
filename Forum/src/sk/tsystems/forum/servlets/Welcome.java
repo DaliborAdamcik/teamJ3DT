@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jdt.internal.compiler.ast.Block;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,12 +21,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import sk.tsystems.forum.entity.Blocked;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
+import sk.tsystems.forum.helper.BlockHelper;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.TopicThemePrivileges;
 import sk.tsystems.forum.helper.URLParser;
@@ -328,6 +331,16 @@ public class Welcome extends MasterServlet {
 				prioper.store(newtopic);
 				return;
 			}
+			
+			if("block".equals(url.getAction()))
+			{
+				if (svHelper.getSessionRole() != UserRole.ADMIN)
+					throw new WEBNoPermissionException("Privileged action. Permissions denied.");
+				
+				BlockHelper.block(url.getParrentID(), "SOMEONE ERASE, SOMEONE FIND ERROR AT 1:43AM - RYSZA", svHelper.getLoggedUser());
+				return;
+			}
+			
 		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | JSONException | CommonEntityException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}
