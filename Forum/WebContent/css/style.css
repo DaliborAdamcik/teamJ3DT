@@ -82,6 +82,15 @@ body {
 	width: 100%;
 }
 
+.pubclassfalse {
+	background: repeating-linear-gradient(
+	  -45deg,
+	  #ffffff,
+	  #ffffff 10px,
+	  #e6f5ff 10px,
+	  #e6f5ff 20px);
+}
+
 .blockedentity {
 	background: repeating-linear-gradient(
 	  45deg,
@@ -94,15 +103,6 @@ body {
 li.blockedentity {
 	border-radius: 3px;	
 	border: 1px solid #ffff4d;
-}
-
-.pubclassfalse {
-	background: repeating-linear-gradient(
-	  -45deg,
-	  #ffffff,
-	  #ffffff 10px,
-	  #e6f5ff 10px,
-	  #e6f5ff 20px);
 }
 
 
