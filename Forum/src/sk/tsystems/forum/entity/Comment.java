@@ -40,8 +40,6 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	/**
 	 * public status // TODO !!!!!remove
 	 */
-	@Column(name = "ISPUBLIC", nullable = false)
-	private boolean isPublic;
 
 	/**
 	 * constructor
@@ -52,14 +50,13 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	 * @param isPublic
 	 * @throws FieldException 
 	 */
-	public Comment(String comment, Theme theme, User owner, boolean isPublic) throws FieldException {
+	public Comment(String comment, Theme theme, User owner) throws FieldException {
 		this();
 		testNotEmpty(theme, "theme", false);
 		testNotEmpty(owner, "owner", false);
 		this.theme = theme;
 		this.owner = owner;
 		setComment(comment);
-		setPublic(isPublic);
 	}
 
 	/**
@@ -105,25 +102,6 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	 */
 	public User getOwner() {
 		return owner;
-	}
-	
-
-	/**
-	 * Getter for public
-	 * 
-	 * @return public
-	 */
-	public boolean isIsPublic() {
-		return isPublic;
-	}
-
-	/**
-	 * Setter for isPublic
-	 * 
-	 * @param isPublic
-	 */
-	public void setPublic(boolean isPublic) {
-		this.isPublic = isPublic;
 	}
 
 	public CommentObjectDTO getRating(){
