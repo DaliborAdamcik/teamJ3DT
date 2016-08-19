@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
-import sk.tsystems.forum.helper.exceptions.EmptyFieldException;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
@@ -71,7 +71,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	// List<Comment> comments; // TODO implementovat list ak nam ho bude treba
 
 	public User(String userName, String password, Date birthDate, String realName)
-			throws NickNameException, PasswordCheckException, UserEntityException {
+			throws NickNameException, PasswordCheckException, UserEntityException, FieldException {
 		this();
 		setUserName(userName);
 		setPassword(password);
@@ -80,7 +80,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	}
 
 	public User(String userName, String password, String birthDate, String realName)
-			throws NickNameException, PasswordCheckException, BadDateException, UserEntityException {
+			throws NickNameException, PasswordCheckException, BadDateException, UserEntityException, FieldException {
 		this(userName, password, UserHelper.stringToDate(birthDate), realName);
 	}
 
@@ -231,14 +231,12 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * Setter for realName
 	 * 
 	 * @param RealName
-	 * @throws UserEntityException
+	 * @throws FieldException 
 	 */
-	public void setRealName(String realName) throws UserEntityException {
-		if (!realName.equals(null)) {
-			this.realName = realName;
-		} else {
-			throw new UserEntityException("real name is missing");
-		}
+	public void setRealName(String realName) throws FieldException {
+		testNotEmpty(realName, "real name", true);
+		// TODO !!!!!! CHECK REAL NAME FOR SPECIAL CHARS
+		this.realName = realName;
 	}
 
 	/**
@@ -287,7 +285,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	}
 	
 	@Override
-	public final void setBlocked(Blocked blocked) throws EmptyFieldException {
+	public final void setBlocked(Blocked blocked) throws FieldException {
 		if(equals(blocked.getBlockedBy()))
 			throw new RuntimeException("YOU CAND DO THIS ANYTIME!!!!!!!!!!!!!!!!!!! RYS(Z)AAA");
 		super.setBlocked(blocked);

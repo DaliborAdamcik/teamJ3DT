@@ -4,26 +4,26 @@ package sk.tsystems.forum.helper.exceptions;
  * This exception is thrown in general check of field values. 
  * @author Dalibor Adamcik
  */
-public class EmptyFieldException extends CommonEntityException {
+public class FieldException extends CommonEntityException {
 	private static final long serialVersionUID = 1L;
 
-	public EmptyFieldException() {
+	public FieldException() {
 		super();
 	}
 
-	public EmptyFieldException(String message) {
+	public FieldException(String message) {
 		super(message);
 	}
 
-	public EmptyFieldException(Throwable cause) {
+	public FieldException(Throwable cause) {
 		super(cause);
 	}
 
-	public EmptyFieldException(String message, Throwable cause) {
+	public FieldException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public EmptyFieldException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+	public FieldException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 

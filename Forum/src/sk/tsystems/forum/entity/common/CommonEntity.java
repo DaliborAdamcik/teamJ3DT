@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 
-import sk.tsystems.forum.helper.exceptions.EmptyFieldException;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 
 /**
  * Common entity properties class
@@ -116,20 +116,20 @@ public abstract class CommonEntity {
 	 * @param valToCheck {@link Object} An object to be checked
 	 * @param fieldName {@link String} description (name of field) for exception
 	 * @param maxLen {@link Boolean} Also checks {@link String} length exeeds MAX_STR_LEN characters
-	 * @throws EmptyFieldException
+	 * @throws FieldException
 	 */
-	protected void testNotEmpty(Object valToCheck, String fieldName, boolean maxLen) throws EmptyFieldException {
+	protected void testNotEmpty(Object valToCheck, String fieldName, boolean maxLen) throws FieldException {
 		if(valToCheck==null)
-			throw new EmptyFieldException(String.format(EmptyFieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be null"));
+			throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be null"));
 
 		if(valToCheck instanceof String)
 		{
 			int len = ((String) valToCheck).trim().length(); 
 			if(len ==0)
-				throw new EmptyFieldException(String.format(EmptyFieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be empty"));
+				throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be empty"));
 
 			if(maxLen && len > MAX_STR_LEN)
-				throw new EmptyFieldException(String.format(EmptyFieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
+				throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
 		}
 	}
 	
