@@ -1,9 +1,9 @@
 package sk.tsystems.forum.entity.exceptions;
 
 /**
- * An common exception in entity
- * Exceptions thrown in entity must implement this class
- * @author Dalibor Adamcik
+ * <b>Common exception for entity</b><br>
+ * (as SuperException for entity)<br>
+ * Extends {@link Exception}
  */
 public class CommonEntityException extends Exception {
 	private static final long serialVersionUID = 2L;

@@ -3,8 +3,8 @@ package sk.tsystems.forum.entity.exceptions.field;
 import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 
 /***
- * This exception is thrown in general check of field values. 
- * @author Dalibor Adamcik
+ * This exception is <i>common for checking fields in entities</i>.<br>
+ * Exception extends {@link CommonEntityException}
  */
 public class FieldException extends CommonEntityException {
 	private static final long serialVersionUID = 1L;
