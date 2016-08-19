@@ -115,7 +115,7 @@ public abstract class CommonEntity {
 	private final int MAX_TXT_LEN = 4096;
 
 	/**
-	 * Checks object (field) is empty.
+	 * Checks object (field) is empty.<br>
 	 * In case field is String, also is checked for empty string.
 	 * Use this function in entity setters / constructors. 
 	 * @param valToCheck {@link Object} An object to be checked
@@ -125,19 +125,19 @@ public abstract class CommonEntity {
 	 */
 	protected void testNotEmpty(Object valToCheck, String fieldName, boolean maxLen) throws FieldValueException {
 		if(valToCheck==null)
-			throw new FieldValueException(String.format(FieldValueException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be null"));
+			throw new FieldValueException(this, fieldName, "be null");
 
 		if(valToCheck instanceof String)
 		{
 			int len = ((String) valToCheck).trim().length(); 
 			if(len ==0)
-				throw new FieldValueException(String.format(FieldValueException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be empty"));
+				throw new FieldValueException(this, fieldName, "be empty");
 
 			if(maxLen && len > MAX_STR_LEN)
-				throw new FieldValueException(String.format(FieldValueException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
+				throw new FieldValueException(this, fieldName, "have length over "+MAX_STR_LEN+" characters");				
 
 			if(!maxLen && len > MAX_TXT_LEN)
-				throw new FieldValueException(String.format(FieldValueException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
+				throw new FieldValueException(this, fieldName, "have length over "+MAX_STR_LEN+" characters");				
 		}
 	}
 	
