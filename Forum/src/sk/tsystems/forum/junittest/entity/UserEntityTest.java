@@ -11,7 +11,9 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.CommonEntityException;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
@@ -54,14 +56,14 @@ public class UserEntityTest {
 		try {
 			user.setUserName(name);
 			return false;
-		} catch (NickNameException e) {
+		} catch (NickNameException | FieldException e) {
 			System.out.println("** User name check exception: " + e.getMessage() + " (is OK)");
 			return true;
 		}
 	}
 
 	@Test
-	public void RealNameTest() throws UserEntityException {
+	public void RealNameTest() throws UserEntityException, FieldException {
 		User user = TestHelper.nonParaConstructor(User.class);
 		assertNotNull("User is badly initialized", user);
 
@@ -75,18 +77,13 @@ public class UserEntityTest {
 																// 11.8.2016
 		User user = TestHelper.nonParaConstructor(User.class);
 		assertNotNull("User is badly initialized", user);
-
-		assertNull("Password with non-parameteric constructor must be null", user.getPassword());
-		assertTrue("Cant set null password", passwordDoTestException(user, null));
 		assertTrue("Cant set empty password", passwordDoTestException(user, ""));
 		assertTrue("Cant set short password (length<8)", passwordDoTestException(user, TestHelper.randomString(7)));
 		assertTrue("Cant set simple password", passwordDoTestException(user, "abcdefgh"));
 		assertTrue("Cant set simple with numeric", passwordDoTestException(user, "abcdefgh1"));
 		assertTrue("Cant set simple with special", passwordDoTestException(user, "abcdefgh/"));
-		assertNull("Password must be null", user.getPassword());
-
 		assertFalse("Cant set valid password", passwordDoTestException(user, password + "12@/"));
-		assertEquals("Password does not match", password + "12@/", user.getPassword());
+		assertTrue("Password does not match", user.authentificate(password + "12@/"));
 	}
 
 	public boolean passwordDoTestException(User user, String password) { // OK,
@@ -95,14 +92,16 @@ public class UserEntityTest {
 		try {
 			user.setPassword(password);
 			return false;
-		} catch (PasswordCheckException e) {
+		} catch (PasswordCheckException|FieldException e) {
 			System.out.println("** Password check exception: " + e.getMessage() + " (is OK)");
 			return true;
 		}
 	}
 
 	@Test
-	public void birthDateTest() { // set birth date
+	public void birthDateTest() throws BadDateException, FieldException { // set
+																			// birth
+																			// date
 		User user = TestHelper.nonParaConstructor(User.class);
 		assertNotNull("User is badly initialized", user);
 
@@ -145,16 +144,16 @@ public class UserEntityTest {
 	}
 
 	@Test
-	public void equalsTest() throws NickNameException, PasswordCheckException, UserEntityException {
+	public void equalsTest() throws NickNameException, PasswordCheckException, UserEntityException, FieldException {
 		Object o = new User(userName, password, birthDate, realName);
 		System.out.println(o + userName);
 		User randomUser = new User(userName, password, birthDate, realName);
 
 		assertTrue("method equals doesnt work", randomUser.equals(o));
 	}
- 
+
 	@Test
-	public void compareToTest() throws NickNameException, PasswordCheckException, UserEntityException {
+	public void compareToTest() throws NickNameException, PasswordCheckException, UserEntityException, FieldException {
 		User randomUser1 = new User(TestHelper.randomString(20, 0).toLowerCase(), password, birthDate, realName);
 		User randomUser2 = new User(userName, password, birthDate, realName);
 		User randomUser3 = new User(userName, password, birthDate, realName);

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -27,6 +28,7 @@ import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.BlockHelper;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.service.TopicService;
@@ -129,8 +131,16 @@ public class Admin extends MasterServlet {
 				unblock(response, servletHelper,obj);
 				break;
 			case "addtopic":
-				Topic topic = new Topic(obj.getString("topicname"),obj.getBoolean("ispublic"));
-				servletHelper.getTopicService().addTopic(topic);
+				Topic topic;
+				try {
+					topic = new Topic(obj.getString("topicname"),obj.getBoolean("ispublic"));
+					servletHelper.getTopicService().addTopic(topic);
+				} catch (FieldException e) {
+					System.out.println("invalid access");
+				} catch (JSONException e) {
+					
+				}
+				
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.setSerializationInclusion(Include.NON_NULL);
 				Map<String, Object> resp = new HashMap<>();

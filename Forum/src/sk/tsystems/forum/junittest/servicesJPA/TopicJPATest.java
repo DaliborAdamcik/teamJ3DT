@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 
 public class TopicJPATest {
@@ -43,7 +44,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testAddTopic() {
+	public void testAddTopic() throws FieldException {
 
 		Topic randomTopic = new Topic(name, isPublic);
 		topicservice.addTopic(randomTopic);
@@ -59,7 +60,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testUpdateTopicName() {
+	public void testUpdateTopicName() throws FieldException {
 		Topic randomTopic = new Topic(name, isPublic);
 		topicservice.addTopic(randomTopic);
 		toRemove.add(randomTopic);
@@ -82,7 +83,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testUpdateTopicIsPublic() {
+	public void testUpdateTopicIsPublic() throws FieldException {
 		Topic randomTopic = new Topic(name, true);
 		topicservice.addTopic(randomTopic);
 		toRemove.add(randomTopic);
@@ -94,7 +95,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testGetComment() {
+	public void testGetComment() throws FieldException {
 		Topic randomTopic = new Topic(name, isPublic);
 		topicservice.addTopic(randomTopic);
 		toRemove.add(randomTopic);
@@ -105,7 +106,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testGetTopics() {
+	public void testGetTopics() throws FieldException {
 		Topic randomTopic1 = new Topic(name, isPublic);
 		String name2 = TestHelper.randomString(20);
 		String name3 = TestHelper.randomString(20);

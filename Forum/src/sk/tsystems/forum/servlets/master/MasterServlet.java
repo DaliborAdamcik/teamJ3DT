@@ -1,18 +1,11 @@
 package sk.tsystems.forum.servlets.master;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-
-import sk.tsystems.forum.entity.Topic;
-import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.helper.BlockHelper;
 import sk.tsystems.forum.helper.ServletHelper;
-import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
@@ -40,22 +33,6 @@ public abstract class MasterServlet extends HttpServlet {
 		servletHelper.setService(new TopicJPA());
 		servletHelper.setService(new CommentJPA());
 		servletHelper.setService(new ThemeJPA());
-		
-
-		if (servletHelper.getSessionRole() == UserRole.ADMIN) {
-			// block and unblock
-			if(blockAndUnblock(request, servletHelper))
-			{
-				response.getWriter().print("blocked");
-				return;
-			}
-			// mark/unmark object as public
-			mark(request, servletHelper);
-			// promote user
-			promoteUser(request, servletHelper);
-			// add new topic
-			addNewTopic(request, servletHelper.getTopicService());
-		}
 
 		// we can do some global checks here
 
@@ -65,74 +42,5 @@ public abstract class MasterServlet extends HttpServlet {
 
 		super.service(request, response); // this line cant be comment out in
 											// case of any situation
-	}
-
-	private boolean blockAndUnblock(HttpServletRequest request, ServletHelper servletHelper) {
-		try {
-			String blockID;
-			String blockReason;
-			if ((blockID = request.getParameter("block")) != null
-					&& (blockReason = request.getParameter("block_reason")) != null) {
-				int idOfObjectToBeBlocked = Integer.parseInt(blockID);
-				return BlockHelper.block(idOfObjectToBeBlocked, blockReason, servletHelper.getLoggedUser());
-			}
-			if ((blockID = request.getParameter("unblock")) != null) {
-				int idOfObjectToBeUnbanned = Integer.parseInt(blockID);
-				BlockHelper.unblock(idOfObjectToBeUnbanned);
-			}
-
-		} catch (NumberFormatException e) {
-			System.err.println("*****Master Servlet block Exception: " + e.getMessage());
-		}
-		return false;
-	}
-
-	private void promoteUser(HttpServletRequest request, ServletHelper servletHelper) {
-		// try for user
-		try {
-			if (request.getParameter("promote_to_regular") != null) {
-				int idOfUserToBePromoted = Integer.parseInt(request.getParameter("promote_to_regular"));
-				BlockHelper.promoteUser(idOfUserToBePromoted, UserRole.REGULARUSER);
-			}
-		} catch (NumberFormatException e) {
-			System.err.println("*****Master Servlet block Exception: " + e.getMessage());
-		}
-	}
-
-	private void mark(HttpServletRequest request, ServletHelper servletHelper) {
-		// try for user
-		try {
-			if (request.getParameter("mark_public") != null) {
-				int objToBeMarked = Integer.parseInt(request.getParameter("mark_public"));
-				BlockHelper.mark(objToBeMarked);
-
-			}
-		} catch (NumberFormatException e) {
-			System.err.println("*****Master Servlet block Exception: " + e.getMessage());
-		}
-	}
-	
-	private void addNewTopic(HttpServletRequest request, TopicService topicservice){
-		try {
-			
-			String newTopicName = request.getParameter("new_topic");
-			boolean addable = true;
-			if (newTopicName != null && newTopicName != "") {
-				// TODO total shit, spravit normalny check a preorbit
-				for (Topic topic : topicservice.getTopics()) { 
-					if (topic.getName().equals(newTopicName)) {
-						System.out.println("topic exists");
-						addable = false;
-					}
-				}
-				if (addable) {
-					Topic newTopic = new Topic(newTopicName, true);
-					topicservice.addTopic(newTopic);
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

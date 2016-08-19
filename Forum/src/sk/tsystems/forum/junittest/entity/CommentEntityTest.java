@@ -13,6 +13,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 
 public class CommentEntityTest {
 	private String name;
@@ -37,7 +38,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void getCommentTest() {
+	public void getCommentTest() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		String testComment = randomComment.getComment();
 
@@ -45,7 +46,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void setCommentTest() {
+	public void setCommentTest() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		randomComment.setComment(comment);
 		String testComment = randomComment.getComment();
@@ -54,7 +55,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void getTopicTest() {
+	public void getTopicTest() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		Theme testTheme = randomComment.getTheme();
 
@@ -72,7 +73,7 @@ public class CommentEntityTest {
 	// }
 
 	@Test
-	public void getOwner() {
+	public void getOwner() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		User testOwner = randomComment.getOwner();
 
@@ -80,7 +81,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void isPublic() {
+	public void isPublic() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		boolean testIsPublic = randomComment.isIsPublic();
 
@@ -88,7 +89,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void setPublic() {
+	public void setPublic() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, true);
 		randomComment.setPublic(isPublic);
 		boolean testIsPublic = randomComment.isIsPublic();
@@ -97,14 +98,14 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void getCreationDate() {
+	public void getCreationDate() throws FieldException {
 		Date creationDatei = new Date();
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		assertEquals("Bad creation date", creationDatei.getTime() / 100, randomComment.getCreated().getTime() / 100);
 	}
 
 	@Test
-	public void equalsTest() {
+	public void equalsTest() throws FieldException {
 		Object o = new Comment(comment, theme, owner, isPublic);
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 
@@ -112,7 +113,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void compareToTest() {
+	public void compareToTest() throws FieldException {
 		Comment randomComment1 = new Comment(TestHelper.randomString(20, 20), theme, owner, isPublic);
 		Comment randomComment2 = new Comment(comment, theme, owner, isPublic);
 		Comment randomComment3 = new Comment(comment, theme, owner, isPublic);

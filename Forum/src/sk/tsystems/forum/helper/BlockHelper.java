@@ -11,16 +11,17 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.common.CommonEntity;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.service.UserService;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class BlockHelper {
 
-	
-public static void main(String[] args) {
-	
-}
+	public static void main(String[] args) {
+
+	}
+
 	/**
 	 * Method for blocking child entities of BlockableEntity
 	 * 
@@ -29,20 +30,18 @@ public static void main(String[] args) {
 	 * @param blockedBy
 	 * 
 	 * @return true if successful, throws exception otherwise
+	 * @throws EmptyFieldException 
 	 */
-	public static boolean  block(int id, String reason, User blockedBy)
-	{
-		try(JpaConnector jpa = new JpaConnector())
-		{
-			BlockableEntity objectToBeBlocked= null;
-			for(Class<?> clz:jpa.getMappedClasses(BlockableEntity.class))
-			{
+	public static boolean block(int id, String reason, User blockedBy) throws FieldException{
+		try (JpaConnector jpa = new JpaConnector()) {
+			BlockableEntity objectToBeBlocked = null;
+			for (Class<?> clz : jpa.getMappedClasses(BlockableEntity.class)) {
 				objectToBeBlocked = (BlockableEntity) jpa.getEntityManager().find(clz, id);
-				if(objectToBeBlocked!= null)
+				if (objectToBeBlocked != null)
 					break;
 			}
 
-			if(objectToBeBlocked== null){
+			if (objectToBeBlocked == null) {
 				throw new RuntimeException("No element with id " + id + " in the database");
 			}
 			Blocked blo = new Blocked(blockedBy, reason);
@@ -50,134 +49,108 @@ public static void main(String[] args) {
 			objectToBeBlocked.setBlocked(blo);
 			jpa.merge(objectToBeBlocked);
 			return true;
-		}	
+		}
 	}
-	
-	public static boolean isBlockable(int id){
 
-		try(JpaConnector jpa = new JpaConnector())
-		{
-			BlockableEntity objectToBeBlocked= null;
-			for(Class<?> clz:jpa.getMappedClasses(BlockableEntity.class))
-			{
+	public static boolean isBlockable(int id) {
+
+		try (JpaConnector jpa = new JpaConnector()) {
+			BlockableEntity objectToBeBlocked = null;
+			for (Class<?> clz : jpa.getMappedClasses(BlockableEntity.class)) {
 				objectToBeBlocked = (BlockableEntity) jpa.getEntityManager().find(clz, id);
-				if(objectToBeBlocked!= null)
+				if (objectToBeBlocked != null)
 					break;
 			}
 
-			if(objectToBeBlocked== null){
+			if (objectToBeBlocked == null) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	public static boolean isInDatabase(int id){
 
-		try(JpaConnector jpa = new JpaConnector())
-		{
-			CommonEntity object= null;
-			for(Class<?> clz:jpa.getMappedClasses(BlockableEntity.class))
-			{
+	public static boolean isInDatabase(int id) {
+
+		try (JpaConnector jpa = new JpaConnector()) {
+			CommonEntity object = null;
+			for (Class<?> clz : jpa.getMappedClasses(BlockableEntity.class)) {
 				object = (CommonEntity) jpa.getEntityManager().find(clz, id);
-				if(object!= null)
+				if (object != null)
 					break;
 			}
 
-			if(object== null){
+			if (object == null) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	public static void  unblock(int id){
-		try(JpaConnector jpa = new JpaConnector())
-		{
-			BlockableEntity objectToBeUnblocked= null;
-			for(Class<?> clz: jpa.getMappedClasses(BlockableEntity.class))
-			{
+
+	public static void unblock(int id) {
+		try (JpaConnector jpa = new JpaConnector()) {
+			BlockableEntity objectToBeUnblocked = null;
+			for (Class<?> clz : jpa.getMappedClasses(BlockableEntity.class)) {
 				objectToBeUnblocked = (BlockableEntity) jpa.getEntityManager().find(clz, id);
-				if(objectToBeUnblocked!= null)
+				if (objectToBeUnblocked != null)
 					break;
 			}
 
-			if(objectToBeUnblocked== null){
+			if (objectToBeUnblocked == null) {
 				throw new RuntimeException("No element with id " + id + " in the database");
 			}
 			Blocked blockToRemove = objectToBeUnblocked.getBlocked();
-			objectToBeUnblocked.setBlocked(null);
+			objectToBeUnblocked.clearBlocked();
 			jpa.remove(blockToRemove);
 			jpa.merge(objectToBeUnblocked);
 		}
-		
+
 	}
-	
-	public static void  mark(int id){
-		
-		try(JpaConnector jpa = new JpaConnector())
-		{
-			Object o =null;
-			Class<?> currentClass=null;
-			for(Class<?> clz: jpa.getMappedClasses())
-			{
+
+	public static void mark(int id) {
+
+		try (JpaConnector jpa = new JpaConnector()) {
+			Object o = null;
+			Class<?> currentClass = null;
+			for (Class<?> clz : jpa.getMappedClasses()) {
 				o = jpa.getEntityManager().find(clz, id);
-				if(o!= null){
-					currentClass=clz;
+				if (o != null) {
+					currentClass = clz;
 					break;
-					}
+				}
 			}
 
-			if(o== null){
+			if (o == null) {
 				throw new RuntimeException("No element with id " + id + " in the database");
 			}
-			
+
 			currentClass.cast(o);
-			System.out.println(o.getClass());
-			System.out.println(o.getClass());
-			System.out.println(o.getClass());
-			System.out.println(o.getClass());
-			System.out.println(o.getClass());
-			
-			
-			System.out.println(o.getClass());
-			if(o.getClass().equals(Topic.class)){
-				Topic topic = (Topic)o;
+			if (o.getClass().equals(Topic.class)) {
+				Topic topic = (Topic) o;
 				topic.setPublic(!topic.isIsPublic());
-				jpa.merge(topic);				
+				jpa.merge(topic);
 			}
-			if(o.getClass().equals(Comment.class)){
-				Comment comment = (Comment)o;
+			if (o.getClass().equals(Comment.class)) {
+				Comment comment = (Comment) o;
 				comment.setPublic(!comment.isIsPublic());
 				jpa.merge(comment);
 			}
-			if(o.getClass().equals(Theme.class)){
-				Theme theme = (Theme)o;
+			if (o.getClass().equals(Theme.class)) {
+				Theme theme = (Theme) o;
 				theme.setPublic(!theme.isIsPublic());
 				jpa.merge(theme);
-				
+
 			}
-			
+
 		}
 	}
-		
-		public static void promoteUser(int id,UserRole role){
-			try(JpaConnector jpa = new JpaConnector())
-			{
-				User user = jpa.getEntityManager().find(User.class, id);
-				user.setRole(role);
-				jpa.merge(user);
-			}
-		
-			
+
+	public static void promoteUser(int id, UserRole role) {
+		try (JpaConnector jpa = new JpaConnector()) {
+			User user = jpa.getEntityManager().find(User.class, id);
+			user.setRole(role);
+			jpa.merge(user);
 		}
-		
-	
-	
-	
-	
-	
-	
-	
+
+	}
 
 }

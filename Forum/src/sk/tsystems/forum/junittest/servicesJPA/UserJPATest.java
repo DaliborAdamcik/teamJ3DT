@@ -13,6 +13,7 @@ import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
@@ -65,7 +66,7 @@ public class UserJPATest {
 	}
 
 	@Test
-	public void testAddUser() throws UserEntityException {
+	public void testAddUser() throws UserEntityException, FieldException {
 		// create a new user
 		Date regDate = new Date();
 		
@@ -86,7 +87,6 @@ public class UserJPATest {
 		assertEquals("Bad name", userTest.getRealName(), realName);
 		assertEquals("Bad real name", userTest.getUserName(), userName);
 		assertEquals("Bad birth date", userTest.getBirthDate().getTime() / 1000, birthDate.getTime() / 1000);
-		assertEquals("Bad password", userTest.getPassword(), password);
 		assertNull("User cant be blocked", userTest.getBlocked());
 		assertEquals("BAD role", userTest.getRole(), UserRole.GUEST);
 		assertEquals("Bad reg date", userTest.getCreated().getTime() / 1000, regDate.getTime() / 1000);
@@ -95,11 +95,12 @@ public class UserJPATest {
 	/**
 	 * Test service to duplicate add of user into database.
 	 * @author Dalibor
+	 * @throws FieldException 
 	 * @throws PasswordCheckException 
 	 * @throws NickNameException 
 	 */
 	@Test
-	public void testAddUserDuplicity() throws UserEntityException {
+	public void testAddUserDuplicity() throws UserEntityException, FieldException {
 		userName = TestHelper.randomString(30,0).toLowerCase();
 		realName = TestHelper.randomString(20);
 		password = TestHelper.randomString(10,10)+"./*-";
@@ -127,7 +128,7 @@ public class UserJPATest {
 	}
 	
 	@Test
-	public void testUpdateUser() throws UserEntityException { // toto dat viac krat ako napriklad testUpdateUserPassword, testUpdateUserName atï
+	public void testUpdateUser() throws UserEntityException, FieldException { // toto dat viac krat ako napriklad testUpdateUserPassword, testUpdateUserName atï
 		User user = new User(userName, password, birthDate, realName);
 		// add user
 		userservice.addUser(user);
@@ -144,11 +145,11 @@ public class UserJPATest {
 		User updatedUser = userservice.getUser(user.getId());
 		assertEquals("BAD USER ID!!", updatedUser.getId(), userid);
 
-		assertEquals("username not updated sucessfully", updatedUser.getPassword(),newPassword);
+		assertTrue("username not updated sucessfully", updatedUser.authentificate(newPassword));
 	}
 
 	@Test
-	public void testGetUserString() throws UserEntityException {
+	public void testGetUserString() throws UserEntityException, FieldException {
 		Date regDate = new Date();
 		User user = new User(userName, password, birthDate, realName);
 		// add user
@@ -160,7 +161,6 @@ public class UserJPATest {
 		assertEquals("Bad name", userTest.getRealName(), realName);
 		assertEquals("Bad real name", userTest.getUserName(), userName);
 		assertEquals("Bad birth date", userTest.getBirthDate().getTime() / 1000, birthDate.getTime() / 1000);
-		assertEquals("Bad password", userTest.getPassword(), password);
 		assertEquals("User can't be blocked", userTest.getBlocked(), null);
 		assertEquals("BAD role", userTest.getRole(), UserRole.GUEST);
 		assertEquals("Bad registration date", userTest.getCreated().getTime() / 1000, regDate.getTime() / 1000);
@@ -169,7 +169,7 @@ public class UserJPATest {
 	}
 
 	@Test
-	public void testGetUserInt() throws UserEntityException {
+	public void testGetUserInt() throws UserEntityException, FieldException {
 	//	Date regDate = new Date();
 		User user = new User(userName, password, birthDate, realName);
 		//add user
@@ -191,7 +191,7 @@ public class UserJPATest {
 	}
 
 	@Test
-	public void testGetUsersTopic() throws UserEntityException {
+	public void testGetUsersTopic() throws UserEntityException, FieldException {
 		
 		TopicJPA topicservice = new TopicJPA();
 		//User1 - With topic "topic1"

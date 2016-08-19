@@ -30,6 +30,7 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
@@ -78,13 +79,13 @@ public class UserOptions extends MasterServlet {
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.setSerializationInclusion(Include.NON_NULL);
 				Map<String, Object> resp = new HashMap<>();
-				
-				
+
 				SimpleDateFormat dt = new SimpleDateFormat("dd.MM.yyyy");
 				Date date = servletHelper.getLoggedUser().getBirthDate();
 				resp.put("datestring", dt.format(date));
-				
-				//TODO toto je dost shit.. spravit nejaky kulturny filter ked sa zvysi cas
+
+				// TODO toto je dost shit.. spravit nejaky kulturny filter ked
+				// sa zvysi cas
 				Iterator<Topic> topicIterator = servletHelper.getLoggedUser().getTopicsIterator();
 				while (topicIterator.hasNext()) {
 					userTopics.add(topicIterator.next());
@@ -109,7 +110,7 @@ public class UserOptions extends MasterServlet {
 			}
 		} catch (URLParserException e) {
 			response.getWriter().println(e.getMessage());
-		
+
 		} catch (UnknownActionException e) {
 			response.getWriter().println(e.getMessage());
 		}
@@ -124,7 +125,7 @@ public class UserOptions extends MasterServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -134,7 +135,7 @@ public class UserOptions extends MasterServlet {
 		ServletHelper servletHelper = new ServletHelper(request);
 		URLParser pars;
 		try {
-			if(servletHelper.getLoggedUser()==null){
+			if (servletHelper.getLoggedUser() == null) {
 				throw new UnknownActionException("you need to log in first");
 			}
 
@@ -142,7 +143,7 @@ public class UserOptions extends MasterServlet {
 			String action = pars.getAction();
 
 			JSONObject obj = servletHelper.getJSON();
-			
+
 			if (obj == null) {
 				throw new UnknownActionException("did not receive parameters");
 			}
@@ -184,7 +185,7 @@ public class UserOptions extends MasterServlet {
 		ObjectMapper rmapper = new ObjectMapper();
 		rmapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, Object> rresp = new HashMap<>();
-		rresp.put("suc","suc");
+		rresp.put("suc", "suc");
 		response.setContentType("application/json");
 		rmapper.writeValue(response.getWriter(), rresp);
 	}
@@ -198,36 +199,38 @@ public class UserOptions extends MasterServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, Object> resp = new HashMap<>();
-		resp.put("suc","suc");
+		resp.put("suc", "suc");
 		response.setContentType("application/json");
 		mapper.writeValue(response.getWriter(), resp);
 	}
 
 	private void changePassword(HttpServletResponse response, ServletHelper servletHelper, JSONObject obj)
 			throws IOException, JsonGenerationException, JsonMappingException {
-		String errMessage=null;
+		String errMessage = null;
 		System.out.println(obj);
 		String oldPassword = obj.getString("oldpassword");
 		String newPassword = obj.getString("newpassword");
 		String confirmPassword = obj.getString("confirmpassword");
-		if(servletHelper.getLoggedUser().getPassword().equals(oldPassword)){
-			
-			if(confirmPassword.equals(newPassword)){
+		if (servletHelper.getLoggedUser().authentificate(oldPassword)) {
+
+			if (confirmPassword.equals(newPassword)) {
 				try {
 					UserHelper.passwordOverallControll(newPassword);
 					User user = servletHelper.getLoggedUser();
 					user.setPassword(newPassword);
 					servletHelper.getUserService().updateUser(user);
-					errMessage="success";
+					errMessage = "success";
 				} catch (PasswordCheckException e) {
-					
+
 					errMessage = e.getMessage();
+				} catch (FieldException e) {
+					errMessage = "invalid access";
 				}
-			}else{
-				errMessage = "passwords do not match";	
+			} else {
+				errMessage = "passwords do not match";
 			}
-		}else{
-			errMessage = "incorrect password";	
+		} else {
+			errMessage = "incorrect password";
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
@@ -250,18 +253,23 @@ public class UserOptions extends MasterServlet {
 			}
 			User loggedUser = servletHelper.getLoggedUser();
 			if (newDate != null) {
-				loggedUser.setBirthDate(newDate);
-			}
-			if (newRealName != null) {
 				try {
-					loggedUser.setRealName(newRealName);
-				} catch (UserEntityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					loggedUser.setBirthDate(newDate);
+				} catch (FieldException | BadDateException e) {
+					// TODO DOPLNIT OSETRENIE
 				}
 			}
+			if (newRealName != null) {
+
+				try {
+					loggedUser.setRealName(newRealName);
+				} catch (FieldException e) {
+					System.out.println("Invalid access");
+				}
+
+			}
 			servletHelper.getUserService().updateUser(loggedUser);
-			
+
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
@@ -272,8 +280,5 @@ public class UserOptions extends MasterServlet {
 		response.setContentType("application/json");
 		mapper.writeValue(response.getWriter(), resp);
 	}
-	
-		
-	
 
 }

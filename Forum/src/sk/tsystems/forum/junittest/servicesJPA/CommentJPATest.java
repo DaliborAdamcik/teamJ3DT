@@ -14,6 +14,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.jpa.CommentJPA;
@@ -69,7 +70,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testAddComment() {
+	public void testAddComment() throws FieldException {
 
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		commentservice.addComment(randomComment);
@@ -86,7 +87,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testUpdateCommentComment() {
+	public void testUpdateCommentComment() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
@@ -109,7 +110,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testUpdateCommentTopic() {
+	public void testUpdateCommentTopic() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 
 		commentservice.addComment(randomComment);
@@ -129,7 +130,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testUpdateCommentIsPublic() {
+	public void testUpdateCommentIsPublic() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, true);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
@@ -141,7 +142,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testGetComment() {
+	public void testGetComment() throws FieldException {
 		Comment randomComment = new Comment(comment, theme, owner, isPublic);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
@@ -152,7 +153,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testGetCommentsByToopic() {
+	public void testGetCommentsByToopic() throws FieldException {
 		Comment randomComment1 = new Comment(comment, theme, owner, isPublic);
 		String comment2 = TestHelper.randomString(20);
 		String comment3 = TestHelper.randomString(20);
@@ -186,7 +187,7 @@ public class CommentJPATest {
 		}
 	}
 	@Test
-	public void testGetCommentsByOwner() throws UserEntityException {
+	public void testGetCommentsByOwner() throws UserEntityException, FieldException {
 	
 		User owner1= new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+".@", TestHelper.randomDate(), TestHelper.randomString(20));
 		User owner2= new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+".@", TestHelper.randomDate(), TestHelper.randomString(20));
