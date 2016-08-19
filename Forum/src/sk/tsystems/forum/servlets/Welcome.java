@@ -28,6 +28,7 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.TopicThemePrivileges;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.CommonEntityException;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.helper.exceptions.WEBNoPermissionException;
@@ -247,7 +248,11 @@ public class Welcome extends MasterServlet {
 				theme.setName(json.getString("name"));
 				theme.setPublic(json.getBoolean("isPublic"));
 				
+				System.out.println("`last "+theme.getCreated());
 				prioper.store(theme);
+				System.out.println("updated "+theme.getCreated());
+				
+				
 				return;
 			}
 
@@ -270,7 +275,7 @@ public class Welcome extends MasterServlet {
 			
 			throw new UnknownActionException("Uknknown action taken");
 			
-		} catch (URLParserException | WEBNoPermissionException | UnknownActionException e) {
+		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | FieldException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}
 		

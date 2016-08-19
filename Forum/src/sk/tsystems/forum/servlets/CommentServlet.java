@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.boot.model.source.internal.hbm.Helper;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -24,6 +25,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.helper.exceptions.WEBNoPermissionException;
@@ -151,8 +153,11 @@ public class CommentServlet extends MasterServlet {
 			
 			response.setContentType("application/json");
 			mapper.writeValue(response.getWriter(), resp);
-		} catch (URLParserException | UnknownActionException | WEBNoPermissionException e) {
+		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
+		}  catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} 
 	}
 
@@ -188,7 +193,7 @@ public class CommentServlet extends MasterServlet {
 			
 			response.setContentType("application/json");
 			mapper.writeValue(response.getWriter(), resp);
-		} catch (URLParserException | UnknownActionException | WEBNoPermissionException e) {
+		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		} 
 	}
