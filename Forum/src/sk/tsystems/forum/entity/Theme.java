@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
-import sk.tsystems.forum.helper.exceptions.CommonEntityException;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 
 @Entity
 @Table(name = "THEME")
@@ -31,7 +31,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	/**
 	 * description of theme
 	 */
-	@Column(name = "DESCRIPTION", nullable = false)
+	@Column(name = "DESCRIPTION", nullable = false, columnDefinition="TEXT")
 	private String description;
 
 	/**
@@ -47,11 +47,10 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	@Column(name = "ISPUBLIC", nullable = false)
 	private boolean isPublic;
 
-	public Theme(String name, Topic topic, String description, User author, boolean isPublic) throws CommonEntityException {
+	public Theme(String name, Topic topic, String description, User author, boolean isPublic) throws FieldException {
 		this();
-		if(name==null || topic==null || description==null || author==null)
-			throw new CommonEntityException("Parameters in constructor cant be null", new NullPointerException("Someone didnt work properly."));
-
+		testNotEmpty(author, "author", false);
+		testNotEmpty(topic, "topic", false);
 		this.author = author;
 		this.topic = topic;
 		setName(name);
@@ -79,8 +78,10 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	 * Setter for name
 	 * 
 	 * @param name
+	 * @throws FieldException 
 	 */
-	public void setName(String name) {
+	public void setName(String name) throws FieldException {
+		testNotEmpty(name, "name", true);
 		this.name = name;
 	}
 
@@ -106,8 +107,10 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	 * Setter for description
 	 * 
 	 * @param description
+	 * @throws FieldException 
 	 */
-	public void setDescription(String description) {
+	public void setDescription(String description) throws FieldException {
+		testNotEmpty(description, "description", false);
 		this.description = description;
 	}
 

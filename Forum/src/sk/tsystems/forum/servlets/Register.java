@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.UserHelper;
+import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
 import sk.tsystems.forum.servlets.master.MasterServlet;
@@ -106,8 +107,8 @@ public class Register extends MasterServlet {
         {
             resp.put("error", "requested parameters not found"); // an error occured getting username
         }		
-		catch (UserEntityException e) {
+		catch (UserEntityException | FieldException  e) {
 			resp.put("error", e.getMessage()); 
-		}
+		} 
 	}
 }

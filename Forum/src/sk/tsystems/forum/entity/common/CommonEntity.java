@@ -109,13 +109,18 @@ public abstract class CommonEntity {
 	/** Max string length */
 	@Transient
 	private final int MAX_STR_LEN = 255;
+
+	/** Max string length for text */
+	@Transient
+	private final int MAX_TXT_LEN = 4096;
+
 	/**
 	 * Checks object (field) is empty.
 	 * In case field is String, also is checked for empty string.
 	 * Use this function in entity setters / constructors. 
 	 * @param valToCheck {@link Object} An object to be checked
 	 * @param fieldName {@link String} description (name of field) for exception
-	 * @param maxLen {@link Boolean} Also checks {@link String} length exeeds MAX_STR_LEN characters
+	 * @param maxLen {@link Boolean} checks {@link String} length true = MAX_STR_LEN characters false = MAX_TXT_LEN characters
 	 * @throws FieldException
 	 */
 	protected void testNotEmpty(Object valToCheck, String fieldName, boolean maxLen) throws FieldException {
@@ -129,6 +134,9 @@ public abstract class CommonEntity {
 				throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be empty"));
 
 			if(maxLen && len > MAX_STR_LEN)
+				throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
+
+			if(!maxLen && len > MAX_TXT_LEN)
 				throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
 		}
 	}

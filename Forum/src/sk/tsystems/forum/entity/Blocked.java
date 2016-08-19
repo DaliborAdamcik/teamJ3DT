@@ -68,7 +68,7 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	 * @param reason
 	 * @throws FieldException 
 	 */
-	public void setReason(String reason) throws FieldException {
+	private void setReason(String reason) throws FieldException {
 		testNotEmpty(reason, "reason", true);
 		this.reason = reason;
 	}

@@ -86,8 +86,6 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	 */
 	public void setComment(String comment) throws FieldException {
 		testNotEmpty(comment, "comment", false);
-		if(comment.length()>2048)
-			throw new FieldException("Comment lenght cant exceed 2048 characters.");
 		this.comment = comment;
 	}
 
