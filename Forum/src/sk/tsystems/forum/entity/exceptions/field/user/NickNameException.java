@@ -1,6 +1,4 @@
-package sk.tsystems.forum.helper.exceptions;
-
-import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
+package sk.tsystems.forum.entity.exceptions.field.user;
 
 /**
  * NickNameException

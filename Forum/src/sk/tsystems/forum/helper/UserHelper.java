@@ -8,9 +8,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import sk.tsystems.forum.helper.exceptions.BadDateException;
-import sk.tsystems.forum.helper.exceptions.NickNameException;
-import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
+import sk.tsystems.forum.entity.exceptions.field.user.BadDateException;
+import sk.tsystems.forum.entity.exceptions.field.user.NickNameException;
+import sk.tsystems.forum.entity.exceptions.field.user.PasswordCheckException;
 
 public class UserHelper {
 

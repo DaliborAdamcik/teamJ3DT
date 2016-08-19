@@ -12,10 +12,10 @@ import org.json.JSONObject;
 
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
+import sk.tsystems.forum.entity.exceptions.field.user.NickNameException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.UserHelper;
-import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**

@@ -12,11 +12,11 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
+import sk.tsystems.forum.entity.exceptions.field.user.BadDateException;
+import sk.tsystems.forum.entity.exceptions.field.user.NickNameException;
+import sk.tsystems.forum.entity.exceptions.field.user.PasswordCheckException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
-import sk.tsystems.forum.helper.exceptions.BadDateException;
-import sk.tsystems.forum.helper.exceptions.NickNameException;
-import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 
 public class UserEntityTest {
 
