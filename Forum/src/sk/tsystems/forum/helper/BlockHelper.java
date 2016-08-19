@@ -129,11 +129,6 @@ public class BlockHelper {
 				topic.setPublic(!topic.isIsPublic());
 				jpa.merge(topic);
 			}
-			if (o.getClass().equals(Comment.class)) {
-				Comment comment = (Comment) o;
-				comment.setPublic(!comment.isIsPublic());
-				jpa.merge(comment);
-			}
 			if (o.getClass().equals(Theme.class)) {
 				Theme theme = (Theme) o;
 				theme.setPublic(!theme.isIsPublic());

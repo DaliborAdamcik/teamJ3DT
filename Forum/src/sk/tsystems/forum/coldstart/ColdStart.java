@@ -122,8 +122,8 @@ public class ColdStart {
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("I dont need a car, I ride a horse.", theme1, user, true));
-		commentService.addComment(new Comment("I dont even wash myself...", theme2, user, true));
+		commentService.addComment(new Comment("I dont need a car, I ride a horse.", theme1, user));
+		commentService.addComment(new Comment("I dont even wash myself...", theme2, user));
 
 	}
 	
@@ -137,11 +137,11 @@ public class ColdStart {
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("Mission Imposible is the best...", theme1, user, true));
-		commentService.addComment(new Comment("I like Spiderman", theme1, user, true));
-		commentService.addComment(new Comment("Third is the Shawshank redemption", theme1, user, true));
-		commentService.addComment(new Comment("4. Inception", theme1, user, true));
-		commentService.addComment(new Comment("Every film from Rosamunde Pilcher, how sweeeet", theme2, user, true));
+		commentService.addComment(new Comment("Mission Imposible is the best...", theme1, user));
+		commentService.addComment(new Comment("I like Spiderman", theme1, user));
+		commentService.addComment(new Comment("Third is the Shawshank redemption", theme1, user));
+		commentService.addComment(new Comment("4. Inception", theme1, user));
+		commentService.addComment(new Comment("Every film from Rosamunde Pilcher, how sweeeet", theme2, user));
 
 	} 
 	
@@ -155,10 +155,10 @@ public class ColdStart {
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("Mount Everest, I was there 10 times", theme1, user, true));
-		commentService.addComment(new Comment("Swim dress is what you need the most ", theme2, user, true));
-		commentService.addComment(new Comment("Hair dryer is very important", theme2, user, true));
-		commentService.addComment(new Comment("Money, all you need is only money.", theme2, user, true));
+		commentService.addComment(new Comment("Mount Everest, I was there 10 times", theme1, user));
+		commentService.addComment(new Comment("Swim dress is what you need the most ", theme2, user));
+		commentService.addComment(new Comment("Hair dryer is very important", theme2, user));
+		commentService.addComment(new Comment("Money, all you need is only money.", theme2, user));
 
 	}
 	
@@ -172,9 +172,9 @@ public class ColdStart {
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("Kosice, Lunik IX to visit. You must see this beautiful place!", theme1, user, true));
-		commentService.addComment(new Comment("Yes I have, on the roof", theme2, user, true));
-		commentService.addComment(new Comment("I am the pilot, so yes", theme2, user, true));
+		commentService.addComment(new Comment("Kosice, Lunik IX to visit. You must see this beautiful place!", theme1, user));
+		commentService.addComment(new Comment("Yes I have, on the roof", theme2, user));
+		commentService.addComment(new Comment("I am the pilot, so yes", theme2, user));
 	}
 	
 	public void tomasInitialize(User user) throws CommonEntityException {
@@ -187,9 +187,9 @@ public class ColdStart {
 		themeService.addTheme(theme1);
 		themeService.addTheme(theme2);
 		
-		commentService.addComment(new Comment("My favourite cocktail is mix with Vodka and Rum", theme1, user, true));
-		commentService.addComment(new Comment("No! don't mix rum vith vodka, Ladies!", theme1, user, true));
-		commentService.addComment(new Comment("Vodka forever...", theme2, user, true));	
+		commentService.addComment(new Comment("My favourite cocktail is mix with Vodka and Rum", theme1, user));
+		commentService.addComment(new Comment("No! don't mix rum vith vodka, Ladies!", theme1, user));
+		commentService.addComment(new Comment("Vodka forever...", theme2, user));	
 	}
 	
 	public void topicUserInitialize(User user)  throws CommonEntityException {

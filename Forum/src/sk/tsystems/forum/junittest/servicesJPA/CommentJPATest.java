@@ -72,7 +72,7 @@ public class CommentJPATest {
 	@Test
 	public void testAddComment() throws FieldException {
 
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
 
@@ -88,7 +88,7 @@ public class CommentJPATest {
 
 	@Test
 	public void testUpdateCommentComment() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
 
@@ -111,7 +111,7 @@ public class CommentJPATest {
 
 	@Test
 	public void testUpdateCommentTopic() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner);
 
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
@@ -129,21 +129,9 @@ public class CommentJPATest {
 		assertEquals("BAD COMMENT ID", randomComment.getId(), commentId);
 	}
 
-	@Test
-	public void testUpdateCommentIsPublic() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, true);
-		commentservice.addComment(randomComment);
-		toRemove.add(randomComment);
-		randomComment.setPublic(isPublic);
-		commentservice.updateComment(randomComment);
-		Comment testComment = commentservice.getComment(randomComment.getId());
-		assertNotNull("Selecting from database failed", testComment);
-		assertEquals("Do not change publicity", testComment.isIsPublic(), isPublic);
-	}
-
-	@Test
+		@Test
 	public void testGetComment() throws FieldException {
-		Comment randomComment = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment = new Comment(comment, theme, owner);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
 		int ident = randomComment.getId();
@@ -154,11 +142,11 @@ public class CommentJPATest {
 
 	@Test
 	public void testGetCommentsByToopic() throws FieldException {
-		Comment randomComment1 = new Comment(comment, theme, owner, isPublic);
+		Comment randomComment1 = new Comment(comment, theme, owner);
 		String comment2 = TestHelper.randomString(20);
 		String comment3 = TestHelper.randomString(20);
-		Comment randomComment2 = new Comment(comment2, theme, owner, isPublic);
-		Comment randomComment3 = new Comment(comment3, theme, owner, true);
+		Comment randomComment2 = new Comment(comment2, theme, owner);
+		Comment randomComment3 = new Comment(comment3, theme, owner);
 		
 		commentservice.addComment(randomComment1);
 		commentservice.addComment(randomComment2);
@@ -166,23 +154,17 @@ public class CommentJPATest {
 		toRemove.add(randomComment1);
 		toRemove.add(randomComment2);
 		toRemove.add(randomComment3);
-
 		List<Comment> testComments = commentservice.getComments(theme);
-
 		assertNotNull("Selecting from database failed", testComments);
-
 		for (Comment c : testComments) {
 			if (c.getId() == randomComment1.getId()) {
 				assertEquals("Bad comment1", comment, c.getComment());
-				assertEquals("Bad isPublic1", isPublic, c.isIsPublic());
 			}
 			if (c.getId() == randomComment2.getId()) {
 				assertEquals("Bad comment2", comment2, c.getComment());
-				assertEquals("Bad isPublic2",  isPublic, c.isIsPublic());
 			}
 			if (c.getId() == randomComment3.getId()) {
 				assertEquals("Bad comment3", comment3, c.getComment());
-				assertEquals("Bad isPublic3", true, c.isIsPublic());
 			}
 		}
 	}
@@ -195,10 +177,10 @@ public class CommentJPATest {
 		userservice.addUser(owner1);
 		userservice.addUser(owner2);
 		userservice.addUser(owner3);
-			Comment randomComment1 = new Comment(comment, theme, owner1, isPublic);
+			Comment randomComment1 = new Comment(comment, theme, owner1);
 			
-			Comment randomComment2 = new Comment(comment, theme, owner2, isPublic);
-			Comment randomComment3 = new Comment(comment, theme, owner3, true);
+			Comment randomComment2 = new Comment(comment, theme, owner2);
+			Comment randomComment3 = new Comment(comment, theme, owner3);
 			
 			commentservice.addComment(randomComment1);
 			commentservice.addComment(randomComment2);
