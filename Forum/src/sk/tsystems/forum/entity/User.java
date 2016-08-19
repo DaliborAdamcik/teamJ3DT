@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.exceptions.field.FieldException;
-import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
@@ -70,7 +70,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	// List<Comment> comments; // TODO implementovat list ak nam ho bude treba
 
 	public User(String userName, String password, Date birthDate, String realName)
-			throws NickNameException, PasswordCheckException, UserEntityException, FieldException {
+			throws NickNameException, PasswordCheckException, UserEntityFieldException, FieldException {
 		this();
 		setUserName(userName);
 		setPassword(password);
@@ -79,7 +79,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	}
 
 	public User(String userName, String password, String birthDate, String realName)
-			throws NickNameException, PasswordCheckException, BadDateException, UserEntityException, FieldException {
+			throws NickNameException, PasswordCheckException, BadDateException, UserEntityFieldException, FieldException {
 		this(userName, password, UserHelper.stringToDate(birthDate), realName);
 	}
 

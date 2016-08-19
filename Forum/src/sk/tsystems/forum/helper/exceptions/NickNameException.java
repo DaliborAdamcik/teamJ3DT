@@ -1,13 +1,13 @@
 package sk.tsystems.forum.helper.exceptions;
 
-import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 
 /**
  * NickNameException
  * Auto-generated code 
  * @author Dalibor
  */
-public class NickNameException extends UserEntityException {
+public class NickNameException extends UserEntityFieldException {
 
 	private static final long serialVersionUID = 1L;
 

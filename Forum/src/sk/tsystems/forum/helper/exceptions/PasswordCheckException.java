@@ -1,13 +1,13 @@
 package sk.tsystems.forum.helper.exceptions;
 
-import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 
 /**
  * PasswordCheckException
  * Auto-generated code 
  * @author Dalibor
  */
-public class PasswordCheckException extends UserEntityException {
+public class PasswordCheckException extends UserEntityFieldException {
 	private static final long serialVersionUID = 1L;
 
 	public PasswordCheckException() {

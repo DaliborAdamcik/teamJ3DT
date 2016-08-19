@@ -9,14 +9,14 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.dto.CommentObjectDTO;
 import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
-import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class testovaniedto {
 
-	public static void main(String[] args) throws UserEntityException {
+	public static void main(String[] args) throws UserEntityFieldException {
 		UserJPA usersvc = new UserJPA();
 		List<User> users = usersvc.getUsers(UserRole.ADMIN);
 		CommentJPA comment = new CommentJPA();

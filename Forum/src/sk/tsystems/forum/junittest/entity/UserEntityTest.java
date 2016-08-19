@@ -12,7 +12,7 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 import sk.tsystems.forum.entity.exceptions.field.FieldException;
-import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
@@ -63,7 +63,7 @@ public class UserEntityTest {
 	}
 
 	@Test
-	public void RealNameTest() throws UserEntityException, FieldException {
+	public void RealNameTest() throws UserEntityFieldException, FieldException {
 		User user = TestHelper.nonParaConstructor(User.class);
 		assertNotNull("User is badly initialized", user);
 
@@ -144,7 +144,7 @@ public class UserEntityTest {
 	}
 
 	@Test
-	public void equalsTest() throws NickNameException, PasswordCheckException, UserEntityException, FieldException {
+	public void equalsTest() throws NickNameException, PasswordCheckException, UserEntityFieldException, FieldException {
 		Object o = new User(userName, password, birthDate, realName);
 		System.out.println(o + userName);
 		User randomUser = new User(userName, password, birthDate, realName);
@@ -153,7 +153,7 @@ public class UserEntityTest {
 	}
 
 	@Test
-	public void compareToTest() throws NickNameException, PasswordCheckException, UserEntityException, FieldException {
+	public void compareToTest() throws NickNameException, PasswordCheckException, UserEntityFieldException, FieldException {
 		User randomUser1 = new User(TestHelper.randomString(20, 0).toLowerCase(), password, birthDate, realName);
 		User randomUser2 = new User(userName, password, birthDate, realName);
 		User randomUser3 = new User(userName, password, birthDate, realName);

@@ -14,7 +14,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.exceptions.field.FieldException;
-import sk.tsystems.forum.entity.exceptions.field.user.UserEntityException;
+import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.jpa.CommentJPA;
@@ -169,7 +169,7 @@ public class CommentJPATest {
 		}
 	}
 	@Test
-	public void testGetCommentsByOwner() throws UserEntityException, FieldException {
+	public void testGetCommentsByOwner() throws UserEntityFieldException, FieldException {
 	
 		User owner1= new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+".@", TestHelper.randomDate(), TestHelper.randomString(20));
 		User owner2= new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+".@", TestHelper.randomDate(), TestHelper.randomString(20));
