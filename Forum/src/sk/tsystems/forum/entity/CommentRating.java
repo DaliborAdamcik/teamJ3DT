@@ -4,9 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.CommonEntity;
+import sk.tsystems.forum.entity.exceptions.EntityAutoPersist;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 
@@ -32,8 +34,9 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 	 * @param owner {@link User}
 	 * @param rating {@link Integer}
 	 * @throws FieldValueException
+	 * @throws EntityAutoPersist 
 	 */
-	public CommentRating(Comment comment, User owner, int rating) throws FieldValueException {
+	public CommentRating(Comment comment, User owner, int rating) throws FieldValueException, EntityAutoPersist {
 		this();
 		testNotEmpty(owner, "owner", false);
 		testNotEmpty(comment, "comment", false);
@@ -48,6 +51,8 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 
 		try (JpaConnector jpa = new JpaConnector()) {
 			jpa.persist(this);
+		} catch (IllegalArgumentException | PersistenceException e) {
+			throw new EntityAutoPersist("Cant persist '"+getClass().getSimpleName()+"' ", e);
 		}
 	}
 
@@ -79,22 +84,24 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 		}
 	}
 
-	private void setRating(int rating) {
+	private void setRating(int rating) throws EntityAutoPersist {
 		this.rating = rating;
 		try (JpaConnector jpa = new JpaConnector()) {
 			jpa.merge(this);
+		} catch (IllegalArgumentException | PersistenceException e) {
+			throw new EntityAutoPersist(this, e);
 		}
 	}
 	
-	public void upVote() {
+	public void upVote() throws EntityAutoPersist {
 		setRating(1);
 	}
 
-	public void downVote() {
+	public void downVote() throws EntityAutoPersist {
 		setRating(-1);
 	}
 	
-	public void unVote() {
+	public void unVote() throws EntityAutoPersist {
 		setRating(0);
 	}
 	
