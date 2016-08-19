@@ -124,7 +124,7 @@ public class TESTtestHelper {
 		for(int i =0; i<numTests;i++)
 		{
 			Date test = TestHelper.randomDate();
-			assertTrue("Invalid lower range", test.getTime()>0);
+			assertTrue("Invalid lower range", test.getTime()>=0);
 			assertTrue("Invalid lower range", test.getTime()<now.getTime());
 		}
 	}
