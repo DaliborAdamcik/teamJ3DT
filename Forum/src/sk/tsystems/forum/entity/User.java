@@ -21,7 +21,6 @@ import sk.tsystems.forum.helper.exceptions.FieldException;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
 import sk.tsystems.forum.helper.exceptions.PasswordCheckException;
 import sk.tsystems.forum.helper.exceptions.UserEntityException;
-import sk.tsystems.forum.service.jpa.JpaConnector;
 
 @Entity
 @Table(name = "JPA_USER")
@@ -145,19 +144,12 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * 
 	 * @param userName
 	 * @throws NickNameException
+	 * @throws FieldException 
 	 */
-	public void setUserName(String userName) throws NickNameException {
+	public void setUserName(String userName) throws NickNameException, FieldException {
+		testNotEmpty(userName, "user name", true);
 		UserHelper.nickNameValidator(userName);
 		this.userName = userName;
-	}
-
-	/**
-	 * Getter for password
-	 * 
-	 * @return password
-	 */
-	public String getPassword() {
-		return password;
 	}
 
 	/**
@@ -165,8 +157,10 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * 
 	 * @param password
 	 * @throws PasswordCheckException
+	 * @throws FieldException 
 	 */
-	public void setPassword(String password) throws PasswordCheckException {
+	public void setPassword(String password) throws PasswordCheckException, FieldException {
+		testNotEmpty(password, "password", true);
 		UserHelper.passwordOverallControll(password);
 		this.password = password;
 	}
@@ -184,8 +178,13 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * Setter for birthDate
 	 * 
 	 * @param birthDate
+	 * @throws FieldException 
+	 * @throws BadDateException 
 	 */
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(Date birthDate) throws FieldException, BadDateException {
+		testNotEmpty(birthDate, "birth date", false);
+		if(birthDate.after(new Date()))
+			throw new BadDateException("Birthday cant be after actual date.");
 		this.birthDate = birthDate;
 	}
 
@@ -195,9 +194,11 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * 
 	 * @param birthDate
 	 * @throws BadDateException
+	 * @throws FieldException 
 	 */
-	public void setBirthDate(String birthDate) throws BadDateException {
-		this.birthDate = UserHelper.stringToDate(birthDate);
+	public void setBirthDate(String birthDate) throws BadDateException, FieldException {
+		testNotEmpty(birthDate, "birth date", false);
+		setBirthDate(UserHelper.stringToDate(birthDate));
 	}
 
 	/**
