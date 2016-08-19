@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
 /**
  * Common entity properties class
@@ -121,23 +121,23 @@ public abstract class CommonEntity {
 	 * @param valToCheck {@link Object} An object to be checked
 	 * @param fieldName {@link String} description (name of field) for exception
 	 * @param maxLen {@link Boolean} checks {@link String} length true = MAX_STR_LEN characters false = MAX_TXT_LEN characters
-	 * @throws FieldException
+	 * @throws FieldValueException
 	 */
-	protected void testNotEmpty(Object valToCheck, String fieldName, boolean maxLen) throws FieldException {
+	protected void testNotEmpty(Object valToCheck, String fieldName, boolean maxLen) throws FieldValueException {
 		if(valToCheck==null)
-			throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be null"));
+			throw new FieldValueException(String.format(FieldValueException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be null"));
 
 		if(valToCheck instanceof String)
 		{
 			int len = ((String) valToCheck).trim().length(); 
 			if(len ==0)
-				throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be empty"));
+				throw new FieldValueException(String.format(FieldValueException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "be empty"));
 
 			if(maxLen && len > MAX_STR_LEN)
-				throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
+				throw new FieldValueException(String.format(FieldValueException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
 
 			if(!maxLen && len > MAX_TXT_LEN)
-				throw new FieldException(String.format(FieldException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
+				throw new FieldValueException(String.format(FieldValueException.EMPTY_FIELD_MSG, fieldName, getClass().getSimpleName(), "have length over "+MAX_STR_LEN+" characters"));
 		}
 	}
 	

@@ -10,7 +10,7 @@ import org.junit.Test;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.exceptions.CommonEntityException;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.TestHelper;
 
 public class TopicEntityTest {
@@ -26,7 +26,7 @@ public class TopicEntityTest {
 	}
 
 	@Test
-	public void getNameTest() throws FieldException {
+	public void getNameTest() throws FieldValueException {
 		Topic randomTopic = new Topic(name, isPublic);
 		String testName = randomTopic.getName();
 
@@ -34,7 +34,7 @@ public class TopicEntityTest {
 	}
 
 	@Test
-	public void setNameTest() throws FieldException {
+	public void setNameTest() throws FieldValueException {
 		Topic randomTopic = new Topic(name, isPublic);
 		randomTopic.setName(name);
 		String testName = randomTopic.getName();
@@ -43,7 +43,7 @@ public class TopicEntityTest {
 	}
 
 	@Test
-	public void isPublic() throws FieldException {
+	public void isPublic() throws FieldValueException {
 		Topic randomTopic = new Topic(name, isPublic);
 		boolean testIsPublic = randomTopic.isIsPublic();
 
@@ -51,7 +51,7 @@ public class TopicEntityTest {
 	}
 
 	@Test
-	public void setPublic() throws FieldException {
+	public void setPublic() throws FieldValueException {
 		Topic randomTopic = new Topic(name, true);
 		randomTopic.setPublic(isPublic);
 		boolean testIsPublic = randomTopic.isIsPublic();
@@ -60,14 +60,14 @@ public class TopicEntityTest {
 	}
 
 	@Test
-	public void getCreationDate() throws FieldException {
+	public void getCreationDate() throws FieldValueException {
 		Date creationDatei = new Date();
 		Topic randomTopic = new Topic(name, isPublic);
 		assertEquals("Bad creation date", creationDatei.getTime() / 100, randomTopic.getCreated().getTime() / 100);
 	}
 
 	@Test
-	public void equalsTest() throws FieldException {
+	public void equalsTest() throws FieldValueException {
 		Object o = new Topic(name, isPublic);
 		Topic randomTopic = new Topic(name, isPublic);
 
@@ -75,7 +75,7 @@ public class TopicEntityTest {
 	}
 
 	@Test
-	public void compareToTest() throws FieldException {
+	public void compareToTest() throws FieldValueException {
 		Topic randomTopic1 = new Topic(TestHelper.randomString(20), isPublic);
 		Topic randomTopic2 = new Topic(name, isPublic);
 		Topic randomTopic3 = new Topic(name, isPublic);

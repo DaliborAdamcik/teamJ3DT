@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.dto.CommentObjectDTO;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
 @Entity
 @Table(name = "COMMENTARY")
@@ -37,9 +37,9 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	 * @param comment {@link String} message of comment
 	 * @param theme {@link Theme} to be included in
 	 * @param owner {@link User} owner of this comment
-	 * @throws FieldException  
+	 * @throws FieldValueException  
 	 */
-	public Comment(String comment, Theme theme, User owner) throws FieldException {
+	public Comment(String comment, Theme theme, User owner) throws FieldValueException {
 		this();
 		testNotEmpty(theme, "theme", false);
 		testNotEmpty(owner, "owner", false);
@@ -64,9 +64,9 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	/**
 	 * Setter for comment
 	 * @param comment {@link String} message (of comment)
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public void setComment(String comment) throws FieldException {
+	public void setComment(String comment) throws FieldValueException {
 		testNotEmpty(comment, "comment", false);
 		this.comment = comment;
 	}

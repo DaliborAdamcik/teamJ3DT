@@ -1,8 +1,8 @@
 package sk.tsystems.forum.entity.exceptions.field.user;
 
-import sk.tsystems.forum.entity.exceptions.CommonEntityException;
+import sk.tsystems.forum.entity.exceptions.field.FieldException;
 
-public class UserEntityFieldException extends CommonEntityException {
+public class UserEntityFieldException extends FieldException {
 	private static final long serialVersionUID = 1L;
 
 	public UserEntityFieldException() {

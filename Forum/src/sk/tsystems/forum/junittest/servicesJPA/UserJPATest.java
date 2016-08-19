@@ -12,7 +12,7 @@ import org.junit.Test;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.helper.exceptions.NickNameException;
@@ -66,7 +66,7 @@ public class UserJPATest {
 	}
 
 	@Test
-	public void testAddUser() throws UserEntityFieldException, FieldException {
+	public void testAddUser() throws UserEntityFieldException, FieldValueException {
 		// create a new user
 		Date regDate = new Date();
 		
@@ -95,12 +95,12 @@ public class UserJPATest {
 	/**
 	 * Test service to duplicate add of user into database.
 	 * @author Dalibor
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 * @throws PasswordCheckException 
 	 * @throws NickNameException 
 	 */
 	@Test
-	public void testAddUserDuplicity() throws UserEntityFieldException, FieldException {
+	public void testAddUserDuplicity() throws UserEntityFieldException, FieldValueException {
 		userName = TestHelper.randomString(30,0).toLowerCase();
 		realName = TestHelper.randomString(20);
 		password = TestHelper.randomString(10,10)+"./*-";
@@ -128,7 +128,7 @@ public class UserJPATest {
 	}
 	
 	@Test
-	public void testUpdateUser() throws UserEntityFieldException, FieldException { // toto dat viac krat ako napriklad testUpdateUserPassword, testUpdateUserName atï
+	public void testUpdateUser() throws UserEntityFieldException, FieldValueException { // toto dat viac krat ako napriklad testUpdateUserPassword, testUpdateUserName atï
 		User user = new User(userName, password, birthDate, realName);
 		// add user
 		userservice.addUser(user);
@@ -149,7 +149,7 @@ public class UserJPATest {
 	}
 
 	@Test
-	public void testGetUserString() throws UserEntityFieldException, FieldException {
+	public void testGetUserString() throws UserEntityFieldException, FieldValueException {
 		Date regDate = new Date();
 		User user = new User(userName, password, birthDate, realName);
 		// add user
@@ -169,7 +169,7 @@ public class UserJPATest {
 	}
 
 	@Test
-	public void testGetUserInt() throws UserEntityFieldException, FieldException {
+	public void testGetUserInt() throws UserEntityFieldException, FieldValueException {
 	//	Date regDate = new Date();
 		User user = new User(userName, password, birthDate, realName);
 		//add user
@@ -191,7 +191,7 @@ public class UserJPATest {
 	}
 
 	@Test
-	public void testGetUsersTopic() throws UserEntityFieldException, FieldException {
+	public void testGetUsersTopic() throws UserEntityFieldException, FieldValueException {
 		
 		TopicJPA topicservice = new TopicJPA();
 		//User1 - With topic "topic1"

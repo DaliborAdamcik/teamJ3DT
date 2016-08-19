@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
 @Entity
 @Table(name = "THEME")
@@ -47,7 +47,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	@Column(name = "ISPUBLIC", nullable = false)
 	private boolean isPublic;
 
-	public Theme(String name, Topic topic, String description, User author, boolean isPublic) throws FieldException {
+	public Theme(String name, Topic topic, String description, User author, boolean isPublic) throws FieldValueException {
 		this();
 		testNotEmpty(author, "author", false);
 		testNotEmpty(topic, "topic", false);
@@ -78,9 +78,9 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	 * Setter for name
 	 * 
 	 * @param name
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public void setName(String name) throws FieldException {
+	public void setName(String name) throws FieldValueException {
 		testNotEmpty(name, "name", true);
 		this.name = name;
 	}
@@ -107,9 +107,9 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	 * Setter for description
 	 * 
 	 * @param description
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public void setDescription(String description) throws FieldException {
+	public void setDescription(String description) throws FieldValueException {
 		testNotEmpty(description, "description", false);
 		this.description = description;
 	}

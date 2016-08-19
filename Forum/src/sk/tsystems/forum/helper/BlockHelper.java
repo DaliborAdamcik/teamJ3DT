@@ -11,7 +11,7 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.common.CommonEntity;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.service.UserService;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.UserJPA;
@@ -32,7 +32,7 @@ public class BlockHelper {
 	 * @return true if successful, throws exception otherwise
 	 * @throws EmptyFieldException 
 	 */
-	public static boolean block(int id, String reason, User blockedBy) throws FieldException{
+	public static boolean block(int id, String reason, User blockedBy) throws FieldValueException{
 		try (JpaConnector jpa = new JpaConnector()) {
 			BlockableEntity objectToBeBlocked = null;
 			for (Class<?> clz : jpa.getMappedClasses(BlockableEntity.class)) {

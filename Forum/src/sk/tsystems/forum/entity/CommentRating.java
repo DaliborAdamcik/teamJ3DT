@@ -7,7 +7,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.CommonEntity;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 
 @Entity
@@ -31,15 +31,15 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 	 * @param comment {@link Comment}
 	 * @param owner {@link User}
 	 * @param rating {@link Integer}
-	 * @throws FieldException
+	 * @throws FieldValueException
 	 */
-	public CommentRating(Comment comment, User owner, int rating) throws FieldException {
+	public CommentRating(Comment comment, User owner, int rating) throws FieldValueException {
 		this();
 		testNotEmpty(owner, "owner", false);
 		testNotEmpty(comment, "comment", false);
 		
 		if (rating != -1 && rating != 1)
-			throw new FieldException("Can't set rating for comment. Rating can be -1, 1 only.");
+			throw new FieldValueException("Can't set rating for comment. Rating can be -1, 1 only.");
 		
 		this.rating = rating;
 		this.owner = owner;

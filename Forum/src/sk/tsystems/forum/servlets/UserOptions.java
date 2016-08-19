@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
@@ -223,7 +223,7 @@ public class UserOptions extends MasterServlet {
 				} catch (PasswordCheckException e) {
 
 					errMessage = e.getMessage();
-				} catch (FieldException e) {
+				} catch (FieldValueException e) {
 					errMessage = "invalid access";
 				}
 			} else {
@@ -255,7 +255,7 @@ public class UserOptions extends MasterServlet {
 			if (newDate != null) {
 				try {
 					loggedUser.setBirthDate(newDate);
-				} catch (FieldException | BadDateException e) {
+				} catch (FieldValueException | BadDateException e) {
 					// TODO DOPLNIT OSETRENIE
 				}
 			}
@@ -263,7 +263,7 @@ public class UserOptions extends MasterServlet {
 
 				try {
 					loggedUser.setRealName(newRealName);
-				} catch (FieldException e) {
+				} catch (FieldValueException e) {
 					System.out.println("Invalid access");
 				}
 

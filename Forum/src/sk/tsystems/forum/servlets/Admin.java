@@ -25,7 +25,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.BlockHelper;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
@@ -135,7 +135,7 @@ public class Admin extends MasterServlet {
 				try {
 					topic = new Topic(obj.getString("topicname"),obj.getBoolean("ispublic"));
 					servletHelper.getTopicService().addTopic(topic);
-				} catch (FieldException e) {
+				} catch (FieldValueException e) {
 					System.out.println("invalid access");
 				} catch (JSONException e) {
 					

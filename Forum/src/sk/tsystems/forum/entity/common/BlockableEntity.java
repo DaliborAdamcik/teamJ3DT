@@ -4,7 +4,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
 import sk.tsystems.forum.entity.Blocked;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
 @MappedSuperclass
 public abstract class BlockableEntity extends CommonEntity {
@@ -34,12 +34,12 @@ public abstract class BlockableEntity extends CommonEntity {
 	/**
 	 * Setter for blocked
 	 * @param blocked
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public void setBlocked(Blocked blocked) throws FieldException {
+	public void setBlocked(Blocked blocked) throws FieldValueException {
 		testNotEmpty(blocked, "blocked", false);
 		if(isBlocked())
-			throw new FieldException(String.format("Entity #%d is already blocked. Cant set block.", getId()));
+			throw new FieldValueException(String.format("Entity #%d is already blocked. Cant set block.", getId()));
 		this.blocked = blocked;
 	}
 	

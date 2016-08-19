@@ -11,7 +11,7 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.TestHelper;
 
 public class CommentEntityTest {
@@ -37,7 +37,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void getCommentTest() throws FieldException {
+	public void getCommentTest() throws FieldValueException {
 		Comment randomComment = new Comment(comment, theme, owner);
 		String testComment = randomComment.getComment();
 
@@ -45,7 +45,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void setCommentTest() throws FieldException {
+	public void setCommentTest() throws FieldValueException {
 		Comment randomComment = new Comment(comment, theme, owner);
 		randomComment.setComment(comment);
 		String testComment = randomComment.getComment();
@@ -54,7 +54,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void getTopicTest() throws FieldException {
+	public void getTopicTest() throws FieldValueException {
 		Comment randomComment = new Comment(comment, theme, owner);
 		Theme testTheme = randomComment.getTheme();
 
@@ -72,7 +72,7 @@ public class CommentEntityTest {
 	// }
 
 	@Test
-	public void getOwner() throws FieldException {
+	public void getOwner() throws FieldValueException {
 		Comment randomComment = new Comment(comment, theme, owner);
 		User testOwner = randomComment.getOwner();
 
@@ -80,14 +80,14 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void getCreationDate() throws FieldException {
+	public void getCreationDate() throws FieldValueException {
 		Date creationDatei = new Date();
 		Comment randomComment = new Comment(comment, theme, owner);
 		assertEquals("Bad creation date", creationDatei.getTime() / 100, randomComment.getCreated().getTime() / 100);
 	}
 
 	@Test
-	public void equalsTest() throws FieldException {
+	public void equalsTest() throws FieldValueException {
 		Object o = new Comment(comment, theme, owner);
 		Comment randomComment = new Comment(comment, theme, owner);
 
@@ -95,7 +95,7 @@ public class CommentEntityTest {
 	}
 
 	@Test
-	public void compareToTest() throws FieldException {
+	public void compareToTest() throws FieldValueException {
 		Comment randomComment1 = new Comment(TestHelper.randomString(20, 20), theme, owner);
 		Comment randomComment2 = new Comment(comment, theme, owner);
 		Comment randomComment3 = new Comment(comment, theme, owner);

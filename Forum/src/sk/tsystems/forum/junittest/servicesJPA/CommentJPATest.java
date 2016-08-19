@@ -13,7 +13,7 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.service.TopicService;
@@ -70,7 +70,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testAddComment() throws FieldException {
+	public void testAddComment() throws FieldValueException {
 
 		Comment randomComment = new Comment(comment, theme, owner);
 		commentservice.addComment(randomComment);
@@ -87,7 +87,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testUpdateCommentComment() throws FieldException {
+	public void testUpdateCommentComment() throws FieldValueException {
 		Comment randomComment = new Comment(comment, theme, owner);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
@@ -110,7 +110,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testUpdateCommentTopic() throws FieldException {
+	public void testUpdateCommentTopic() throws FieldValueException {
 		Comment randomComment = new Comment(comment, theme, owner);
 
 		commentservice.addComment(randomComment);
@@ -130,7 +130,7 @@ public class CommentJPATest {
 	}
 
 		@Test
-	public void testGetComment() throws FieldException {
+	public void testGetComment() throws FieldValueException {
 		Comment randomComment = new Comment(comment, theme, owner);
 		commentservice.addComment(randomComment);
 		toRemove.add(randomComment);
@@ -141,7 +141,7 @@ public class CommentJPATest {
 	}
 
 	@Test
-	public void testGetCommentsByToopic() throws FieldException {
+	public void testGetCommentsByToopic() throws FieldValueException {
 		Comment randomComment1 = new Comment(comment, theme, owner);
 		String comment2 = TestHelper.randomString(20);
 		String comment3 = TestHelper.randomString(20);
@@ -169,7 +169,7 @@ public class CommentJPATest {
 		}
 	}
 	@Test
-	public void testGetCommentsByOwner() throws UserEntityFieldException, FieldException {
+	public void testGetCommentsByOwner() throws UserEntityFieldException, FieldValueException {
 	
 		User owner1= new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+".@", TestHelper.randomDate(), TestHelper.randomString(20));
 		User owner2= new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+".@", TestHelper.randomDate(), TestHelper.randomString(20));

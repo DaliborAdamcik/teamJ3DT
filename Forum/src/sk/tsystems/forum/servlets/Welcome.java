@@ -25,7 +25,7 @@ import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.exceptions.CommonEntityException;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.TopicThemePrivileges;
 import sk.tsystems.forum.helper.URLParser;
@@ -275,7 +275,7 @@ public class Welcome extends MasterServlet {
 			
 			throw new UnknownActionException("Uknknown action taken");
 			
-		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | FieldException e) {
+		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | FieldValueException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}
 		

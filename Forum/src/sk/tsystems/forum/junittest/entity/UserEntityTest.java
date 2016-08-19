@@ -11,7 +11,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.exceptions.CommonEntityException;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
@@ -56,14 +56,14 @@ public class UserEntityTest {
 		try {
 			user.setUserName(name);
 			return false;
-		} catch (NickNameException | FieldException e) {
+		} catch (NickNameException | FieldValueException e) {
 			System.out.println("** User name check exception: " + e.getMessage() + " (is OK)");
 			return true;
 		}
 	}
 
 	@Test
-	public void RealNameTest() throws UserEntityFieldException, FieldException {
+	public void RealNameTest() throws UserEntityFieldException, FieldValueException {
 		User user = TestHelper.nonParaConstructor(User.class);
 		assertNotNull("User is badly initialized", user);
 
@@ -92,14 +92,14 @@ public class UserEntityTest {
 		try {
 			user.setPassword(password);
 			return false;
-		} catch (PasswordCheckException|FieldException e) {
+		} catch (PasswordCheckException|FieldValueException e) {
 			System.out.println("** Password check exception: " + e.getMessage() + " (is OK)");
 			return true;
 		}
 	}
 
 	@Test
-	public void birthDateTest() throws BadDateException, FieldException { // set
+	public void birthDateTest() throws BadDateException, FieldValueException { // set
 																			// birth
 																			// date
 		User user = TestHelper.nonParaConstructor(User.class);
@@ -144,7 +144,7 @@ public class UserEntityTest {
 	}
 
 	@Test
-	public void equalsTest() throws NickNameException, PasswordCheckException, UserEntityFieldException, FieldException {
+	public void equalsTest() throws NickNameException, PasswordCheckException, UserEntityFieldException, FieldValueException {
 		Object o = new User(userName, password, birthDate, realName);
 		System.out.println(o + userName);
 		User randomUser = new User(userName, password, birthDate, realName);
@@ -153,7 +153,7 @@ public class UserEntityTest {
 	}
 
 	@Test
-	public void compareToTest() throws NickNameException, PasswordCheckException, UserEntityFieldException, FieldException {
+	public void compareToTest() throws NickNameException, PasswordCheckException, UserEntityFieldException, FieldValueException {
 		User randomUser1 = new User(TestHelper.randomString(20, 0).toLowerCase(), password, birthDate, realName);
 		User randomUser2 = new User(userName, password, birthDate, realName);
 		User randomUser3 = new User(userName, password, birthDate, realName);

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.UserHelper;
 import sk.tsystems.forum.helper.exceptions.BadDateException;
@@ -70,7 +70,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	// List<Comment> comments; // TODO implementovat list ak nam ho bude treba
 
 	public User(String userName, String password, Date birthDate, String realName)
-			throws NickNameException, PasswordCheckException, UserEntityFieldException, FieldException {
+			throws NickNameException, PasswordCheckException, UserEntityFieldException, FieldValueException {
 		this();
 		setUserName(userName);
 		setPassword(password);
@@ -79,7 +79,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	}
 
 	public User(String userName, String password, String birthDate, String realName)
-			throws NickNameException, PasswordCheckException, BadDateException, UserEntityFieldException, FieldException {
+			throws NickNameException, PasswordCheckException, BadDateException, UserEntityFieldException, FieldValueException {
 		this(userName, password, UserHelper.stringToDate(birthDate), realName);
 	}
 
@@ -144,9 +144,9 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * 
 	 * @param userName
 	 * @throws NickNameException
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public void setUserName(String userName) throws NickNameException, FieldException {
+	public void setUserName(String userName) throws NickNameException, FieldValueException {
 		testNotEmpty(userName, "user name", true);
 		UserHelper.nickNameValidator(userName);
 		this.userName = userName;
@@ -157,9 +157,9 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * 
 	 * @param password
 	 * @throws PasswordCheckException
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public void setPassword(String password) throws PasswordCheckException, FieldException {
+	public void setPassword(String password) throws PasswordCheckException, FieldValueException {
 		testNotEmpty(password, "password", true);
 		UserHelper.passwordOverallControll(password);
 		this.password = password;
@@ -178,10 +178,10 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * Setter for birthDate
 	 * 
 	 * @param birthDate
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 * @throws BadDateException 
 	 */
-	public void setBirthDate(Date birthDate) throws FieldException, BadDateException {
+	public void setBirthDate(Date birthDate) throws FieldValueException, BadDateException {
 		testNotEmpty(birthDate, "birth date", false);
 		if(birthDate.after(new Date()))
 			throw new BadDateException("Birthday cant be after actual date.");
@@ -194,9 +194,9 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * 
 	 * @param birthDate
 	 * @throws BadDateException
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public void setBirthDate(String birthDate) throws BadDateException, FieldException {
+	public void setBirthDate(String birthDate) throws BadDateException, FieldValueException {
 		testNotEmpty(birthDate, "birth date", false);
 		setBirthDate(UserHelper.stringToDate(birthDate));
 	}
@@ -232,9 +232,9 @@ public class User extends BlockableEntity implements Comparable<User> {
 	 * Setter for realName
 	 * 
 	 * @param RealName
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public void setRealName(String realName) throws FieldException {
+	public void setRealName(String realName) throws FieldValueException {
 		testNotEmpty(realName, "real name", true);
 		// TODO !!!!!! CHECK REAL NAME FOR SPECIAL CHARS
 		this.realName = realName;
@@ -286,7 +286,7 @@ public class User extends BlockableEntity implements Comparable<User> {
 	}
 	
 	@Override
-	public final void setBlocked(Blocked blocked) throws FieldException {
+	public final void setBlocked(Blocked blocked) throws FieldValueException {
 		if(equals(blocked.getBlockedBy()))
 			throw new RuntimeException("YOU CAND DO THIS ANYTIME!!!!!!!!!!!!!!!!!!! RYS(Z)AAA");
 		super.setBlocked(blocked);

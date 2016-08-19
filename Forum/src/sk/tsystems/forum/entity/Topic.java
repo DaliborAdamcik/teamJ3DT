@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
 @Entity
 @Table(name = "TOPIC")
@@ -29,9 +29,9 @@ public class Topic extends BlockableEntity implements Comparable<Topic>{
 	 * 
 	 * @param name
 	 * @param isPublic
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public Topic(String name, boolean isPublic) throws FieldException {
+	public Topic(String name, boolean isPublic) throws FieldValueException {
 		this();
 		setName(name);
 		setPublic(isPublic);
@@ -60,9 +60,9 @@ public class Topic extends BlockableEntity implements Comparable<Topic>{
 	 * Setter for name
 	 * 
 	 * @param name
-	 * @throws FieldException 
+	 * @throws FieldValueException 
 	 */
-	public void setName(String name) throws FieldException {
+	public void setName(String name) throws FieldValueException {
 		testNotEmpty(name, "name", true);
 		this.name = name;
 	}

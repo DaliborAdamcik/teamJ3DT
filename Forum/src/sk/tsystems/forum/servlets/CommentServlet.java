@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
@@ -152,7 +152,7 @@ public class CommentServlet extends MasterServlet {
 			
 			response.setContentType("application/json");
 			mapper.writeValue(response.getWriter(), resp);
-		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldException e) {
+		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldValueException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}  catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -192,7 +192,7 @@ public class CommentServlet extends MasterServlet {
 			
 			response.setContentType("application/json");
 			mapper.writeValue(response.getWriter(), resp);
-		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldException e) {
+		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldValueException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		} 
 	}

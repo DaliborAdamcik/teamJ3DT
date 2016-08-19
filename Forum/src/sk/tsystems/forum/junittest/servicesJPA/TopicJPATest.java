@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sk.tsystems.forum.entity.Topic;
-import sk.tsystems.forum.entity.exceptions.field.FieldException;
+import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 
@@ -44,7 +44,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testAddTopic() throws FieldException {
+	public void testAddTopic() throws FieldValueException {
 
 		Topic randomTopic = new Topic(name, isPublic);
 		topicservice.addTopic(randomTopic);
@@ -60,7 +60,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testUpdateTopicName() throws FieldException {
+	public void testUpdateTopicName() throws FieldValueException {
 		Topic randomTopic = new Topic(name, isPublic);
 		topicservice.addTopic(randomTopic);
 		toRemove.add(randomTopic);
@@ -83,7 +83,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testUpdateTopicIsPublic() throws FieldException {
+	public void testUpdateTopicIsPublic() throws FieldValueException {
 		Topic randomTopic = new Topic(name, true);
 		topicservice.addTopic(randomTopic);
 		toRemove.add(randomTopic);
@@ -95,7 +95,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testGetComment() throws FieldException {
+	public void testGetComment() throws FieldValueException {
 		Topic randomTopic = new Topic(name, isPublic);
 		topicservice.addTopic(randomTopic);
 		toRemove.add(randomTopic);
@@ -106,7 +106,7 @@ public class TopicJPATest {
 	}
 
 	@Test
-	public void testGetTopics() throws FieldException {
+	public void testGetTopics() throws FieldValueException {
 		Topic randomTopic1 = new Topic(name, isPublic);
 		String name2 = TestHelper.randomString(20);
 		String name3 = TestHelper.randomString(20);
