@@ -92,7 +92,7 @@
 				id="ent_{{id}}_name">{{name}}</span> <span>by
 				{{#author}}{{userName}}{{/author}}</span>
 			<div class="commenterImage">
-				<img src="images/userPicture.png" alt=userPicture height=30
+				<img src="Picture/{{#author}}{{id}}{{/author}}/" alt=userPicture height=30
 					width=30 />
 			</div>
 

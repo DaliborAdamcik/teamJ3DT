@@ -27,12 +27,6 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.servlets.master.MasterServlet;
- 
-/*import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.output.*;*/
 
 @WebServlet("/Picture/*")
 public class ServletPicture extends MasterServlet {
@@ -42,7 +36,6 @@ public class ServletPicture extends MasterServlet {
    private String filePath;
    private int maxFileSize = 200 * 1024;
    private int maxMemSize = 4 * 1024;
-   private File file ;
 
    public void init( ){
       // Get the file location where it would be stored.
@@ -52,6 +45,9 @@ public class ServletPicture extends MasterServlet {
    public void doPost(HttpServletRequest request, 
                HttpServletResponse response)
               throws ServletException, java.io.IOException {
+	   
+	   File file;
+	   
       // Check that we have a file upload request
       isMultipart = ServletFileUpload.isMultipartContent(request);
       response.setContentType("text/html");

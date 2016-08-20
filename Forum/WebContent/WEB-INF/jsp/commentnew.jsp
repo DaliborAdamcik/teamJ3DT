@@ -38,7 +38,7 @@
 	<button type="button" class="close entitymenucls" aria-hidden="true" onclick="entityMenuPopup('{{id}}');">&Xi;</button>
 	
 	<div class="commenterImage">
-		<img src="images/userPicture.png" alt=userPicture height=30
+		<img src="Picture/{{#owner}}{{id}}{{/owner}}/" alt=userPicture height=30
 			width=30 />
 	</div>
 	<div class="commentText">
