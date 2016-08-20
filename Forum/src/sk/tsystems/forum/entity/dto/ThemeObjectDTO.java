@@ -7,65 +7,66 @@ import sk.tsystems.forum.service.jpa.JpaConnector;
 
 public class ThemeObjectDTO {
 
-	private long averageRating;
+	private long sumRating;
 	private long ratingCount;
 	private long commentCount;
 	private long userCount;
 	private Date lastCommentDate;
+	private Theme theme;
 
-	public ThemeObjectDTO(long averageRating, long ratingCount, long commentCount, long userCount,
-			Date lastCommentDate) {
+	public ThemeObjectDTO(Theme theme, long averageRating, long ratingCount, long commentCount, long userCount, Date lastCommentDate) {
 		super();
-		this.averageRating = averageRating;
+		this.sumRating = averageRating;
 		this.ratingCount = ratingCount;
 		this.commentCount = commentCount;
 		this.userCount = userCount;
 		this.lastCommentDate = lastCommentDate;
+		this.theme = theme;
 	}
 
-	public ThemeObjectDTO(long averageRating, long ratingCount, long commentCount, long userCount) {
-		this(averageRating, ratingCount, commentCount, userCount, null);
+	public ThemeObjectDTO(Theme theme, long commentCount, long userCount, Date lastCommentDate) {
+		this(theme, 0,0, commentCount, userCount, lastCommentDate);
 	}
+
+	public ThemeObjectDTO(Theme theme, long averageRating, long ratingCount) {
+		this(theme, averageRating, ratingCount, 0, 0, null);
+	}
+	
 	
 	public static ThemeObjectDTO getDTO(Theme theme) {
 		try (JpaConnector jpa = new JpaConnector()) {
 			ThemeObjectDTO obj1;
 			ThemeObjectDTO obj2;
-/*
- 								"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(sum(c.rating), count(c), 0L, 0L) FROM CommentRating c "
-										+ "WHERE c.theme = :theme GROUP BY c.theme",
 
- */
-			try {
+			try { // check is okay
 				obj1 = jpa.getEntityManager()
 						.createQuery(
- 								"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(sum(c.rating), count(c), 0L, 0L) FROM CommentRating c "
-										+ "WHERE c.theme = :theme GROUP BY c.theme",
+ 								"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, sum(c.rating), count(c.id)) FROM CommentRating c "
+										+ "WHERE c.theme = :theme AND c.comment.blocked=null GROUP BY c.theme",
 								ThemeObjectDTO.class)
 						.setParameter("theme", theme).getSingleResult();
 			} catch (javax.persistence.NoResultException e) {
-				obj1 = new ThemeObjectDTO(0, 0, 0, 0, null);
+				obj1 = new ThemeObjectDTO(theme, 0, 0);
 			}
 
-			try {
+			try { // this is OK dalik, 20.8.2015 2:35
 				obj2 = jpa.getEntityManager()
 						.createQuery(
-								"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(0L, 0L, count(c.comment), count(c.owner), max(c.created)) FROM Comment c "
-										+ "WHERE c.theme = :theme GROUP BY c.theme",
+								"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, count(c.id), count(DISTINCT c.owner), max(c.modified)) FROM Comment c "
+										+ "WHERE c.theme = :theme AND c.blocked=null GROUP BY c.theme",
 								ThemeObjectDTO.class)
 						.setParameter("theme", theme).getSingleResult();
 			} catch (javax.persistence.NoResultException e) {
-				obj2 = new ThemeObjectDTO(0, 0, 0, 0, null);
+				obj2 = new ThemeObjectDTO(theme, 0, 0);
 			}
-
-			return new ThemeObjectDTO(obj1.getAverageRating(), obj1.getRatingCount(), obj2.getCommentCount(),
-					obj2.getUserCount(), obj2.getLastCommentDate());
-
+			
+			return new ThemeObjectDTO(obj1.theme, obj1.sumRating, obj1.ratingCount, obj2.commentCount,
+					obj2.userCount, obj2.lastCommentDate);
 		}
 	}
 
 	public long getAverageRating() {
-		return averageRating;
+		return sumRating;
 	}
 
 	public long getRatingCount() {
@@ -86,8 +87,8 @@ public class ThemeObjectDTO {
 
 	@Override
 	public String toString() {
-		return "ThemeObjectDTO [averageRating=" + averageRating + ", ratingCount=" + ratingCount + ", commentCount="
-				+ commentCount + ", userCount=" + userCount + ", lastCommentDate=" + lastCommentDate + "]";
+		return String.format(
+				"ThemeObjectDTO [theme.id=%s, theme.name=%s, averageRating=%s, ratingCount=%s, commentCount=%s, userCount=%s, lastCommentDate=%s]",
+				theme.getId(), theme.getName(), sumRating, ratingCount, commentCount, userCount, lastCommentDate);
 	}
-
 }
