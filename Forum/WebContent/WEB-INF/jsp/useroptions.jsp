@@ -60,6 +60,9 @@
 	</form>
 
 	<div id="topic_change" hidden="true"></div>
+	<div style="background-color: silver;">
+		<jsp:include page="ProfilePicture.jsp"></jsp:include>
+	</div>
 </div>
 
 <script id="topicTemplate" type="text/template">
