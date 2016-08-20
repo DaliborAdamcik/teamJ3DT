@@ -1,20 +1,18 @@
 package sk.tsystems.forum.servlets;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-// Import required java libraries
 import java.io.*;
 import java.util.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
@@ -32,123 +30,103 @@ import sk.tsystems.forum.servlets.master.MasterServlet;
 public class ServletPicture extends MasterServlet {
 	private static final long serialVersionUID = 1L;
 	
-   private boolean isMultipart;
-   private String filePath;
-   private int maxFileSize = 200 * 1024;
+   private String filePath; // TODO *** LOAD THIS FROM CONFIG FILE
+   private int maxFileSize = 750 * 1024;
    private int maxMemSize = 4 * 1024;
 
-   public void init( ){
-      // Get the file location where it would be stored.
-      filePath = "C:/temp/";	
-             //getServletContext().getInitParameter("file-upload"); 
+   public void init(){
+      filePath = "C:/temp/"; // TODO **** create settings file to init this 
+     //getServletContext().getInitParameter("file-upload"); 
    }
-   public void doPost(HttpServletRequest request, 
-               HttpServletResponse response)
-              throws ServletException, java.io.IOException {
-	   
-	   File file;
-	   
-      // Check that we have a file upload request
-      isMultipart = ServletFileUpload.isMultipartContent(request);
-      response.setContentType("text/html");
-      java.io.PrintWriter out = response.getWriter( );
-      if( !isMultipart ){
-         out.println("<html>");
-         out.println("<head>");
-         out.println("<title>Servlet upload</title>");  
-         out.println("</head>");
-         out.println("<body>");
-         out.println("<p>No file uploaded</p>"); 
-         out.println("</body>");
-         out.println("</html>");
-         return;
-      }
-      DiskFileItemFactory factory = new DiskFileItemFactory();
-      // maximum size that will be stored in memory
-      factory.setSizeThreshold(maxMemSize);
-      // Location to save data that is larger than maxMemSize.
-      factory.setRepository(new File("c:\\temp"));
 
-      // Create a new file upload handler
-      ServletFileUpload upload = new ServletFileUpload(factory);
-      // maximum file size to be uploaded.
-      upload.setSizeMax( maxFileSize );
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, java.io.IOException {
+		
+		try {
+			if(!ServletFileUpload.isMultipartContent(request))
+				throw new FieldValueException("Accept only uploads.");
+			
+			ServletHelper svh = new ServletHelper(request);
+			User owner = svh.getLoggedUser();
 
-      try{ 
-      // Parse the request to get file items.
-      List fileItems = upload.parseRequest(new ServletRequestContext(request));
+			if (owner == null)
+				throw new FieldValueException("Only authentificated users can perform this action");
+			
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			factory.setSizeThreshold(maxMemSize);
+			factory.setRepository(new File(filePath));
+
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			upload.setSizeMax(maxFileSize);
+			
+			FileItem upFile = null;
+			HashMap<String, String> mapFields = new HashMap<>(); 
+			
+			try {
+				Iterator<FileItem> filetIt = upload.parseRequest(new ServletRequestContext(request)).iterator();
+				
+				while(filetIt.hasNext())
+				{
+					FileItem field = filetIt.next();
+					if(field.isFormField())
+						mapFields.put(field.getFieldName(), field.getString());
+					else
+						upFile = field;
+				}
+			} catch(org.apache.tomcat.util.http.fileupload.FileUploadBase.SizeLimitExceededException e) {
+				throw new FieldValueException("File is too big", e);
+			} catch(FileUploadException e) {
+				throw new FieldValueException("Error durig upload: "+e.getMessage(), e);
+			}
+
+			if(upFile == null)
+				throw new FieldValueException("No staged files");
+			
+			int xpos = intVal(mapFields.get("x"))*-1;
+			int ypos = intVal(mapFields.get("y"))*-1;
+			int width = intVal(mapFields.get("w"));
+			int height = intVal(mapFields.get("h"));
+			
+			if(xpos<0 || ypos<0)
+				throw new FieldValueException("Bad crop start position.");
+			
+			System.out.println(mapFields);
+			
+			try {
+				BufferedImage bi = ImageIO.read(upFile.getInputStream());
+				
+				if(width>bi.getWidth() || height>bi.getHeight())
+					throw new FieldValueException("Bad crop size.");
+
+				BufferedImage crop = bi.getSubimage(xpos, ypos, width, height);
+				BufferedImage saveImg = new BufferedImage(crop.getWidth(), crop.getHeight(), BufferedImage.TYPE_INT_ARGB);
+				Graphics g = saveImg.createGraphics();
+				g.drawImage(crop, 0, 0, null);
+
+				ProfilePicture pp = ProfilePicture.profilePicture(owner);
+				if (pp != null) {
+					pp.setPicture(saveImg);
+				} else
+					new ProfilePicture(owner, saveImg);
+				
+				// TODO *** response is okay 
+				response.getWriter().print("OK");
+			} catch (java.lang.IllegalArgumentException exc) {
+				response.getWriter().print(exc.getMessage()); // TODO *** exception to JSON
+			} 
+		} catch (FieldValueException | EntityAutoPersist e) {
+			response.getWriter().print(e.getMessage()); // TODO *** exception to JSON
+		} 
+	}
 	
-      // Process the uploaded file items
-      Iterator i = fileItems.iterator();
-
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<title>Servlet upload</title>");  
-      out.println("</head>");
-      out.println("<body>");
-      while ( i.hasNext () ) 
-      {
-         FileItem fi = (FileItem)i.next();
-         if ( !fi.isFormField () )	
-         {
-            // Get the uploaded file parameters
-            String fieldName = fi.getFieldName();
-            String fileName = fi.getName();
-            String contentType = fi.getContentType();
-            boolean isInMemory = fi.isInMemory();
-            long sizeInBytes = fi.getSize();
-            // Write the file
-            if( fileName.lastIndexOf("\\") >= 0 ){
-               file = new File( filePath + 
-               fileName.substring( fileName.lastIndexOf("\\"))) ;
-            }else{
-               file = new File( filePath + 
-               fileName.substring(fileName.lastIndexOf("\\")+1)) ;
-            }
-            //fi.write( file ) ;
-            
-            try {
-	            BufferedImage bi = ImageIO.read(fi.getInputStream());
-	            ServletHelper svh = new ServletHelper(request);
-	            User own = svh.getLoggedUser(); 
-	            
-	            if(own==null)
-	            	throw new RuntimeException("you must be logged in");
-	            	
-	            ProfilePicture pp = ProfilePicture.profilePicture(own);
-	            if(pp!=null)
-	            {
-	            	pp.setPicture(bi);
-	            }
-	            else
-            		new ProfilePicture(own, bi);
-	            
-	            out.println("<img src=\"Picture/"+own.getId()+"/\">");
-	            
-	            //File outputfile = new File(file+".png");
-	            //BufferedImage bisc = resize(bi, 50, 50);
-	            //mageIO.write(bisc, "png", outputfile);
-            } catch(java.lang.IllegalArgumentException exc) {
-            	out.print(exc.getMessage());
-            }
-            catch(FieldValueException | EntityAutoPersist e)
-            {
-            	response.getWriter().println(e.getMessage());
-            }
-            
-            
-            
-            
-            out.println("Uploaded Filename: " + fileName + "<br>");
-         }
-      }
-      out.println("</body>");
-      out.println("</html>");
-   }catch(Exception ex) {
-       ex.printStackTrace();
-   }
-   }
-   
+	private int intVal(String str) throws FieldValueException {
+		try {
+			return Integer.parseInt(str);
+		} catch(NullPointerException | NumberFormatException e) {
+			throw new FieldValueException("Required parameters not set: "+str);
+		}
+	}
+	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, java.io.IOException {
 		ServletHelper svh = new ServletHelper(request);
@@ -162,24 +140,17 @@ public class ServletPicture extends MasterServlet {
 			if(pp==null)
 				throw new URLParserException("no profile picture assigned");
 			
-			System.out.println(svh.getLoggedUser());
-			System.out.println(pp);
-			if("large".equals(url))
+			if("large".equals(url.getAction()))
 				pp.getPicture(response);
 			else
 				pp.getThubnail(response);
 				
 		} catch (URLParserException e) {
-			System.out.println(e.getMessage());
 			String path = request.getServletContext().getRealPath("/images/userPicture.png");
-			
 			File fi = new File(path);
-			System.out.println("General picture exists: "+fi.exists()); 
-			
             BufferedImage bi = ImageIO.read(fi.toURI().toURL());
-
     		response.setContentType("image/png");
-			ImageIO.write(bi, "PNG", response.getOutputStream());
+			ImageIO.write(bi, "PNG", response.getOutputStream());  
 		}
 	   
    } 
