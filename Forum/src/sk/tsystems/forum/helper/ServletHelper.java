@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.exceptions.GetServiceException;
@@ -24,64 +29,43 @@ import sk.tsystems.forum.service.UserService;
  * @author Dalibor
  */
 public class ServletHelper {
-	/**
-	 * UserService identifier (for getAttribute)
-	 */
-	private static final String USER_SERVICE_IDENT = "USER_SERVICE_INSTANCE";
+	/** Prefix string for service attribute */
+	private static final String SERVICE_ATRIBUTE_PREFIX = "SERVICE_INSTANCE_";
 
-	/**
-	 * TopicService identifier (for getAttribute)
-	 */
-	private static final String TOPIC_SERVICE_IDENT = "TOPIC_SERVICE_INSTANCE";
-
-	/**
-	 * CommentService identifier (for getAttribute)
-	 */
-	private static final String COMMENT_SERVICE_IDENT = "COMMENT_SERVICE_INSTANCE";
-
-	/**
-	 * ThemeService identifier (for getAttribute)
-	 */
-	private static final String THEME_SERVICE_IDENT = "THEME_SERVICE_INSTANCE";
-
-	/**
-	 * CommentService identifier (for session.getAttribute)
-	 */
+	/** CommentService identifier (for session.getAttribute) */
 	private static final String USER_SESSION_IDENT = "USER_ID";
 
-	/**
-	 * An reference to HttpServletRequest of caller script
-	 */
+	/** An reference to HttpServletRequest of caller script */
 	private HttpServletRequest servletRequest;
+	
+	/** An cached user to reduce request to hibernate */
+	private User currentUser = null; 
 
-	/**
-	 * Initiates new instance for servlet helper
-	 */
+	/** Initiates new instance for servlet helper */
 	public ServletHelper(HttpServletRequest servletRequest) {
 		this.servletRequest = servletRequest;
 	}
 
 	/* An services part for Servlets */
 
-	/** // TODO piatok refaktor na reflexiu 
-	 * Gets object from servletRequest by name This method checks getted object
-	 * is instance of requested class
+	/** 
+	 * Gets Service from servletRequest by required interface class
 	 * 
-	 * @param SERVICE
-	 *            requested service name from attribute
 	 * @param clazz
-	 *            Used to check instence is class of
+	 *            Interface class of requested service
 	 * @return an instance of requested service, otherwise throws an exception
 	 *         (runtime)
 	 */
-	private final Object getService(String SERVICE, Class<?> clazz) {
-		Object savedService = servletRequest.getAttribute(SERVICE);
+	@SuppressWarnings("unchecked")
+	private final <T> T getService(Class<T> clazz) {
+		Object savedService = servletRequest.getAttribute(SERVICE_ATRIBUTE_PREFIX+clazz.getSimpleName());
 		if (savedService == null)
-			throw new GetServiceException("Service instance of " + clazz.getSimpleName() + " is null.");
+			throw new GetServiceException("Service instance of '" + clazz.getSimpleName() + "' is not set.");
 
-		// TODO check class for claZZ
+		if(!clazz.isInstance(savedService)) 
+			throw new GetServiceException("Bad service instance of '" + clazz.getSimpleName() + "'.");
 
-		return savedService;
+		return (T) savedService;
 	}
 
 	/**
@@ -91,7 +75,7 @@ public class ServletHelper {
 	 *         exception is thrown
 	 */
 	public final UserService getUserService() {
-		return (UserService) getService(USER_SERVICE_IDENT, UserService.class);
+		return  getService(UserService.class);
 	}
 
 	/**
@@ -101,7 +85,7 @@ public class ServletHelper {
 	 *         exception is thrown
 	 */
 	public final TopicService getTopicService() {
-		return (TopicService) getService(TOPIC_SERVICE_IDENT, TopicService.class);
+		return getService(TopicService.class);
 	}
 
 	/**
@@ -111,7 +95,7 @@ public class ServletHelper {
 	 *         exception is thrown
 	 */
 	public final ThemeService getThemeService() {
-		return (ThemeService) getService(THEME_SERVICE_IDENT, ThemeService.class);
+		return getService(ThemeService.class);
 	}
 
 	/**
@@ -121,7 +105,7 @@ public class ServletHelper {
 	 *         exception is thrown
 	 */
 	public final CommentService getCommentService() {
-		return (CommentService) getService(COMMENT_SERVICE_IDENT, CommentService.class);
+		return getService(CommentService.class);
 	}
 
 	/**
@@ -129,36 +113,30 @@ public class ServletHelper {
 	 * 
 	 * @param serviceInstance
 	 *            An instance of service object to store
-	 * @param SERVICE
-	 *            An name of service object
-	 * @return true on sucess (always true)
-	 */
-	private final boolean setService(Object serviceInstance, String SERVICE) {
-		servletRequest.setAttribute(SERVICE, serviceInstance);
-		return true;
-	}
-
-	/**
-	 * Saves service to request.setAttribute(). This method checks service type
-	 * (interface) is known. Check prevents set an unidentified objects.
-	 * 
-	 * @param serviceInstance
-	 *            an instance of service to be saved (an shared over servlets)
-	 * @return true on success, false on error occured, throws exceptions on
-	 *         foreign service is detected
+	 * @return true on sucess, otherwise RuntimeException is thrown
 	 */
 	public final boolean setService(Object serviceInstance) {
-		if (serviceInstance instanceof UserService)
-			return setService(serviceInstance, USER_SERVICE_IDENT);
-		else if (serviceInstance instanceof TopicService)
-			return setService(serviceInstance, TOPIC_SERVICE_IDENT);
-		else if (serviceInstance instanceof CommentService)
-			return setService(serviceInstance, COMMENT_SERVICE_IDENT);
-		else if (serviceInstance instanceof ThemeService)
-			return setService(serviceInstance, THEME_SERVICE_IDENT);
-		else
-			throw new GetServiceException(
-					"Unknown service " + serviceInstance.getClass().getSimpleName() + " to save.");
+		Class<?>[] interfaces = serviceInstance.getClass().getInterfaces();
+		if(interfaces.length==0)
+			throw new GetServiceException("Service '"+serviceInstance.getClass().getSimpleName()
+					+"' must implement service interface.");
+		
+		Class<?> useInterface = null;
+		
+		for (Class<?> intf : interfaces) {
+			if(intf.getPackage().equals(UserService.class.getPackage()))
+			{
+				useInterface = intf;
+				break;
+			}
+		}
+		
+		if(useInterface == null)
+			throw new GetServiceException("Cant store not known service '"+
+					serviceInstance.getClass().getSimpleName()+"' ");
+		
+		servletRequest.setAttribute(SERVICE_ATRIBUTE_PREFIX+useInterface.getSimpleName(), serviceInstance);
+		return true;
 	}
 
 	/* User (session) part ********************************************** */
@@ -171,7 +149,6 @@ public class ServletHelper {
 	 * @return Object from request if found, otherwise NULL will be returned
 	 */
 	public Object getSessionObject(String NAME) { // TODO maybe private?
-
 		return servletRequest.getSession().getAttribute(NAME);
 	}
 
@@ -195,17 +172,29 @@ public class ServletHelper {
 
 	/**
 	 * Use to get an fresh version of actually logged-in user.
-	 * 
+	 * @param refresh {@link Boolean} true = get refreshed account from hibernate / false = get cached object
 	 * @return An instance of User entity (logged in user) or null
 	 */
-	public final User getLoggedUser() {
+	public final User getLoggedUser(boolean refresh) {
 		Integer ident;
 		if ((ident = (Integer) getSessionObject(USER_SESSION_IDENT)) == null)
 			return null;
+		
+		if(!(currentUser instanceof User) || refresh || currentUser.getId()!=ident)
+			currentUser = getUserService().getUser(ident);
 
-		return getUserService().getUser(ident);
+		return currentUser;
 	}
 
+	/**
+	 * Use to get an fresh version of actually logged-in user.
+	 * @param refresh {@link Boolean} get refreshed account from hibernate
+	 * @return An instance of User entity (logged in user) or null
+	 */
+	public final User getLoggedUser() {
+		return getLoggedUser(false);
+	}
+	
 	/**
 	 * Saves User to session (this means an user is logged-in succesfully)
 	 * 
@@ -239,7 +228,7 @@ public class ServletHelper {
 	 */
 	public final UserRole getSessionRole() {
 		User user = getLoggedUser();
-		if (user == null || user.getBlocked() != null)
+		if (user == null || user.isBlocked())
 			return UserRole.GUEST;
 
 		return user.getRole();
@@ -296,7 +285,12 @@ public class ServletHelper {
 	{
 		return requestURL(false);
 	}
-	
+
+	/**
+	 * Gets URL parser object for current request URL
+	 * @return {@link URLParser} instance for current request URL
+	 * @throws URLParserException
+	 */
 	public final URLParser getURLParser() throws URLParserException
 	{
 		return new URLParser(requestURL());
@@ -325,4 +319,84 @@ public class ServletHelper {
 		response.setContentType("application/json");
 		response.getWriter().print(excson);
 	}
+
+	/**
+	 * An JSON filter interface 
+	 *  
+	 * @author Dalibor Adamcik
+	 */
+	public interface JsonOutFilter {
+		/**
+		 * An target class to be filtered
+		 * @return {@link Class} target class
+		 */
+		public Class<?> getTarget();
+		/**
+		 * An filter definition (MixIn)
+		 * @return {@link Class} filter class
+		 */
+		public Class<?> getFilter();
+	}
+
+	/**
+	 * Converts object to JSON format and writes to response
+	 * @param response {@link HttpServletResponse} target response to write JSON object
+	 * @param toJson {@link Object} an object to be written to JSON
+	 * @param filters {@link JsonOutFilter} filters to be applied to output
+	 * @param flush {@link Boolean} true = sets content type and closes response.
+	 * false = appends to response
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	public static void jsonResponse(HttpServletResponse response, Object toJson, JsonOutFilter[] filters, boolean flush) 
+			throws JsonGenerationException, JsonMappingException, IOException {
+		
+		if(flush)
+			response.setContentType("application/json");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		
+		if(filters!=null) {
+			for (JsonOutFilter filter : filters) 
+				mapper.addMixIn(filter.getTarget(), filter.getFilter());
+		}
+		
+		// TODO *** nesting for parrent child?
+		
+		if(!flush) {
+			mapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+			mapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT, false);
+		}
+		mapper.writeValue(response.getWriter(), toJson);
+	}
+
+	/**
+	 * Converts object to JSON format, sets content type write and close response.
+	 * @param response {@link HttpServletResponse} target response to write JSON object
+	 * @param toJson {@link Object} an object to be written to JSON
+	 * @param filters {@link JsonOutFilter} filters to be applied to output
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	public static void jsonResponse(HttpServletResponse response, Object toJson, JsonOutFilter[] filters) 
+			throws JsonGenerationException, JsonMappingException, IOException {
+		jsonResponse(response, toJson, filters, true);
+	}
+	
+	/**
+	 * Converts object to JSON format, sets content type write and close response.
+	 * @param response {@link HttpServletResponse} target response to write JSON object
+	 * @param toJson {@link Object} an object to be written to JSON
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	public static void jsonResponse(HttpServletResponse response, Object toJson) 
+			throws JsonGenerationException, JsonMappingException, IOException {
+		jsonResponse(response, toJson, null, true);
+	}
+	
 }
