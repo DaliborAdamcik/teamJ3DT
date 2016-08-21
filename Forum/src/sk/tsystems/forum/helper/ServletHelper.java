@@ -13,6 +13,7 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.exceptions.GetServiceException;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
+import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.service.CommentService;
 import sk.tsystems.forum.service.ThemeService;
 import sk.tsystems.forum.service.TopicService;
@@ -248,8 +249,9 @@ public class ServletHelper {
 	 * Parses JSON object from request
 	 * @return JSON object from request or null if not present
 	 * @author Dalibor
+	 * @throws UnknownActionException if json is not available in request
 	 */
-	public final JSONObject getJSON()
+	public final JSONObject getJSON() throws UnknownActionException
 	{
     	StringBuilder sb = new StringBuilder();
         String s;
@@ -262,12 +264,11 @@ public class ServletHelper {
         }
         catch(IOException ex)
         {
-        	throw new RuntimeException("Cand read JSON from request: IO error", ex);
+			throw new UnknownActionException("Cand read JSON from request: IO error "+ex.getMessage(), ex);
         }
         catch(JSONException ex) // an error in json or not available
         {
-        	System.out.println("*\tForum WARN: parse JSON from client: "+ex.getMessage());
-        	return null;
+			throw new UnknownActionException("We request an JSON object into an input.", ex);
         }
 	}
 	
