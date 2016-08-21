@@ -39,11 +39,6 @@ public class UserJPATest {
 
 	@After
 	public void tearDown() throws Exception {
-		//TODO neviem na co to je
-		/* tato cast kodu sluzi na zavolanei po vsetkych testoch
-		 * tu by sa mali mazat temporary udaje a podobne, ktore by len zahlcovali databazy"
-		*/
-		
 		TestHelper.removeTemporaryObjects(listOfTemporaryObjects);
 	}
 //	@Test
@@ -99,6 +94,7 @@ public class UserJPATest {
 	 * @throws PasswordCheckException 
 	 * @throws NickNameException 
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testAddUserDuplicity() throws UserEntityFieldException, FieldValueException {
 		userName = TestHelper.randomString(30,0).toLowerCase();

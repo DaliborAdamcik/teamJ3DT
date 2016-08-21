@@ -20,8 +20,6 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
@@ -31,7 +29,6 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
-import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**

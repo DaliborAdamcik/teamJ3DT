@@ -6,15 +6,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
-import sk.tsystems.forum.entity.Comment;
-import sk.tsystems.forum.entity.Topic;
-import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.common.CommonEntity;
-import sk.tsystems.forum.entity.exceptions.CommonEntityException;
-import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.JpaConnector;
-import sk.tsystems.forum.service.jpa.TopicJPA;
-import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class TestHelper {
 

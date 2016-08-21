@@ -1,10 +1,7 @@
 package sk.tsystems.forum.helper;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import sk.tsystems.forum.entity.Blocked;
-import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
@@ -12,9 +9,7 @@ import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
-import sk.tsystems.forum.service.UserService;
 import sk.tsystems.forum.service.jpa.JpaConnector;
-import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class BlockHelper {
 

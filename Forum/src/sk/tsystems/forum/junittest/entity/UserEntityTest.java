@@ -7,10 +7,8 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.entity.exceptions.field.user.BadDateException;
 import sk.tsystems.forum.entity.exceptions.field.user.NickNameException;

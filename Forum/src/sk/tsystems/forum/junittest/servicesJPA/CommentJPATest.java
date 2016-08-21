@@ -16,7 +16,6 @@ import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
-import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
@@ -31,7 +30,6 @@ public class CommentJPATest {
 	private Theme theme;
 	private User owner;
 	private Topic topic;
-	private boolean isPublic;
 	private List<Object> toRemove;
 
 	@Before
@@ -49,7 +47,6 @@ public class CommentJPATest {
 		comment = TestHelper.randomString(20);
 		owner = new User(TestHelper.randomString(20,0).toLowerCase(), TestHelper.randomString(5,5)+"@/*", TestHelper.randomDate(), TestHelper.randomString(20));
 		theme = new Theme(TestHelper.randomString(20), topic, comment, owner, false);
-		isPublic = false;
 		userservice.addUser(owner);
 		themeService.addTheme(theme);
 	}

@@ -25,11 +25,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.entity.exceptions.field.user.BadDateException;
 import sk.tsystems.forum.entity.exceptions.field.user.PasswordCheckException;
-import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.UserHelper;
