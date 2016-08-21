@@ -16,9 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.UserRole;
@@ -103,11 +100,13 @@ public class CommentServlet extends MasterServlet {
 				if(pars.getAction()!=null && !erased.isEmpty()) // request updated items, send blocked list
 					resp.put("deleted", erased);
 
+				ServletHelper.jsonResponse(response, resp);
+/*				
 				response.setContentType("application/json");
 				ObjectMapper mapper = new ObjectMapper();
 				//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 				mapper.setSerializationInclusion(Include.NON_NULL);
-				mapper.writeValue(response.getWriter(), resp);
+				mapper.writeValue(response.getWriter(), resp);*/
 				return;
 			}
 
@@ -145,13 +144,16 @@ public class CommentServlet extends MasterServlet {
 			comment.setComment(obj.getString("comment"));
 			svHelper.getCommentService().updateComment(comment);
 			
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.setSerializationInclusion(Include.NON_NULL);
+			
 			Map<String, Object> resp = new HashMap<>();
 			resp.put("comment", comment);
+			ServletHelper.jsonResponse(response, resp);
 			
+
+			/*ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Include.NON_NULL);
 			response.setContentType("application/json");
-			mapper.writeValue(response.getWriter(), resp);
+			mapper.writeValue(response.getWriter(), resp);*/
 		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldValueException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}  catch (JSONException e) {
@@ -184,14 +186,21 @@ public class CommentServlet extends MasterServlet {
 			
 			Comment comment = new Comment(obj.getString("comment"), theme, svHelper.getLoggedUser());
 			svHelper.getCommentService().addComment(comment);
+
 			
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.setSerializationInclusion(Include.NON_NULL);
 			Map<String, Object> resp = new HashMap<>();
 			resp.put("comment", comment);
-			
+			ServletHelper.jsonResponse(response, resp);
+
+			/*
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Include.NON_NULL);
+
+			Map<String, Object> resp = new HashMap<>();
+			resp.put("comment", comment);
+
 			response.setContentType("application/json");
-			mapper.writeValue(response.getWriter(), resp);
+			mapper.writeValue(response.getWriter(), resp);*/
 		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldValueException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		} 

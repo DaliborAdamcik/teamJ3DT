@@ -17,8 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
@@ -71,7 +69,7 @@ public class Welcome extends MasterServlet {
 				return;
 			}
 			
-			// single object by child id
+			// single object by parrent id
 			if(url.getAction()==null)
 				throw new URLParserException("Action must be specified");
 			
@@ -97,10 +95,12 @@ public class Welcome extends MasterServlet {
 			Map<String, Object> resp = new HashMap<>();
 			resp.put("theme", com);
 			
-			response.setContentType("application/json");
+			ServletHelper.jsonResponse(response, resp);
+
+			/*response.setContentType("application/json");
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Include.NON_NULL);
-			mapper.writeValue(response.getWriter(), resp);
+			mapper.writeValue(response.getWriter(), resp);*/
 		} catch (URLParserException e) {
 			if(helpser.requestURL().indexOf("Welcome")<0) 
 				responsePageHTML(request, response, helpser);
@@ -167,10 +167,15 @@ public class Welcome extends MasterServlet {
 		resp.put("topics", topics);
 		resp.put("topicCount", topics.size());
 		resp.put("themeCount", themes.size());
+		
+		HashMap<Class<?>, Class<?>> filters = new HashMap<>();
+		filters.put(MixInIgnoreTopic.class, Theme.class);
+		ServletHelper.jsonResponse(response, resp, filters, flushmode);
+		
 		if(newsonly)
 			resp.put("erased", erased);
 		
-		if(flushmode)
+		/*if(flushmode)
 			response.setContentType("application/json");
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -181,7 +186,7 @@ public class Welcome extends MasterServlet {
 			mapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
 			mapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT, false);
 		}
-		mapper.writeValue(response.getWriter(), resp);
+		mapper.writeValue(response.getWriter(), resp);*/
 	}
 	
 	private void responsePageHTML(HttpServletRequest request, HttpServletResponse response, ServletHelper helpser)
@@ -333,4 +338,5 @@ public class Welcome extends MasterServlet {
 	abstract class MixInIgnoreTopic {
 		  @JsonIgnore abstract public Topic getTopic();  
 	}
+	
 }
