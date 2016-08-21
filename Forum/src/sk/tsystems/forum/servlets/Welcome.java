@@ -197,20 +197,6 @@ public class Welcome extends MasterServlet {
 			}
 		}
 		
-		// TODO potom to vyrucic
-		/*HashMap<Topic, List<Theme>> topicThemeList= new HashMap<>();
-		List<Topic> topics = helpser.getTopicService().getTopics();
-		Collections.sort(topics);
-		
-		for (Topic topic : topics) {
-			List<Theme> themes = helpser.getThemeService().getTheme(topic);
-			Collections.sort(themes);
-			topicThemeList.put(topic, themes);
-		}
-		
-		request.setAttribute("topthemlis", topicThemeList);
-		*/// TODO potom to vyrucic po tadzzi
-		
 		// Atribut logged user, vyuizity pri jsp kde je menu
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
@@ -249,9 +235,9 @@ public class Welcome extends MasterServlet {
 				theme.setName(json.getString("name"));
 				theme.setPublic(json.getBoolean("isPublic"));
 				
-				System.out.println("`last "+theme.getCreated());
+				System.out.println("`last "+theme.getModified());
 				prioper.store(theme);
-				System.out.println("updated "+theme.getCreated());
+				System.out.println("updated "+theme.getModified());
 				
 				
 				return;

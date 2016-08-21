@@ -37,7 +37,7 @@ public class BlockHelper {
 			}
 
 			if (objectToBeBlocked == null) {
-				throw new RuntimeException("No element with id " + id + " in the database");
+				throw new RuntimeException("No element with id " + id + " in the database"); // TODO --- toto je velmi zle
 			}
 			Blocked blo = new Blocked(blockedBy, reason);
 			jpa.persist(blo);
@@ -91,12 +91,16 @@ public class BlockHelper {
 			}
 
 			if (objectToBeUnblocked == null) {
-				throw new RuntimeException("No element with id " + id + " in the database");
+				throw new RuntimeException("No element with id " + id + " in the database"); // TODO --- toto je velmi zle
 			}
-			Blocked blockToRemove = objectToBeUnblocked.getBlocked();
-			objectToBeUnblocked.clearBlocked();
-			jpa.remove(blockToRemove);
-			jpa.merge(objectToBeUnblocked);
+			Blocked blockToRemove = objectToBeUnblocked.getBlocked(); // TODO --- treba checkovat aj ci je null, co ak poslem bludy
+			if(blockToRemove!=null)
+			{
+				objectToBeUnblocked.clearBlocked();
+				jpa.remove(blockToRemove);
+				jpa.merge(objectToBeUnblocked);
+			}
+			
 		}
 
 	}
@@ -115,7 +119,7 @@ public class BlockHelper {
 			}
 
 			if (o == null) {
-				throw new RuntimeException("No element with id " + id + " in the database");
+				throw new RuntimeException("No element with id " + id + " in the database"); // TODO --- toto je velmi zle
 			}
 
 			currentClass.cast(o);
