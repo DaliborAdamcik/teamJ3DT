@@ -1,10 +1,10 @@
 /**
  * An timer to start receive of fresh data
  */
-var welcomeRefreshTimeout= undefined;
 var templateTheme;
 var templateTopic;
 var welcomeDrawObjects;
+var listenEvents = false;
 
 /**
  * Initiates  visual components on page (visual style)
@@ -35,13 +35,12 @@ function welcomeUIinit()
     console.log(welcomeDrawObjects);
     
     themes2page();
-    welcomeRefreshTimeout = setInterval(ajaxWelcome, 30000);
+    ajaxEvents(); 
 }
 
 /**
  * Calls servlet and receive comments
  * After first call (receive all) receives only changes  
- * @param news undefined = only news
  * @returns void
  * @author Dalibor Adamcik
  */
@@ -56,16 +55,36 @@ function ajaxWelcome() {
 }
 
 /**
- * Stops automatic synchronization of comments
+ * Calls Events servlet for changes 
+ * @returns void
+ * @author Dalibor Adamcik
+ */
+function ajaxEvents() {
+	$.ajax({
+        type: "GET",
+        url: "Events",
+        contentType:"text/plain",
+        success: function (resp) {
+        	console.log("Events: ",resp);
+        	if(resp=="changed") {
+        		ajaxWelcome();
+        		if(themeIdentForComments!=undefined)
+        			ajaxComments();
+        	}
+        	else
+        	ajaxEvents();
+        },
+        error: function(resp) {ajaxFailureMessage(resp);}
+    });
+}
+
+
+/**
+ * Stops automatic synchronization of wecome page
  * @returns void
  * @author Dalibor Adamcik
  */
 function stopWelcomeSynchonize() {
-	if(welcomeRefreshTimeout)
-	{
-		clearInterval(welcomeRefreshTimeout);
-		welcomeRefreshTimeout = undefined;
-	}
 }
 
 function indexInArr(array, ident) {
@@ -73,6 +92,7 @@ function indexInArr(array, ident) {
 }
 
 function renewStoredObject(resp) {
+	ajaxEvents();
 	console.log(resp);
 	resp.topics.forEach(renewStoredTopic);    
 	resp.themes.forEach(renewStoredTheme);    

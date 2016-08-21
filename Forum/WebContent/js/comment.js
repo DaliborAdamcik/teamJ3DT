@@ -1,8 +1,4 @@
 /**
- * An timer to start receive of fresh data
- */
-var commentRefreshTimeout= undefined;
-/**
  * Identifier of opened theme
  */
 var themeIdentForComments= undefined;
@@ -21,7 +17,6 @@ function loadComments(themeId)
 	$('#commentBoxer').html('');
 	themeIdentForComments = themeId;
 	ajaxComments(false);
-	commentRefreshTimeout = setInterval(ajaxComments, 30000);
 	$("#welcome_pg").hide("slow");
 	$("#comments_pg").show("slow");
 	entityMenuButtonHide();
@@ -33,11 +28,7 @@ function loadComments(themeId)
  * @author Dalibor Adamcik
  */
 function stopCommentSynchonize() {
-	if(commentRefreshTimeout)
-	{
-		clearInterval(commentRefreshTimeout);
-		commentRefreshTimeout = undefined;
-	}
+	themeIdentForComments= undefined;
 }
 
 /**

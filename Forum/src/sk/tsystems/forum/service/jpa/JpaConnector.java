@@ -13,6 +13,8 @@ import javax.persistence.metamodel.EntityType;
 
 import org.hibernate.exception.ConstraintViolationException;
 
+import sk.tsystems.forum.servlets.Events;
+
 public class JpaConnector implements AutoCloseable { // class selector is package
 	
 	private static final String persistenceUnitName = "hibernatePersistenceUnit";
@@ -69,12 +71,12 @@ public class JpaConnector implements AutoCloseable { // class selector is packag
 			beginTransaction();
 			getEntityManager().persist(object);
 			commitTransaction();
+			Events.updateGate();
 			return true;
 		} catch (RollbackException e) {
 			if (exceptionChild(e, ConstraintViolationException.class)) {
 				System.err
 						.println("**** cant store object " + object.getClass().getSimpleName() + ": " + e.getMessage());
-
 			} else
 				throw e;
 		}
@@ -85,12 +87,14 @@ public class JpaConnector implements AutoCloseable { // class selector is packag
 		beginTransaction();
 		getEntityManager().merge(object);
 		commitTransaction();
+		Events.updateGate();
 	}
 
 	public void remove(Object object) {
 		beginTransaction();
 		getEntityManager().remove(getEntityManager().contains(object) ? object : getEntityManager().merge(object)); // TODO
 		commitTransaction();
+		Events.updateGate();
 	}
 
 	public javax.persistence.Query createQuery(String query) {
