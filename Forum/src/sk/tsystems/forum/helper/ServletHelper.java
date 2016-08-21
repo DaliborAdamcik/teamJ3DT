@@ -2,6 +2,8 @@ package sk.tsystems.forum.helper;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -321,35 +323,18 @@ public class ServletHelper {
 	}
 
 	/**
-	 * An JSON filter interface 
-	 *  
-	 * @author Dalibor Adamcik
-	 */
-	public interface JsonOutFilter {
-		/**
-		 * An target class to be filtered
-		 * @return {@link Class} target class
-		 */
-		public Class<?> getTarget();
-		/**
-		 * An filter definition (MixIn)
-		 * @return {@link Class} filter class
-		 */
-		public Class<?> getFilter();
-	}
-
-	/**
-	 * Converts object to JSON format and writes to response
+	 * Converts object to JSON format and writes to response<br>
+	 * Filter in Map is defined: <filter class, target class>
 	 * @param response {@link HttpServletResponse} target response to write JSON object
 	 * @param toJson {@link Object} an object to be written to JSON
-	 * @param filters {@link JsonOutFilter} filters to be applied to output
+	 * @param filters {@link Map} filters to be applied to output
 	 * @param flush {@link Boolean} true = sets content type and closes response.
 	 * false = appends to response
 	 * @throws IOException 
 	 * @throws JsonMappingException 
 	 * @throws JsonGenerationException 
 	 */
-	public static void jsonResponse(HttpServletResponse response, Object toJson, JsonOutFilter[] filters, boolean flush) 
+	public static void jsonResponse(HttpServletResponse response, Object toJson, Map<Class<?>, Class<?>> filters, boolean flush) 
 			throws JsonGenerationException, JsonMappingException, IOException {
 		
 		if(flush)
@@ -359,8 +344,11 @@ public class ServletHelper {
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		
 		if(filters!=null) {
-			for (JsonOutFilter filter : filters) 
-				mapper.addMixIn(filter.getTarget(), filter.getFilter());
+			Iterator<Map.Entry<Class<?>, Class<?>>> it = filters.entrySet().iterator();
+		    while (it.hasNext()) {
+		        Map.Entry<Class<?>, Class<?>> filter = it.next();
+				mapper.addMixIn(filter.getValue(), filter.getKey());
+		    }
 		}
 		
 		// TODO *** nesting for parrent child?
@@ -373,15 +361,16 @@ public class ServletHelper {
 	}
 
 	/**
-	 * Converts object to JSON format, sets content type write and close response.
+	 * Converts object to JSON format, sets content type write and close response.<br/>
+	 * Filter in Map is defined: <filter class, target class>
 	 * @param response {@link HttpServletResponse} target response to write JSON object
 	 * @param toJson {@link Object} an object to be written to JSON
-	 * @param filters {@link JsonOutFilter} filters to be applied to output
+	 * @param filters {@link Map} filters to be applied to output
 	 * @throws IOException 
 	 * @throws JsonMappingException 
 	 * @throws JsonGenerationException 
 	 */
-	public static void jsonResponse(HttpServletResponse response, Object toJson, JsonOutFilter[] filters) 
+	public static void jsonResponse(HttpServletResponse response, Object toJson, Map<Class<?>, Class<?>> filters) 
 			throws JsonGenerationException, JsonMappingException, IOException {
 		jsonResponse(response, toJson, filters, true);
 	}

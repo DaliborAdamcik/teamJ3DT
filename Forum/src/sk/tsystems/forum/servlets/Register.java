@@ -16,6 +16,7 @@ import sk.tsystems.forum.entity.exceptions.field.user.NickNameException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.UserHelper;
+import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -51,9 +52,7 @@ public class Register extends MasterServlet {
         
         try
         {
-        	JSONObject jsonClient;
-        	if((jsonClient = helper.getJSON())==null) // no json data received
-        		return;
+        	JSONObject jsonClient=  helper.getJSON();
         	
         	if(jsonClient.has("checknick"))
         		checkUserExists(jsonClient.getJSONObject("checknick"), jsonResponse, helper);
@@ -62,7 +61,10 @@ public class Register extends MasterServlet {
         		doRegister(jsonClient.getJSONObject("register"), jsonResponse, helper);
         	else
                 jsonResponse.put("register", "unrecognized action");
-        }
+        } catch (UnknownActionException e) {
+			ServletHelper.ExceptionToResponseJson(e, response, false);
+			return;
+		}
         finally
         {
 			response.setContentType("application/json");
