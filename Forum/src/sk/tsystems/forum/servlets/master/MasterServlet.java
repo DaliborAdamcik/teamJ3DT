@@ -6,10 +6,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sk.tsystems.forum.helper.ServletHelper;
-import sk.tsystems.forum.service.jpa.CommentJPA;
+import sk.tsystems.forum.service.jpa.JpaConnector;
+/*import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
-import sk.tsystems.forum.service.jpa.UserJPA;
+import sk.tsystems.forum.service.jpa.UserJPA;*/
+import sk.tsystems.forum.service.jpa2.CommentJPA2;
+import sk.tsystems.forum.service.jpa2.ThemeJPA2;
+import sk.tsystems.forum.service.jpa2.TopicJPA2;
+import sk.tsystems.forum.service.jpa2.UserJPA2;
 
 public abstract class MasterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,18 +34,22 @@ public abstract class MasterServlet extends HttpServlet {
 		System.out.println("**** Master SERVLET initialization *****"); 
 		ServletHelper servletHelper = new ServletHelper(request);
 		// Put all services we need to use		
-		servletHelper.setService(new UserJPA()); 
-		servletHelper.setService(new TopicJPA());
-		servletHelper.setService(new CommentJPA());
-		servletHelper.setService(new ThemeJPA());
-
-		// we can do some global checks here
-
-		// globally set current user
-		request.setAttribute(CURRENT_USER_ATTRIB, servletHelper.getLoggedUser());
-		System.out.println(servletHelper.getLoggedUser()+ " " + request.getAttribute(CURRENT_USER_ATTRIB));
-
-		super.service(request, response); // this line cant be comment out in
-											// case of any situation
+		
+		try(JpaConnector jpa = new JpaConnector())
+		{
+			servletHelper.setService(new UserJPA2(jpa)); 
+			servletHelper.setService(new TopicJPA2(jpa));
+			servletHelper.setService(new CommentJPA2(jpa));
+			servletHelper.setService(new ThemeJPA2(jpa));
+	
+			// we can do some global checks here
+	
+			// globally set current user
+			request.setAttribute(CURRENT_USER_ATTRIB, servletHelper.getLoggedUser());
+			System.out.println(servletHelper.getLoggedUser()+ " " + request.getAttribute(CURRENT_USER_ATTRIB));
+	
+			super.service(request, response); // this line cant be comment out in
+												// case of any situation
+		}
 	}
 }
