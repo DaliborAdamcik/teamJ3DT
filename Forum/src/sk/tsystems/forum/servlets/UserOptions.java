@@ -184,7 +184,7 @@ public class UserOptions extends MasterServlet {
 		rmapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, Object> rresp = new HashMap<>();
 		rresp.put("suc", "suc");
-		response.setContentType("application/json");
+		response.setContentType("application/json;charset=UTF-8");
 		rmapper.writeValue(response.getWriter(), rresp);
 	}
 
@@ -198,7 +198,7 @@ public class UserOptions extends MasterServlet {
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, Object> resp = new HashMap<>();
 		resp.put("suc", "suc");
-		response.setContentType("application/json");
+		response.setContentType("application/json;charset=UTF-8");
 		mapper.writeValue(response.getWriter(), resp);
 	}
 
@@ -234,7 +234,7 @@ public class UserOptions extends MasterServlet {
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, Object> resp = new HashMap<>();
 		resp.put("errMessage", errMessage);
-		response.setContentType("application/json");
+		response.setContentType("application/json;charset=UTF-8");
 		mapper.writeValue(response.getWriter(), resp);
 	}
 
@@ -275,7 +275,7 @@ public class UserOptions extends MasterServlet {
 		resp.put("date", newDateString);
 		resp.put("realname", newRealName);
 
-		response.setContentType("application/json");
+		response.setContentType("application/json;charset=UTF-8");
 		mapper.writeValue(response.getWriter(), resp);
 	}
 
