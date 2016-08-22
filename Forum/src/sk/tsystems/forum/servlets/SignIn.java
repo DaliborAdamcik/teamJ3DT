@@ -44,7 +44,12 @@ public class SignIn extends MasterServlet implements Servlet {
 
 		User user = userService.getUser(userName);
 		if (user == null || !user.authentificate(password)) {
-			response.getWriter().println("<h4 align = \"center\">Invalid username and password combination.</h4>");
+			response.getWriter().println("<script>alertDlg('Sign In', 'Invalid username or password','warn');</script>");
+			return;
+		}
+
+		if (user.isBlocked()) {
+			response.getWriter().println("<script>alertDlg('Account locked', 'Sorry, your account is locked.<br>Reason: "+user.getBlocked().getReason()+"','warn');</script>");
 			return;
 		}
 
