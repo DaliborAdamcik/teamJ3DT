@@ -9,29 +9,9 @@
 </head>
 <body>
 	<div class="container">
-
-
-
+	
+	
 		<h1 id="title"></h1>
-
-		<form id="add_topic" method="post" action="Admin">
-			<table>
-				<tr>
-					<td>new topic:
-					<td><input id="topic_newname" type="text" required="required"
-						name="new_username" autofocus><br>
-				<tr>
-					<td><input id="topic_ispublic" type="checkbox" name="ispublic"
-						value="true" checked> public<br>
-			</table>
-			<input id="submit_newtopic" type="submit" value="Submit">
-		</form>
-
-
-
-		<br> <br>
-
-		<div>
 			<br> <br>
 			<div class="col-md-6">
 				<table class="table">
@@ -45,10 +25,19 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
-
-
+	
+	
 	</div>
+<form id="add_topic" method="post" action="Admin">
+		<h3>Add new topic:</h3>
+		<input id="topic_newname" type="text" required="required"
+			name="new_username" autofocus><br> <input
+			id="topic_ispublic" type="checkbox" name="ispublic" value="true"
+			checked> public<br> <input id="submit_newtopic"
+			type="submit" value="Add Topic">
+	</form>
+
+
 	<div id="reasondialog" title="REASON">
 		<table>
 			<tr>
@@ -65,7 +54,7 @@
 				<td colspan="5" id="reason_field">reason
 		</table>
 	</div>
-	
+
 	<script id="userTemplate" type="text/template">
 <tr><th> User Name<th>Role<th> Blocked For<th>Block<th>Promote
 {{#users}} <tr><td id="username">{{userName}} 

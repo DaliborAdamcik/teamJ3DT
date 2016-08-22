@@ -147,6 +147,11 @@ footer {
     width: 23px;
     height: 23px;
 }
+#add_topic{
+	position:relative;
+	left:9%;
+	padding:3px;
+}
 
 
 

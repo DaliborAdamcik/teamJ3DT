@@ -213,41 +213,36 @@ $("#add_topic").submit(function(ev) {
 		success : function(response) {
 			console.log(response);
 			alertDlg("Success!", "topic added successfuly", "info");
-			}
-		
+		}
+
 	});
 	return false;
 });
 
-function changetopic(id){
+function changetopic(id) {
 	var jsobj = {};
 	jsobj.id = id;
-	if($('#newtopicname_'+id).val()==""){
+	if ($('#newtopicname_' + id).val() == "") {
 		alertDlg("Error", "topic name can't be empty", "warn");
 		return false;
 	}
-	jsobj.newname = $('#newtopicname_'+id).val();
+	jsobj.newname = $('#newtopicname_' + id).val();
 	console.log(jsobj);
 	$.ajax({
 		type : "PUT",
-		url : "Admin/"+id+"/changetopic",
+		url : "Admin/" + id + "/changetopic",
 		contentType : "application/json;charset=UTF-8",
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
-			if(response.error!=null){
+			if (response.error != null) {
 				alertDlg("Error", response.error, "warn");
 				return false;
 			}
 			console.log(response);
 			alertDlg("Success!", "topic changed successfuly", "info");
-			}
-		
+		}
+
 	});
 	return false;
 }
-
-
-
-
-
