@@ -172,7 +172,6 @@ public class Welcome extends MasterServlet {
 		// Atribut logged user, vyuizity pri jsp kde je menu
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/welcomepage.jsp").include(request, response);
-		request.getRequestDispatcher("/WEB-INF/jsp/commentnew.jsp").include(request, response);
 		response.getWriter().print("<script id=\"themesFirst\" type=\"application/json\">");
 		doGetListOfThemeTopic(helpser, response, false, false);
 		response.getWriter().print("</script>");
