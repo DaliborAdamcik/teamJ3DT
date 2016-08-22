@@ -34,6 +34,11 @@
 	</p>
 </div>
 
+<div id="alertDlg" title="Alert dialog">
+	<span style="float: left"><img src="images/err.png" alt="nic"></span> 
+	<span id="alertDlg_msg"></span>
+</div>
+
 <div id="yesNoCommonDlg" title="Yes No title">
 	<p>
 		<span class="ui-icon ui-icon-alert"
@@ -41,7 +46,6 @@
 			id="yesNoCommonDlg_message"></span>
 	</p>
 </div>
-
 
 <div id="ajaxErrorDlg" title="Error during AJAX request"
 	style="background-color: #ff9999;"></div>

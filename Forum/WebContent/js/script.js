@@ -64,6 +64,16 @@ $( document ).ready(function() {
 			}
 		}
 	}, $comonDlgOpts));
+
+	$('#alertDlg').dialog($.extend({ 
+		height: "auto",
+		width: "auto", 
+		buttons: {
+			Close: function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	}, $comonDlgOpts));
 	
 	
 	// ajax common error dialog
@@ -88,6 +98,46 @@ $( document ).ready(function() {
 			}
 		}, $comonDlgOpts));
 });
+
+//AlertDlg ---------------------------------------------------------
+/**
+ * Shows common alert dialog. 
+ * Callback template: function(bool answer, function cbcparam){}
+ * @param title Dialog title
+ * @param message Message in dialog
+ * @param style = load icon, default info
+ * @author Dalibor Adamcik
+ */
+function alertDlg(title, message, style) {
+	var $dlg = $('#alertDlg').clone().appendTo( document.body );
+	$dlg.dialog($.extend({ 
+		height: "auto",
+		width: "auto", 
+		buttons: {
+			Close: function() {
+				$( this ).dialog( "close" );
+				$( this ).remove();
+			}
+		}
+	}, $comonDlgOpts));
+	
+	$dlg.dialog('option', 'title', title);
+	$dlg.find('#alertDlg_msg').html(message);
+	if(style==undefined)
+		style="info";
+	$dlg.find('img').attr('src', 'images/aldlg/'+style+'.png');
+	$dlg.dialog('open');
+}
+
+/**
+ * Show an error dialog
+ * @param errSON an eeror response from servlet
+ */
+function errorDlg(errSON) {
+	if(errSON.error == undefined)
+		return;
+	alertDlg("Error: "+errSON.error.type, errSON.error.message, 'error');
+}
 
 /**
  * Show block dialog
@@ -154,6 +204,7 @@ function blockCommonDlg_DoBlock()
  */
 function blockCommonDlg_BlockSucces(response) {
 	console.log("blockCommonDlg_BlockSucces response:", response);
+	errorDlg(response);
 	try
 	{
 		var $dlg = $('#blockCommonDlg');
@@ -181,6 +232,7 @@ function unblockCommonDlgPopup(ident, callback){
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
+			errorDlg(response);
 			try {
 				callback();
 			}
