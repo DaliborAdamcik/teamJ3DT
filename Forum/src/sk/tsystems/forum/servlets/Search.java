@@ -123,6 +123,7 @@ public class Search extends MasterServlet {
 			this.lastModified = theme.getModified();
 			this.created = theme.getCreated();
 			this.blocked = theme.isBlocked();
+			this.comment = theme.getDescription();
 		}
 
 		public SearchResult(Topic topic) {
@@ -133,7 +134,7 @@ public class Search extends MasterServlet {
 			this.blocked = topic.isBlocked();
 		}
 
-		public String getComent() {
+		public String getComment() {
 			return comment;
 		}
 		public String getTopic() {

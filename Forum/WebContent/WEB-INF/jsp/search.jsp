@@ -4,17 +4,32 @@
 
 
 <input type="text" placeholder="Search text" id="tosearch" />
-<div id="srch_results">
+<hr/>
+<div id="srch_results"></div>
 
+<script id="srch_comment" type="text/template">
+<div><a href="Welcome#red2com={{idTheme}}&ci={{idComment}}"> {{topic}} &gt; {{theme}} </a><br>
+<div> {{comment}} </div>
+Modified: {{lastModified}} 
 </div>
+</script>
 
-<script id="topicTemplate" type="text/template">
-<h3 id="ent_{{id}}_tit">{{name}}
-	<button type="button" class="close entitymenucls"
-		aria-hidden="true"
-		onclick="newThemeDlgPopup({{id}});">New	theme</button>
-</h3>
-<div id="ent_{{id}}_cont"></div>
+<script id="srch_theme" type="text/template">
+<div><a href="Welcome#red2com={{idTheme}}"> {{topic}} &gt; {{theme}} </a><br>
+<div> {{comment}} </div>
+Modified: {{lastModified}}
+</div>
+</script>
+
+<script id="srch_topic" type="text/template">
+<div><a href="Welcome#optop={{idTopic}}"> {{topic}} </a><br>
+Modified: {{lastModified}}
+</div>
+</script>
+
+<script id="srch_res" type="text/template">
+<div style="background: #e6fff5;">
+<span style="background: #99ffd6;">{{what}}</span> found in {{count}} results</div>
 </script>
 
 <script type="text/javascript" src="js/search.js"></script>
