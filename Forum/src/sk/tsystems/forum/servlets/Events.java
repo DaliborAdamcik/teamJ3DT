@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Events")
 public class Events extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static Date gate;
+	private static Date gate = new Date();
 	private static String LAST_EVENT_STAMP = "LAST_EVENT_STAMP";
-	private static int waitSeconds = 60;
+	private static int waitSeconds = 15;
 	
 	public Events() {
 		super();
-		gate = new Date();
+		//gate = new Date();
 	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,11 +62,9 @@ public class Events extends HttpServlet {
 			synchronized (gate) {
 					gate.setTime(System.currentTimeMillis());
 					gate.notify();
-				
-				
 			}
 		} catch(NullPointerException e) {
-			gate = new Date(0);
+			gate = new Date();
 		}
 	}
 }
