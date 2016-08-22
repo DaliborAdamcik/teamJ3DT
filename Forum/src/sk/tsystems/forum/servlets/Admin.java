@@ -29,6 +29,7 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
+import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -128,20 +129,32 @@ public class Admin extends MasterServlet {
 				unblock(response, servletHelper,obj);
 				break;
 			case "addtopic":
+				addTopic(response, servletHelper, obj);
+				break;
+			case "changetopic":
 				Topic topic;
+				String error=null;
+				TopicService topicService = servletHelper.getTopicService();
 				try {
-					topic = new Topic(obj.getString("topicname"),obj.getBoolean("ispublic"));
-					servletHelper.getTopicService().addTopic(topic);
-				} catch (FieldValueException e) {
-					System.out.println("invalid access");
-				} catch (JSONException e) {
+					topic = topicService.getTopic(obj.getInt("id"));
+					topic.setName(obj.getString("newname"));
+					topicService.updateTopic(topic);
 					
+				} catch (JSONException e) {
+					error = "JSON exception";
+				} catch (FieldValueException e) {
+					error = "New topic name cant be empty";
 				}
 				
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.setSerializationInclusion(Include.NON_NULL);
 				Map<String, Object> resp = new HashMap<>();
-				resp.put("topic", "topic");
+				
+				if(error!=null){
+					resp.put("error", error);
+				}else {
+					resp.put("suc", "suc");
+				}
 
 				response.setContentType("application/json");
 				mapper.writeValue(response.getWriter(), resp);
@@ -156,6 +169,27 @@ public class Admin extends MasterServlet {
 		} catch (UnknownActionException e) {
 			response.getWriter().println(e.getMessage());
 		}
+	}
+
+	private void addTopic(HttpServletResponse response, ServletHelper servletHelper, JSONObject obj)
+			throws IOException, JsonGenerationException, JsonMappingException {
+		Topic topic;
+		try {
+			topic = new Topic(obj.getString("topicname"),obj.getBoolean("ispublic"));
+			servletHelper.getTopicService().addTopic(topic);
+		} catch (FieldValueException e) {
+			System.out.println("invalid access");
+		} catch (JSONException e) {
+			
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		Map<String, Object> resp = new HashMap<>();
+		resp.put("topic", "topic");
+
+		response.setContentType("application/json");
+		mapper.writeValue(response.getWriter(), resp);
 	}
 
 	private void unblock(HttpServletResponse response,ServletHelper svHelper, JSONObject obj)

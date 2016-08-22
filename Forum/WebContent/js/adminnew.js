@@ -217,3 +217,31 @@ $("#add_topic").submit(function(ev) {
 	});
 	return false;
 });
+
+function changetopic(id){
+	var jsobj = {};
+	jsobj.id = id;
+	if($('#newtopicname_'+id).val()==){
+		
+	}
+	jsobj.newname = $('#newtopicname_'+id).val();
+	console.log(jsobj);
+	$.ajax({
+		type : "PUT",
+		url : "Admin/"+id+"/changetopic",
+		contentType : "application/json;charset=UTF-8",
+		dataType : "json",
+		data : JSON.stringify(jsobj),
+		success : function(response) {
+			console.log(response);
+			alert("topic added successfuly");
+			}
+		
+	});
+	return false;
+}
+
+
+
+
+
