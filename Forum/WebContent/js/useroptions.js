@@ -57,7 +57,7 @@ $("#personalinfo_change").submit(
 					"getDate"), "dd.MM.yyyy");
 			jsobj.newrealname = $('#userinfo_realname').val();
 			if (jsobj.newrealname.length == 0) {
-				alert("specify new name");
+				alertDlg("Error", "specify new name", "warn");
 				return false;
 			}
 			$.ajax({
@@ -67,7 +67,7 @@ $("#personalinfo_change").submit(
 				dataType : "json",
 				data : JSON.stringify(jsobj),
 				success : function(response) {
-					alert("personal info changed sucessfully");
+					alertDlg("Success!", "personal info changed sucessfully", "info");
 					$('#userinfo_birthdate').val(response.date);
 					$('#userinfo_realname').val(response.realname);
 				}
