@@ -58,6 +58,9 @@ public class Events extends HttpServlet {
 	}
 	
 	public static void updateGate() {
+		if(gate==null)
+			return;
+		
 		synchronized (gate) {
 			try {			
 				gate.setTime(System.currentTimeMillis());
