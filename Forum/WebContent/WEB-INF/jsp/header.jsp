@@ -43,6 +43,9 @@
 					<ul class="nav navbar-nav">
 						<li><a onclick="showWelcomePage();">Topics</a></li>
 					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href="Search/">Search</a></li>
+					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<c:choose>
 							<c:when test="${CURRENT_USER!= null}">

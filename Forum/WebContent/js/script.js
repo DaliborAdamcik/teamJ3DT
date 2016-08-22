@@ -105,7 +105,7 @@ $( document ).ready(function() {
  * Callback template: function(bool answer, function cbcparam){}
  * @param title Dialog title
  * @param message Message in dialog
- * @param style = load icon, default info
+ * @param style = load icon, info / warn / error
  * @author Dalibor Adamcik
  */
 function alertDlg(title, message, style) {
@@ -386,5 +386,6 @@ function showWelcomePage()
 		entityMenuButtonHide();
 		stopCommentSynchonize();
 	}
+	
 	return false;
 }
