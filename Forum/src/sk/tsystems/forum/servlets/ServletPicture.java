@@ -90,8 +90,7 @@ public class ServletPicture extends MasterServlet {
 			if(xpos<0 || ypos<0)
 				throw new FieldValueException("Bad crop start position.");
 			
-			System.out.println(mapFields);
-			
+		
 			try {
 				BufferedImage bi = ImageIO.read(upFile.getInputStream());
 				

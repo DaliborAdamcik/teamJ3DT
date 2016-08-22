@@ -105,9 +105,7 @@ public class Welcome extends MasterServlet {
 			if(helpser.requestURL().indexOf("Welcome")<0) 
 				responsePageHTML(request, response, helpser);
 			else {
-
-				response.getWriter().print(e);
-				e.printStackTrace();
+				ServletHelper.ExceptionToResponseJson(e, response, false);
 			}
 		}
 	}
@@ -198,7 +196,6 @@ public class Welcome extends MasterServlet {
 			if (request.getParameter("parameter").equals("logout")) {
 				helpser.logoutUser();
 				request.setAttribute(CURRENT_USER_ATTRIB, null);
-				System.out.println("User was logged out...");				
 			}
 		}
 		
@@ -239,11 +236,7 @@ public class Welcome extends MasterServlet {
 				theme.setDescription(json.getString("description"));
 				theme.setName(json.getString("name"));
 				theme.setPublic(json.getBoolean("isPublic"));
-				
-				System.out.println("`last "+theme.getModified());
 				prioper.store(theme);
-				System.out.println("updated "+theme.getModified());
-				
 				
 				return;
 			}
@@ -262,7 +255,8 @@ public class Welcome extends MasterServlet {
 				
 				prioper.store(theme);
 				return;*/
-				throw new RuntimeException("Not yet implemented");
+				
+				throw new UnknownActionException("Not yet implemented");
 			}
 			
 			throw new UnknownActionException("Uknknown action taken");
@@ -270,22 +264,6 @@ public class Welcome extends MasterServlet {
 		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | FieldValueException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}
-		
-		
-/*
-		if (request.getParameter("new_topic_name") != null) {
-			if (!request.getParameter("new_topic_name").equals("")) {
-				System.out.println("Request> create new topic: " + request.getParameter("new_topic_name"));
-
-				if (helpser.getSessionRole() == UserRole.ADMIN) {
-					topicJPA.addTopic(new Topic(request.getParameter("new_topic_name"), true));
-					System.out.println("New topic " + request.getParameter("new_topic_name") + "was created.");
-				}
-			}
-		}*/
-
-		// TODO Auto-generated method stub
-		
 	}
 	
 	// add theme

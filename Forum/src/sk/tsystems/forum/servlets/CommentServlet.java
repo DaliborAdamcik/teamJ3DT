@@ -84,13 +84,11 @@ public class CommentServlet extends MasterServlet {
 				// create list of blocked, remove blocked (erased) 
 				if(!svHelper.getSessionRole().equals(UserRole.ADMIN))
 				{
-					System.out.println("bujko");
 					for (Iterator<Comment> iterator = comments.iterator(); iterator.hasNext();) {
 						Comment comment = iterator.next();
 						if(comment.isBlocked()) {
 							erased.add(comment.getId());
 							iterator.remove();
-							System.out.println("biik");
 						}
 					}
 				}
@@ -148,16 +146,10 @@ public class CommentServlet extends MasterServlet {
 			Map<String, Object> resp = new HashMap<>();
 			resp.put("comment", comment);
 			ServletHelper.jsonResponse(response, resp);
-			
-
-			/*ObjectMapper mapper = new ObjectMapper();
-			mapper.setSerializationInclusion(Include.NON_NULL);
-			response.setContentType("application/json");
-			mapper.writeValue(response.getWriter(), resp);*/
 		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldValueException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}  catch (JSONException e) {
-			// TODO Auto-generated catch block
+			ServletHelper.ExceptionToResponseJson(e, response, false);
 			e.printStackTrace();
 		} 
 	}
@@ -191,16 +183,6 @@ public class CommentServlet extends MasterServlet {
 			Map<String, Object> resp = new HashMap<>();
 			resp.put("comment", comment);
 			ServletHelper.jsonResponse(response, resp);
-
-			/*
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.setSerializationInclusion(Include.NON_NULL);
-
-			Map<String, Object> resp = new HashMap<>();
-			resp.put("comment", comment);
-
-			response.setContentType("application/json");
-			mapper.writeValue(response.getWriter(), resp);*/
 		} catch (URLParserException | UnknownActionException | WEBNoPermissionException | FieldValueException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		} 
