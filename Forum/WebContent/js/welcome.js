@@ -16,7 +16,7 @@ function welcomeUIinit()
     $( "#topicList" ).accordion({
       heightStyle: "content"
     });
-
+    
     // edit theme dialog
     $( "#editThemeDlg" ).dialog($.extend({ 
 		height: "auto",
@@ -32,7 +32,12 @@ function welcomeUIinit()
     templateTheme = $('#themeTemplate').html();
     templateTopic = $('#topicTemplate').html();
     welcomeDrawObjects = JSON.parse($('#themesFirst').html());
-    console.log(welcomeDrawObjects);
+    
+    if(window.location.href.indexOf("#asuser")>0)
+    	user.role="REGULARUSER";
+
+    if(window.location.href.indexOf("#asadmin")>0)
+    	user.role="ADMIN";
     
     themes2page();
     ajaxEvents(); 
@@ -94,9 +99,13 @@ function indexInArr(array, ident) {
 function renewStoredObject(resp) {
 	ajaxEvents();
 	console.log(resp);
-	resp.topics.forEach(renewStoredTopic);    
+	if(resp.topics)
+	resp.topics.forEach(renewStoredTopic);
+	
+	if(resp.themes)
 	resp.themes.forEach(renewStoredTheme);    
-
+	
+	if(resp.erased)
 	resp.erased.forEach(function(ident){
 		var $erased = $('#topicList').find('#ent_'+ident);
 		if($erased.length==0)

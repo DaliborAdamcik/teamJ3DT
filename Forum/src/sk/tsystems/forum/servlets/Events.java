@@ -58,18 +58,15 @@ public class Events extends HttpServlet {
 	}
 	
 	public static void updateGate() {
-		if(gate==null)
-			return;
-		
-		synchronized (gate) {
-			try {			
-				gate.setTime(System.currentTimeMillis());
-				gate.notify();
-			} catch(NullPointerException e) {
-				gate = new Date();
+		try {			
+			synchronized (gate) {
+					gate.setTime(System.currentTimeMillis());
+					gate.notify();
+				
+				
 			}
-			
-			
+		} catch(NullPointerException e) {
+			gate = new Date(0);
 		}
 	}
 }

@@ -109,13 +109,15 @@ public class ServletPicture extends MasterServlet {
 				} else
 					new ProfilePicture(owner, saveImg);
 				
-				// TODO *** response is okay 
-				response.getWriter().print("OK");
+				HashMap<String, String> resp = new HashMap<>();
+				resp.put("result", "ok");
+				resp.put("message", "profile picture sucessfully changed");
+				ServletHelper.jsonResponse(response, resp);
 			} catch (java.lang.IllegalArgumentException exc) {
-				response.getWriter().print(exc.getMessage()); // TODO *** exception to JSON
+				ServletHelper.ExceptionToResponseJson(exc, response, false);
 			} 
 		} catch (FieldValueException | EntityAutoPersist e) {
-			response.getWriter().print(e.getMessage()); // TODO *** exception to JSON
+			ServletHelper.ExceptionToResponseJson(e, response, false);
 		} 
 	}
 	
