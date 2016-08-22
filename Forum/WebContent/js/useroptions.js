@@ -61,7 +61,8 @@ $("#personalinfo_change").submit(
 			var jsobj = {};
 			jsobj.newdate = date2str($('#userinfo_birthdate').datepicker(
 					"getDate"), "dd.MM.yyyy");
-			var datecompare = /^(0?[1-9]|[12][0-9]|3[01]).(0?[1-9]|1[012]).((19|20)[0-9]{2}$)/;
+			var datecompare = /^((0?[1-9]|[12][0-9]|3[01]).(0?[13578]|1[02])| (0?[1-9]|[12][0-9]|3[0]).(0?[469]|1[1]) |(0?[1-9]|[12][0-9]).(0?2)).((19|20)[0-9]{2})$/;
+			
 			if(!datecompare.test(newdate)){
 				alertDlg("Failed!", "Date in incorrect format. please insert date in format dd.mm.yyyy", "warn");
 				return false;
