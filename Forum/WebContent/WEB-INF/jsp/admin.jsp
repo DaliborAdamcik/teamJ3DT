@@ -80,7 +80,7 @@
 <tr><th> Topic Name<th> Blocked For<th>Block<th>Mark
 {{#topics}} <tr><td>
 	<input size='15' id="newtopicname_{{id}}" type='text' value='{{name}}' />
-	<button id="submitnewname_{{id}}" onclick="changetopic({{id}})">asd</button>
+	<button id="submitnewname_{{id}}" onclick="changetopic({{id}})" background = "images/ok.png">aaaa</button>
 <td id="blockedfor_{{id}}">{{#blocked}}<button class="showreason_button" onclick="showreason('{{name}}','{{blockedBy.userName}}','{{reason}}',this);">REASON</button>{{/blocked}}
 <td id="block_{{id}}">{{{blockbutton}}}
 <td id="promote_{{id}}">{{{markbutton}}}

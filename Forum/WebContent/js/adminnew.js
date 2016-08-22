@@ -221,8 +221,9 @@ $("#add_topic").submit(function(ev) {
 function changetopic(id){
 	var jsobj = {};
 	jsobj.id = id;
-	if($('#newtopicname_'+id).val()==){
-		
+	if($('#newtopicname_'+id).val()==""){
+		alert("topic name can't be empty");
+		return false;
 	}
 	jsobj.newname = $('#newtopicname_'+id).val();
 	console.log(jsobj);
@@ -234,7 +235,7 @@ function changetopic(id){
 		data : JSON.stringify(jsobj),
 		success : function(response) {
 			console.log(response);
-			alert("topic added successfuly");
+			alert("topic changed successfuly");
 			}
 		
 	});
