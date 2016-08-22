@@ -242,19 +242,21 @@ public class UserOptions extends MasterServlet {
 			throws IOException, JsonGenerationException, JsonMappingException {
 		String newRealName = obj.getString("newrealname");
 		String newDateString = obj.getString("newdate");
+		String error = null;
 		if (newRealName != null && newDateString != null) {
 			Date newDate = null;
 			try {
 				newDate = UserHelper.stringToDate(newDateString, "dd.MM.yyyy");
 			} catch (BadDateException e) {
-				e.printStackTrace();
+				error = e.getMessage();
 			}
 			User loggedUser = servletHelper.getLoggedUser();
 			if (newDate != null) {
 				try {
 					loggedUser.setBirthDate(newDate);
+					
 				} catch (FieldValueException | BadDateException e) {
-					// TODO DOPLNIT OSETRENIE
+					error = e.getMessage();
 				}
 			}
 			if (newRealName != null) {
@@ -262,7 +264,7 @@ public class UserOptions extends MasterServlet {
 				try {
 					loggedUser.setRealName(newRealName);
 				} catch (FieldValueException e) {
-					System.out.println("Invalid access");
+					error = e.getMessage();
 				}
 
 			}
@@ -272,10 +274,11 @@ public class UserOptions extends MasterServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, Object> resp = new HashMap<>();
+		if (error != null) {
+			resp.put("error", error);
+		}
 		resp.put("date", newDateString);
 		resp.put("realname", newRealName);
-		System.out.println(newRealName);
-
 		response.setContentType("application/json;charset=UTF-8");
 		mapper.writeValue(response.getWriter(), resp);
 	}
