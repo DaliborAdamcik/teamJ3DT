@@ -130,13 +130,15 @@ function alertDlg(title, message, style) {
 }
 
 /**
- * Show an error dialog
- * @param errSON an eeror response from servlet
+ * Show an error dialog, if is present in response
+ * @param resp  response from server
+ * @returns Boolean true = an error shown, false = no error 
  */
-function errorDlg(errSON) {
-	if(errSON.error == undefined)
-		return;
-	alertDlg("Error: "+errSON.error.type, errSON.error.message, 'error');
+function ajxErrorDlg(resp) {
+	if(resp.error == undefined)
+		return false;
+	alertDlg("Error: "+resp.error.type, resp.error.message, 'error');
+	return true;
 }
 
 /**
@@ -171,7 +173,7 @@ function blockCommonDlg_DoBlock()
 	    
 	    if(reason.length==0)
     	{
-	    	alert("reason cant be empty"); // TODO temporary message box
+	    	alertDlg("Block", "Reason cant be empty", "warn");
 	    	return;
     	}
 	    
@@ -204,7 +206,7 @@ function blockCommonDlg_DoBlock()
  */
 function blockCommonDlg_BlockSucces(response) {
 	console.log("blockCommonDlg_BlockSucces response:", response);
-	errorDlg(response);
+	ajxErrorDlg(response);
 	try
 	{
 		var $dlg = $('#blockCommonDlg');
@@ -232,7 +234,7 @@ function unblockCommonDlgPopup(ident, callback){
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
-			errorDlg(response);
+			ajxErrorDlg(response);
 			try {
 				callback();
 			}
@@ -274,8 +276,8 @@ function removeCommonDlgPopup(ident, callback){
  */
 function removeCommonDlg_defaultCallBack(response, ident) {
 	console.log(response, ident);
-	// todo check response here
-	$('#ent_'+ident).hide('slow');	
+	if(ajxErrorDlg(response))
+		$('#ent_'+ident).hide('slow');	
 }
 
 
@@ -297,7 +299,7 @@ function removeCommonDlg_answer(answer, cbcparam)
 	    	block_reason: 'Erased by OWNER'
 	    },
         success: function (resp) {
-        	errorDlg(resp);
+        	ajxErrorDlg(resp);
         	try {
         		console.log(cbcparam);
         		cbcparam.cbc(resp, cbcparam.id);
@@ -361,10 +363,10 @@ function yesNoCommonDlg_answer(answer) {
  * this is called after ajax failure response
  */
 function ajaxFailureMessage(jxhr) {
-	var $ajxErrorDlg = $('#ajaxErrorDlg')
+	var $ajxErrDlg = $('#ajaxErrorDlg')
 	
-    $ajxErrorDlg.html(Mustache.to_html($('#ajaxErrorDlg_tmpl').html(), jxhr));
-	$ajxErrorDlg.dialog('open');
+    $ajxErrDlg.html(Mustache.to_html($('#ajaxErrorDlg_tmpl').html(), jxhr));
+	$ajxErrDlg.dialog('open');
 }
 
 //Welcome page show / hide ---------------------------------------------------------

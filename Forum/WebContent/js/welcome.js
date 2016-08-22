@@ -97,14 +97,16 @@ function indexInArr(array, ident) {
 }
 
 function renewStoredObject(resp) {
-	errorDlg(resp);
 	ajaxEvents();
 	console.log(resp);
+	if(ajxErrorDlg(resp))
+			return;
+	
 	if(resp.topics)
-	resp.topics.forEach(renewStoredTopic);
+		resp.topics.forEach(renewStoredTopic);
 	
 	if(resp.themes)
-	resp.themes.forEach(renewStoredTheme);    
+		resp.themes.forEach(renewStoredTheme);    
 	
 	if(resp.erased)
 	resp.erased.forEach(function(ident){
@@ -241,7 +243,9 @@ function editThemeDlgPopup(themeid){
         url: "Welcome/"+ themeid +"/theme",
         success: function (response) {
         	console.log(response);
-        	errorDlg(response);
+        	if(ajxErrorDlg(response))
+        		return;
+        	
         	$('#editThemeDlg').data("theme", response.theme);
         	editThemeDlg_data2field();
         	$('#editThemeDlg').dialog('open');
@@ -249,7 +253,7 @@ function editThemeDlgPopup(themeid){
         error: ajaxFailureMessage
     });
 	else
-		alert('theme must be specified. Backward compatibility error.');
+		alertDlg('Cant edit theme', 'Theme must be specified. Backward compatibility error.', 'error');
 }
 
 /**
@@ -302,7 +306,7 @@ function editThemeDlg_save(){
 
 	if(topicId==0 && themeId==0 || topicId>0 && themeId>0)
 	{
-		alert('Error: Nothing to edit');
+		alertDlg("Edit / create theme",'Nothing to edit.', 'error');
 		return
 	}
 	
@@ -315,7 +319,7 @@ function editThemeDlg_save(){
 	try {
 		if(jsobj.name.legth==0 || jsobj.description.legth==0)
     	{
-	    	alert("Name and description is required fields.");
+	    	alertDlg((themeId>0?"Edit":"Create")+" theme", "Name and description is required fields.", "warn");
 	    	return;
     	}
 		
@@ -336,7 +340,7 @@ function editThemeDlg_save(){
 	        		themes2page();
 	        		console.log("safasdfgsdhd");
 	        	}
-	        	errorDlg(response);
+	        	ajxErrorDlg(response);
 	        },
 	        error: ajaxFailureMessage
 	    });
@@ -356,7 +360,7 @@ function addNewTopic() {
 	try {
 		if(jsobj.name.legth==0)
     	{
-	    	alert("Name is required field.");
+	    	alert("New topic", "Name is required field.", "warn");
 	    	return;
     	}
 		$("#new_topic_txt").val('');
@@ -374,10 +378,7 @@ function addNewTopic() {
 	        		renewStoredTopic(response.topic);
 	        		themes2page();
 	        	}
-        		if(response.error){
-        			console.error(response.error);
-    	        	alert('Error: '+error.type + " "+error.message);
-        		}
+	        	ajxErrorDlg(response);
 	        },
 	        error: ajaxFailureMessage
 	    });
