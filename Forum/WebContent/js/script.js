@@ -297,6 +297,7 @@ function removeCommonDlg_answer(answer, cbcparam)
 	    	block_reason: 'Erased by OWNER'
 	    },
         success: function (resp) {
+        	errorDlg(resp);
         	try {
         		console.log(cbcparam);
         		cbcparam.cbc(resp, cbcparam.id);

@@ -97,6 +97,7 @@ function indexInArr(array, ident) {
 }
 
 function renewStoredObject(resp) {
+	errorDlg(resp);
 	ajaxEvents();
 	console.log(resp);
 	if(resp.topics)
@@ -240,6 +241,7 @@ function editThemeDlgPopup(themeid){
         url: "Welcome/"+ themeid +"/theme",
         success: function (response) {
         	console.log(response);
+        	errorDlg(response);
         	$('#editThemeDlg').data("theme", response.theme);
         	editThemeDlg_data2field();
         	$('#editThemeDlg').dialog('open');
@@ -334,12 +336,7 @@ function editThemeDlg_save(){
 	        		themes2page();
 	        		console.log("safasdfgsdhd");
 	        	}
-        		if(response.error){
-        			console.error(response.error);
-    	        	alert('Error: '+response.error.type + " "+response.error.message);
-        		}
-	        		
-	        	
+	        	errorDlg(response);
 	        },
 	        error: ajaxFailureMessage
 	    });
