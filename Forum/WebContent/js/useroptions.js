@@ -4,9 +4,9 @@ $(function() {
 		dateFormat : "dd.mm.yy"
 	});
 });
-//$(function() {
-//	$("input.checkbox").checkboxradio();
-//});
+// $(function() {
+// $("input.checkbox").checkboxradio();
+// });
 /**
  * function called in jsp, calls ajax from the servlet
  * 
@@ -22,14 +22,15 @@ function loadOptionsPage() {
 }
 /**
  * Puts data from ajax to elements specified in jsp
+ * 
  * @param response
  */
 function makeOptionsPage(response) {
-	
+
 	if (response.user == null) {
 		$('#title').html("you need to  log in first");
 		return;
-	} 
+	}
 	$('#options_menu').show();
 	$('#personalinfo_change').show();
 	$('#userinfo_realname').val(response.user.realName);
@@ -38,6 +39,7 @@ function makeOptionsPage(response) {
 }
 /**
  * puts all topics into form
+ * 
  * @param response
  */
 function putAllTopics(response) {
@@ -119,83 +121,116 @@ function date2str(x, y) {
 
 /**
  * adds topic
+ * 
  * @param id
  * @param button
  * @param name
  */
-function addtopic(id, button, name){
+function addtopic(id, button, name) {
 	var jsobj = {};
 	jsobj.id = id;
-	$.ajax({
-		type : "PUT",
-		url : "Useroptions/" + id + "/addtopic",
-		contentType : "application/json;charset=UTF-8",
-		dataType : "json",
-		data : JSON.stringify(jsobj),
-		success : function(response) {
-			var promid = "topic_change_"+id
-			var td = document.getElementById(promid);
-				td.innerHTML = "<button class=\"removetopic_button\" onclick=\"removetopic("+id+", this,'"+name+"');\">"+name+"</button>";
-				console.log("sucess add")
-		},
-		error : ajaxFailureMessage
-	});
+	$
+			.ajax({
+				type : "PUT",
+				url : "Useroptions/" + id + "/addtopic",
+				contentType : "application/json;charset=UTF-8",
+				dataType : "json",
+				data : JSON.stringify(jsobj),
+				success : function(response) {
+					var promid = "topic_change_" + id
+					var td = document.getElementById(promid);
+					td.innerHTML = "<button class=\"removetopic_button\" onclick=\"removetopic("
+							+ id
+							+ ", this,'"
+							+ name
+							+ "');\">"
+							+ name
+							+ "</button>";
+					console.log("sucess add")
+				},
+				error : ajaxFailureMessage
+			});
 }
 /**
  * remove topic specified by ID from currently logged user
+ * 
  * @param id
  * @param button
  * @param name
  */
-function removetopic(id, button, name){
+function removetopic(id, button, name) {
 	var jsobj = {};
 	jsobj.id = id;
-	$.ajax({
-		type : "PUT",
-		url : "Useroptions/" + id + "/removetopic",
-		contentType : "application/json;charset=UTF-8",
-		dataType : "json",
-		data : JSON.stringify(jsobj),
-		success : function(response) {
-			var promid = "topic_change_"+id
-			var td = document.getElementById(promid);
-				td.innerHTML = "<button class=\"addtopic_button\" onclick=\"addtopic("+id+", this,'"+name+"');\">"+name+"</button>";
-		},
-		error : ajaxFailureMessage
+	$
+			.ajax({
+				type : "PUT",
+				url : "Useroptions/" + id + "/removetopic",
+				contentType : "application/json;charset=UTF-8",
+				dataType : "json",
+				data : JSON.stringify(jsobj),
+				success : function(response) {
+					var promid = "topic_change_" + id
+					var td = document.getElementById(promid);
+					td.innerHTML = "<button class=\"addtopic_button\" onclick=\"addtopic("
+							+ id
+							+ ", this,'"
+							+ name
+							+ "');\">"
+							+ name
+							+ "</button>";
+				},
+				error : ajaxFailureMessage
 
-	});
+			});
 
 }
-$( "#personalinfo_button" ).click(function( event ) {
-	  event.preventDefault();
-	  $('form#personalinfo_change').show();
-		$('form#password_change').hide();
-		$('div#topic_change').hide();
-		$( "#personalinfo_button" ).css("text-decoration", "none");
-		$( "#personalinfo_button" ).css("background-color", "#A0A0A0");
-		$( "#password_button" ).css("background-color", "#C0C0C0");
-		$( "#topic_button" ).css("background-color", "#C0C0C0");
+$("#personalinfo_button").click(function(event) {
+	event.preventDefault();
+	$('form#personalinfo_change').show();
+	$('form#password_change').hide();
+	$('div#topic_change').hide();
+	$('div#profilepicture_change').hide();
+	$("#picturechange_button").css("background-color", "#C0C0C0");
+	$("#personalinfo_button").css("text-decoration", "none");
+	$("#personalinfo_button").css("background-color", "#A0A0A0");
+	$("#password_button").css("background-color", "#C0C0C0");
+	$("#topic_button").css("background-color", "#C0C0C0");
 });
-$( "#password_button" ).click(function( event ) {
-	  event.preventDefault();
-	  $('form#password_change').show();
-		$('form#personalinfo_change').hide();
-		$('div#topic_change').hide();
-		$( "#password_button" ).css("text-decoration", "none");
-		$( "#personalinfo_button" ).css("background-color", "#C0C0C0");
-		$( "#password_button" ).css("background-color", "#A0A0A0");
-		$( "#topic_button" ).css("background-color", "#C0C0C0");
-});
-
-$( "#topic_button" ).click(function( event ) {
-	  event.preventDefault();
-	  $('div#topic_change').show();
-		$('form#password_change').hide();
-		$('form#personalinfo_change').hide();
-		$( "#topic_button" ).css("text-decoration", "none");
-		$( "#personalinfo_button" ).css("background-color", "#C0C0C0");
-		$( "#password_button" ).css("background-color", "#C0C0C0");
-		$( "#topic_button" ).css("background-color", "#A0A0A0");
+$("#password_button").click(function(event) {
+	event.preventDefault();
+	$('form#password_change').show();
+	$('form#personalinfo_change').hide();
+	$('div#topic_change').hide();
+	$('div#profilepicture_change').hide();
+	$("#picturechange_button").css("background-color", "#C0C0C0");
+	$("#password_button").css("text-decoration", "none");
+	$("#personalinfo_button").css("background-color", "#C0C0C0");
+	$("#password_button").css("background-color", "#A0A0A0");
+	$("#topic_button").css("background-color", "#C0C0C0");
 });
 
+$("#topic_button").click(function(event) {
+	event.preventDefault();
+	$('div#topic_change').show();
+	$('form#password_change').hide();
+	$('form#personalinfo_change').hide();
+	$('div#profilepicture_change').hide();
+	$("#picturechange_button").css("background-color", "#C0C0C0");
+	$("#topic_button").css("text-decoration", "none");
+	$("#personalinfo_button").css("background-color", "#C0C0C0");
+	$("#password_button").css("background-color", "#C0C0C0");
+	$("#topic_button").css("background-color", "#A0A0A0");
+});
 
+$("#picturechange_button").click(function(event) {
+	event.preventDefault();
+	$('div#profilepicture_change').show();
+	$('div#topic_change').hide();
+	$('form#password_change').hide();
+	$('form#personalinfo_change').hide();
+	$("#topic_button").css("text-decoration", "none");
+	$("#picturechange_button").css("background-color", "#A0A0A0");
+	$("#personalinfo_button").css("background-color", "#C0C0C0");
+	$("#password_button").css("background-color", "#C0C0C0");
+	$("#topic_button").css("background-color", "#C0C0C0");
+});

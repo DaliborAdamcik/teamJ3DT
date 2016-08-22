@@ -14,6 +14,7 @@
 				Information</a>
 		<li class="li"><a href="" class="navbarbutton" id="password_button">Change password</a>
 		<li class="li"><a href="" class="navbarbutton" id="topic_button">Choose favorite topics</a>
+		<li class="li"><a href="" class="navbarbutton" id="picturechange_button">Change profile picture</a>
 	</ul>
 </div>
 	<br> <br> <br> <br>
@@ -60,8 +61,11 @@
 	</form>
 
 	<div id="topic_change" hidden="true"></div>
+	
+	<div id="profilepicture_change" hidden = "true">
 	<div style="background-color: silver;">
 		<jsp:include page="ProfilePicture.jsp"></jsp:include>
+	</div>
 	</div>
 </div>
 
