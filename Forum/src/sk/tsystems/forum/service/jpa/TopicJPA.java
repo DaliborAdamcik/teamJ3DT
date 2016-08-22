@@ -64,6 +64,12 @@ public class TopicJPA implements TopicService {
 					setParameter("modified", modifiedAfter, TemporalType.DATE).getResultList();
 		}
 	}
-	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Topic> getNonBlockedTopics() {
+		try (JpaConnector jpa = new JpaConnector()) {
+			return jpa.createQuery("select t from Topic t where t.blocked is null").getResultList(); //TODO JPA treba skontrolovat SELECT
+		}
+	}
 
 }

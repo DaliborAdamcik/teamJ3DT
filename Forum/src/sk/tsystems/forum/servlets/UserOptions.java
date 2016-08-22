@@ -72,7 +72,7 @@ public class UserOptions extends MasterServlet {
 			}
 			String action = pars.getAction();
 			if (action == null) {
-				List<Topic> allTopics = servletHelper.getTopicService().getTopics();
+				List<Topic> allTopics = servletHelper.getTopicService().getNonBlockedTopics();
 				List<Topic> userTopics = new ArrayList<Topic>();
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.setSerializationInclusion(Include.NON_NULL);
@@ -94,9 +94,18 @@ public class UserOptions extends MasterServlet {
 							allTopics.remove(topic);
 							break;
 						}
+
 					}
 
 				}
+				List<Topic> blockedTopics = new ArrayList<Topic>();
+				for (Topic userTopic : userTopics) {
+					if (userTopic.isBlocked()) {
+						blockedTopics.add(userTopic);
+						
+					}
+				}
+				userTopics.removeAll(blockedTopics);
 				Collections.sort(allTopics);
 				Collections.sort(userTopics);
 				resp.put("alltopics", allTopics);
@@ -120,7 +129,6 @@ public class UserOptions extends MasterServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
@@ -254,7 +262,7 @@ public class UserOptions extends MasterServlet {
 			if (newDate != null) {
 				try {
 					loggedUser.setBirthDate(newDate);
-					
+
 				} catch (FieldValueException | BadDateException e) {
 					error = e.getMessage();
 				}

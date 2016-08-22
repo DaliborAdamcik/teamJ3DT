@@ -33,7 +33,8 @@ public interface TopicService {
 	/**
 	 * Gets topic from the database
 	 * 
-	 * @param ID of topic
+	 * @param ID
+	 *            of topic
 	 * @return Topic with specific ID
 	 */
 	Topic getTopic(int ident);
@@ -44,13 +45,20 @@ public interface TopicService {
 	 * @return List of all topics
 	 */
 	List<Topic> getTopics();
-	
+
 	/**
 	 * Reads list of all topics modified after specified date/time
 	 * 
-	 * @param modifiedAfter Date of modification
+	 * @param modifiedAfter
+	 *            Date of modification
 	 * @return List of all topics
 	 */
 	List<Topic> getTopics(Date modifiedAfter);
-
+	
+	/**
+	 * Reads list of all topics that are not blocked
+	 * 
+	 * @return List of all non blocked topics
+	 */
+	List<Topic> getNonBlockedTopics();
 }
