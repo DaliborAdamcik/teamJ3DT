@@ -32,7 +32,7 @@ body {
 }
 
 .block_button, .unblock_button, .marknonpublic_button,
-	.markpublic_button, .promote_button {
+	.markpublic_button, .promote_button,.showreason_button {
 	border: 1px solid #444;
 	border-radius: 5px;
 	box-shadow: 0 0px 0 0 #444;
@@ -73,6 +73,11 @@ body {
 	background: #fafa7e;
 	background: -webkit-linear-gradient(#fafa7e, #fff);
 	background: linear-gradient(#fafa7e, #fff);
+}
+.showreason_button {
+	background: #c3c3c3;
+	background: -webkit-linear-gradient(#c3c3c3, #fff);
+	background: linear-gradient(#c3c3c3, #fff);
 }
 
 .blockReasonText {
@@ -132,6 +137,15 @@ footer {
 
 /*     height: 100px; */
 /*     width: 100%; */
+}
+
+.changetopic_button {
+	position:relative;
+	top:3px;
+	background: url("/Forum/images/ok.png") no-repeat;
+    cursor:pointer;
+    width: 23px;
+    height: 23px;
 }
 
 

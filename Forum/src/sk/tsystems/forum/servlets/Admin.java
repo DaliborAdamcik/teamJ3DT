@@ -143,7 +143,7 @@ public class Admin extends MasterServlet {
 				} catch (JSONException e) {
 					error = "JSON exception";
 				} catch (FieldValueException e) {
-					error = "New topic name cant be empty";
+					error = e.getMessage();
 				}
 				
 				ObjectMapper mapper = new ObjectMapper();

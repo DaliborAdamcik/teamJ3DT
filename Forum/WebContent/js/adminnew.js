@@ -211,7 +211,7 @@ $("#add_topic").submit(function(ev) {
 		data : JSON.stringify(jsobj),
 		success : function(response) {
 			console.log(response);
-			alert("topic added successfuly");
+			alertDlg("Success!", "topic added successfuly", "info");
 			}
 		
 	});
@@ -222,7 +222,7 @@ function changetopic(id){
 	var jsobj = {};
 	jsobj.id = id;
 	if($('#newtopicname_'+id).val()==""){
-		alert("topic name can't be empty");
+		alertDlg("Error", "topic name can't be empty", "warn");
 		return false;
 	}
 	jsobj.newname = $('#newtopicname_'+id).val();
@@ -234,8 +234,12 @@ function changetopic(id){
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
+			if(response.error!=null){
+				alertDlg("Error", response.error, "warn");
+				return false;
+			}
 			console.log(response);
-			alert("topic changed successfuly");
+			alertDlg("Success!", "topic changed successfuly", "info");
 			}
 		
 	});
