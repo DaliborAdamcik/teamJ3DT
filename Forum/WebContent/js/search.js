@@ -39,7 +39,8 @@ function doSrch() {
         	if(response.result)
         		response.result.forEach(function(res){
         			var rendered;
-    				// TODO date here
+    				res.lastModified = timeStmp2strDate(res.lastModified);
+    				
         			if(res.idComment>0) {
         				rendered = Mustache.to_html(templateComment, res);
         			}
