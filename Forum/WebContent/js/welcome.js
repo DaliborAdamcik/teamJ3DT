@@ -212,7 +212,7 @@ function paintTopic(topic)
 			return;
 		topic.painted = true;
 
-		// TODO
+		// TODO TU JE RYZZZAAAAA
 		console.log("bejka", topic);
 	    var html = Mustache.to_html(templateTopic, topic);
 /*		var $old = $('#topicList').find('#ent_'+comment.id);
@@ -316,8 +316,9 @@ function editThemeDlg_save(){
 		isPublic: $('#editThemeDlg_pub').prop('checked')
 	};
 	
+	console.log("to edit", jsobj);
 	try {
-		if(jsobj.name.legth==0 || jsobj.description.legth==0)
+		if(isEmptyString(jsobj.name) || isEmptyString(jsobj.description))
     	{
 	    	alertDlg((themeId>0?"Edit":"Create")+" theme", "Name and description is required fields.", "warn");
 	    	return;

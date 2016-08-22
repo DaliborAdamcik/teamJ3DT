@@ -171,12 +171,11 @@ function blockCommonDlg_DoBlock()
 	try {
 	    var reason = $blockDlg.find("input").val().trim();
 	    
-	    if(reason.length==0)
+	    if(isEmptyString(reason))
     	{
 	    	alertDlg("Block", "Reason cant be empty", "warn");
 	    	return;
     	}
-	    
 
 	    $.ajax({
 	        type: "PUT",
@@ -356,6 +355,10 @@ function yesNoCommonDlg_answer(answer) {
 	catch(err) {
 		console.error("Yes/No dialog: error calling callback ", err);
 	}
+}
+
+function isEmptyString(str) {
+	return (str === undefined) || (str==null) || (str=="") || (str.length==0)
 }
 
 // ajax failure dialog ---------------------------------------------------------

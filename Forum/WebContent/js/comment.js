@@ -59,10 +59,10 @@ function comments2page(response)
 	try	{
 		console.log(response);
 		
-	    if(response.error && response.error.type==='WEBNoPermissionException')
+	    if(ajxErrorDlg(response) && response.error.type==='WEBNoPermissionException')
     	{
 	    	showWelcomePage();
-	    	alert("Sorry: "+response.error.message);
+	    	return;
     	}
 
 		if(response.comments) // draw received comments
@@ -129,9 +129,9 @@ $('#addComment').submit(function(ev){
 		var jsobj = {};
 	    jsobj.comment = $('#newComment').val().trim();
 	    
-	    if(jsobj.comment.length == 0)
+	    if(isEmptyString(jsobj.comment))
     	{
-    		alert("please specify your comment");
+    		alertDlg("Add comment", "Please specify your comment", "warn");
     		return false;
     	}
 	
@@ -144,6 +144,9 @@ $('#addComment').submit(function(ev){
 	        data: JSON.stringify(jsobj),
 	        success: function (response) {
 	        	console.log(response);
+	        	if(ajxErrorDlg(response))
+	        		return;
+	        		
 	        	comment2page(response.comment);
 
 	        	var $cobo = $('#commentBoxer'); 
@@ -210,9 +213,9 @@ function commentEditDlgModify(){
 	    jsobj.comment = $commentEditDlg.find("input").val().trim();
 	    jsobj.id = ident;
 	    
-	    if(jsobj.comment.length==0)
+	    if(isEmptyString(jsobj.comment))
     	{
-	    	alert("comment cant be empty");
+	    	alertDlg("Edit comment", "comment cant be empty", "warn");
 	    	return;
     	}
 	    
@@ -224,8 +227,11 @@ function commentEditDlgModify(){
 	        dataType: "json",
 	        data: JSON.stringify(jsobj),
 	        success: function (response) {
-	        	$commentEditDlg.dialog('close');
 	        	console.log(response);
+	        	if(ajxErrorDlg(response))
+	        		return;
+
+	        	$commentEditDlg.dialog('close');
 	        	comment2page(response.comment);
 	        },
 	        error: ajaxFailureMessage
