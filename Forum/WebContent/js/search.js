@@ -27,7 +27,7 @@ function doSrch() {
         data: {srch: waht},
         //contentType:"application/json",
         success: function (response) {
-        	console.log(response);
+        	//console.log(response);
     		$('#srch_results').html(Mustache.to_html(templateResults, response));
         	if(ajxErrorDlg(response))
     		{
@@ -67,13 +67,10 @@ function colorize(what, where) {
 		var co = wh.trim();
 		if(co.length>0)
 		{
-			console.log("regex base", co);
 			var re = new RegExp('(?!;">)('+co+')(?!</s)', "gmi");
 			res = res.replace(re, '<span style="background-color: #bf80ff;">'+co+'</span>');
 		}
 	});
-	
-	console.log(res);
 	
 	return res;
 }
