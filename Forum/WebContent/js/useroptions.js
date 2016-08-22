@@ -69,8 +69,8 @@ $("#personalinfo_change").submit(
 				data : JSON.stringify(jsobj),
 				success : function(response) {
 					alertDlg("Success!", "personal info changed sucessfully", "info");
-					$('#userinfo_birthdate').val(response.date);
-					$('#userinfo_realname').val(response.realname);
+//					$('#userinfo_birthdate').val(response.date);
+//					$('#userinfo_realname').val(response.realname);
 				}
 			});
 			return false;

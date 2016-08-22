@@ -274,6 +274,7 @@ public class UserOptions extends MasterServlet {
 		Map<String, Object> resp = new HashMap<>();
 		resp.put("date", newDateString);
 		resp.put("realname", newRealName);
+		System.out.println(newRealName);
 
 		response.setContentType("application/json;charset=UTF-8");
 		mapper.writeValue(response.getWriter(), resp);
