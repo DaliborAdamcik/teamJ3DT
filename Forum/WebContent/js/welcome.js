@@ -336,7 +336,7 @@ function editThemeDlg_save(){
 	        	}
         		if(response.error){
         			console.error(response.error);
-    	        	alert('Error: '+error.type + " "+error.message);
+    	        	alert('Error: '+response.error.type + " "+response.error.message);
         		}
 	        		
 	        	
