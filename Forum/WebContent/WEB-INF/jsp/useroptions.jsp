@@ -1,9 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="stylesheet" type="text/css" href="css/useroptionsstyle.css">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
 <div class="container">
 
 	<h1 id="title"></h1>
@@ -19,7 +15,7 @@
 </div>
 	<br> <br> <br> <br>
 
-	<form id="personalinfo_change" method="post" action="Useroptions" hidden="true">
+	<form id="personalinfo_change" method="post" action="Useroptions" hidden="true" accept-charset="UTF-8">
 		<table>
 			<tr>
 				<td>Real name:

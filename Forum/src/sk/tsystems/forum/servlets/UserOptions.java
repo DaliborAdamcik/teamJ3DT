@@ -102,7 +102,7 @@ public class UserOptions extends MasterServlet {
 				resp.put("alltopics", allTopics);
 				resp.put("usertopics", userTopics);
 				resp.put("user", servletHelper.getLoggedUser());
-				response.setContentType("application/json");
+				response.setContentType("application/json;charset=UTF-8");
 				mapper.writeValue(response.getWriter(), resp);
 				return;
 			}

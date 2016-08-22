@@ -34,6 +34,7 @@ function makeOptionsPage(response) {
 	$('#options_menu').show();
 	$('#personalinfo_change').show();
 	$('#userinfo_realname').val(response.user.realName);
+	console.log(response.user.realName);
 	$('#userinfo_birthdate').val(response.datestring);
 	putAllTopics(response);
 }
