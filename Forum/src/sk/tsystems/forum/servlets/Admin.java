@@ -174,19 +174,36 @@ public class Admin extends MasterServlet {
 	private void addTopic(HttpServletResponse response, ServletHelper servletHelper, JSONObject obj)
 			throws IOException, JsonGenerationException, JsonMappingException {
 		Topic topic;
+		String error = null;
 		try {
-			topic = new Topic(obj.getString("topicname"),obj.getBoolean("ispublic"));
-			servletHelper.getTopicService().addTopic(topic);
-		} catch (FieldValueException e) {
-			System.out.println("invalid access");
-		} catch (JSONException e) {
+			String newTopicName = obj.getString("topicname");
+			List<Topic> listOfTopic = servletHelper.getTopicService().getTopics();
+			for(Topic actualTopic:listOfTopic){
+				if(actualTopic.getName().equals(newTopicName)){
+					error = "Topic with this name already exists";
+					
+				}
+			}
+			if(error==null){
+				topic = new Topic(newTopicName,obj.getBoolean("ispublic"));
+				servletHelper.getTopicService().addTopic(topic);
+			}
 			
+			
+		} catch (FieldValueException e) {
+			error = "invalid access";
+			
+		} catch (JSONException e) {
+			error = "Json error";
 		}
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, Object> resp = new HashMap<>();
 		resp.put("topic", "topic");
+		if(error!=null){
+			resp.put("error", error);
+		}
 
 		response.setContentType("application/json");
 		mapper.writeValue(response.getWriter(), resp);

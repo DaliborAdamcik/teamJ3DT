@@ -211,7 +211,10 @@ $("#add_topic").submit(function(ev) {
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
-			console.log(response);
+			if(response.error!=null){
+				alertDlg("Error!", response.error, "warn");
+				return false;
+			}
 			alertDlg("Success!", "topic added successfuly", "info");
 		}
 
