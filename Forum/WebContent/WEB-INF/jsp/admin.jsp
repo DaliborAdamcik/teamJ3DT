@@ -54,8 +54,7 @@
 			<tr>
 				<th colspan="3" id="objectname_reason">
 				<td>&nbsp;&nbsp;&nbsp;&nbsp; blocked by&nbsp;&nbsp;
-				<td id="
-				username_reason">druhe meno
+				<td id="username_reason">admin
 			<tr>
 				<td><br>
 		</table>

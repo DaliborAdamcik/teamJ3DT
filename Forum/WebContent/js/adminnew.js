@@ -34,10 +34,10 @@ function loadAdminPage() {
  * @param response
  */
 function makeAdminPage(response) {
-	console.log(response);
 	if (response.users == null || response.topics == null) {
 		var title = document.getElementById("title");
 		title.innerHTML = response;
+		$("#add_topic").hide();
 		return;
 	}
 	response.users
@@ -186,7 +186,8 @@ function successBlock(response, id, reason) {
 	var blockedfor = document.getElementById("blockedfor_" + id);
 	var jsobj = {};
 	jsobj.id = id;
-	blockedfor.innerHTML = "blocked successfully";
+	blockedfor.innerHTML = "blocked";
+	alertDlg("Success!", "Blocked successfully", "info");
 }
 
 function showreason(objName, blockedby, reason, button) {

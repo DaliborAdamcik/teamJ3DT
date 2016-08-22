@@ -31,7 +31,6 @@ import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.helper.exceptions.WEBNoPermissionException;
-import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -40,7 +39,6 @@ import sk.tsystems.forum.servlets.master.MasterServlet;
 @WebServlet("/Welcome/*")
 public class Welcome extends MasterServlet {
 	private static final long serialVersionUID = 1L;
-	TopicJPA topicJPA = new TopicJPA();
 
 	/**
 	 * @see MasterServlet#MasterServlet()
@@ -304,11 +302,16 @@ public class Welcome extends MasterServlet {
 				if (svHelper.getSessionRole() != UserRole.ADMIN)
 					throw new WEBNoPermissionException("Privileged action. Permissions denied.");
 				
-				BlockHelper.block(url.getParrentID(), "SOMEONE ERASE, SOMEONE FIND ERROR AT 1:43AM - RYSZA", svHelper.getLoggedUser());
+				if(BlockHelper.block(url.getParrentID(), json.getString("block_reason"), svHelper.getLoggedUser()))
+				ServletHelper.jsonResponse(response, "OK");
+				else
+					throw new WEBNoPermissionException("Privileged action. Permissions denied.");
+				
 				return;
 			}
 			
 		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | JSONException | CommonEntityException e) {
+			System.out.println(e.getMessage());
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}
 	}
