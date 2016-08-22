@@ -1,6 +1,5 @@
 package sk.tsystems.forum.helper;
 
-
 import sk.tsystems.forum.entity.Blocked;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
@@ -25,9 +24,9 @@ public class BlockHelper {
 	 * @param blockedBy
 	 * 
 	 * @return true if successful, throws exception otherwise
-	 * @throws EmptyFieldException 
+	 * @throws EmptyFieldException
 	 */
-	public static boolean block(int id, String reason, User blockedBy) throws FieldValueException{
+	public static boolean block(int id, String reason, User blockedBy) throws FieldValueException {
 		try (JpaConnector jpa = new JpaConnector()) {
 			BlockableEntity objectToBeBlocked = null;
 			for (Class<?> clz : jpa.getMappedClasses(BlockableEntity.class)) {
@@ -37,7 +36,7 @@ public class BlockHelper {
 			}
 
 			if (objectToBeBlocked == null) {
-				throw new RuntimeException("No element with id " + id + " in the database"); // TODO --- toto je velmi zle
+				return false;
 			}
 			Blocked blo = new Blocked(blockedBy, reason);
 			jpa.persist(blo);
@@ -47,6 +46,12 @@ public class BlockHelper {
 		}
 	}
 
+	/**
+	 * Decides whether element with certain ID is Blockable - is child of BlockableEntity
+	 *
+	 * @param ID of the element to be decided
+	 * @return true if is blockable (can be linked with Blocked entity), false otherwise
+	 */
 	public static boolean isBlockable(int id) {
 
 		try (JpaConnector jpa = new JpaConnector()) {
@@ -63,7 +68,12 @@ public class BlockHelper {
 		}
 		return true;
 	}
-
+/**
+ * Tries to find element with certain ID in the database. True if present, false otherwise
+ * 
+ * @param ID of the element to be found
+ * @return True if present in the database, false otherwise
+ */
 	public static boolean isInDatabase(int id) {
 
 		try (JpaConnector jpa = new JpaConnector()) {
@@ -81,7 +91,13 @@ public class BlockHelper {
 		return true;
 	}
 
-	public static void unblock(int id) {
+	/**
+	 * Method for unblocking blocked elements. Checks if elements is blockable, or element is blocked
+	 * 
+	 * @param ID of the element to be unblocked
+	 * @return true if unblocked successfully, false otherwise
+	 */
+	public static boolean unblock(int id) {
 		try (JpaConnector jpa = new JpaConnector()) {
 			BlockableEntity objectToBeUnblocked = null;
 			for (Class<?> clz : jpa.getMappedClasses(BlockableEntity.class)) {
@@ -91,21 +107,28 @@ public class BlockHelper {
 			}
 
 			if (objectToBeUnblocked == null) {
-				throw new RuntimeException("No element with id " + id + " in the database"); // TODO --- toto je velmi zle
+
+				return false;
 			}
-			Blocked blockToRemove = objectToBeUnblocked.getBlocked(); // TODO --- treba checkovat aj ci je null, co ak poslem bludy
-			if(blockToRemove!=null)
-			{
+			Blocked blockToRemove;
+			if ((blockToRemove = objectToBeUnblocked.getBlocked()) != null) {
 				objectToBeUnblocked.clearBlocked();
 				jpa.remove(blockToRemove);
 				jpa.merge(objectToBeUnblocked);
 			}
-			
+
 		}
+		return true;
 
 	}
-
-	public static void mark(int id) {
+	/**
+	 * Marks entity Public or Private, depending on actual value of isPublic property
+	 * 
+	 * @param ID of the element to be marked
+	 * @return True if marked successfully, false otherwise(entity is not markable, element with ID in
+	 * parameter not present in the database)
+	 */
+	public static boolean mark(int id) {
 
 		try (JpaConnector jpa = new JpaConnector()) {
 			Object o = null;
@@ -119,7 +142,7 @@ public class BlockHelper {
 			}
 
 			if (o == null) {
-				throw new RuntimeException("No element with id " + id + " in the database"); // TODO --- toto je velmi zle
+				return false;
 			}
 
 			currentClass.cast(o);
@@ -136,14 +159,25 @@ public class BlockHelper {
 			}
 
 		}
+		return true;
 	}
 
-	public static void promoteUser(int id, UserRole role) {
+	/**
+	 * Promotes user with ID selected in parameter to specified role 
+	 * @param id Specific ID of the element to be promoted
+	 * @param role  certain role from enum UserRole
+	 * @return true if promoted successfully, false otherwise
+	 */
+	public static boolean promoteUser(int id, UserRole role) {
 		try (JpaConnector jpa = new JpaConnector()) {
 			User user = jpa.getEntityManager().find(User.class, id);
+			if(user == null){
+				return false;
+			}
 			user.setRole(role);
 			jpa.merge(user);
 		}
+		return true;
 
 	}
 
