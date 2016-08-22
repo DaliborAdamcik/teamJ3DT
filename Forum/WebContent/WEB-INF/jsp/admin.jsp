@@ -67,8 +67,9 @@
 	<script id="topicTemplate" type="text/template">
 <tr><th> Topic Name<th> Blocked For<th>Block<th>Mark
 {{#topics}} <tr><td>
-	<input size='15' id="newtopicname_{{id}}" type='text' value='{{name}}' />
-	<button id="submitnewname_{{id}}" class="changetopic_button" onclick="changetopic({{id}})" title="change topic"></button>
+	<table><tr><td><input size='15' id="newtopicname_{{id}}" type='text' value='{{name}}' />
+	<td><button id="submitnewname_{{id}}" class="changetopic_button" onclick="changetopic({{id}})" title="change topic"></button>
+</table>
 <td id="blockedfor_{{id}}">{{#blocked}}<button class="showreason_button" onclick="showreason('{{name}}','{{blockedBy.userName}}','{{reason}}',this);">REASON</button>{{/blocked}}
 <td id="block_{{id}}">{{{blockbutton}}}
 <td id="promote_{{id}}">{{{markbutton}}}
