@@ -40,17 +40,6 @@ import sk.tsystems.forum.servlets.master.MasterServlet;
 public class Welcome extends MasterServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see MasterServlet#MasterServlet()
-	 */
-	public Welcome() {
-
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ServletHelper helpser = new ServletHelper(request);
@@ -94,11 +83,6 @@ public class Welcome extends MasterServlet {
 			resp.put("theme", com);
 			
 			ServletHelper.jsonResponse(response, resp);
-
-			/*response.setContentType("application/json");
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.setSerializationInclusion(Include.NON_NULL);
-			mapper.writeValue(response.getWriter(), resp);*/
 		} catch (URLParserException e) {
 			if(helpser.requestURL().indexOf("Welcome")<0) 
 				responsePageHTML(request, response, helpser);
@@ -166,23 +150,11 @@ public class Welcome extends MasterServlet {
 		
 		HashMap<Class<?>, Class<?>> filters = new HashMap<>();
 		filters.put(MixInIgnoreTopic.class, Theme.class);
-		ServletHelper.jsonResponse(response, resp, filters, flushmode);
 		
 		if(newsonly)
 			resp.put("erased", erased);
 		
-		/*if(flushmode)
-			response.setContentType("application/json");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.setSerializationInclusion(Include.NON_NULL);
-		mapper.addMixIn(Theme.class, MixInIgnoreTopic.class);
-		
-		if(!flushmode) {
-			mapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-			mapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT, false);
-		}
-		mapper.writeValue(response.getWriter(), resp);*/
+		ServletHelper.jsonResponse(response, resp, filters, flushmode);
 	}
 	
 	private void responsePageHTML(HttpServletRequest request, HttpServletResponse response, ServletHelper helpser)
@@ -239,24 +211,6 @@ public class Welcome extends MasterServlet {
 				return;
 			}
 
-			if("topic".equals(url.getAction()))
-			{
-				if (svHelper.getSessionRole() != UserRole.ADMIN)
-					throw new WEBNoPermissionException("Privileged action. Permissions denied.");
-
-				/*TopicThemePrivileges prioper = new TopicThemePrivileges(svHelper, url, response, Theme.class);
-				Theme theme = prioper.getStoredObject(true);
-				
-				theme.setDescription(json.getString("description"));
-				theme.setName(json.getString("name"));
-				theme.setPublic(json.getBoolean("isPublic"));
-				
-				prioper.store(theme);
-				return;*/
-				
-				throw new UnknownActionException("Not yet implemented");
-			}
-			
 			throw new UnknownActionException("Uknknown action taken");
 			
 		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | FieldValueException e) {
@@ -285,18 +239,6 @@ public class Welcome extends MasterServlet {
 				return;
 			}
 
-			if("topic".equals(url.getAction()))
-			{
-				if (svHelper.getSessionRole() != UserRole.ADMIN)
-				throw new WEBNoPermissionException("Privileged action. Permissions denied.");
-				
-				Topic newtopic = new Topic(json.getString("name"), true);
-				
-				TopicThemePrivileges prioper = new TopicThemePrivileges(svHelper, url, response, Topic.class);
-				prioper.store(newtopic);
-				return;
-			}
-			
 			if("block".equals(url.getAction()))
 			{
 				if (svHelper.getSessionRole() != UserRole.ADMIN)

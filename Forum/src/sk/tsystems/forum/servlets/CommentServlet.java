@@ -99,12 +99,6 @@ public class CommentServlet extends MasterServlet {
 					resp.put("deleted", erased);
 
 				ServletHelper.jsonResponse(response, resp);
-/*				
-				response.setContentType("application/json");
-				ObjectMapper mapper = new ObjectMapper();
-				//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-				mapper.setSerializationInclusion(Include.NON_NULL);
-				mapper.writeValue(response.getWriter(), resp);*/
 				return;
 			}
 

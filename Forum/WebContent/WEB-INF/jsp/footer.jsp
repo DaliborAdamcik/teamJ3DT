@@ -13,8 +13,6 @@
 <!-- 	</div> -->
 <!-- </footer> -->
 
-
-
 <footer>
 	<div class="container" align="center">
 		<hr>
@@ -22,9 +20,6 @@
 		Tomas)
 	</div>
 </footer>
-
-
-
 
 <!--  DO NOT REMOVE THEESE TAGS -->
 <div id="blockCommonDlg" title="Block">
@@ -34,7 +29,7 @@
 	</p>
 </div>
 
-<div id="alertDlg" title="Alert dialog">
+<div id="alertDlg" title="Alert dialog" style="display: none">
 	<span style="float: left"><img src="images/err.png" alt="nic"></span> 
 	<span id="alertDlg_msg"></span>
 </div>

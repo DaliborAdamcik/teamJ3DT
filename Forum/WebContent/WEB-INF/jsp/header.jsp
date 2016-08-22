@@ -23,7 +23,6 @@
 	  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 	  
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
-	  
 	
 	<!-- Forum web page script -->
 	<script type="text/javascript" src="js/script.js"></script>
@@ -44,7 +43,7 @@
 						<li><a onclick="showWelcomePage();">Topics</a></li>
 					</ul>
 					<ul class="nav navbar-nav">
-						<li><a href="Search/">Search</a></li>
+						<li><a href="Search">Search</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<c:choose>

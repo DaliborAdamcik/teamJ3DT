@@ -65,17 +65,6 @@ $( document ).ready(function() {
 		}
 	}, $comonDlgOpts));
 
-	$('#alertDlg').dialog($.extend({ 
-		height: "auto",
-		width: "auto", 
-		buttons: {
-			Close: function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	}, $comonDlgOpts));
-	
-	
 	// ajax common error dialog
 	$('#ajaxErrorDlg').dialog($.extend({ 
 		height: "auto",
