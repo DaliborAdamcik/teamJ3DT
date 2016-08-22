@@ -39,7 +39,7 @@ function makeOptionsPage(response) {
 	$('#options_menu').show();
 	$('#personalinfo_change').show();
 	$('#userinfo_realname').val(response.user.realName);
-	console.log(response.user.realName);
+	
 	$('#userinfo_birthdate').val(response.datestring);
 	putAllTopics(response);
 }
@@ -62,7 +62,7 @@ $("#personalinfo_change").submit(
 	var jsobj = {};
 	jsobj.newdate = date2str($('#userinfo_birthdate')
 							.datepicker("getDate"), "dd.MM.yyyy");
-					var datecompare = /^((0?[1-9]|[12][0-9]|3[01]).(0?[13578]|1[02])| (0?[1-9]|[12][0-9]|3[0]).(0?[469]|1[1]) |(0?[1-9]|[12][0-9]).(0?2)).((19|20)[0-9]{2})$/;
+					var datecompare = /^((0?[1-9]|[12][0-9]|3[01]).(0?[13578]|1[02])|(0?[1-9]|[12][0-9]|3[0]).(0?[469]|1[1])|(0?[1-9]|[12][0-9]).(0?2)).((19|20)[0-9]{2})$/;
 
 					if (!datecompare.test(newdate)) {
 						alertDlg(
@@ -169,7 +169,7 @@ function addtopic(id, button, name) {
 							+ "');\">"
 							+ name
 							+ "</button>";
-					console.log("sucess add")
+					
 				},
 				error : ajaxFailureMessage
 			});
