@@ -54,9 +54,7 @@ function doSrch() {
         			$('#srch_results').append($(colorize(colopt, rendered)));
         		});    
         },
-        error: function (jxhr) {
-            window.alert("Spracovanie neúspešné. Údaje neboli zapísané. Kód chyby:" + status + "\n" + jxhr.statusText + "\n" + jxhr.responseText);
-        }
+        error: ajaxFailureMessage
     });
    	
 }
