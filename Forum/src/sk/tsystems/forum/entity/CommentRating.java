@@ -144,7 +144,8 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 	/**
 	 * Set rating to 1
 	 * 
-	 * @throws EntityAutoPersist
+	 * @throws {@link
+	 *             EntityAutoPersist}
 	 */
 	public void upVote() throws EntityAutoPersist {
 		setRating(1);
@@ -153,7 +154,8 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 	/**
 	 * Set rating to -1
 	 * 
-	 * @throws EntityAutoPersist
+	 * @throws {@link
+	 *             EntityAutoPersist}
 	 */
 	public void downVote() throws EntityAutoPersist {
 		setRating(-1);
@@ -162,7 +164,8 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 	/**
 	 * Set rating to 0
 	 * 
-	 * @throws EntityAutoPersist
+	 * @throws {@link
+	 *             EntityAutoPersist}
 	 */
 	public void unVote() throws EntityAutoPersist {
 		setRating(0);
