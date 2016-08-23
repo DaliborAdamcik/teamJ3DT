@@ -73,8 +73,12 @@
 	border-radius: 50%;
 }
 
-.commentText p {
-	margin: 0;
+.commentText{
+ 	position:relative; 
+ 	margin: 0; 
+	width:100%;
+	padding-top:0;
+	bottom:15px;
 }
 
 .sub-text {

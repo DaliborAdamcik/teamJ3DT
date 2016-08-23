@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.CommentRating;
 import sk.tsystems.forum.entity.User;
+import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.exceptions.EntityAutoPersist;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.ServletHelper;
@@ -34,26 +35,6 @@ import sk.tsystems.forum.servlets.master.MasterServlet;
 @WebServlet("/Rating/*")
 public class Rating extends MasterServlet {
 	private static final long serialVersionUID = 1L;
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		CommentJPA commentjpa = new CommentJPA();
-		List<Comment> commentlist = commentjpa.getAllComments();
-		request.getSession().setAttribute("allcomments", commentlist);
-
-		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
-		request.getRequestDispatcher("/WEB-INF/jsp/rating.jsp").include(request, response);
-		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
-
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ServletHelper servletHelper = new ServletHelper(request);
@@ -125,6 +106,9 @@ public class Rating extends MasterServlet {
 			}
 			if (action.equals("getinitialbuttons")) {
 				User user = servletHelper.getLoggedUser();
+				if(user == null || user.getRole()==UserRole.GUEST){
+					return;
+				}
 				List<CommentRating> list = servletHelper.getCommentService().getAllCommentRatings(user);
 				
 				ObjectMapper mapper = new ObjectMapper();
