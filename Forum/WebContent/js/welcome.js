@@ -36,20 +36,23 @@ function welcomeUIinit()
     if(window.location.href.indexOf("#asuser")>0)
     	user.role="REGULARUSER";
     
-    if(window.location.href.indexOf("#red2com=")>0) // redirect to comments
-    {
-    	var idxPosInSTr = window.location.href.indexOf("#red2com=")+"#red2com=".length;
-    	var themeIdToShow= window.location.href.substr(idxPosInSTr);
-    	themeIdToShow = parseInt(themeIdToShow);
-    	if(themeIdToShow!==NaN)
-    		loadComments(themeIdToShow);
-    }	
+    var themeIdToShow = hasTagParam('red2com');
+    if(!isNaN(themeIdToShow))  // redirect to comments
+    	loadComments(themeIdToShow);
 
     if(window.location.href.indexOf("#asadmin")>0)
     	user.role="ADMIN";
     
     themes2page();
     ajaxEvents(); 
+    
+    var openTopicFromSrch = hasTagParam('optop');
+    if(!isNaN(openTopicFromSrch))
+	{
+    	var indexFS = $('#topicList').find('#ent_'+openTopicFromSrch+'_tit').index()-1;
+		$('#topicList').accordion( "option", "active", indexFS );
+	}
+    
 }
 
 /**

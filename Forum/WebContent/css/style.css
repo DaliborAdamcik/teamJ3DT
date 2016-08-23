@@ -110,7 +110,6 @@ li.blockedentity {
 	border: 1px solid #ffff4d;
 }
 
-
 .removetopic_button {
 	background: #79da58;
 	background: -webkit-linear-gradient(#79da58, #fff);
@@ -153,5 +152,7 @@ footer {
 	padding:3px;
 }
 
-
-
+.searchmarkent {
+	color: #602040;
+	font-style: oblique;
+}

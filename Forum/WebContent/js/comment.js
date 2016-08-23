@@ -66,7 +66,9 @@ function comments2page(response)
     	}
 
 		if(response.comments) // draw received comments
-			response.comments.forEach(comment2page);    
+			response.comments.forEach(comment2page);   
+		
+		
 	    
 		if(response.theme){
 		    $('#themeId').val(response.theme.id);
@@ -89,6 +91,12 @@ function comments2page(response)
 	    	$('#addComment').hide();
 	    else
 	    	$('#addComment').show();
+	    
+	    var commentIdMark = hasTagParam('ci');
+	    if(!isNaN(commentIdMark))  
+	    	$('#commentBoxer').find('#ent_'+commentIdMark).addClass('searchmarkent');
+	       	
+
 	}
 	catch(err) {
 		console.error("comments2page: ", err);

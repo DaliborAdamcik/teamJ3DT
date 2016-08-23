@@ -378,3 +378,17 @@ function showWelcomePage()
 	
 	return false;
 }
+
+/**
+ * Search for tag in url an reteives assigned value
+ * @param param String - name of tag in adress
+ * @returns ID if found, otherwise NaN
+ */
+function hasTagParam(param) {
+	if(window.location.href.indexOf(param+'=')>0) 
+	{
+		var idxPosInStr = window.location.href.indexOf(param+'=')+(param+'=').length;
+		return parseInt(window.location.href.substr(idxPosInStr));
+	}	
+	return NaN;
+}
