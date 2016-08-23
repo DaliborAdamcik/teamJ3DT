@@ -74,7 +74,7 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	/**
 	 * Getter for theme
 	 * 
-	 * @return theme
+	 * @return theme {@link Theme}
 	 */
 	public Theme getTheme() {
 		return theme;
@@ -83,12 +83,16 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	/**
 	 * Getter for owner
 	 * 
-	 * @return owner
+	 * @return owner {@link User}
 	 */
 	public User getOwner() {
 		return owner;
 	}
-
+	
+	/**
+	 * Getter for rating
+	 * @return rating in integer representation
+	 */
 	public CommentObjectDTO getRating(){
 		return CommentObjectDTO.getDTO(this);
 	}
@@ -96,8 +100,8 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	/**
 	 * Overrides java.lang.Object.equals 
 	 *
-	 * @param object
-	 * @return boolean
+	 * @param object {@link Object}
+	 * @return true if this has the same id as {@link Object} in the parameter
 	 */	
 	public boolean equals(Object object) {
 		if (object instanceof Comment) {
@@ -109,10 +113,11 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	}
 
 	/**
-	 * Implements Comparable<Comment>.compareTo
+	 * Implements Comparable\<Comment\>.compareTo
 	 * 
-	 * @param Comment
-	 * @return integer
+	 * @param {link Comment}
+	 * @return eturned value(integer) is >0 when the reason of blocked is higher in alphabetical order
+	 * than the reason of the block in parameter, =0 if equal, <0 if lower
 	 */
 	@Override
 	public int compareTo(Comment c) {

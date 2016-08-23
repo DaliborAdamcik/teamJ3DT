@@ -33,7 +33,9 @@ public class ColdStart {
 	private BlockedService blockedService;
 	
 	//private List<Object> toPersist;
-	
+	/**
+	 * Constructor. Initializes JPA services
+	 */
 	public ColdStart() {
 		this.userService = new UserJPA();
 		this.themeService = new ThemeJPA();
@@ -42,6 +44,12 @@ public class ColdStart {
 		this.blockedService = new BlockedJPA();
 	}
 
+	/**
+	 * Method to create all essential entities for testing. Creates all admins
+	 * and users. Calls method to initialize other essential entities
+	 * 
+	 * @throws {@link CommonEntityException}
+	 */
 	public void run() throws CommonEntityException {
 		// as a first we drop all old data and create new structure for database
 		try(JpaConnector connJPA = new JpaConnector())
@@ -112,7 +120,12 @@ public class ColdStart {
 		userService.updateUser(banned);
 	}
 	
-	public void jankaInitialize(User user) throws CommonEntityException {
+	/**
+	 * Initializes user Janka
+	 * @param user {@link User} "Janka" sent in parameter
+	 * @throws {@link CommonEntityException}
+	 */
+	private void jankaInitialize(User user) throws CommonEntityException {
 		Topic topic = new Topic("Automobiles", true);
 		topicService.addTopic(topic);
 		
@@ -127,7 +140,12 @@ public class ColdStart {
 
 	}
 	
-	public void janoInitialize(User user) throws CommonEntityException {
+	/**
+	 * Initializes user Jano
+	 * @param user {@link User} "Jano" sent in parameter
+	 * @throws {@link CommonEntityException}
+	 */
+	private void janoInitialize(User user) throws CommonEntityException {
 		Topic topic = new Topic("Movies", true);
 		topicService.addTopic(topic);
 		
@@ -145,7 +163,12 @@ public class ColdStart {
 
 	} 
 	
-	public void jozoInitialize(User user) throws CommonEntityException {
+	/**
+	 * Initializes user Jozo
+	 * @param user - {@link User} "Jozo" sent in parameter
+	 * @throws {@link CommonEntityException}
+	 */
+	private void jozoInitialize(User user) throws CommonEntityException {
 		Topic topic = new Topic("Hiking", true);
 		topicService.addTopic(topic);
 		
@@ -162,7 +185,12 @@ public class ColdStart {
 
 	}
 	
-	public void daliborInitialize(User user) throws CommonEntityException {	
+	/**
+	 * Initializes user Dalibor
+	 * @param user {@link User} "Dalibor" sent in parameter
+	 * @throws {@link CommonEntityException}
+	 */
+	private void daliborInitialize(User user) throws CommonEntityException {	
 		Topic topic = new Topic("Travelling", true);
 		topicService.addTopic(topic);
 		
@@ -177,7 +205,7 @@ public class ColdStart {
 		commentService.addComment(new Comment("I am the pilot, so yes", theme2, user));
 	}
 	
-	public void tomasInitialize(User user) throws CommonEntityException {
+	private void tomasInitialize(User user) throws CommonEntityException {
 		Topic topic = new Topic("Drinks", true);
 		topicService.addTopic(topic);
 		
@@ -192,7 +220,12 @@ public class ColdStart {
 		commentService.addComment(new Comment("Vodka forever...", theme2, user));	
 	}
 	
-	public void topicUserInitialize(User user)  throws CommonEntityException {
+	/**
+	 * Initializes user that has topics added to his Favourite topics list. Essential for debugging
+	 * @param user - {@link User} "Tuser" sent in parameter
+	 * @throws {@link CommonEntityException}
+	 */
+	private void topicUserInitialize(User user)  throws CommonEntityException {
 		Topic topic = new Topic("Test Theme", true);
 		topicService.addTopic(topic);
 		
@@ -210,10 +243,7 @@ public class ColdStart {
 		
 		userService.updateUser(user);
 	}
-	
-	
-	
-	
+
 }
 
 

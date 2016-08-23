@@ -38,7 +38,7 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	/**
 	 * Getter for blockedBy
 	 * 
-	 * @return blockedBy
+	 * @return blockedBy {@link User} user(admin) that blocked certain entity
 	 */
 	public User getBlockedBy() {
 		return blockedBy;
@@ -46,8 +46,8 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 
 	/**
 	 * setter for blockedBy
-	 * @param {@linkUser}blockedBy
-	 * @throws FieldValueException 
+	 * @param blockedBy {@link User} user(admin) that blocked certain entity
+	 * @throws {@link FieldValueException} 
 	 */
 	private void setBlockedBy(User blockedBy) throws FieldValueException {
 		testNotEmpty(blockedBy, "blocked by", true);
@@ -57,7 +57,7 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	/**
 	 * Getter for reason
 	 * 
-	 * @return reason
+	 * @return reason reason(String) for blocking
 	 */
 	public String getReason() {
 		return reason;
@@ -65,8 +65,8 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 
 	/**
 	 * Setter for reason
-	 * @param reason
-	 * @throws FieldValueException 
+	 * @param reason {@link String}
+	 * @throws {@link FieldValueException} 
 	 */
 	private void setReason(String reason) throws FieldValueException {
 		testNotEmpty(reason, "reason", true);
@@ -76,9 +76,10 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	/**
 	 * Overrides java.lang.Object.equals 
 	 *
-	 * @param object
-	 * @return boolean
+	 * @param {@link Object}
+	 * @return true if this has the same id as {@link Object} in the parameter
 	 */	
+	@Override
 	public boolean equals(Object object) {
 		if (object instanceof Blocked) {
 			if (this.getId() == ((Blocked) object).getId()) {
@@ -89,10 +90,11 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	}
 
 	/**
-	 * Implements Comparable<Blocked>.compareTo
+	 * Implements Comparable\<Blocked\>.compareTo
 	 * 
-	 * @param Blocked
-	 * @return integer
+	 * @param  {@link Blocked}
+	 * @return returned value(integer) is >0 when the reason of blocked is higher in alphabetical order
+	 * than the reason of the block in parameter, =0 if equal, <0 if lower
 	 */
 	@Override
 	public int compareTo(Blocked b) {

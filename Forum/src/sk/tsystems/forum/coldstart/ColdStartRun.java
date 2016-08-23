@@ -2,6 +2,11 @@ package sk.tsystems.forum.coldstart;
 
 public class ColdStartRun {
 
+	/**
+	 * Main method for cold start. Essential to run when debug data are needed
+	 * to be placed in database
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		System.out.println("**** COLD START script for Forum (TeAm J3DT) ****");
 		long started = System.currentTimeMillis();
