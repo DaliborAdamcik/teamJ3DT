@@ -66,8 +66,8 @@ public abstract class CommonEntity {
 	/**
 	 * Getter for ID
 	 * Gets an unique ID of entity.
-	 * <p>An <b>non - persisted entity<b> has assigned ID value of zero <i>(ID = 0)</i>.</p>
-	 * <p>An <b>persisted entity<b> has assigned ID value higher than zero <i>(ID > 0)</i>.</p>
+	 * <p>An <b>non - persisted entity</b> has assigned ID value of zero <i>(ID = 0).</p>
+	 * <p>An <b>persisted entity</b> has assigned ID value higher than zero <i>(ID > 0).</p>
 	 * <p>Value is assigned to entity at fist persist. It wouldn'd be changed.</p>
 	 * <b>This method cannot be overriden</b>
 	 * @return an unique ID for persisted entity ( ID > 0) otherwise zero value (0) 
@@ -78,8 +78,8 @@ public abstract class CommonEntity {
 
 	/**
 	 * Getter for Date of entity creation
-	 * <p>An <b>non - persisted entity<b> has assigned current date and time on creation.</i></p>
-	 * <p>An <b>persisted entity<b> has assigned an stored date and time of first creation.</i></p>
+	 * <p>An <b>non - persisted entity</b> has assigned current date and time on creation.</i></p>
+	 * <p>An <b>persisted entity</b> has assigned an stored date and time of first creation.</i></p>
 	 * <p>Value is assigned to entity at fist create. It wouldn'd be changed.</p>
 	 * @return Date and time assigned to entity on creation
 	 */
@@ -89,8 +89,8 @@ public abstract class CommonEntity {
 
 	/**
 	 * Getter for Date of entity last modification
-	 * <p>An <b>non - persisted entity<b> has assigned current date and time on creation.</i></p>
-	 * <p>An <b>persisted entity<b> has assigned an stored date and time of persistence call.</i></p>
+	 * <p>An <b>non - persisted entity</b> has assigned current date and time on creation.</i></p>
+	 * <p>An <b>persisted entity</b> has assigned an stored date and time of persistence call.</i></p>
 	 * <p>Value is changing after persistence. </p>
 	 * @return Date and time of last modification
 	 */
