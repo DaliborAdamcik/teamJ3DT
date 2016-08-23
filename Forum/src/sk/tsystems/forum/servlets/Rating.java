@@ -1,7 +1,6 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,6 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
-import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -52,7 +50,7 @@ public class Rating extends MasterServlet {
 				User owner = servletHelper.getLoggedUser();
 				CommentRating cr = servletHelper.getCommentService().getCommentRating(owner, comment);
 				if (cr == null) {
-					cr = new CommentRating(comment, owner, 1);
+					cr = new CommentRating(comment, owner, 1, servletHelper.getJpaService());
 					finalRating = 1;
 				}
 
@@ -81,7 +79,7 @@ public class Rating extends MasterServlet {
 
 				CommentRating cr = servletHelper.getCommentService().getCommentRating(owner, comment);
 				if (cr == null) {
-					cr = new CommentRating(comment, owner, -1);
+					cr = new CommentRating(comment, owner, -1, servletHelper.getJpaService());
 					finalRating = -1;
 				}
 

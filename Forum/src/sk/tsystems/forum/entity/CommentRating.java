@@ -46,7 +46,7 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 	 * @throws {@link
 	 *             EntityAutoPersist}
 	 */
-	public CommentRating(Comment comment, User owner, int rating) throws FieldValueException, EntityAutoPersist {
+	public CommentRating(Comment comment, User owner, int rating, JpaConnector jpa) throws FieldValueException, EntityAutoPersist {
 		this();
 		testNotEmpty(owner, "owner", false);
 		testNotEmpty(comment, "comment", false);
@@ -59,7 +59,7 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 		this.theme = comment.getTheme();
 		this.comment = comment;
 
-		try (JpaConnector jpa = new JpaConnector()) {
+		try {
 			jpa.persist(this);
 		} catch (IllegalArgumentException | PersistenceException e) {
 			throw new EntityAutoPersist("Cant persist '" + getClass().getSimpleName() + "' ", e);
