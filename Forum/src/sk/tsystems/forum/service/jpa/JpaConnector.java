@@ -13,9 +13,10 @@ import javax.persistence.metamodel.EntityType;
 
 import org.hibernate.exception.ConstraintViolationException;
 
+import sk.tsystems.forum.service.IJPAConnector;
 import sk.tsystems.forum.servlets.Events;
 
-public class JpaConnector implements AutoCloseable { // class selector is package
+public class JpaConnector implements AutoCloseable, IJPAConnector { // class selector is package
 	
 	private static final String persistenceUnitName = "hibernatePersistenceUnit";
 	private static long connectionCount = 0;

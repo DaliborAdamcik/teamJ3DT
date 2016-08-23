@@ -41,6 +41,7 @@ public abstract class MasterServlet extends HttpServlet {
 			servletHelper.setService(new TopicJPA2(jpa));
 			servletHelper.setService(new CommentJPA2(jpa));
 			servletHelper.setService(new ThemeJPA2(jpa));
+			servletHelper.setService(jpa); 
 	
 			// we can do some global checks here
 	

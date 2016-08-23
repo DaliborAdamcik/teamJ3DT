@@ -22,9 +22,11 @@ import sk.tsystems.forum.helper.exceptions.GetServiceException;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.service.CommentService;
+import sk.tsystems.forum.service.IJPAConnector;
 import sk.tsystems.forum.service.ThemeService;
 import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.UserService;
+import sk.tsystems.forum.service.jpa.JpaConnector;
 
 /**
  * 
@@ -108,6 +110,16 @@ public class ServletHelper {
 	 */
 	public final CommentService getCommentService() {
 		return getService(CommentService.class);
+	}
+
+	/**
+	 * Gets pre-initialized service object from request attributes.
+	 * 
+	 * @return An instance of JPA (Core) service, otherwise an runtime
+	 *         exception is thrown
+	 */
+	public final JpaConnector getJpaService() {
+		return (JpaConnector) getService(IJPAConnector.class);
 	}
 
 	/**
