@@ -185,9 +185,22 @@ function successBlock(response, id, reason) {
 			+ ");\">UNBLOCK</button>";
 	var blockedfor = document.getElementById("blockedfor_" + id);
 	var jsobj = {};
-	jsobj.id = id;
-	blockedfor.innerHTML = "blocked";
-	alertDlg("Success!", "Blocked successfully", "info");
+	jsobj.reason = reason;
+	jsobj.id=id;
+	$.ajax({
+		type : "PUT",
+		url : "Admin/" + id + "/getblocked",
+		contentType : "application/json;charset=UTF-8",
+		dataType : "json",
+		data : JSON.stringify(jsobj),
+		success : function(response) {
+			//<button class="showreason_button" onclick="showreason('Hiking','dalik','asdksdlf',this);">REASON</button>
+			blockedfor.innerHTML = "<button class='showreason_button' onclick=\"showreason('Banned','"+response.blocked.blockedBy.userName+"','"+response.blocked.reason+"',this);\">REASON</button>";
+			alertDlg("Success!", "Blocked successfully", "info");
+		},
+		error : ajaxFailureMessage
+	});
+	
 }
 
 function showreason(objName, blockedby, reason, button) {

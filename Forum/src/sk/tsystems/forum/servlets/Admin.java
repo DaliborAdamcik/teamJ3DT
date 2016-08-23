@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import sk.tsystems.forum.entity.Blocked;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
@@ -29,7 +30,10 @@ import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
+import sk.tsystems.forum.service.BlockedService;
 import sk.tsystems.forum.service.TopicService;
+import sk.tsystems.forum.service.jpa.BlockedJPA;
+import sk.tsystems.forum.service.jpa2.BlockedJPA2;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -132,30 +136,17 @@ public class Admin extends MasterServlet {
 				addTopic(response, servletHelper, obj);
 				break;
 			case "changetopic":
-				Topic topic;
-				String error=null;
-				TopicService topicService = servletHelper.getTopicService();
-				try {
-					topic = topicService.getTopic(obj.getInt("id"));
-					topic.setName(obj.getString("newname"));
-					topicService.updateTopic(topic);
-					
-				} catch (JSONException e) {
-					error = "JSON exception";
-				} catch (FieldValueException e) {
-					error = e.getMessage();
-				}
+				changeTopic(response, servletHelper, obj);
+				break;
+			case "getblocked":
+				String reason = obj.getString("reason");
+				BlockedService bs= new BlockedJPA();
+				Blocked blocked =bs.getBlocked(reason);
 				
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.setSerializationInclusion(Include.NON_NULL);
 				Map<String, Object> resp = new HashMap<>();
-				
-				if(error!=null){
-					resp.put("error", error);
-				}else {
-					resp.put("suc", "suc");
-				}
-
+				resp.put("blocked", blocked);
 				response.setContentType("application/json");
 				mapper.writeValue(response.getWriter(), resp);
 				break;
@@ -169,6 +160,36 @@ public class Admin extends MasterServlet {
 		} catch (UnknownActionException e) {
 			response.getWriter().println(e.getMessage());
 		}
+	}
+
+	private void changeTopic(HttpServletResponse response, ServletHelper servletHelper, JSONObject obj)
+			throws IOException, JsonGenerationException, JsonMappingException {
+		Topic topic;
+		String error=null;
+		TopicService topicService = servletHelper.getTopicService();
+		try {
+			topic = topicService.getTopic(obj.getInt("id"));
+			topic.setName(obj.getString("newname"));
+			topicService.updateTopic(topic);
+			
+		} catch (JSONException e) {
+			error = "JSON exception";
+		} catch (FieldValueException e) {
+			error = e.getMessage();
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		Map<String, Object> resp = new HashMap<>();
+		
+		if(error!=null){
+			resp.put("error", error);
+		}else {
+			resp.put("suc", "suc");
+		}
+
+		response.setContentType("application/json");
+		mapper.writeValue(response.getWriter(), resp);
 	}
 
 	private void addTopic(HttpServletResponse response, ServletHelper servletHelper, JSONObject obj)

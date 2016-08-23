@@ -19,4 +19,7 @@ public interface BlockedService {
 	 * 
 	 */
 	boolean removeBlocked(Blocked blocked);
+	
+	Blocked getBlocked(String reason);
+	
 }
