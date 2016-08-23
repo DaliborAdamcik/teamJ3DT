@@ -71,15 +71,15 @@ public class CommentJPA2 implements CommentService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Comment> getAllComments() {
-		try (JpaConnector jpa = new JpaConnector()) {
+		
 			return jpa.createQuery("SELECT c FROM Comment c").getResultList();
-		}
+		
 		
 	}
 	
 	@Override
 	public CommentRating getCommentRating(User owner, Comment comment) {
-		try (JpaConnector jpa = new JpaConnector()) {
+		
 			try{
 				
 			
@@ -90,12 +90,12 @@ public class CommentJPA2 implements CommentService {
 			}catch(NoResultException e){
 				return null;
 			}
-		}
+		
 	}
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<CommentRating> getAllCommentRatings(User owner) {
-		try (JpaConnector jpa = new JpaConnector()) {
+		
 			try{
 			return  jpa
 					.createQuery("SELECT c FROM CommentRating c WHERE c.owner=:owner")
@@ -104,6 +104,6 @@ public class CommentJPA2 implements CommentService {
 			}catch(NoResultException e){
 				return null;
 			}
-		}
+		
 	}
 }

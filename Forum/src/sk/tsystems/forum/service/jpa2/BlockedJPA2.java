@@ -23,19 +23,17 @@ public class BlockedJPA2 implements BlockedService {
 		jpa.remove(blocked);
 		return true;
 	}
+
 	@Override
 	public Blocked getBlocked(String reason) {
-		try (JpaConnector jpa = new JpaConnector()) {
-			try{
-				
-			
-			return (Blocked) jpa
-					.createQuery("SELECT b FROM Blocked b WHERE b.reason=:reason")
+		try {
+
+			return (Blocked) jpa.createQuery("SELECT b FROM Blocked b WHERE b.reason=:reason")
 					.setParameter("reason", reason).getSingleResult();
 
-			}catch(NoResultException e){
-				return null;
-			}
+		} catch (NoResultException e) {
+			return null;
 		}
+
 	}
 }
