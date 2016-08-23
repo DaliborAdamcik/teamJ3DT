@@ -170,7 +170,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	 * 
 	 * @param rating {@link ThemeObjectDTO} DTO object for rating
 	 */
-	public void getRating(ThemeObjectDTO rating) {
+	public void setRating(ThemeObjectDTO rating) {
 		this.dtoTheme = rating;
 	}
 
