@@ -18,6 +18,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.ServletHelper;
+import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
@@ -40,7 +41,9 @@ public class Search extends MasterServlet {
 				return;
 			}
 
-			// TODO **** length check 
+			if(tosearch.length()<2)
+				throw new UnknownActionException("Minimal search length is 2 chars.");
+			 
 			String isearch = "%"+tosearch.replace(' ', '%').toLowerCase()+"%";
 			
 			List <Comment> comments;

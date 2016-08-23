@@ -13,7 +13,6 @@ $('#tosearch').keyup(function(ev){
 });
 
 function doSrch() {
-	// TODO test length
 	var waht = $('#tosearch').val().trim();
 	if(waht.length<2 || waht==lastse)
 		return;
@@ -23,23 +22,24 @@ function doSrch() {
     $.ajax({
         type: "GET",
         url: "Search",
-       //dataType: "application/json",
         data: {srch: waht},
-        //contentType:"application/json",
         success: function (response) {
-        	//console.log(response);
-    		$('#srch_results').html(Mustache.to_html(templateResults, response));
+    		$('#resultcount').html(Mustache.to_html(templateResults, response));
+			$('#srch_results').html('');
         	if(ajxErrorDlg(response))
     		{
         		return;
     		}
         	
-        	var colopt = response.what.split(" "); 
+        	var colopt = response.what.trim().replace(/[\s]+/g, ".*");
         	
         	if(response.result)
         		response.result.forEach(function(res){
         			var rendered;
     				res.lastModified = timeStmp2strDate(res.lastModified);
+    				if(res.comment)
+    					res.comment = colorize(colopt, res.comment);
+
     				
         			if(res.idComment>0) {
         				rendered = Mustache.to_html(templateComment, res);
@@ -51,7 +51,7 @@ function doSrch() {
         			else
         				rendered = Mustache.to_html(templateTopic, res);
         			
-        			$('#srch_results').append($(colorize(colopt, rendered)));
+        			$('#srch_results').append($(rendered));
         		});    
         },
         error: ajaxFailureMessage
@@ -61,14 +61,10 @@ function doSrch() {
 
 function colorize(what, where) {
 	var res = where;
-	what.forEach(function(wh){
-		var co = wh.trim();
-		if(co.length>0)
-		{
-			var re = new RegExp('(?!;">)('+co+')(?!</s)', "gmi");
-			res = res.replace(re, '<span style="background-color: #bf80ff;">'+co+'</span>');
-		}
-	});
+	
+	var re = new RegExp('(?!<span class="hili">)('+what+')(?!<\/span>)', "gmi");
+	console.log(re);
+	res = res.replace(re, '<span class="hili">$1</span>');
 	
 	return res;
 }
