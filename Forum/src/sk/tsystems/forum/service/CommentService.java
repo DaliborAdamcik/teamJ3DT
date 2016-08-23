@@ -69,6 +69,7 @@ public interface CommentService {
 	//TODO dorobit doc
 	CommentRating getCommentRating(User owner, Comment comment) ;
 	List<Comment> getAllComments();
+	List<CommentRating> getAllCommentRatings(User owner);
 	
 	
 	

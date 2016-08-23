@@ -1,6 +1,7 @@
 package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ public class Rating extends MasterServlet {
 		request.getRequestDispatcher("/WEB-INF/jsp/header.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/rating.jsp").include(request, response);
 		request.getRequestDispatcher("/WEB-INF/jsp/footer.jsp").include(request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -82,12 +84,21 @@ public class Rating extends MasterServlet {
 						finalRating = 1;
 					}
 				}
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.setSerializationInclusion(Include.NON_NULL);
+				Map<String, Object> resp = new HashMap<>();
+				resp.put("id", obj.getInt("id"));
+				resp.put("finalrating", finalRating);
+				resp.put("rating",
+						servletHelper.getCommentService().getComment(obj.getInt("id")).getRating().getRating());
+				response.setContentType("application/json");
+				mapper.writeValue(response.getWriter(), resp);
 			}
 			if (action.equals("downvote")) {
 				Comment comment = servletHelper.getCommentService().getComment(obj.getInt("id"));
 				User owner = servletHelper.getLoggedUser();
-				
-				CommentRating cr =	servletHelper.getCommentService().getCommentRating(owner, comment);
+
+				CommentRating cr = servletHelper.getCommentService().getCommentRating(owner, comment);
 				if (cr == null) {
 					cr = new CommentRating(comment, owner, -1);
 					finalRating = -1;
@@ -102,17 +113,27 @@ public class Rating extends MasterServlet {
 						finalRating = -1;
 					}
 				}
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.setSerializationInclusion(Include.NON_NULL);
+				Map<String, Object> resp = new HashMap<>();
+				resp.put("id", obj.getInt("id"));
+				resp.put("finalrating", finalRating);
+				resp.put("rating",
+						servletHelper.getCommentService().getComment(obj.getInt("id")).getRating().getRating());
+				response.setContentType("application/json");
+				mapper.writeValue(response.getWriter(), resp);
 			}
-
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.setSerializationInclusion(Include.NON_NULL);
-			Map<String, Object> resp = new HashMap<>();
-			resp.put("jebat", "jebat");
-			resp.put("id", obj.getInt("id"));
-			resp.put("finalrating", finalRating);
-			resp.put("rating", servletHelper.getCommentService().getComment(obj.getInt("id")).getRating().getRating());
-			response.setContentType("application/json");
-			mapper.writeValue(response.getWriter(), resp);
+			if (action.equals("getinitialbuttons")) {
+				User user = servletHelper.getLoggedUser();
+				List<CommentRating> list = servletHelper.getCommentService().getAllCommentRatings(user);
+				
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.setSerializationInclusion(Include.NON_NULL);
+				Map<String, Object> resp = new HashMap<>();
+				resp.put("ratings", list);
+				response.setContentType("application/json");
+				mapper.writeValue(response.getWriter(), resp);
+			}
 
 		} catch (URLParserException e) {
 			e.printStackTrace();

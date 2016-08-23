@@ -92,4 +92,18 @@ public class CommentJPA2 implements CommentService {
 			}
 		}
 	}
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<CommentRating> getAllCommentRatings(User owner) {
+		try (JpaConnector jpa = new JpaConnector()) {
+			try{
+			return  jpa
+					.createQuery("SELECT c FROM CommentRating c WHERE c.owner=:owner")
+					.setParameter("owner", owner).getResultList();
+
+			}catch(NoResultException e){
+				return null;
+			}
+		}
+	}
 }
