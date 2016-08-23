@@ -1,7 +1,7 @@
 var cropSize = {x:0, y:0, w:0, h:0};
 var origSize = {w:0, h:0};
-var destSize = {w:300, h:300};
-
+var destSize = {w:128, h:128};
+var $cropper = undefined;
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -9,35 +9,40 @@ function readURL(input) {
         reader.onload = function (e) {
         	var oldlink =  $('#avatar_preview').attr('src');
         	
-            $('#avatar_preview').attr('src', e.target.result);
-            origSize.w = $('#avatar_preview').width();
-            origSize.h = $('#avatar_preview').height();
-            console.log(origSize);
+            $('#avatar_preview_siz').attr('src', e.target.result);
+            origSize.w = $('#avatar_preview_siz').width();
+            origSize.h = $('#avatar_preview_siz').height();
             
             if(origSize.w<destSize.w || origSize.h<destSize.h)
         	{
-            	alert("Image is too small.\n"+
+            	alertDlg("Profile picture", "Image is too small.\n"+
             			"Required: "+destSize.w+" x "+destSize.h+
-            			"\nYour image: "+origSize.w+" x "+origSize.h);
+            			"\nYour image: "+origSize.w+" x "+origSize.h, "warn");
                    $('#avatar_preview').attr('src', oldlink);
             	return;
         	}
-            	
-            if($('img.cropimg').data("cred"))
-            	return;
-                
-            $('img.cropimg').data("cred", true);
-            $('img.cropimg').cropimg({
-              resultWidth: destSize.w,
-              resultHeight: destSize.h,
-              onChange: function(x, y, w, h, image) {
-            	cropSize.x = x;
-            	cropSize.y = y;
-            	cropSize.w = w;
-            	cropSize.h = h;
-            	$('.btn-crop').show();
-              }
-            });
+            
+            if($cropper===undefined)
+        	{
+                $('#avatar_preview').attr('src', e.target.result);
+	            $cropper = $('img.cropimg').cropper({
+	            	  aspectRatio: 1 / 1,
+	            	  crop: function(e) {
+	            		cropSize = e;
+	/*					console.log(e.x);
+						console.log(e.y);
+						console.log(e.width);
+						console.log(e.height);
+						console.log(e.rotate);
+						console.log(e.scaleX);
+						console.log(e.scaleY);*/
+	            	    
+		            	$('.btn-crop').show();
+	            	  }
+	            	});
+        	}
+            else
+            	$cropper.cropper('replace', e.target.result);
         }
 
         reader.readAsDataURL(input.files[0]);
@@ -49,16 +54,13 @@ $("#avatar_select").change(function(){
 });
 
 $('.btn-crop').on('click', function() {
-	console.log(cropSize, cropSize.x>0, cropSize.y>0, cropSize.w> origSize.w, cropSize.h> origSize.h);
-	console.log(cropSize.h + cropSize.y < destSize.h , cropSize.w + cropSize.x < destSize.w);
-	console.log(cropSize.h + cropSize.y , destSize.h , cropSize.w + cropSize.x , destSize.w);
-	if(cropSize.x>0 || cropSize.y>0 || cropSize.w> origSize.w || cropSize.h> origSize.h) {
-		alert("Image must fit into crop window.");
+	if(cropSize.x<0 || cropSize.y<0 || cropSize.width+cropSize.x> origSize.w || cropSize.height+cropSize.y> origSize.h) {
+		alertDlg("Profile picture", "Image must fit into crop window.");
 		return;
 	}
 
-	if( cropSize.h + cropSize.y < 128 || cropSize.w + cropSize.x < 128	) {
-		alert("Final resolution is too low. Please zoom out.");
+	if(cropSize.width< destSize.w || cropSize.height< destSize.h) {
+		alertDlg("Profile picture", "Resolution is too low. Please, zoom in.");
 		return;
 	}
 	
@@ -66,25 +68,31 @@ $('.btn-crop').on('click', function() {
     var file_data = $('#avatar_select').prop('files')[0];   
     var form_data = new FormData();                  
     form_data.append('file', file_data);
-    form_data.append('w', cropSize.w);
-    form_data.append('h', cropSize.h);
-    form_data.append('x', cropSize.x);
-    form_data.append('y', cropSize.y);
+    form_data.append('w', Math.floor(cropSize.width));
+    form_data.append('h', Math.floor(cropSize.height));
+    form_data.append('x', Math.floor(cropSize.x));
+    form_data.append('y', Math.floor(cropSize.y));
     
     $.ajax({
         url: 'Picture/',  
-        dataType: 'text', 
         cache: false,
         contentType: false,
         processData: false,
         data: form_data,                         
         type: 'POST',
+        error: ajaxFailureMessage,
         success: function(response){
-            $('#avatar_preview').attr('src', "Picture/"+user.id+"/large");
-        	$('.btn-crop').hide();
-        	$('img.cropimg').data('cropimg').reset();
         	$( "#wait-upload" ).dialog('close');
-        	console.log("pic change reponse", response); // TODO responses
+        	console.log(response);
+        	if(ajxErrorDlg(response))
+        		return;
+        	$cropper.cropper('destroy');  
+        	$cropper = undefined;
+        	$('.btn-crop').hide();
+        	
+            $('#avatar_preview').attr('src', "Picture/"+user.id+"/large");
+        	
+    		alertDlg("Profile picture", 'Congratulations, Your new avatar is set.');
         }
      });
 });
@@ -95,9 +103,5 @@ $( "#wait-upload" ).dialog({
 	resizable: false,
     height: "auto",
     width: "auto",
-    modal: true/*,
-    buttons: {
-        "Wait": function() {},
-    }  */
-
-  });
+    modal: true
+});

@@ -6,6 +6,7 @@
 <button class="btn-crop" style="display: none">Set your avatar</button>
 <br/>
 <img src="Picture/${CURRENT_USER.id}/large/" alt="" id="avatar_preview" class="cropimg">
+<img src="Picture/${CURRENT_USER.id}/large/" alt="" id="avatar_preview_siz" style="display: none;">
 
 <div id="wait-upload" title="Uploading... Please wait">
   <p>Please wait while upload of your avatar is finished.</p>
@@ -16,10 +17,6 @@
   display: none;
 }
 </style>
-
-
 <script type="text/javascript" src="js/profilepicture.js"></script>
-<script type="text/javascript" src="imgcrop/jquery.mousewheel.js"></script>
-<script type="text/javascript" src="imgcrop/cropimg.jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="imgcrop/resource/cropimg.css" />
-<link rel="stylesheet" type="text/css" href="imgcrop/resource/font-awesome.min.css" />
+<script type="text/javascript" src="cropper/cropper.min.js"></script>
+<link rel="stylesheet" type="text/css" href="cropper/cropper.min.css" />

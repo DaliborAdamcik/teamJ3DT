@@ -31,11 +31,16 @@ public class ServletPicture extends MasterServlet {
 	private static final long serialVersionUID = 1L;
 	
    private String filePath; // TODO *** LOAD THIS FROM CONFIG FILE
-   private int maxFileSize = 750 * 1024;
-   private int maxMemSize = 4 * 1024;
+   private int maxFileSize = 1024 * 1024;
+   private int maxMemSize = 1024 * 1024;
 
    public void init(){
-      filePath = "C:/temp/"; // TODO **** create settings file to init this 
+      filePath = getServletContext().getRealPath("/temp/");
+      File tmp = new File(filePath);
+      if(!tmp.exists()) {
+    	  if(!tmp.mkdirs())
+    		  throw new RuntimeException("Cannot create temp directory: "+filePath);
+      }
      //getServletContext().getInitParameter("file-upload"); 
    }
 
@@ -82,19 +87,18 @@ public class ServletPicture extends MasterServlet {
 			if(upFile == null)
 				throw new FieldValueException("No staged files");
 			
-			int xpos = intVal(mapFields.get("x"))*-1;
-			int ypos = intVal(mapFields.get("y"))*-1;
+			int xpos = intVal(mapFields.get("x"));
+			int ypos = intVal(mapFields.get("y"));
 			int width = intVal(mapFields.get("w"));
 			int height = intVal(mapFields.get("h"));
 			
 			if(xpos<0 || ypos<0)
 				throw new FieldValueException("Bad crop start position.");
-			
 		
 			try {
 				BufferedImage bi = ImageIO.read(upFile.getInputStream());
 				
-				if(width>bi.getWidth() || height>bi.getHeight())
+				if(width+xpos>bi.getWidth() || height+ypos>bi.getHeight())
 					throw new FieldValueException("Bad crop size.");
 
 				BufferedImage crop = bi.getSubimage(xpos, ypos, width, height);
