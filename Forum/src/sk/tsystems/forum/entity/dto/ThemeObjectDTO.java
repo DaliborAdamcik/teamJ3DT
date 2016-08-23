@@ -1,11 +1,14 @@
 package sk.tsystems.forum.entity.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 
-public class ThemeObjectDTO {
+public class ThemeObjectDTO implements Comparable<ThemeObjectDTO>{
 
 	/** field <b>rating for theme</b> */
 	private long sumRating;
@@ -74,38 +77,81 @@ public class ThemeObjectDTO {
 	 * @param theme {@link Theme}
 	 * @return ThemeObjectDTO for specified theme from parameter
 	 */
-	public static ThemeObjectDTO getDTO(Theme theme) {
-		try (JpaConnector jpa = new JpaConnector()) {
-			ThemeObjectDTO obj1;
-			ThemeObjectDTO obj2;
+	public static ThemeObjectDTO getDTO(Theme theme, JpaConnector jpa) {
+		ThemeObjectDTO obj1;
+		ThemeObjectDTO obj2;
 
-			try { // check is okay
-				obj1 = jpa.getEntityManager()
-						.createQuery(
- 								"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, sum(c.rating), count(c.id)) FROM CommentRating c "
-										+ "WHERE c.theme = :theme AND c.comment.blocked=null GROUP BY c.theme",
-								ThemeObjectDTO.class)
-						.setParameter("theme", theme).getSingleResult();
-			} catch (javax.persistence.NoResultException e) {
-				obj1 = new ThemeObjectDTO(theme, 0, 0);
-			}
-
-			try { // this is OK dalik, 20.8.2015 2:35
-				obj2 = jpa.getEntityManager()
-						.createQuery(
-								"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, count(c.id), count(DISTINCT c.owner), max(c.modified)) FROM Comment c "
-										+ "WHERE c.theme = :theme AND c.blocked=null GROUP BY c.theme",
-								ThemeObjectDTO.class)
-						.setParameter("theme", theme).getSingleResult();
-			} catch (javax.persistence.NoResultException e) {
-				obj2 = new ThemeObjectDTO(theme, 0, 0);
-			}
-			
-			return new ThemeObjectDTO(obj1.theme, obj1.sumRating, obj1.ratingCount, obj2.commentCount,
-					obj2.userCount, obj2.lastCommentDate);
+		try { // check is okay
+			obj1 = jpa.getEntityManager()
+					.createQuery(
+							"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, sum(c.rating), count(c.id)) FROM CommentRating c "
+									+ "WHERE c.theme = :theme AND c.comment.blocked=null GROUP BY c.theme",
+							ThemeObjectDTO.class)
+					.setParameter("theme", theme).getSingleResult();
+		} catch (javax.persistence.NoResultException e) {
+			obj1 = new ThemeObjectDTO(theme, 0, 0);
 		}
+
+		try { // this is OK dalik, 20.8.2015 2:35
+			obj2 = jpa.getEntityManager()
+					.createQuery(
+							"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, count(c.id), count(DISTINCT c.owner), max(c.modified)) FROM Comment c "
+									+ "WHERE c.theme = :theme AND c.blocked=null GROUP BY c.theme",
+							ThemeObjectDTO.class)
+					.setParameter("theme", theme).getSingleResult();
+		} catch (javax.persistence.NoResultException e) {
+			obj2 = new ThemeObjectDTO(theme, 0, 0);
+		}
+		
+		return new ThemeObjectDTO(obj1.theme, obj1.sumRating, obj1.ratingCount, obj2.commentCount,
+				obj2.userCount, obj2.lastCommentDate);
 	}
 
+	/**
+	 * return ThemeObjectDTO from database
+	 * 
+	 * @param theme {@link Theme}
+	 * @return ThemeObjectDTO for specified theme from parameter
+	 */
+	public static List<ThemeObjectDTO> getDTO(JpaConnector jpa) {
+		List<ThemeObjectDTO> obj1;
+		List<ThemeObjectDTO> obj2;
+
+		obj1 = jpa.getEntityManager()
+				.createQuery(
+						"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, sum(c.rating), count(c.id)) FROM CommentRating c "
+								+ "WHERE c.comment.blocked=null GROUP BY c.theme HAVING sum(c.rating)>0 AND count(c.id)>0",
+						ThemeObjectDTO.class).getResultList();
+
+		obj2 = jpa.getEntityManager()
+				.createQuery(
+						"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, count(c.id), count(DISTINCT c.owner), max(c.modified)) FROM Comment c "
+								+ "WHERE c.blocked=null GROUP BY c.theme",
+						ThemeObjectDTO.class).getResultList();
+		int index;
+		
+		for (Iterator<ThemeObjectDTO> it1 = obj1.iterator(); it1.hasNext();) {
+			ThemeObjectDTO the1 = it1.next();
+			
+			if((index = obj2.indexOf(the1))>=0)
+			{
+				ThemeObjectDTO the2 = obj2.get(index);
+				the2.setRatingCount(the1.getRatingCount());
+				the2.setSumRating(the1.sumRating);
+			}
+		}
+		return obj2;
+	}
+	
+	public static void main(String[] args) {
+		try(JpaConnector jpa = new JpaConnector())
+		{
+			List<ThemeObjectDTO> li = getDTO(jpa);
+			System.out.println(li);
+		}
+	}
+	
+	
 	/**
 	 * Getter for average rating
 	 * 
@@ -161,5 +207,28 @@ public class ThemeObjectDTO {
 		return String.format(
 				"ThemeObjectDTO [theme.id=%s, theme.name=%s, averageRating=%s, ratingCount=%s, commentCount=%s, userCount=%s, lastCommentDate=%s]",
 				theme.getId(), theme.getName(), sumRating, ratingCount, commentCount, userCount, lastCommentDate);
+	}
+
+	private Theme getTheme() {
+		return theme;
+	}
+
+	private void setSumRating(long sumRating) {
+		this.sumRating = sumRating;
+	}
+
+	private void setRatingCount(long ratingCount) {
+		this.ratingCount = ratingCount;
+	}
+
+	
+	@Override
+	public int compareTo(ThemeObjectDTO o) {
+		return o.getTheme().getId()-this.getTheme().getId();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof ThemeObjectDTO) && compareTo((ThemeObjectDTO) obj)==0;
 	}
 }
