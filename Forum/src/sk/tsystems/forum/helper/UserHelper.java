@@ -22,13 +22,14 @@ public class UserHelper {
 	public static void passwordOverallControll(String password) throws PasswordCheckException {
 		if (password == null)
 			throw new PasswordCheckException("Password cannot be null");
-		charactersControll(password);
-		lengthControll(password);
-		digitControll(password);
-		specialCharacterControll(password);
+		charactersControl(password);
+		lengthControl(password);
+		passwordStrengthControl(password);
+		// digitControll(password);
+		// specialCharacterControll(password);
 	}
 
-	private static void charactersControll(String password) throws PasswordCheckException {
+	private static void charactersControl(String password) throws PasswordCheckException {
 		Pattern pattern = Pattern.compile("^[!-~]{1,}$");
 		Matcher matcher = pattern.matcher(password);
 		if (!matcher.matches()) {
@@ -37,9 +38,16 @@ public class UserHelper {
 		}
 	}
 
-	private static void lengthControll(String password) throws PasswordCheckException {
+	private static void lengthControl(String password) throws PasswordCheckException {
 		if (password.length() < 8)
 			throw new PasswordCheckException("your password must have at least 8 characters");
+	}
+
+	private static void passwordStrengthControl(String password) throws PasswordCheckException {
+		if (passStrength(password) < 50) {
+			throw new PasswordCheckException(
+					"your password is not strong enough (try to use UPPERCASE and lowercase letters, numbers or special characters)");
+		}
 	}
 
 	private static void digitControll(String password) throws PasswordCheckException {
@@ -64,35 +72,14 @@ public class UserHelper {
 
 	public static void main(String[] args) {
 		/*
-		try {
-			// passwordOverallControll("pas");
-			passwordOverallControll("12345678");
-			System.out.println("ok");
-		} catch (PasswordCheckException e) {
-			System.out.println(e.getMessage());
-			// e.printStackTrace();
-		}
-		*/
-
-		System.out.printf("a:\t%s\n", passStrength("a"));
-		System.out.printf("1:\t%s\n", passStrength("1"));
-		System.out.printf("Aa:\t%s\n", passStrength("Aa"));
-		System.out.printf("Aa1:\t%s\n", passStrength("Aa1"));
-		System.out.printf("A1a:\t%s\n", passStrength("A1a"));
-		System.out.printf("A1a.:\t%s\n", passStrength("A1a."));
-		System.out.printf("abcde:\t%s\n", passStrength("abcde"));
-		System.out.printf("abcdE:\t%s\n", passStrength("abcdE"));
-		System.out.printf("abCde:\t%s\n", passStrength("abCde"));
-		System.out.printf("12345:\t%s\n", passStrength("12345"));
-		System.out.printf("Aa.7Aa7:\t%s\n", passStrength("Aa.7Aa7"));
-		
+		 * try { // passwordOverallControll("pas");
+		 * passwordOverallControll("12345678"); System.out.println("ok"); }
+		 * catch (PasswordCheckException e) {
+		 * System.out.println(e.getMessage()); // e.printStackTrace(); }
+		 */
 		System.out.println();
-		
-		System.out.printf("123456.a:\t%s\n", passStrength("123456.a"));
-		System.out.printf("123456.7:\t%s\n", passStrength("123456.7"));
-		System.out.printf("Mypass.1:\t%s\n", passStrength("123456.a"));
-		System.out.printf("IdE.4lN.e He5.l0:\t%s\n", passStrength("IdE.4lN.e He5.l0"));
-		
+		System.out.printf("Mypass.7:\t%s\n", passStrength("Mypass.7"));
+
 	}
 
 	/***
@@ -101,7 +88,7 @@ public class UserHelper {
 	 * @author Dalibor
 	 */
 	public static boolean nickNameValidator(String userName) throws NickNameException {
-		if (userName==null || userName.length() < 4)
+		if (userName == null || userName.length() < 4)
 			throw new NickNameException("Nickname must be 4 characters long");
 
 		Pattern testValidNickName = Pattern.compile("^([a-z][a-z0-9]{3,})$");
@@ -110,18 +97,17 @@ public class UserHelper {
 
 		return true;
 	}
-	
+
 	/***
-	 * String 2 Date convert
-	 * valid format "dd.MM.yyyy HH:mm"
+	 * String 2 Date convert valid format "dd.MM.yyyy HH:mm"
 	 * 
 	 * @author Tuomas
 	 */
 	public static Date stringToDate(String dateString) throws BadDateException {
-	
-		return stringToDate(dateString,"dd.MM.yyyy");
+
+		return stringToDate(dateString, "dd.MM.yyyy");
 	}
-	
+
 	public static Date stringToDate(String dateString, String dateFormat) throws BadDateException {
 		DateFormat format = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
 		Date date;
@@ -135,10 +121,13 @@ public class UserHelper {
 	}
 
 	/***
-	 * Password strength calc.
+	 * Password strength check method returns password strength score. It takes
+	 * account of password length, UPPERCASE and lowercase letters, numbers and
+	 * special chars, count of consecutive letters and numbers.
 	 * 
-	 * Recomended minimal strength = 8 chars, score >= 50
+	 * Recommended minimal strength = 8 chars, score >= 50
 	 * 
+	 * @return score in integer representation
 	 * @author Tuomas
 	 */
 	public static int passStrength(String pass) {
@@ -221,5 +210,5 @@ public class UserHelper {
 
 		return strength;
 	}
-	
+
 }
