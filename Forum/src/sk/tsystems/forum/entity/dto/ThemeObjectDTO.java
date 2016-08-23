@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
+
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 
@@ -71,13 +74,13 @@ public class ThemeObjectDTO implements Comparable<ThemeObjectDTO>{
 		this(theme, averageRating, ratingCount, 0, 0, null);
 	}
 	
-	/**
+	/*
 	 * return ThemeObjectDTO from database
 	 * 
 	 * @param theme {@link Theme}
 	 * @return ThemeObjectDTO for specified theme from parameter
 	 */
-	public static ThemeObjectDTO getDTO(Theme theme, JpaConnector jpa) {
+	/*public static ThemeObjectDTO getDTO(Theme theme, JpaConnector jpa) {
 		ThemeObjectDTO obj1;
 		ThemeObjectDTO obj2;
 
@@ -105,29 +108,40 @@ public class ThemeObjectDTO implements Comparable<ThemeObjectDTO>{
 		
 		return new ThemeObjectDTO(obj1.theme, obj1.sumRating, obj1.ratingCount, obj2.commentCount,
 				obj2.userCount, obj2.lastCommentDate);
-	}
+	}*/
 
 	/**
 	 * return ThemeObjectDTO from database
 	 * 
-	 * @param theme {@link Theme}
-	 * @return ThemeObjectDTO for specified theme from parameter
+	 * @param jpa {@link JpaConnector} An hibernate instance 
+	 * @param modifiedAfter {@link Date} null = all entries, Date = changed after date
+	 * @return {@link Theme} Theme with assigned DTO objects
 	 */
-	public static List<ThemeObjectDTO> getDTO(JpaConnector jpa) {
-		List<ThemeObjectDTO> obj1;
-		List<ThemeObjectDTO> obj2;
+	public static List<Theme> getDTO(JpaConnector jpa, Date modifiedAfter) {
+		List<Theme> result = new ArrayList<>();
 
-		obj1 = jpa.getEntityManager()
+		String themeWhere = (modifiedAfter==null?"": " AND c.theme.modified>:modified ");
+		
+		TypedQuery<ThemeObjectDTO> qer1 = jpa.getEntityManager()
 				.createQuery(
 						"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, sum(c.rating), count(c.id)) FROM CommentRating c "
-								+ "WHERE c.comment.blocked=null GROUP BY c.theme HAVING sum(c.rating)>0 AND count(c.id)>0",
-						ThemeObjectDTO.class).getResultList();
+								+ "WHERE c.comment.blocked=null "+themeWhere+" GROUP BY c.theme HAVING sum(c.rating)>0 AND count(c.id)>0",
+						ThemeObjectDTO.class);
 
-		obj2 = jpa.getEntityManager()
+		TypedQuery<ThemeObjectDTO> qer2 = jpa.getEntityManager()
 				.createQuery(
 						"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, count(c.id), count(DISTINCT c.owner), max(c.modified)) FROM Comment c "
-								+ "WHERE c.blocked=null GROUP BY c.theme",
-						ThemeObjectDTO.class).getResultList();
+								+ "WHERE c.blocked=null "+themeWhere+" GROUP BY c.theme",
+						ThemeObjectDTO.class);
+		
+		if(modifiedAfter!=null) {
+			qer1.setParameter("modified", modifiedAfter, TemporalType.DATE);
+			qer2.setParameter("modified", modifiedAfter, TemporalType.DATE);
+		}
+		
+		List<ThemeObjectDTO> obj1 = qer1.getResultList();
+		List<ThemeObjectDTO> obj2 = qer2.getResultList();
+
 		int index;
 		
 		for (Iterator<ThemeObjectDTO> it1 = obj1.iterator(); it1.hasNext();) {
@@ -138,27 +152,25 @@ public class ThemeObjectDTO implements Comparable<ThemeObjectDTO>{
 				ThemeObjectDTO the2 = obj2.get(index);
 				the2.setRatingCount(the1.getRatingCount());
 				the2.setSumRating(the1.sumRating);
+				Theme the = the2.getTheme();
+				the2.theme = null;
+				the.setRating(the2);
+				result.add(the);
+				obj2.remove(index);
 			}
 		}
-		return obj2;
+		return result;
 	}
-	
-	public static void main(String[] args) {
-		try(JpaConnector jpa = new JpaConnector())
-		{
-			List<ThemeObjectDTO> li = getDTO(jpa);
-			System.out.println(li);
-		}
-	}
-	
 	
 	/**
 	 * Getter for average rating
 	 * 
 	 * @return long sumRating for theme
 	 */
-	public long getAverageRating() {
-		return sumRating;
+	public float getAverageRating() {
+		if(ratingCount>0)
+			return  sumRating / ratingCount;
+		return 0;
 	}
 
 	/**

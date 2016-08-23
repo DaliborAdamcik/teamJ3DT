@@ -22,6 +22,7 @@ import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
+import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
 import sk.tsystems.forum.entity.exceptions.CommonEntityException;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.BlockHelper;
@@ -100,10 +101,12 @@ public class Welcome extends MasterServlet {
 		List<Theme> themes; 
 		if(!newsonly || (filterDate = (Date) helpser.getSessionObject("theme_filter_date"))==null)
 		{
-			themes = helpser.getThemeService().getTheme();
+			themes = ThemeObjectDTO.getDTO(helpser.getJpaService(), null);
+					//helpser.getThemeService().getTheme();
 		}
 		else
-			themes = helpser.getThemeService().getTheme(filterDate);
+			themes = ThemeObjectDTO.getDTO(helpser.getJpaService(), null);
+			//helpser.getThemeService().getTheme(filterDate);
 
 		if(!themes.isEmpty()) // save filter or last item
 			helpser.setSessionObject("theme_filter_date", themes.get(themes.size()-1).getModified());

@@ -46,8 +46,8 @@
 			{{#rating}}
 			<span title="Number of comments">{{commentCount}}<span class="ui-icon ui-icon-comment"></span></span> 
 			<span title="Commenters in theme">{{userCount}}<span class="ui-icon ui-icon-person"></span></span>
-			<!-- <span>{{ratingCount}} ratings <br></span>
-			<span>{{averageRating}} rating </span> -->
+			<span title="Number of ratings">{{ratingCount}}<span class="ui-icon ui-icon-flag"></span></span> 
+			<span title="Average rating">{{averageRating}}<span class="ui-icon ui-icon-check"></span></span> 
 			{{/rating}}
 		</div>
 	</div>
