@@ -133,32 +133,45 @@ public class ThemeObjectDTO implements Comparable<ThemeObjectDTO>{
 						"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, count(c.id), count(DISTINCT c.owner), max(c.modified)) FROM Comment c "
 								+ "WHERE c.blocked=null "+themeWhere+" GROUP BY c.theme",
 						ThemeObjectDTO.class);
+
+		TypedQuery<Theme> qer3 = jpa.getEntityManager()
+				.createQuery(
+						"SELECT t FROM Theme t "
+						+(modifiedAfter==null?"": " WHERE t.modified>:modified "), Theme.class);
+		
 		
 		if(modifiedAfter!=null) {
 			qer1.setParameter("modified", modifiedAfter, TemporalType.DATE);
 			qer2.setParameter("modified", modifiedAfter, TemporalType.DATE);
+			qer3.setParameter("modified", modifiedAfter, TemporalType.DATE);
 		}
 		
 		List<ThemeObjectDTO> obj1 = qer1.getResultList();
 		List<ThemeObjectDTO> obj2 = qer2.getResultList();
+		List<Theme> obj3 = qer3.getResultList();
 
 		int index;
 		
-		for (Iterator<ThemeObjectDTO> it1 = obj1.iterator(); it1.hasNext();) {
-			ThemeObjectDTO the1 = it1.next();
+		for (Iterator<ThemeObjectDTO> it2 = obj2.iterator(); it2.hasNext();) {
+			ThemeObjectDTO the2 = it2.next();
 			
-			if((index = obj2.indexOf(the1))>=0)
+			if((index = obj1.indexOf(the2))>=0)
 			{
-				ThemeObjectDTO the2 = obj2.get(index);
+				ThemeObjectDTO the1 = obj1.get(index);
 				the2.setRatingCount(the1.getRatingCount());
 				the2.setSumRating(the1.sumRating);
-				Theme the = the2.getTheme();
-				the2.theme = null;
-				the.setRating(the2);
-				result.add(the);
-				obj2.remove(index);
+				obj1.remove(index);
 			}
+
+			Theme the = the2.getTheme();
+			the2.theme = null;
+			the.setRating(the2);
+			result.add(the);
 		}
+		
+		obj3.removeAll(result);
+		result.addAll(obj3);
+		
 		return result;
 	}
 	
