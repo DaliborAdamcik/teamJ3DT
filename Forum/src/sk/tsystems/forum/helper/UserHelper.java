@@ -15,8 +15,9 @@ import sk.tsystems.forum.entity.exceptions.field.user.PasswordCheckException;
 public class UserHelper {
 
 	/***
-	 * password validator part
-	 * 
+	 * Password overall validator, check if password consists invalid character/s, password length and password strength
+	 * @param password {@link String}
+	 * @throws {@link PasswordCheckException}
 	 * @author Janka
 	 */
 	public static void passwordOverallControll(String password) throws PasswordCheckException {
@@ -29,6 +30,12 @@ public class UserHelper {
 		// specialCharacterControll(password);
 	}
 
+	/**
+	 * Check if password consists invalid character/s
+	 * 
+	 * @param password {@link String}
+	 * @throws {@link PasswordCheckException}
+	 */
 	private static void charactersControl(String password) throws PasswordCheckException {
 		Pattern pattern = Pattern.compile("^[!-~]{1,}$");
 		Matcher matcher = pattern.matcher(password);
@@ -38,11 +45,23 @@ public class UserHelper {
 		}
 	}
 
+	/**
+	 * Check if password has at least 8 characters
+	 * 
+	 * @param password {@link String}
+	 * @throws {@link PasswordCheckException}
+	 */
 	private static void lengthControl(String password) throws PasswordCheckException {
 		if (password.length() < 8)
 			throw new PasswordCheckException("your password must have at least 8 characters");
 	}
 
+	/**
+	 * Check password's strength
+	 * 
+	 * @param password {@link String}
+	 * @throws {@link PasswordCheckException}
+	 */
 	private static void passwordStrengthControl(String password) throws PasswordCheckException {
 		if (passStrength(password) < 50) {
 			throw new PasswordCheckException(
@@ -50,7 +69,7 @@ public class UserHelper {
 		}
 	}
 
-	private static void digitControll(String password) throws PasswordCheckException {
+/*	private static void digitControll(String password) throws PasswordCheckException {
 		for (int i = 0; i < password.length(); i++) {
 			if (Character.isDigit(password.charAt(i))) {
 				return;
@@ -68,7 +87,7 @@ public class UserHelper {
 			}
 		}
 		throw new PasswordCheckException("your password have to contain at least 1 special character");
-	}
+	} */
 
 	public static void main(String[] args) {
 		/*
