@@ -1,0 +1,34 @@
+.upvote_button {
+	position:relative;
+	background: url("/Forum/images/up.png") no-repeat;
+    cursor:pointer;
+    width: 48px;
+    height: 48px;
+    border: none;
+}
+
+.downvote_button {
+	position:relative;
+	background: url("/Forum/images/down.png") no-repeat;
+    cursor:pointer;
+    width: 48px;
+    height: 48px;
+    border: none;
+}
+.upvote_button_black {
+	position:relative;
+	background: url("/Forum/images/upblack.png") no-repeat;
+    cursor:pointer;
+    width: 48px;
+    height: 48px;
+    border: none;
+}
+
+.downvote_button_black {
+	position:relative;
+	background: url("/Forum/images/downblack.png") no-repeat;
+    cursor:pointer;
+    width: 48px;
+    height: 48px;
+    border: none;
+}

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import sk.tsystems.forum.entity.Comment;
+import sk.tsystems.forum.entity.CommentRating;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 
@@ -65,9 +66,9 @@ public interface CommentService {
 	List<Comment> getComments(User owner);
 	
 	
-	
-	
-	
+	//TODO dorobit doc
+	CommentRating getCommentRating(User owner, Comment comment) ;
+	List<Comment> getAllComments();
 	
 	
 	

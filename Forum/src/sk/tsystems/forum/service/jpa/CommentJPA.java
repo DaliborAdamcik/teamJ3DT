@@ -3,9 +3,11 @@ package sk.tsystems.forum.service.jpa;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TemporalType;
 
 import sk.tsystems.forum.entity.Comment;
+import sk.tsystems.forum.entity.CommentRating;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.service.CommentService;
@@ -71,5 +73,29 @@ public class CommentJPA implements CommentService {
 			return jpa.createQuery("SELECT c FROM Comment c join c.owner o WHERE o=:owner").setParameter("owner", owner).getResultList();
 		}
 		
+	}
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Comment> getAllComments() {
+		try (JpaConnector jpa = new JpaConnector()) {
+			return jpa.createQuery("SELECT c FROM Comment c").getResultList();
+		}
+		
+	}
+	
+	@Override
+	public CommentRating getCommentRating(User owner, Comment comment) {
+		try (JpaConnector jpa = new JpaConnector()) {
+			try{
+				
+			
+			return (CommentRating) jpa
+					.createQuery("SELECT c FROM CommentRating c WHERE c.owner=:owner and c.comment=:comment")
+					.setParameter("owner", owner).setParameter("comment", comment).getSingleResult();
+
+			}catch(NoResultException e){
+				return null;
+			}
+		}
 	}
 }
