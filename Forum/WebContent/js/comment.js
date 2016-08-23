@@ -83,7 +83,8 @@ function comments2page(response)
 		
 	
 		entityMenuButtonShow();
-	    
+		initializeRateButtons();
+		
 	    if(user.role=="GUEST" || response.theme && response.theme.blocked)
 	    	$('#addComment').hide();
 	    else
@@ -112,6 +113,7 @@ function comment2page(comment){
 		$old.replaceWith(html);
 		else
 	    $('#commentBoxer').append($(html));
+		
 	}
 	catch(err) {
 		console.error("comment2page: ", err);

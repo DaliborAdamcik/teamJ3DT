@@ -7,10 +7,19 @@ function initializeRateButtons() {
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
+		
 			console.log(response);
+			console.log("success");
 			response.ratings.forEach(function(item) {
+				console.log("daco")
 				buttonsChange2(item.comment.id, item.rating);
 			});
+			
+		
+		},
+		error: function(){
+			console.log("error");
+			$(".votingtable").hide();
 		}
 	});
 }
@@ -87,7 +96,7 @@ function buttonsChange(id, finalrating, rating) {
 
 }
 
-function buttonsChange2(id, finalrating){
+function buttonsChange2(id, finalrating) {
 	if (finalrating == 0) {
 		$("#tdupvote_" + id).html(
 				"<button onclick='upvote(" + id + ")' id='upvote_" + id
@@ -104,6 +113,7 @@ function buttonsChange2(id, finalrating){
 		$("#tddownvote_" + id).html(
 				"<button id='downvote_" + id
 						+ "' class='downvote_button' disabled></button>");
+		
 	}
 	if (finalrating == 1) {
 		$("#tdupvote_" + id).html(
@@ -113,4 +123,5 @@ function buttonsChange2(id, finalrating){
 				"<button onclick='downvote(" + id + ")' id='downvote_" + id
 						+ "' class='downvote_button_black' ></button>");
 	}
+
 }

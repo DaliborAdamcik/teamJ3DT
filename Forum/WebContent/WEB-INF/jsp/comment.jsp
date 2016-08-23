@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <link rel="stylesheet" type="text/css" href="css/comment.css">
+<link rel="stylesheet" type="text/css" href="css/rating.css">
 <style>
  .ui-menu { width: 150px; }
 </style>
@@ -46,6 +47,13 @@
 		<span class="date sub-text">from {{#owner}}{{userName}}{{/owner}} on {{created}}</span>
 		{{#blocked}}<div class="sub-text" title="{{reason}}">Blocked by <b>{{#blockedBy}}{{userName}}{{/blockedBy}}</b> at <i>{{created}}</i></div>{{/blocked}}
 	</div>
+<div class="votingtable">
+	<table>
+	<tr><td id="tdupvote_{{id}}"><button onclick="upvote({{id}})" id="upvote_{{id}}" class="upvote_button_black"></button>
+	<td id="tdrating_{{id}}">{{rating.rating}}
+	<td id="tddownvote_{{id}}"><button onclick="downvote({{id}})" id="downvote_{{id}}" class="downvote_button_black"></button>
+	</table>
+	</div>
 </li>
 </script>
 
@@ -57,3 +65,5 @@
 </div>
 
 <script type="text/javascript" src="js/comment.js"></script>
+<script type="text/javascript" src="js/rating.js"></script>
+
