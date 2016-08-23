@@ -1,4 +1,4 @@
-function checkPass() {
+/*function checkPass() {
 	var pass1 = document.getElementById('reg_pass1');
 	var pass2 = document.getElementById('reg_pass2');
 	var message = document.getElementById('confirmMessage');
@@ -14,7 +14,7 @@ function checkPass() {
 		message.style.color = badColor;
 		message.innerHTML = "Passwords Do Not Match!"
 	}
-}
+}*/
 
 /******* DO NOT REMOVE, DO NOT MODIFY ***/
 
