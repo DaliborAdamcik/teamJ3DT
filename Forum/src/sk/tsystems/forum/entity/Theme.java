@@ -14,40 +14,44 @@ import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 @Table(name = "THEME")
 public class Theme extends BlockableEntity implements Comparable<Theme> {
 
-	/**
-	 * name of the theme
-	 * 
-	 */
+	/** {@link String} field <b>name of theme</b> */
 	@Column(name = "NAME", nullable = false, unique = true)
 	private String name;
 
-	/**
-	 * theme
-	 */
+	/** {@link Topic} field for {@link Theme} to be included in */
 	@ManyToOne
 	@JoinColumn(name = "TOPICID")
 	private Topic topic;
 
-	/**
-	 * description of theme
-	 */
-	@Column(name = "DESCRIPTION", nullable = false, columnDefinition="CLOB")
+	/** {@link String} field <b>description of theme</b> */
+	@Column(name = "DESCRIPTION", nullable = false, columnDefinition = "CLOB")
 	private String description;
 
-	/**
-	 * author
-	 */
-	//@Column(name = "AUTHOR", nullable = false)
+	/** {@link User} field <b>author of theme</b> */
+	// @Column(name = "AUTHOR", nullable = false)
 	@ManyToOne
 	private User author;
 
-	/**
-	 * Public status for theme
-	 */
+	/** boolean field <b>public status of theme</b> */
 	@Column(name = "ISPUBLIC", nullable = false)
 	private boolean isPublic;
 
-	public Theme(String name, Topic topic, String description, User author, boolean isPublic) throws FieldValueException {
+	/**
+	 * Create new theme
+	 * 
+	 * @ @param
+	 *       name {@link String} name of theme
+	 * @param topic
+	 *            {@link Topic} to be included in
+	 * @param description
+	 *            {@link String} description of theme
+	 * @param author
+	 *            {@link User} author of this theme
+	 * @throws {@link
+	 *             FieldValueException}
+	 */
+	public Theme(String name, Topic topic, String description, User author, boolean isPublic)
+			throws FieldValueException {
 		this();
 		testNotEmpty(author, "author", false);
 		testNotEmpty(topic, "topic", false);
@@ -59,7 +63,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	}
 
 	/**
-	 * Constructor for JPA
+	 * Constructor for JPA, must be private
 	 */
 	private Theme() {
 		super();
@@ -68,7 +72,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	/**
 	 * Getter for name
 	 * 
-	 * @return name
+	 * @return {@link String} name of theme
 	 */
 	public String getName() {
 		return name;
@@ -76,9 +80,11 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 
 	/**
 	 * Setter for name
-	 * 
+	 *
 	 * @param name
-	 * @throws FieldValueException 
+	 *            {@link String} name of theme
+	 * @throws {@link
+	 *             FieldValueException}
 	 */
 	public void setName(String name) throws FieldValueException {
 		testNotEmpty(name, "name", true);
@@ -86,9 +92,9 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	}
 
 	/**
-	 * Getter for theme
+	 * Getter for topic
 	 * 
-	 * @return theme
+	 * @return {@link Topic} to be included in
 	 */
 	public Topic getTopic() {
 		return topic;
@@ -97,7 +103,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	/**
 	 * Getter for description
 	 * 
-	 * @return description
+	 * @return {@link String} description of theme
 	 */
 	public String getDescription() {
 		return description;
@@ -107,7 +113,9 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	 * Setter for description
 	 * 
 	 * @param description
-	 * @throws FieldValueException 
+	 *            {@link String} description of theme
+	 * @throws {@link
+	 *             FieldValueException}
 	 */
 	public void setDescription(String description) throws FieldValueException {
 		testNotEmpty(description, "description", false);
@@ -117,7 +125,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	/**
 	 * Getter for author
 	 * 
-	 * @return author
+	 * @return {@link User} author of theme
 	 */
 	public User getAuthor() {
 		return author;
@@ -126,7 +134,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	/**
 	 * Getter for isPublic
 	 * 
-	 * @return isPublic
+	 * @return boolean public status of theme
 	 */
 	public boolean isIsPublic() {
 		return isPublic;
@@ -136,21 +144,29 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	 * Setter for isPublic
 	 * 
 	 * @param isPublic
+	 *            boolean public status of theme
 	 */
 	public void setPublic(boolean isPublic) {
 		this.isPublic = isPublic;
 	}
-	
+
+	/**
+	 * Getter for rating
+	 * 
+	 * @return rating in integer representation
+	 */
 	public ThemeObjectDTO getRating() {
 		return ThemeObjectDTO.getDTO(this);
 	}
 
 	/**
-	 * Overrides java.lang.Object.equals 
+	 * Overrides java.lang.Object.equals
 	 *
 	 * @param object
-	 * @return boolean
-	 */	
+	 *            {@link Object}
+	 * @return true if <b>this</b> has the same id as {@link Object} in the
+	 *         parameter
+	 */
 	public boolean equals(Object object) {
 		if (object instanceof Theme) {
 			if (this.getId() == ((Theme) object).getId()) {
@@ -161,22 +177,26 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	}
 
 	/**
-	 * Implements Comparable<Theme>.compareTo
+	 * Implements Comparable\<Theme\>.compareTo
 	 * 
-	 * @param Theme
-	 * @return integer
+	 * @param {@link
+	 * 			Theme}
+	 * @return returned value(integer) is > 0 when the name of theme is higher
+	 *         in alphabetical order than the name of the theme in parameter, =
+	 *         0 if equal, < 0 if lower
 	 */
 	@Override
 	public int compareTo(Theme o) {
 		return this.name.compareTo(o.getName());
 	}
-	
+
 	/**
 	 * Returns topic unique ID
-	 * @return an ID assigned to TOPIC
+	 * 
+	 * @return an ID assigned to topic {@link Topic} to be included in
 	 */
-	public int getTopicId()	{
-		if(getTopic()==null)
+	public int getTopicId() {
+		if (getTopic() == null)
 			return 0;
 		return getTopic().getId();
 	}

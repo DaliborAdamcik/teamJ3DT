@@ -9,18 +9,13 @@ import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
 @Entity
 @Table(name = "TOPIC")
-public class Topic extends BlockableEntity implements Comparable<Topic>{
+public class Topic extends BlockableEntity implements Comparable<Topic> {
 
-	/**
-	 * Name of the topic
-	 * 
-	 */
+	/** {@link String} field <b>name of topic</b> */
 	@Column(name = "NAME", nullable = false)
 	private String name;
 
-	/**
-	 * Public status for topic
-	 */
+	/** boolean field <b>public status of topic</b> */
 	@Column(name = "ISPUBLIC", nullable = false)
 	private boolean isPublic;
 
@@ -28,29 +23,31 @@ public class Topic extends BlockableEntity implements Comparable<Topic>{
 	 * Topic constructor
 	 * 
 	 * @param name
+	 *            {@link String} name of topic
 	 * @param isPublic
-	 * @throws FieldValueException 
+	 *            public status of topic
+	 * @throws {@link
+	 *             FieldValueException}
 	 */
 	public Topic(String name, boolean isPublic) throws FieldValueException {
 		this();
 		setName(name);
 		setPublic(isPublic);
 	}
-	
+
 	/**
-	 * Non-Parametric constructor used by HIBERNATE
-	 * (INFO: HHH000182: No default (no-argument) constructor for class: 
-	 * 	sk.tsystems.forum.entity.Theme (class must be instantiated by Interceptor))
+	 * Non-Parametric constructor used by HIBERNATE (INFO: HHH000182: No default
+	 * (no-argument) constructor for class: sk.tsystems.forum.entity.Theme
+	 * (class must be instantiated by Interceptor))
 	 */
-	private Topic()
-	{
+	private Topic() {
 		super();
 	}
 
 	/**
 	 * Getter for topic name
 	 * 
-	 * @return name
+	 * @return {@link String} name of topic
 	 */
 	public String getName() {
 		return name;
@@ -60,7 +57,9 @@ public class Topic extends BlockableEntity implements Comparable<Topic>{
 	 * Setter for name
 	 * 
 	 * @param name
-	 * @throws FieldValueException 
+	 *            {@link String} name of topic
+	 * @throws {@link
+	 *             FieldValueException}
 	 */
 	public void setName(String name) throws FieldValueException {
 		testNotEmpty(name, "name", true);
@@ -70,7 +69,7 @@ public class Topic extends BlockableEntity implements Comparable<Topic>{
 	/**
 	 * Getter for isPublic
 	 * 
-	 * @return isPublic
+	 * @return boolean public status of topic
 	 */
 	public boolean isIsPublic() {
 		return isPublic;
@@ -80,17 +79,20 @@ public class Topic extends BlockableEntity implements Comparable<Topic>{
 	 * Setter for isPublic
 	 * 
 	 * @param isPublic
+	 *            boolean public status of topic
 	 */
 	public void setPublic(boolean isPublic) {
 		this.isPublic = isPublic;
 	}
 
 	/**
-	 * Overrides java.lang.Object.equals 
+	 * Overrides java.lang.Object.equals
 	 *
 	 * @param object
-	 * @return boolean
-	 */	
+	 *            {@link Object}
+	 * @return true if <b>this</b> has the same id as {@link Object} in the
+	 *         parameter
+	 */
 	public boolean equals(Object object) {
 		if (object instanceof Topic) {
 			if (this.getId() == ((Topic) object).getId()) {
@@ -99,12 +101,15 @@ public class Topic extends BlockableEntity implements Comparable<Topic>{
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Implements Comparable<Topic>.compareTo
+	 * Implements Comparable\<Topic\>.compareTo
 	 * 
-	 * @param Topic
-	 * @return integer
+	 * @param {@link
+	 * 			Topic}
+	 * @return returned value(integer) is > 0 when the name of topic is higher
+	 *         in alphabetical order than the name of the topic in parameter, =
+	 *         0 if equal, < 0 if lower
 	 */
 	@Override
 	public int compareTo(Topic o) {

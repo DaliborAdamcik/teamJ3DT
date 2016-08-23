@@ -19,7 +19,7 @@ import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 public class Comment extends BlockableEntity implements Comparable<Comment> {
 
 	/** {@link String} field <b>message (of comment)</b> */
-	@Column(name = "COMMENTARY", nullable = false, columnDefinition="CLOB")
+	@Column(name = "COMMENTARY", nullable = false, columnDefinition = "CLOB")
 	private String comment;
 
 	/** {@link Theme} field for {@link Comment} to be included in */
@@ -27,17 +27,21 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	@ManyToOne
 	private Theme theme;
 
-	/** {@link User} field of <b>owner<b> */
+	/** {@link User} field of <b>owner</b> */
 	@ManyToOne
 	private User owner;
-	
+
 	/**
 	 * Create new comment
-	 * @
-	 * @param comment {@link String} message of comment
-	 * @param theme {@link Theme} to be included in
-	 * @param owner {@link User} owner of this comment
-	 * @throws FieldValueException  
+	 * 
+	 * @ @param
+	 *       comment {@link String} message of comment
+	 * @param theme
+	 *            {@link Theme} to be included in
+	 * @param owner
+	 *            {@link User} owner of this comment
+	 * @throws {@link
+	 *             FieldValueException}
 	 */
 	public Comment(String comment, Theme theme, User owner) throws FieldValueException {
 		this();
@@ -48,13 +52,14 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 		setComment(comment);
 	}
 
-	/** constructor only for hibernate. Must be private. */
+	/** Constructor only for hibernate. Must be private. */
 	private Comment() {
 		super();
 	}
 
 	/**
 	 * Getter for comment
+	 * 
 	 * @return {@link String} message (of comment) - field {@link #comment}
 	 */
 	public String getComment() {
@@ -63,8 +68,10 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 
 	/**
 	 * Setter for comment
-	 * @param comment {@link String} message (of comment)
-	 * @throws FieldValueException 
+	 * 
+	 * @param comment
+	 *            {@link String} message (of comment)
+	 * @throws FieldValueException
 	 */
 	public void setComment(String comment) throws FieldValueException {
 		testNotEmpty(comment, "comment", false);
@@ -88,21 +95,24 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	public User getOwner() {
 		return owner;
 	}
-	
+
 	/**
 	 * Getter for rating
+	 * 
 	 * @return rating in integer representation
 	 */
-	public CommentObjectDTO getRating(){
+	public CommentObjectDTO getRating() {
 		return CommentObjectDTO.getDTO(this);
 	}
-	
+
 	/**
-	 * Overrides java.lang.Object.equals 
+	 * Overrides java.lang.Object.equals
 	 *
-	 * @param object {@link Object}
-	 * @return true if this has the same id as {@link Object} in the parameter
-	 */	
+	 * @param object
+	 *            {@link Object}
+	 * @return true if <b>this</b> has the same id as {@link Object} in the
+	 *         parameter
+	 */
 	public boolean equals(Object object) {
 		if (object instanceof Comment) {
 			if (this.getId() == ((Comment) object).getId()) {
@@ -115,9 +125,11 @@ public class Comment extends BlockableEntity implements Comparable<Comment> {
 	/**
 	 * Implements Comparable\<Comment\>.compareTo
 	 * 
-	 * @param {link Comment}
-	 * @return eturned value(integer) is >0 when the reason of blocked is higher in alphabetical order
-	 * than the reason of the block in parameter, =0 if equal, <0 if lower
+	 * @param {@link
+	 * 			Comment}
+	 * @return returned value(integer) is > 0 when the message of comment is
+	 *         higher in alphabetical order than the message of the comment in
+	 *         parameter, = 0 if equal, < 0 if lower
 	 */
 	@Override
 	public int compareTo(Comment c) {

@@ -8,7 +8,7 @@ import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
 @Entity
-public class Blocked extends CommonEntity implements Comparable<Blocked>{
+public class Blocked extends CommonEntity implements Comparable<Blocked> {
 
 	/**
 	 * User(admin) that created the block
@@ -46,8 +46,11 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 
 	/**
 	 * setter for blockedBy
-	 * @param blockedBy {@link User} user(admin) that blocked certain entity
-	 * @throws {@link FieldValueException} 
+	 * 
+	 * @param blockedBy
+	 *            {@link User} user(admin) that blocked certain entity
+	 * @throws {@link
+	 *             FieldValueException}
 	 */
 	private void setBlockedBy(User blockedBy) throws FieldValueException {
 		testNotEmpty(blockedBy, "blocked by", true);
@@ -65,8 +68,11 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 
 	/**
 	 * Setter for reason
-	 * @param reason {@link String}
-	 * @throws {@link FieldValueException} 
+	 * 
+	 * @param reason
+	 *            {@link String}
+	 * @throws {@link
+	 *             FieldValueException}
 	 */
 	private void setReason(String reason) throws FieldValueException {
 		testNotEmpty(reason, "reason", true);
@@ -74,11 +80,12 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	}
 
 	/**
-	 * Overrides java.lang.Object.equals 
+	 * Overrides java.lang.Object.equals
 	 *
-	 * @param {@link Object}
+	 * @param {@link
+	 * 			Object}
 	 * @return true if this has the same id as {@link Object} in the parameter
-	 */	
+	 */
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof Blocked) {
@@ -92,9 +99,11 @@ public class Blocked extends CommonEntity implements Comparable<Blocked>{
 	/**
 	 * Implements Comparable\<Blocked\>.compareTo
 	 * 
-	 * @param  {@link Blocked}
-	 * @return returned value(integer) is >0 when the reason of blocked is higher in alphabetical order
-	 * than the reason of the block in parameter, =0 if equal, <0 if lower
+	 * @param {@link
+	 * 			Blocked}
+	 * @return returned value(integer) is > 0 when the reason of blocked is
+	 *         higher in alphabetical order than the reason of the block in
+	 *         parameter, = 0 if equal, < 0 if lower
 	 */
 	@Override
 	public int compareTo(Blocked b) {
