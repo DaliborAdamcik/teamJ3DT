@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
@@ -32,9 +33,13 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	@ManyToOne
 	private User author;
 
-	/** boolean field <b>public status of theme</b> */
+	/** {@link Boolean} field <b>public status of theme</b> */
 	@Column(name = "ISPUBLIC", nullable = false)
 	private boolean isPublic;
+	
+	/** {@link ThemeObjectDTO} field <b>an DTO statistic for theme</b> not loaded by hibernate*/
+	@Transient
+	private ThemeObjectDTO dtoTheme; 
 
 	/**
 	 * Create new theme
@@ -67,6 +72,7 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 	 */
 	private Theme() {
 		super();
+		dtoTheme = null;
 	}
 
 	/**
@@ -152,11 +158,20 @@ public class Theme extends BlockableEntity implements Comparable<Theme> {
 
 	/**
 	 * Getter for rating
-	 * 
-	 * @return rating in integer representation
+	 * Is not automatically created by hibernate
+	 * @return rating in DTO object
 	 */
 	public ThemeObjectDTO getRating() {
-		return ThemeObjectDTO.getDTO(this);
+		return dtoTheme;
+	}
+
+	/**
+	 * Setter for rating
+	 * 
+	 * @param rating {@link ThemeObjectDTO} DTO object for rating
+	 */
+	public void getRating(ThemeObjectDTO rating) {
+		this.dtoTheme = rating;
 	}
 
 	/**
