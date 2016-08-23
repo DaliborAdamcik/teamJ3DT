@@ -47,7 +47,7 @@ public class Search extends MasterServlet {
 			List <Theme> themes;
 			List <Topic> topics;
 			UserRole role = helpser.getSessionRole();
-			try(JpaConnector jpa = new JpaConnector()) {
+			JpaConnector jpa = helpser.getJpaService();
 				comments = jpa.getEntityManager().createQuery("SELECT c FROM Comment c WHERE lower(c.comment) like :toSearch "+
 						(role.equals(UserRole.ADMIN)?"":
 							(role.equals(UserRole.REGULARUSER)?"":" AND c.theme.isPublic = false AND c.theme.topic.isPublic = true")+
@@ -66,7 +66,6 @@ public class Search extends MasterServlet {
 							(role.equals(UserRole.REGULARUSER)?"":" AND c.isPublic = false ")+
 								" AND c.blocked = null "), 
 						Topic.class).setParameter("toSearch", isearch).getResultList();
-			}
 			
 			List<SearchResult> results = new ArrayList<>();
 			for (Comment comment: comments) {
