@@ -7,18 +7,11 @@ function initializeRateButtons() {
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
-		
-			console.log(response);
-			console.log("success");
 			response.ratings.forEach(function(item) {
-				console.log("daco")
 				buttonsChange2(item.comment.id, item.rating);
 			});
-			
-		
 		},
-		error: function(){
-			console.log("error");
+		error : function() {
 			$(".votingtable").hide();
 		}
 	});
@@ -27,8 +20,7 @@ function initializeRateButtons() {
 function upvote(id) {
 	var jsobj = {};
 	jsobj.id = id;
-	console.log("sem dosiel");
-	console.log(jsobj);
+
 	$.ajax({
 		type : "PUT",
 		url : "Rating/" + id + "/upvote",
@@ -36,7 +28,6 @@ function upvote(id) {
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
-			console.log(response);
 			buttonsChange(id, response.finalrating, response.rating);
 		}
 	});
@@ -47,8 +38,6 @@ function upvote(id) {
 function downvote(id) {
 	var jsobj = {};
 	jsobj.id = id;
-	console.log("sem dosiel");
-	console.log(jsobj);
 	$.ajax({
 		type : "PUT",
 		url : "Rating/" + id + "/downvote",
@@ -56,7 +45,6 @@ function downvote(id) {
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
-			console.log(response);
 			buttonsChange(id, response.finalrating, response.rating);
 		}
 	});
@@ -113,7 +101,7 @@ function buttonsChange2(id, finalrating) {
 		$("#tddownvote_" + id).html(
 				"<button id='downvote_" + id
 						+ "' class='downvote_button' disabled></button>");
-		
+
 	}
 	if (finalrating == 1) {
 		$("#tdupvote_" + id).html(
