@@ -19,7 +19,6 @@ import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.CommentRating;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
-import sk.tsystems.forum.entity.exceptions.EntityAutoPersist;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
@@ -50,7 +49,8 @@ public class Rating extends MasterServlet {
 				User owner = servletHelper.getLoggedUser();
 				CommentRating cr = servletHelper.getCommentService().getCommentRating(owner, comment);
 				if (cr == null) {
-					cr = new CommentRating(comment, owner, 1, servletHelper.getJpaService());
+					cr = new CommentRating(comment, owner, 1);
+					servletHelper.getCommentService().storeRating(cr);
 					finalRating = 1;
 				}
 
@@ -62,6 +62,7 @@ public class Rating extends MasterServlet {
 						cr.upVote();
 						finalRating = 1;
 					}
+					servletHelper.getCommentService().storeRating(cr);
 				}
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.setSerializationInclusion(Include.NON_NULL);
@@ -79,7 +80,8 @@ public class Rating extends MasterServlet {
 
 				CommentRating cr = servletHelper.getCommentService().getCommentRating(owner, comment);
 				if (cr == null) {
-					cr = new CommentRating(comment, owner, -1, servletHelper.getJpaService());
+					cr = new CommentRating(comment, owner, -1);
+					servletHelper.getCommentService().storeRating(cr);
 					finalRating = -1;
 				}
 
@@ -91,6 +93,7 @@ public class Rating extends MasterServlet {
 						cr.downVote();
 						finalRating = -1;
 					}
+					servletHelper.getCommentService().storeRating(cr);					
 				}
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.setSerializationInclusion(Include.NON_NULL);
@@ -117,15 +120,13 @@ public class Rating extends MasterServlet {
 				mapper.writeValue(response.getWriter(), resp);
 			}
 
-		} catch (URLParserException e) {
+		} catch (URLParserException e) { // *** RYSZA *** klient nic nevie o tom ze vznikla exception
 			e.printStackTrace();
 		} catch (UnknownActionException e) {
 			e.printStackTrace();
 		} catch (FieldValueException e) {
 			e.printStackTrace();
-		} catch (EntityAutoPersist e) {
-			e.printStackTrace();
-		}
+		} 
 
 	}
 

@@ -110,11 +110,6 @@ public class CommentJPA implements CommentService {
 			}
 		}
 	}
-	
-	@Override
-	public CommentRating getRating(Comment comment, User owner) {
-		throw new RuntimeException("Please, use JPA2 service.");
-	}
 
 	@Override
 	public void storeRating(CommentRating rating) {

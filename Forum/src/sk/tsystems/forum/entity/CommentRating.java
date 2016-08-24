@@ -4,13 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
 import sk.tsystems.forum.entity.common.CommonEntity;
-import sk.tsystems.forum.entity.exceptions.EntityAutoPersist;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
-import sk.tsystems.forum.service.jpa.JpaConnector;
 /**
  * Entity for CommentRating containing rating from {@link User} user to specified comment {@link Comment}, which is included in one of the themes {@link Theme} 
  * 
@@ -47,10 +44,8 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 	 *            {@link Integer}
 	 * @throws {@link
 	 *             FieldValueException}
-	 * @throws {@link
-	 *             EntityAutoPersist}
 	 */
-	public CommentRating(Comment comment, User owner, int rating, JpaConnector jpa) throws FieldValueException, EntityAutoPersist {
+	public CommentRating(Comment comment, User owner, int rating) throws FieldValueException {
 		this();
 		testNotEmpty(owner, "owner", false);
 		testNotEmpty(comment, "comment", false);
@@ -62,12 +57,6 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 		this.owner = owner;
 		this.theme = comment.getTheme();
 		this.comment = comment;
-
-		try {
-			jpa.persist(this);
-		} catch (IllegalArgumentException | PersistenceException e) {
-			throw new EntityAutoPersist("Cant persist '" + getClass().getSimpleName() + "' ", e);
-		}
 	}
 
 	/** Constructor only for hibernate. Must be private. */
@@ -112,66 +101,33 @@ public class CommentRating extends CommonEntity implements Comparable<CommentRat
 	}
 
 	/**
-	 * Gets rating from the database
-	 * 
-	 * @param comment
-	 *            {@link Comment} which is rated
-	 * @param owner
-	 *            {@link User} who is rating
-	 * @return rating for specified comment from specified owner
-	 */
-	public static CommentRating getRating(Comment comment, User owner) {
-		try (JpaConnector jpa = new JpaConnector()) {
-			return (CommentRating) jpa
-					.createQuery("SELECT r FROM CommentRating r WHERE r.owner=:owner AND r.comment=:comment")
-					.setParameter("owner", owner).setParameter("comment", comment).getSingleResult();
-		}
-	}
-
-	/**
 	 * Set rating in the database
 	 * 
 	 * @param integer
 	 *            rating
-	 * @throws {@link
-	 *             EntityAutoPersist}
 	 */
-	private void setRating(int rating) throws EntityAutoPersist {
+	private void setRating(int rating) {
 		this.rating = rating;
-		try (JpaConnector jpa = new JpaConnector()) {
-			jpa.merge(this);
-		} catch (IllegalArgumentException | PersistenceException e) {
-			throw new EntityAutoPersist(this, e);
-		}
 	}
 
 	/**
 	 * Set rating to 1
-	 * 
-	 * @throws {@link
-	 *             EntityAutoPersist}
 	 */
-	public void upVote() throws EntityAutoPersist {
+	public void upVote() {
 		setRating(1);
 	}
 
 	/**
 	 * Set rating to -1
-	 * 
-	 * @throws {@link
-	 *             EntityAutoPersist}
 	 */
-	public void downVote() throws EntityAutoPersist {
+	public void downVote() {
 		setRating(-1);
 	}
 
 	/**
 	 * Set rating to 0
-	 * 
-	 * @throws {@link
-	 *             EntityAutoPersist}
 	 */
-	public void unVote() throws EntityAutoPersist {
+	public void unVote() {
 		setRating(0);
 	}
 

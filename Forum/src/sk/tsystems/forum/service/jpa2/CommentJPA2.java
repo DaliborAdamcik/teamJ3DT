@@ -106,18 +106,6 @@ public class CommentJPA2 implements CommentService {
 	}
 
 	@Override
-	public CommentRating getRating(Comment comment, User owner) {
-		try {
-			return jpa
-					.createQuery("SELECT r FROM "+CommentRating.class.getSimpleName()
-							+" r WHERE r.owner=:owner AND r.comment=:comment", CommentRating.class)
-					.setParameter("owner", owner).setParameter("comment", comment).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-
-	@Override
 	public void storeRating(CommentRating rating) {
 		jpa.store(rating);
 	}	
