@@ -94,6 +94,20 @@ public interface CommentService {
 	List<CommentRating> getAllCommentRatings(User owner);
 	
 	
+	/**
+	 * Gets rating from the database
+	 * 
+	 * @param comment
+	 *            {@link Comment} which is rated
+	 * @param owner
+	 *            {@link User} who is rating
+	 * @return {@link CommentRating} rating for specified comment from specified owner
+	 */
+	CommentRating getRating(Comment comment, User owner);
 	
-
+	/**
+	 * Saves / updates rating for comment
+	 * @param {@link CommentRating} rating an rating for comment (by user)
+	 */
+	void storeRating(CommentRating rating);
 }

@@ -71,39 +71,55 @@ public class CommentJPA2 implements CommentService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Comment> getAllComments() {
-		
-			return jpa.createQuery("SELECT c FROM Comment c").getResultList();
-		
-		
+
+		return jpa.createQuery("SELECT c FROM Comment c").getResultList();
+
 	}
 	
 	@Override
 	public CommentRating getCommentRating(User owner, Comment comment) {
-		
-			try{
-				
-			
+
+		try {
+
 			return (CommentRating) jpa
 					.createQuery("SELECT c FROM CommentRating c WHERE c.owner=:owner and c.comment=:comment")
 					.setParameter("owner", owner).setParameter("comment", comment).getSingleResult();
 
-			}catch(NoResultException e){
-				return null;
-			}
-		
+		} catch (NoResultException e) {
+			return null;
+		}
+
 	}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<CommentRating> getAllCommentRatings(User owner) {
-		
-			try{
-			return  jpa
-					.createQuery("SELECT c FROM CommentRating c WHERE c.owner=:owner")
-					.setParameter("owner", owner).getResultList();
 
-			}catch(NoResultException e){
-				return null;
-			}
-		
+		try {
+			return jpa.createQuery("SELECT c FROM CommentRating c WHERE c.owner=:owner").setParameter("owner", owner)
+					.getResultList();
+
+		} catch (NoResultException e) {
+			return null;
+		}
+
 	}
+
+	@Override
+	public CommentRating getRating(Comment comment, User owner) {
+		try {
+			return jpa
+					.createQuery("SELECT r FROM "+CommentRating.class.getSimpleName()
+							+" r WHERE r.owner=:owner AND r.comment=:comment", CommentRating.class)
+					.setParameter("owner", owner).setParameter("comment", comment).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public void storeRating(CommentRating rating) {
+		jpa.store(rating);
+	}	
+	
 }
