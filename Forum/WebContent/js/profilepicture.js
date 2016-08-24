@@ -29,14 +29,6 @@ function readURL(input) {
 	            	  aspectRatio: 1 / 1,
 	            	  crop: function(e) {
 	            		cropSize = e;
-	/*					console.log(e.x);
-						console.log(e.y);
-						console.log(e.width);
-						console.log(e.height);
-						console.log(e.rotate);
-						console.log(e.scaleX);
-						console.log(e.scaleY);*/
-	            	    
 		            	$('.btn-crop').show();
 	            	  }
 	            	});
@@ -60,7 +52,7 @@ $('.btn-crop').on('click', function() {
 	}
 
 	if(cropSize.width< destSize.w || cropSize.height< destSize.h) {
-		alertDlg("Profile picture", "Resolution is too low. Please, zoom in.");
+		alertDlg("Profile picture", "Resolution is too low. Please, zoom out.");
 		return;
 	}
 	
@@ -83,7 +75,6 @@ $('.btn-crop').on('click', function() {
         error: ajaxFailureMessage,
         success: function(response){
         	$( "#wait-upload" ).dialog('close');
-        	console.log(response);
         	if(ajxErrorDlg(response))
         		return;
         	$cropper.cropper('destroy');  
