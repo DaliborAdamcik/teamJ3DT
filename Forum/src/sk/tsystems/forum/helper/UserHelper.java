@@ -68,7 +68,12 @@ public class UserHelper {
 					"your password is not strong enough (try to use UPPERCASE and lowercase letters, numbers or special characters)");
 		}
 	}
-
+	/**
+	 * Check appearance of digit(s) in password 
+	 * 
+	 * @param password {@link String}
+	 * @throws {@link PasswordCheckException}
+	 */
 	private static void digitControl(String password) throws PasswordCheckException {
 		for (int i = 0; i < password.length(); i++) {
 			if (Character.isDigit(password.charAt(i))) {
@@ -77,7 +82,12 @@ public class UserHelper {
 		}
 		throw new PasswordCheckException("your password have to contain at least 1 digit");
 	}
-
+	/**
+	 * Check appearance of special character(s) in password 
+	 * 
+	 * @param password {@link String}
+	 * @throws {@link PasswordCheckException}
+	 */
 	private static void specialCharacterControl(String password) throws PasswordCheckException {
 		for (int i = 0; i < password.length(); i++) {
 			int ascii = (int) password.charAt(i);
@@ -92,8 +102,9 @@ public class UserHelper {
 
 	/***
 	 * nick name validator PART
-	 * 
+	 * @param userName {@link String}
 	 * @author Dalibor
+	 * returns true if successful, throws exception otherwise
 	 */
 	public static boolean nickNameValidator(String userName) throws NickNameException {
 		if (userName == null || userName.length() < 4)
@@ -108,7 +119,7 @@ public class UserHelper {
 
 	/***
 	 * String 2 Date convert valid format "dd.MM.yyyy HH:mm"
-	 * 
+	 * @param dateString {@link String} date in String format
 	 * @author Tuomas
 	 */
 	public static Date stringToDate(String dateString) throws BadDateException {
@@ -116,6 +127,14 @@ public class UserHelper {
 		return stringToDate(dateString, "dd.MM.yyyy");
 	}
 
+	/***
+	 * String 2 Date convert valid format "dd.MM.yyyy HH:mm"
+	 * @param dateString {@link String} date in String format
+	 * @param dateFormat {@link String} date format
+	 * @author Jano
+	 * @see {@link Date} 
+	 * @see {@link DateFormat} 
+	 */
 	public static Date stringToDate(String dateString, String dateFormat) throws BadDateException {
 		DateFormat format = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
 		Date date;
@@ -135,22 +154,23 @@ public class UserHelper {
 	 * 
 	 * Recommended minimal strength = 8 chars, score >= 50
 	 * 
+	 * @param password {@link String} 
 	 * @return score in integer representation
 	 * @author Tuomas
 	 */
-	public static int passStrength(String pass) {
+	public static int passStrength(String password) {
 		int strength = 0;
 		int uppers = 0, lowers = 0, numbers = 0, symbols = 0;
 		int consecUppers = 0, consecLowers = 0, consecNumbers = 0;
 
 		// COUNTER
-		for (int a = 0; a < pass.length(); a++) {
-			char c = pass.charAt(a);
+		for (int a = 0; a < password.length(); a++) {
+			char c = password.charAt(a);
 
 			if (c >= 'a' && c <= 'z') {
 				lowers++;
 				if (a > 0) {
-					if (pass.charAt(a - 1) >= 'a' && pass.charAt(a - 1) <= 'z') {
+					if (password.charAt(a - 1) >= 'a' && password.charAt(a - 1) <= 'z') {
 						consecLowers++;
 					}
 				}
@@ -159,7 +179,7 @@ public class UserHelper {
 			if (c >= 'A' && c <= 'Z') {
 				uppers++;
 				if (a > 0) {
-					if (pass.charAt(a - 1) >= 'A' && pass.charAt(a - 1) <= 'Z') {
+					if (password.charAt(a - 1) >= 'A' && password.charAt(a - 1) <= 'Z') {
 						consecUppers++;
 					}
 				}
@@ -168,7 +188,7 @@ public class UserHelper {
 			if (c >= '0' && c <= '9') {
 				numbers++;
 				if (a > 0) {
-					if (pass.charAt(a - 1) >= '0' && pass.charAt(a - 1) <= '9') {
+					if (password.charAt(a - 1) >= '0' && password.charAt(a - 1) <= '9') {
 						consecNumbers++;
 					}
 				}
@@ -181,14 +201,14 @@ public class UserHelper {
 		// ADDITIONS
 
 		// password length rate: (n*4)
-		strength += pass.length() * 4;
+		strength += password.length() * 4;
 		// lowercase LETTERS rate: ((len-n)*2)
 		if (lowers > 0) {
-			strength += (pass.length() - lowers) * 2;
+			strength += (password.length() - lowers) * 2;
 		}
 		// UPPERCASE letters rate: ((len-n)*2)
 		if (uppers > 0) {
-			strength += (pass.length() - uppers) * 2;
+			strength += (password.length() - uppers) * 2;
 		}
 		// numbers rate: (n*4)
 		if (numbers > 0) {

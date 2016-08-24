@@ -19,7 +19,11 @@ public interface BlockedService {
 	 * 
 	 */
 	boolean removeBlocked(Blocked blocked);
-	
+	/**
+	 * Returns certain block due to reason.
+	 * @param reason {@link String}
+	 * @return {@link Blocked} entity if successful, null otherwise
+	 */
 	Blocked getBlocked(String reason);
 	
 }

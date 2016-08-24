@@ -9,7 +9,12 @@ import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
-
+/**
+ * Contains functions essential for changing certain attributes of entities.
+ * Can be used for blocking, unblocking, marking and promoting
+ * @author Jano
+ *
+ */
 public class BlockHelper {
 
 	/**
@@ -21,6 +26,7 @@ public class BlockHelper {
 	 * 
 	 * @return true if successful, throws exception otherwise
 	 * @throws EmptyFieldException
+	 * @author Jano
 	 */
 	public static boolean block(int id, String reason, User blockedBy) throws FieldValueException {
 		try (JpaConnector jpa = new JpaConnector()) {
@@ -47,6 +53,7 @@ public class BlockHelper {
 	 *
 	 * @param ID of the element to be decided
 	 * @return true if is blockable (can be linked with {@link Blocked} entity), false otherwise
+	 * @author Jano
 	 */
 	public static boolean isBlockable(int id) {
 
@@ -69,6 +76,7 @@ public class BlockHelper {
  * 
  * @param ID of the element to be found
  * @return True if present in the database, false otherwise
+ * @author Jano
  */
 	public static boolean isInDatabase(int id) {
 
@@ -92,6 +100,7 @@ public class BlockHelper {
 	 * 
 	 * @param ID of the element to be unblocked
 	 * @return true if unblocked successfully, false otherwise
+	 * @author Jano
 	 */
 	public static boolean unblock(int id) {
 		try (JpaConnector jpa = new JpaConnector()) {
@@ -123,6 +132,7 @@ public class BlockHelper {
 	 * @param ID of the element to be marked
 	 * @return True if marked successfully, false otherwise(entity is not markable, element with ID in
 	 * parameter not present in the database)
+	 * @author Jano
 	 */
 	public static boolean mark(int id) {
 
@@ -163,6 +173,7 @@ public class BlockHelper {
 	 * @param id Specific ID of the element to be promoted
 	 * @param role  certain role from enum {@link UserRole}
 	 * @return true if promoted successfully, false otherwise
+	 * @author Jano
 	 */
 	public static boolean promoteUser(int id, UserRole role) {
 		try (JpaConnector jpa = new JpaConnector()) {
