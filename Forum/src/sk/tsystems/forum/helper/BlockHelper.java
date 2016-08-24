@@ -12,16 +12,12 @@ import sk.tsystems.forum.service.jpa.JpaConnector;
 
 public class BlockHelper {
 
-	public static void main(String[] args) {
-
-	}
-
 	/**
-	 * Method for blocking child entities of BlockableEntity
+	 * Method for blocking child entities of {@link BlockableEntity}
 	 * 
-	 * @param id
-	 * @param reason
-	 * @param blockedBy
+	 * @param id of the entity to be blocked. entity must extend {@link BlockableEntity}
+	 * @param reason String representation of the reson for blocking
+	 * @param blockedBy {@link User}(admin) that blocked the entity
 	 * 
 	 * @return true if successful, throws exception otherwise
 	 * @throws EmptyFieldException
@@ -47,10 +43,10 @@ public class BlockHelper {
 	}
 
 	/**
-	 * Decides whether element with certain ID is Blockable - is child of BlockableEntity
+	 * Decides whether element with certain ID is Blockable - is child of {@link BlockableEntity}
 	 *
 	 * @param ID of the element to be decided
-	 * @return true if is blockable (can be linked with Blocked entity), false otherwise
+	 * @return true if is blockable (can be linked with {@link Blocked} entity), false otherwise
 	 */
 	public static boolean isBlockable(int id) {
 
@@ -165,7 +161,7 @@ public class BlockHelper {
 	/**
 	 * Promotes user with ID selected in parameter to specified role 
 	 * @param id Specific ID of the element to be promoted
-	 * @param role  certain role from enum UserRole
+	 * @param role  certain role from enum {@link UserRole}
 	 * @return true if promoted successfully, false otherwise
 	 */
 	public static boolean promoteUser(int id, UserRole role) {

@@ -89,17 +89,6 @@ public class UserHelper {
 		throw new PasswordCheckException("your password have to contain at least 1 special character");
 	} 
 
-	public static void main(String[] args) {
-		/*
-		 * try { // passwordOverallControll("pas");
-		 * passwordOverallControll("12345678"); System.out.println("ok"); }
-		 * catch (PasswordCheckException e) {
-		 * System.out.println(e.getMessage()); // e.printStackTrace(); }
-		 */
-		System.out.println();
-		System.out.printf("Mypass.7:\t%s\n", passStrength("Mypass.7"));
-
-	}
 
 	/***
 	 * nick name validator PART

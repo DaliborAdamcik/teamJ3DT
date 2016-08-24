@@ -255,7 +255,6 @@ public class Welcome extends MasterServlet {
 			}
 			
 		} catch (URLParserException | WEBNoPermissionException | UnknownActionException | JSONException | CommonEntityException e) {
-			System.out.println(e.getMessage());
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		}
 	}

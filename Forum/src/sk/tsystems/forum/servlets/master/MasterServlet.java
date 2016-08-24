@@ -47,7 +47,6 @@ public abstract class MasterServlet extends HttpServlet {
 	
 			// globally set current user
 			request.setAttribute(CURRENT_USER_ATTRIB, servletHelper.getLoggedUser());
-			System.out.println(servletHelper.getLoggedUser()+ " " + request.getAttribute(CURRENT_USER_ATTRIB));
 	
 			super.service(request, response); // this line cant be comment out in
 												// case of any situation

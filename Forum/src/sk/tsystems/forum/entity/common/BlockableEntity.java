@@ -25,7 +25,7 @@ public abstract class BlockableEntity extends CommonEntity {
 
 	/**
 	 * Getter for blocked
-	 * @return blocked
+	 * @return blocked {@link Blocked} entity if blocked, null if not blocked
 	 */
 	public final Blocked getBlocked() {
 		return blocked;
@@ -33,8 +33,8 @@ public abstract class BlockableEntity extends CommonEntity {
 
 	/**
 	 * Setter for blocked
-	 * @param blocked
-	 * @throws FieldValueException 
+	 * @param blocked {@link Blocked} entity if blocked, null if not blocked
+	 * @throws {@link FieldValueException}
 	 */
 	public void setBlocked(Blocked blocked) throws FieldValueException {
 		testNotEmpty(blocked, "blocked", false);

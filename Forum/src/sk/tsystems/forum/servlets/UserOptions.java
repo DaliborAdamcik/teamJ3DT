@@ -213,7 +213,6 @@ public class UserOptions extends MasterServlet {
 	private void changePassword(HttpServletResponse response, ServletHelper servletHelper, JSONObject obj)
 			throws IOException, JsonGenerationException, JsonMappingException {
 		String errMessage = null;
-		System.out.println(obj);
 		String oldPassword = obj.getString("oldpassword");
 		String newPassword = obj.getString("newpassword");
 		String confirmPassword = obj.getString("confirmpassword");
