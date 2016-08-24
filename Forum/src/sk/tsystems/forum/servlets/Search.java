@@ -53,14 +53,14 @@ public class Search extends MasterServlet {
 			JpaConnector jpa = helpser.getJpaService();
 				comments = jpa.getEntityManager().createQuery("SELECT c FROM Comment c WHERE lower(c.comment) like :toSearch "+
 						(role.equals(UserRole.ADMIN)?"":
-							(role.equals(UserRole.REGULARUSER)?"":" AND c.theme.isPublic = false AND c.theme.topic.isPublic = true")+
+							(role.equals(UserRole.REGULARUSER)?"":" AND c.theme.isPublic = true AND c.theme.topic.isPublic = true")+
 								" AND c.blocked = null AND c.theme.blocked=null AND c.theme.topic.blocked=null"), 
 						Comment.class).setParameter("toSearch", isearch).getResultList();
 				
 				themes = jpa.getEntityManager().createQuery("SELECT c FROM Theme c WHERE (lower(c.description) like :toSearch "
 						+ " OR lower(c.name) like :toSearch)  "+
 						(role.equals(UserRole.ADMIN)?"":
-							(role.equals(UserRole.REGULARUSER)?"":" AND c.isPublic = false AND c.topic.isPublic = true")+
+							(role.equals(UserRole.REGULARUSER)?"":" AND c.isPublic = true AND c.topic.isPublic = true")+
 								" AND c.blocked = null AND c.topic.blocked=null"), 
 						Theme.class).setParameter("toSearch", isearch).getResultList();
 
