@@ -245,28 +245,29 @@ public class ColdStart {
 		userService.updateUser(user);
 	}
 	
-	/**
-	 * Adds ratings for specified user
-	 * @param user
-	 */
-	private void addRatings(User user) { // TODO *--* Add ratings to cold start
-/*		UserService usersvc = new UserJPA2(jpa);
-		List<User> users = usersvc.getUsers(UserRole.ADMIN);
-		CommentService comment = new CommentJPA2(jpa);
-		ThemeService theme = new ThemeJPA2(jpa);
-
-		for (User user : users) {
-			List<Comment> komenty = comment.getComments(user);
-
-			for (Comment comment2 : komenty) {
-				new CommentRating(comment2, user, 1);
-				System.out.println(
-						"test CommentObjectDTO: " + CommentObjectDTO.getDTO(comment2) + " id " + comment2.getId());
-			}
-
-		}*/
-		
-	}
+//	/**
+//	 * Adds ratings for specified user
+//	 * @param user
+//	 */
+//	// TODO *--* Add ratings to cold start
+//	private void addRatings(User user) { 
+//		UserService usersvc = new UserJPA2(jpa);
+//		List<User> users = usersvc.getUsers(UserRole.ADMIN);
+//		CommentService comment = new CommentJPA2(jpa);
+//		ThemeService theme = new ThemeJPA2(jpa);
+//
+//		for (User user : users) {
+//			List<Comment> komenty = comment.getComments(user);
+//
+//			for (Comment comment2 : komenty) {
+//				new CommentRating(comment2, user, 1);
+//				System.out.println(
+//						"test CommentObjectDTO: " + CommentObjectDTO.getDTO(comment2) + " id " + comment2.getId());
+//			}
+//
+//		}
+//		
+//	}
 
 }
 

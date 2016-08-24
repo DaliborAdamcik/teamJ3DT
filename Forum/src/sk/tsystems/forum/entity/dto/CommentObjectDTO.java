@@ -1,7 +1,4 @@
 package sk.tsystems.forum.entity.dto;
-
-import java.util.Date;
-
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 

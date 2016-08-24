@@ -4,7 +4,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
 import sk.tsystems.forum.entity.Blocked;
-import sk.tsystems.forum.entity.CommentRating;
 import sk.tsystems.forum.service.BlockedService;
 
 public class BlockedJPA implements BlockedService {

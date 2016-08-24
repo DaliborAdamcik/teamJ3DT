@@ -33,7 +33,6 @@ import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.service.BlockedService;
 import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.jpa.BlockedJPA;
-import sk.tsystems.forum.service.jpa2.BlockedJPA2;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**

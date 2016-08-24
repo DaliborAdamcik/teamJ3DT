@@ -8,8 +8,6 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
@@ -17,7 +15,6 @@ import sk.tsystems.forum.entity.exceptions.field.user.NickNameException;
 import sk.tsystems.forum.entity.exceptions.field.user.PasswordCheckException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
-import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class UserJPATest {
