@@ -1,3 +1,14 @@
+$( function() {
+    $( "#reg_birthdate" ).datepicker({
+		dateFormat : "dd.mm.yy",
+		maxDate : "+0m +0w",
+		yearRange : "1950:c",
+		changeYear : true,
+		changeMonth : true
+	});
+});
+
+
 $('#register').submit(function(ev){
 	try {
 		if($('#reg_pass1').val()!=$('#reg_pass2').val())
@@ -37,14 +48,12 @@ $('#register').submit(function(ev){
 	        	if(response.registered && response.registered == true )
 	        		window.location.href = window.location.href.replace('/Register', '');       
 	        },
-	        error: function (jxhr) {
-	            window.alert("Spracovanie neúspešné. Údaje neboli zapísané. Kód chyby:" + status + "\n" + jxhr.statusText + "\n" + jxhr.responseText);
-	        }
+	        error: ajaxFailureMessage
 	    });
 
 	}
 	catch(err) {
-	    console.log(err);
+	    console.error(err);
 	} 
     return false; // prevent subnit form
 });
@@ -67,7 +76,7 @@ function stateMessage(objID, message, state)
 	$('#'+objID+'_state').text(message);
 }
 
-/*Checks user-name is correct and validates is free( online)
+/*Checks user-name is correct and validates is unused( online)
  * TODO Can be associated another event of input  
  */
 $('#reg_login').keyup(function(e){

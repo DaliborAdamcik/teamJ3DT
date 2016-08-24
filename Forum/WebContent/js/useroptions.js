@@ -3,7 +3,7 @@ $(function() {
 	$("#userinfo_birthdate").datepicker({
 		dateFormat : "dd.mm.yy",
 		maxDate : "+0m +0w",
-		yearRange : "1950:2016",
+		yearRange : "1950:c",
 		changeYear : true,
 		changeMonth : true
 	});
