@@ -19,6 +19,12 @@ import sk.tsystems.forum.entity.exceptions.EntityAutoPersist;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 
+/**
+ * Entity for ProfilePicture containing byte array representation for small and big picture in {@link User} user's profile.
+ * Allows get picture, set picture or change size of the picture 
+ * 
+ * @author J3DT
+ */
 @Entity
 @Table(name = "PROFILE_PICTURE")
 public class ProfilePicture extends CommonEntity {

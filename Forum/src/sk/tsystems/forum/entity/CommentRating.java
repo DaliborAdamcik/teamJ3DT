@@ -11,7 +11,11 @@ import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.entity.exceptions.EntityAutoPersist;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
-
+/**
+ * Entity for CommentRating containing rating from {@link User} user to specified comment {@link Comment}, which is included in one of the themes {@link Theme} 
+ * 
+ * @author J3DT
+ */
 @Entity
 @Table(name = "COMMENT_RATING")
 public class CommentRating extends CommonEntity implements Comparable<CommentRating> {

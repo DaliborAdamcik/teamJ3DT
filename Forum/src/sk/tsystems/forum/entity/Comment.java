@@ -14,6 +14,11 @@ import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.dto.CommentObjectDTO;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
+/**
+ * Entity for Comment containing {@link String} message from {@link User} owner to specified theme {@link Theme} 
+ * 
+ * @author J3DT
+ */
 @Entity
 @Table(name = "COMMENTARY")
 public class Comment extends BlockableEntity implements Comparable<Comment> {

@@ -10,7 +10,11 @@ import javax.persistence.Transient;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.dto.ThemeObjectDTO;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
-
+/**
+ * Entity for Theme containing name of the theme {@link String}, Topic {@link Topic} in which is the theme included, more detailed description {@link String} of the theme, author {@link User} and public status of theme
+ * 
+ * @author J3DT
+ */
 @Entity
 @Table(name = "THEME")
 public class Theme extends BlockableEntity implements Comparable<Theme> {
