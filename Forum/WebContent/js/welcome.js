@@ -46,7 +46,7 @@ function welcomeUIinit()
     themes2page();
     ajaxEvents(); 
     
-/*    var openTopicFromSrch = hasTagParam('optop');
+/*    var openTopicFromSrch = hasTagParam('optop'); // TODO co s tym spravit
     if(!isNaN(openTopicFromSrch))
 	{
     	var $found = $('.headAcc#ent_'+openTopicFromSrch+'_tit'); 
@@ -86,7 +86,6 @@ function ajaxEvents() {
         url: "Events",
         contentType:"text/plain",
         success: function (resp) {
-        	console.log("Events: ",resp);
         	if(resp=="changed") {
         		ajaxWelcome();
         		if(themeIdentForComments!=undefined)
@@ -114,7 +113,6 @@ function indexInArr(array, ident) {
 
 function renewStoredObject(resp) {
 	ajaxEvents();
-	console.log(resp);
 	if(ajxErrorDlg(resp))
 			return;
 	
@@ -139,10 +137,6 @@ function renewStoredObject(resp) {
 		}
 		else
 		$erased.remove();
-		
-		console.log($erased);
-		
-		
 	});    
 	
 	themes2page();
@@ -168,8 +162,14 @@ function renewStoredTopic(topic) {
 	{
 		if(welcomeDrawObjects.topics[index].modified<topic.modified)
 			welcomeDrawObjects.topics[index] = topic;
-		console.log("repkalop", index, welcomeDrawObjects.topics[index]);
 	}
+	
+	welcomeDrawObjects.themes.forEach(function (theme){
+		if(theme.topicId==topic.id)
+		{
+			theme.painted = false;
+		}
+	});
 }
 
 /**
@@ -228,14 +228,15 @@ function paintTopic(topic)
 			return;
 		topic.painted = true;
 
-		// TODO TU JE RYZZZAAAAA
-		console.log("bejka", topic);
-	    var html = Mustache.to_html(templateTopic, topic);
-/*		var $old = $('#topicList').find('#ent_'+comment.id);
+	    var $old = $('#topicList').find('#ent_'+topic.id+'_tit');
+	    
 		if($old.length!==0)
-		$old.replaceWith(html);
-		else*/
-	    $('#topicList').append($(html));
+			$old.text(topic.name);
+		else
+		{
+			var html = Mustache.to_html(templateTopic, topic);
+			$('#topicList').append($(html));
+		}
 	}
 	catch(err) {
 		console.error("paintTheme: ", err);
@@ -258,7 +259,6 @@ function editThemeDlgPopup(themeid){
         type: "GET",
         url: "Welcome/"+ themeid +"/theme",
         success: function (response) {
-        	console.log(response);
         	if(ajxErrorDlg(response))
         		return;
         	
@@ -332,7 +332,6 @@ function editThemeDlg_save(){
 		isPublic: $('#editThemeDlg_pub').prop('checked')
 	};
 	
-	console.log("to edit", jsobj);
 	try {
 		if(isEmptyString(jsobj.name) || isEmptyString(jsobj.description))
     	{
@@ -341,7 +340,7 @@ function editThemeDlg_save(){
     	}
 		
 	    $edthdlg.dialog('close');    
-	    console.log(jsobj);
+
 	    $.ajax({
 	        type: (themeId>0?'POST':'PUT'),
 	        url: 'Welcome/'+ (themeId>0?themeId:topicId)+'/theme/',
@@ -349,13 +348,11 @@ function editThemeDlg_save(){
 	        dataType: "json",
 	        data: JSON.stringify(jsobj),
 	        success: function (response) {
-	        	console.log("edit resp: ", response);
 	        	if(response.theme) {
 	        		response.theme.modified = response.theme.modified+1; 
 	        		renewStoredTopic(response.theme.topic);
 	        		renewStoredTheme(response.theme);
 	        		themes2page();
-	        		console.log("safasdfgsdhd");
 	        	}
 	        	ajxErrorDlg(response);
 	        },
@@ -364,6 +361,6 @@ function editThemeDlg_save(){
 
 	}
 	catch(err) {
-	    console.log(err);
+	    console.error(err);
 	}
 }
