@@ -13,6 +13,7 @@ import javax.persistence.metamodel.EntityType;
 
 import org.hibernate.exception.ConstraintViolationException;
 
+import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.service.IJPAConnector;
 import sk.tsystems.forum.servlets.Events;
 
@@ -90,6 +91,13 @@ public class JpaConnector implements AutoCloseable, IJPAConnector { // class sel
 		commitTransaction();
 		Events.updateGate();
 	}
+	
+	public void store(CommonEntity entity) {
+		if(entity.getId()==0)
+			persist(entity);
+		else
+			merge(entity);
+	}
 
 	public void remove(Object object) {
 		beginTransaction();
@@ -102,6 +110,10 @@ public class JpaConnector implements AutoCloseable, IJPAConnector { // class sel
 		return getEntityManager().createQuery(query);
 	}
 
+	public <X> javax.persistence.TypedQuery<X> createQuery(String query, Class<X> clazz) {
+		return getEntityManager().createQuery(query, clazz);
+	}
+	
 	public boolean exceptionChild(Exception e, Class<?> weSearch) { // TODO toto dat do helepera
 		Throwable thr = e;
 		do {
