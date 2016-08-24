@@ -2,6 +2,7 @@ package sk.tsystems.forum.service.jpa2;
 
 import java.util.List;
 
+import sk.tsystems.forum.entity.ProfilePicture;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
@@ -72,6 +73,25 @@ public class UserJPA2 implements UserService {
 	public List<User> getAllUsers() {
 		return jpa.createQuery("select u from User u").getResultList();
 
+	}
+
+	@Override
+	public ProfilePicture profilePicture(User owner) {
+		try  {
+			return jpa.getEntityManager()
+					.createQuery("SELECT p FROM " + ProfilePicture.class.getSimpleName() + " p WHERE p.owner = :owner",
+							ProfilePicture.class)
+					.setParameter("owner", owner).getSingleResult();
+		} catch (javax.persistence.NoResultException e) {
+			return null;
+		}	}
+
+	@Override
+	public void storeProfilePicture(ProfilePicture profilePicture) {
+		if(profilePicture.getId()==0)
+			jpa.persist(profilePicture);
+		else
+			jpa.merge(profilePicture);
 	}
 
 }

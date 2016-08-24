@@ -10,17 +10,15 @@ import javax.imageio.ImageIO;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 import javax.servlet.http.HttpServletResponse;
 
 import sk.tsystems.forum.entity.common.CommonEntity;
-import sk.tsystems.forum.entity.exceptions.EntityAutoPersist;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
-import sk.tsystems.forum.service.jpa.JpaConnector;
 
 /**
- * Entity for ProfilePicture containing byte array representation for small and big picture in {@link User} user's profile.
+ * Entity for ProfilePicture containing {@link Byte}[] (byte array) representation 
+ * for small and big picture in {@link User} user's profile.
  * Allows get picture, set picture or change size of the picture 
  * 
  * @author J3DT
@@ -50,20 +48,12 @@ public class ProfilePicture extends CommonEntity {
 	 *            {@link BufferedImage}
 	 * @throws {@link
 	 *             FieldValueException}
-	 * @throws {@link
-	 *             EntityAutoPersist}
 	 */
-	public ProfilePicture(User owner, BufferedImage image) throws FieldValueException, EntityAutoPersist {
+	public ProfilePicture(User owner, BufferedImage image) throws FieldValueException {
 		this();
 		testNotEmpty(owner, "owner", false);
 		this.owner = owner;
 		setPicture(image);
-
-		try (JpaConnector jpa = new JpaConnector()) {
-			jpa.persist(this);
-		} catch (IllegalArgumentException | PersistenceException e) {
-			throw new EntityAutoPersist("Cant persist '" + getClass().getSimpleName() + "' ", e);
-		}
 	}
 
 	/** Constructor only for hibernate. Must be private. */
@@ -116,27 +106,16 @@ public class ProfilePicture extends CommonEntity {
 	 * @param picture
 	 *            {@link BufferedImage}
 	 * @throws {@link
-	 *             EntityAutoPersist}
-	 * @throws {@link
 	 *             FieldValueException}
 	 */
 
-	public void setPicture(BufferedImage picture) throws EntityAutoPersist, FieldValueException {
+	public void setPicture(BufferedImage picture) throws FieldValueException {
 		if (picture.getWidth() < 128 || picture.getHeight() < 128)
 			throw new FieldValueException("Image size must be at least 96x96 px");
 
 		// crop image here
 		this.picture = image2buffer(resize(picture, 128, 128));
 		this.miniature = image2buffer(resize(picture, 50, 50));
-
-		if (getId() == 0)
-			return;
-		// toto je automerge automaticka aktualizacia v db
-		try (JpaConnector jpa = new JpaConnector()) {
-			jpa.merge(this);
-		} catch (IllegalArgumentException | PersistenceException e) {
-			throw new EntityAutoPersist(this, e);
-		}
 	}
 
 	/**
@@ -146,23 +125,6 @@ public class ProfilePicture extends CommonEntity {
 	 */
 	public User getOwner() {
 		return owner;
-	}
-
-	/**
-	 * Get ProfilePicture from database
-	 * 
-	 * @param own {@link User} of the picture
-	 * @return {@link ProfilePicture} of owner from parameter
-	 */
-	public static ProfilePicture profilePicture(User own) {
-		try (JpaConnector jpa = new JpaConnector()) {
-			return jpa.getEntityManager()
-					.createQuery("SELECT p FROM " + ProfilePicture.class.getSimpleName() + " p WHERE p.owner = :owner",
-							ProfilePicture.class)
-					.setParameter("owner", own).getSingleResult();
-		} catch (javax.persistence.NoResultException e) {
-			return null;
-		}
 	}
 
 	/**

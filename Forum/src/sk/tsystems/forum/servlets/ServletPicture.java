@@ -19,7 +19,6 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 import sk.tsystems.forum.entity.ProfilePicture;
 import sk.tsystems.forum.entity.User;
-import sk.tsystems.forum.entity.exceptions.EntityAutoPersist;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.helper.URLParser;
@@ -106,11 +105,13 @@ public class ServletPicture extends MasterServlet {
 				Graphics g = saveImg.createGraphics();
 				g.drawImage(crop, 0, 0, null);
 
-				ProfilePicture pp = ProfilePicture.profilePicture(owner);
+				ProfilePicture pp = svh.getUserService().profilePicture(owner);
 				if (pp != null) {
 					pp.setPicture(saveImg);
 				} else
-					new ProfilePicture(owner, saveImg);
+					pp = new ProfilePicture(owner, saveImg);
+				
+				svh.getUserService().storeProfilePicture(pp);
 				
 				HashMap<String, String> resp = new HashMap<>();
 				resp.put("result", "ok");
@@ -119,7 +120,7 @@ public class ServletPicture extends MasterServlet {
 			} catch (java.lang.IllegalArgumentException exc) {
 				ServletHelper.ExceptionToResponseJson(exc, response, false);
 			} 
-		} catch (FieldValueException | EntityAutoPersist e) {
+		} catch (FieldValueException e) {
 			ServletHelper.ExceptionToResponseJson(e, response, false);
 		} 
 	}
@@ -141,7 +142,7 @@ public class ServletPicture extends MasterServlet {
 			if(user==null)
 				throw new URLParserException("no user found");
 			
-			ProfilePicture pp = ProfilePicture.profilePicture(user);
+			ProfilePicture pp = svh.getUserService().profilePicture(user);
 			if(pp==null)
 				throw new URLParserException("no profile picture assigned");
 			

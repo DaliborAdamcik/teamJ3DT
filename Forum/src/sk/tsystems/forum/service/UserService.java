@@ -2,6 +2,7 @@ package sk.tsystems.forum.service;
 
 import java.util.List;
 
+import sk.tsystems.forum.entity.ProfilePicture;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
@@ -75,5 +76,20 @@ public interface UserService {
 	 * @return List of all users
 	 */
 	List<User> getAllUsers();
+	
+	/**
+	 * Get ProfilePicture from database
+	 * 
+	 * @param owner {@link User} of the picture
+	 * @return {@link ProfilePicture} for owner otherwise {@link <code>null</code>} will be returned
+	 */
+	ProfilePicture profilePicture(User owner);
+
+	/**
+	 * Saves / updates profile picture for user in database
+	 *  
+	 * @param profilePicture {@link ProfilePicture} An profile picture entity
+	 */
+	void storeProfilePicture(ProfilePicture profilePicture); 
 
 }
