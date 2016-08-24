@@ -30,4 +30,6 @@
 .votingtable>table>tbody>tr>td {
 	padding-right: 2px;
 	padding-left: 2px;
+	font-size: 20px;
+	font-weight: bold;
 }
