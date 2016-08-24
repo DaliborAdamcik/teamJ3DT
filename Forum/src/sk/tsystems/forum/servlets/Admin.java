@@ -32,7 +32,6 @@ import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
 import sk.tsystems.forum.service.BlockedService;
 import sk.tsystems.forum.service.TopicService;
-import sk.tsystems.forum.service.jpa.BlockedJPA;
 import sk.tsystems.forum.servlets.master.MasterServlet;
 
 /**
@@ -133,7 +132,7 @@ public class Admin extends MasterServlet {
 				break;
 			case "getblocked":
 				String reason = obj.getString("reason");
-				BlockedService bs= new BlockedJPA();
+				BlockedService bs= servletHelper.getBlockedService();
 				Blocked blocked =bs.getBlocked(reason);
 				
 				ObjectMapper mapper = new ObjectMapper();
