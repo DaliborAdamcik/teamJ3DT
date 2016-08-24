@@ -14,9 +14,6 @@ import sk.tsystems.forum.service.CommentService;
 
 public class CommentJPA implements CommentService {
 
-	public CommentJPA() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public boolean addComment(Comment comment) { // OK

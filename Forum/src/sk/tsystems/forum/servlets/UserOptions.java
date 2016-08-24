@@ -42,13 +42,6 @@ import sk.tsystems.forum.servlets.master.MasterServlet;
 public class UserOptions extends MasterServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public UserOptions() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -81,9 +74,7 @@ public class UserOptions extends MasterServlet {
 				SimpleDateFormat dt = new SimpleDateFormat("dd.MM.yyyy");
 				Date date = servletHelper.getLoggedUser().getBirthDate();
 				resp.put("datestring", dt.format(date));
-
-				// TODO toto je dost shit.. spravit nejaky kulturny filter ked
-				// sa zvysi cas
+				
 				Iterator<Topic> topicIterator = servletHelper.getLoggedUser().getTopicsIterator();
 				while (topicIterator.hasNext()) {
 					userTopics.add(topicIterator.next());

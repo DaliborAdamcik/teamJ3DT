@@ -175,7 +175,7 @@ public class ProfilePicture extends CommonEntity {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
 			ImageIO.write(img, "PNG", out);
-		} catch (IOException e) {
+		} catch (IOException e) {//*** RYZAAAAAAAAAAAAAAAAAAAAAAAAA
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

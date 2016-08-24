@@ -43,13 +43,7 @@ import sk.tsystems.forum.servlets.master.MasterServlet;
 public class Admin extends MasterServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public Admin() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -277,14 +271,6 @@ public class Admin extends MasterServlet {
 		mapper.writeValue(response.getWriter(), resp);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+	
 
 }

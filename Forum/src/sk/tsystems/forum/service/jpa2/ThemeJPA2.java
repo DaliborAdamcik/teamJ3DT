@@ -48,11 +48,7 @@ public class ThemeJPA2 implements ThemeService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Theme> getTheme() {
-		return jpa.createQuery("select t from Theme t").getResultList(); // TODO
-																			// JPA
-																			// treba
-																			// skontrolovat
-																			// SELECT
+		return jpa.createQuery("select t from Theme t").getResultList(); 
 	}
 
 	@SuppressWarnings("unchecked")

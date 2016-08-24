@@ -13,9 +13,7 @@ import sk.tsystems.forum.service.TopicService;
  */
 public class TopicJPA implements TopicService {
 
-	public TopicJPA() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	@Override
 	public boolean addTopic(Topic topic) {

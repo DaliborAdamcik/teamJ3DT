@@ -18,13 +18,7 @@ import sk.tsystems.forum.servlets.master.MasterServlet;
 public class SignIn extends MasterServlet implements Servlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see MasterServlet#MasterServlet()
-	 */
-	public SignIn() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -56,16 +50,6 @@ public class SignIn extends MasterServlet implements Servlet {
 		svHelper.setLoggedUser(user);
 			
 		response.sendRedirect("/Forum/");
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
