@@ -88,10 +88,7 @@ public class UserJPA2 implements UserService {
 
 	@Override
 	public void storeProfilePicture(ProfilePicture profilePicture) {
-		if(profilePicture.getId()==0)
-			jpa.persist(profilePicture);
-		else
-			jpa.merge(profilePicture);
+		jpa.store(profilePicture);
 	}
 
 }
