@@ -1,0 +1,17 @@
+sk.tsystems.forum.coldstart
+sk.tsystems.forum.entity
+sk.tsystems.forum.entity.common
+sk.tsystems.forum.entity.dto
+sk.tsystems.forum.entity.exceptions
+sk.tsystems.forum.entity.exceptions.field
+sk.tsystems.forum.entity.exceptions.field.user
+sk.tsystems.forum.helper
+sk.tsystems.forum.helper.exceptions
+sk.tsystems.forum.junittest
+sk.tsystems.forum.junittest.entity
+sk.tsystems.forum.junittest.servicesJPA
+sk.tsystems.forum.service
+sk.tsystems.forum.service.jpa
+sk.tsystems.forum.service.jpa2
+sk.tsystems.forum.servlets
+sk.tsystems.forum.servlets.master
