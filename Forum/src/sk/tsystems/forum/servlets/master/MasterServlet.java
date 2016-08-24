@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sk.tsystems.forum.helper.ServletHelper;
 import sk.tsystems.forum.service.jpa.JpaConnector;
+import sk.tsystems.forum.service.jpa2.BlockedJPA2;
 /*import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
@@ -41,6 +42,7 @@ public abstract class MasterServlet extends HttpServlet {
 			servletHelper.setService(new TopicJPA2(jpa));
 			servletHelper.setService(new CommentJPA2(jpa));
 			servletHelper.setService(new ThemeJPA2(jpa));
+			servletHelper.setService(new BlockedJPA2(jpa));
 			servletHelper.setService(jpa); 
 	
 			// we can do some global checks here

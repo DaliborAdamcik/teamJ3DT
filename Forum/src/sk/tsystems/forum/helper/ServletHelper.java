@@ -21,6 +21,7 @@ import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.helper.exceptions.GetServiceException;
 import sk.tsystems.forum.helper.exceptions.URLParserException;
 import sk.tsystems.forum.helper.exceptions.UnknownActionException;
+import sk.tsystems.forum.service.BlockedService;
 import sk.tsystems.forum.service.CommentService;
 import sk.tsystems.forum.service.IJPAConnector;
 import sk.tsystems.forum.service.ThemeService;
@@ -110,6 +111,16 @@ public class ServletHelper {
 	 */
 	public final CommentService getCommentService() {
 		return getService(CommentService.class);
+	}
+
+	/**
+	 * Gets pre-initialized service object from request attributes.
+	 * 
+	 * @return An instance of Blocked service, otherwise an runtime
+	 *         exception is thrown
+	 */
+	public final BlockedService getBlockedService() {
+		return getService(BlockedService.class);
 	}
 
 	/**
