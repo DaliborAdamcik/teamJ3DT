@@ -125,7 +125,7 @@ public class ThemeObjectDTO implements Comparable<ThemeObjectDTO>{
 		TypedQuery<ThemeObjectDTO> qer1 = jpa.getEntityManager()
 				.createQuery(
 						"SELECT NEW sk.tsystems.forum.entity.dto.ThemeObjectDTO(c.theme, sum(c.rating), count(c.id)) FROM CommentRating c "
-								+ "WHERE c.comment.blocked=null "+themeWhere+" GROUP BY c.theme HAVING sum(c.rating)>0 AND count(c.id)>0",
+								+ "WHERE c.comment.blocked=null "+themeWhere+" GROUP BY c.theme HAVING count(c.id)>0",
 						ThemeObjectDTO.class);
 
 		TypedQuery<ThemeObjectDTO> qer2 = jpa.getEntityManager()

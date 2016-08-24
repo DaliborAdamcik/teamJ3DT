@@ -46,13 +46,17 @@ function welcomeUIinit()
     themes2page();
     ajaxEvents(); 
     
-    var openTopicFromSrch = hasTagParam('optop');
+/*    var openTopicFromSrch = hasTagParam('optop');
     if(!isNaN(openTopicFromSrch))
 	{
-    	var indexFS = $('#topicList').find('#ent_'+openTopicFromSrch+'_tit').index()-1;
-		$('#topicList').accordion( "option", "active", indexFS );
-	}
-    
+    	var $found = $('.headAcc#ent_'+openTopicFromSrch+'_tit'); 
+		//$('#ent_'+openTopicFromSrch+'_tit');
+    	var indexFS = $found.index();
+    	$fond.attr('tabindex', 0);
+    	
+    	console.log("open acord", $found, indexFS-1);
+		//$('#topicList').accordion( "option", "active", indexFS );
+	}*/
 }
 
 /**
