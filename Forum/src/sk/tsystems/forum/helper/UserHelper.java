@@ -26,8 +26,8 @@ public class UserHelper {
 		charactersControl(password);
 		lengthControl(password);
 		passwordStrengthControl(password);
-		// digitControll(password);
-		// specialCharacterControll(password);
+		 digitControl(password);
+		 specialCharacterControl(password);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class UserHelper {
 		}
 	}
 
-/*	private static void digitControll(String password) throws PasswordCheckException {
+	private static void digitControl(String password) throws PasswordCheckException {
 		for (int i = 0; i < password.length(); i++) {
 			if (Character.isDigit(password.charAt(i))) {
 				return;
@@ -78,7 +78,7 @@ public class UserHelper {
 		throw new PasswordCheckException("your password have to contain at least 1 digit");
 	}
 
-	private static void specialCharacterControll(String password) throws PasswordCheckException {
+	private static void specialCharacterControl(String password) throws PasswordCheckException {
 		for (int i = 0; i < password.length(); i++) {
 			int ascii = (int) password.charAt(i);
 			if ((ascii > 32 && ascii < 48) || (ascii > 57 && ascii < 65) || (ascii > 90 && ascii < 97)
@@ -87,7 +87,7 @@ public class UserHelper {
 			}
 		}
 		throw new PasswordCheckException("your password have to contain at least 1 special character");
-	} */
+	} 
 
 	public static void main(String[] args) {
 		/*

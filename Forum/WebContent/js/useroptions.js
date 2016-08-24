@@ -112,8 +112,11 @@ $("#password_change").submit(function(ev) {
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
-			$("#pass_message").html(response.errMessage);
+			if (response.errMessage != "success") {
+			alertDlg("Failed!",response.errMessage,"warn");
+			}
 			if (response.errMessage == "success") {
+				alertDlg("Success!","password changed successfully","info");
 				$('#userinfo_oldpassword').val("");
 				$('#userinfo_password').val("");
 				$('#userinfo_confirmpassword').val("");
