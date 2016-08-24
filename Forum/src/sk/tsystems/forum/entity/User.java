@@ -22,6 +22,11 @@ import sk.tsystems.forum.entity.exceptions.field.user.PasswordCheckException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.UserHelper;
 
+/**
+ * Entity for User containing {@link String} user's nickname, {@link String} user's password, {@link Date} user's date of birth, {@link String} user's realname and user role (possible roles listed in enum {@UserRole})
+ * 
+ * @author J3DT
+ */
 @Entity
 @Table(name = "JPA_USER")
 public class User extends BlockableEntity implements Comparable<User> {

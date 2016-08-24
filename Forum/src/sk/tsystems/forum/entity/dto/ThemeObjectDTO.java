@@ -11,6 +11,11 @@ import javax.persistence.TypedQuery;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 
+/**
+ * DTO object for theme, integer representation with rating for theme, count of ratings, comments and users for theme and last's comment date {@link Date}
+ * 
+ * @author J3DT
+ */
 public class ThemeObjectDTO implements Comparable<ThemeObjectDTO>{
 
 	/** field <b>rating for theme</b> */

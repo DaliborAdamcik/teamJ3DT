@@ -7,6 +7,11 @@ import javax.persistence.OneToOne;
 import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
+/**
+ * Entity for Blocked containing {@link User} who blocked and {@link String} reason of blocking
+ * 
+ * @author J3DT
+ */
 @Entity
 public class Blocked extends CommonEntity implements Comparable<Blocked> {
 

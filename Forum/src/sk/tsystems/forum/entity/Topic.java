@@ -7,6 +7,11 @@ import javax.persistence.Table;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 
+/**
+ * Entity for Topic containing {@link String} name of the topic and its public status
+ * 
+ * @author J3DT
+ */
 @Entity
 @Table(name = "TOPIC")
 public class Topic extends BlockableEntity implements Comparable<Topic> {

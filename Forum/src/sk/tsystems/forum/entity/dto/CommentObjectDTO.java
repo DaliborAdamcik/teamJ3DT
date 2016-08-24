@@ -1,8 +1,15 @@
 package sk.tsystems.forum.entity.dto;
 
+import java.util.Date;
+
 import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 
+/**
+ * DTO object for comment, integer representation with count of ratings for comment and rating for comment
+ * 
+ * @author J3DT
+ */
 public class CommentObjectDTO {
 
 	/** field <b>count of ratings for comment</b> */
