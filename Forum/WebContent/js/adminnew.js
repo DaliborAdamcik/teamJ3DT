@@ -14,10 +14,11 @@ var $comonDlgOpts = {
 		effect : "blind",
 		duration : 500
 	}
-}/**
-	 * function called in jsp, calls ajax from admin servlet
-	 * 
-	 */
+}
+/**
+ * function called in jsp, calls ajax from admin servlet
+ * 
+ */
 function loadAdminPage() {
 	$.ajax({
 		type : "GET",
@@ -186,21 +187,25 @@ function successBlock(response, id, reason) {
 	var blockedfor = document.getElementById("blockedfor_" + id);
 	var jsobj = {};
 	jsobj.reason = reason;
-	jsobj.id=id;
-	$.ajax({
-		type : "PUT",
-		url : "Admin/" + id + "/getblocked",
-		contentType : "application/json;charset=UTF-8",
-		dataType : "json",
-		data : JSON.stringify(jsobj),
-		success : function(response) {
-			//<button class="showreason_button" onclick="showreason('Hiking','dalik','asdksdlf',this);">REASON</button>
-			blockedfor.innerHTML = "<button class='showreason_button' onclick=\"showreason('Banned','"+response.blocked.blockedBy.userName+"','"+response.blocked.reason+"',this);\">REASON</button>";
-			alertDlg("Success!", "Blocked successfully", "info");
-		},
-		error : ajaxFailureMessage
-	});
-	
+	jsobj.id = id;
+	$
+			.ajax({
+				type : "PUT",
+				url : "Admin/" + id + "/getblocked",
+				contentType : "application/json;charset=UTF-8",
+				dataType : "json",
+				data : JSON.stringify(jsobj),
+				success : function(response) {
+					blockedfor.innerHTML = "<button class='showreason_button' onclick=\"showreason('Banned','"
+							+ response.blocked.blockedBy.userName
+							+ "','"
+							+ response.blocked.reason
+							+ "',this);\">REASON</button>";
+					alertDlg("Success!", "Blocked successfully", "info");
+				},
+				error : ajaxFailureMessage
+			});
+
 }
 
 function showreason(objName, blockedby, reason, button) {
@@ -215,8 +220,6 @@ $("#add_topic").submit(function(ev) {
 	var jsobj = {};
 	jsobj.topicname = $('#topic_newname').val();
 	jsobj.ispublic = document.getElementById('topic_ispublic').checked;
-	console.log("sem dosiel");
-	console.log(jsobj);
 	$.ajax({
 		type : "PUT",
 		url : "Admin/1/addtopic",
@@ -224,7 +227,7 @@ $("#add_topic").submit(function(ev) {
 		dataType : "json",
 		data : JSON.stringify(jsobj),
 		success : function(response) {
-			if(response.error!=null){
+			if (response.error != null) {
 				alertDlg("Error!", response.error, "warn");
 				return false;
 			}
@@ -243,7 +246,6 @@ function changetopic(id) {
 		return false;
 	}
 	jsobj.newname = $('#newtopicname_' + id).val();
-	console.log(jsobj);
 	$.ajax({
 		type : "PUT",
 		url : "Admin/" + id + "/changetopic",
@@ -255,7 +257,7 @@ function changetopic(id) {
 				alertDlg("Error", response.error, "warn");
 				return false;
 			}
-			console.log(response);
+
 			alertDlg("Success!", "topic changed successfuly", "info");
 		}
 

@@ -9,9 +9,6 @@ $(function() {
 	});
 });
 
-// $(function() {
-// $("input.checkbox").checkboxradio();
-// });
 /**
  * function called in jsp, calls ajax from the servlet
  * 
@@ -39,7 +36,7 @@ function makeOptionsPage(response) {
 	$('#options_menu').show();
 	$('#personalinfo_change').show();
 	$('#userinfo_realname').val(response.user.realName);
-	
+
 	$('#userinfo_birthdate').val(response.datestring);
 	putAllTopics(response);
 }
@@ -56,47 +53,38 @@ function putAllTopics(response) {
 /**
  * called after submitting the form for changing user basic info
  */
-$("#personalinfo_change").submit(
-	function(ev) {
+$("#personalinfo_change").submit(function(ev) {
 	var newdate = $('#userinfo_birthdate').val();
 	var jsobj = {};
 	jsobj.newdate = date2str($('#userinfo_birthdate')
 							.datepicker("getDate"), "dd.MM.yyyy");
-					var datecompare = /^((0?[1-9]|[12][0-9]|3[01]).(0?[13578]|1[02])|(0?[1-9]|[12][0-9]|3[0]).(0?[469]|1[1])|(0?[1-9]|[12][0-9]).(0?2)).((19|20)[0-9]{2})$/;
+	var datecompare = /^((0?[1-9]|[12][0-9]|3[01]).(0?[13578]|1[02])|(0?[1-9]|[12][0-9]|3[0]).(0?[469]|1[1])|(0?[1-9]|[12][0-9]).(0?2)).((19|20)[0-9]{2})$/;
+	if (!datecompare.test(newdate)) {
+		alertDlg("Failed!","Date in incorrect format. please insert date in format dd.mm.yyyy","warn");
+		return false;
+	}
+	jsobj.newrealname = $('#userinfo_realname').val();
+	if (jsobj.newrealname.length == 0) {
+		alertDlg("Error", "specify new name", "warn");
+		return false;
+	}
+	$.ajax({
+		type : "PUT",
+		url : "Useroptions/1/changeinfo",
+		contentType : "application/json;charset=UTF-8",
+		dataType : "json",
+		data : JSON.stringify(jsobj),
+		success : function(response) {
+			if (response.error != null) {
+				alertDlg("fail!", response.error,"warn");
+				return false;
+			}
+			alertDlg("Success!","personal info changed sucessfully","info");
+		}
+	});
+	return false;
+});
 
-					if (!datecompare.test(newdate)) {
-						alertDlg(
-								"Failed!",
-								"Date in incorrect format. please insert date in format dd.mm.yyyy",
-								"warn");
-						return false;
-					}
-					jsobj.newrealname = $('#userinfo_realname').val();
-					if (jsobj.newrealname.length == 0) {
-						alertDlg("Error", "specify new name", "warn");
-						return false;
-					}
-					$
-							.ajax({
-								type : "PUT",
-								url : "Useroptions/1/changeinfo",
-								contentType : "application/json;charset=UTF-8",
-								dataType : "json",
-								data : JSON.stringify(jsobj),
-								success : function(response) {
-									if (response.error != null) {
-										alertDlg("fail!", response.error,
-												"warn");
-										return false;
-									}
-									alertDlg(
-											"Success!",
-											"personal info changed sucessfully",
-											"info");
-								}
-							});
-					return false;
-				});
 /**
  * called after submitting the form for changing password
  */
@@ -113,10 +101,10 @@ $("#password_change").submit(function(ev) {
 		data : JSON.stringify(jsobj),
 		success : function(response) {
 			if (response.errMessage != "success") {
-			alertDlg("Failed!",response.errMessage,"warn");
+				alertDlg("Failed!", response.errMessage, "warn");
 			}
 			if (response.errMessage == "success") {
-				alertDlg("Success!","password changed successfully","info");
+				alertDlg("Success!", "password changed successfully", "info");
 				$('#userinfo_oldpassword').val("");
 				$('#userinfo_password').val("");
 				$('#userinfo_confirmpassword').val("");
@@ -155,27 +143,26 @@ function date2str(x, y) {
 function addtopic(id, button, name) {
 	var jsobj = {};
 	jsobj.id = id;
-	$
-			.ajax({
-				type : "PUT",
-				url : "Useroptions/" + id + "/addtopic",
-				contentType : "application/json;charset=UTF-8",
-				dataType : "json",
-				data : JSON.stringify(jsobj),
-				success : function(response) {
-					var promid = "topic_change_" + id
-					var td = document.getElementById(promid);
-					td.innerHTML = "<button class=\"removetopic_button\" onclick=\"removetopic("
+	$.ajax({
+		type : "PUT",
+		url : "Useroptions/" + id + "/addtopic",
+		contentType : "application/json;charset=UTF-8",
+		dataType : "json",
+		data : JSON.stringify(jsobj),
+		success : function(response) {
+			var promid = "topic_change_" + id
+			var td = document.getElementById(promid);
+			td.innerHTML = "<button class=\"removetopic_button\" onclick=\"removetopic("
 							+ id
 							+ ", this,'"
 							+ name
 							+ "');\">"
 							+ name
 							+ "</button>";
-					
-				},
-				error : ajaxFailureMessage
-			});
+
+		},
+		error : ajaxFailureMessage
+	});
 }
 /**
  * remove topic specified by ID from currently logged user
