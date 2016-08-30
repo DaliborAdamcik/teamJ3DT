@@ -49,7 +49,7 @@ public class SignIn extends MasterServlet implements Servlet {
 
 		svHelper.setLoggedUser(user);
 			
-		response.sendRedirect("/Forum/");
+		response.sendRedirect("Welcome");
 	}
 
 	/**
