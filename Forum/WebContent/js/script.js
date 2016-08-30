@@ -280,12 +280,14 @@ function removeCommonDlg_answer(answer, cbcparam)
 		return;
 
 	$.ajax({
-        type: "POST",
-        url: "./Welcome",
-	    data: { 
+        type: "PUT",
+        url: "./Welcome/"+cbcparam.id+"/block/",
+    	contentType : "application/json;charset=UTF-8",
+    	dataType : "json",
+	    data: JSON.stringify({ 
 	    	block: cbcparam.id, 
 	    	block_reason: 'Erased by OWNER'
-	    },
+	    }),
         success: function (resp) {
         	ajxErrorDlg(resp);
         	try {

@@ -48,7 +48,7 @@
 					<ul class="nav navbar-nav navbar-right">
 						<c:choose>
 							<c:when test="${CURRENT_USER!= null}">
-								<li><a href="/Forum/Useroptions">${CURRENT_USER.userName} (${CURRENT_USER.role})</a></li>
+								<li><a href="Useroptions">${CURRENT_USER.userName} (${CURRENT_USER.role})</a></li>
 								<li><a href="Welcome?parameter=logout"><span
 										class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 								<script type="text/javascript" >

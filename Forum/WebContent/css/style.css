@@ -141,7 +141,7 @@ footer {
 .changetopic_button {
 	position:relative;
 	top:3px;
-	background: url("/Forum/images/ok.png") no-repeat;
+	background: url("./../images/ok.png") no-repeat;
     cursor:pointer;
     width: 23px;
     height: 23px;

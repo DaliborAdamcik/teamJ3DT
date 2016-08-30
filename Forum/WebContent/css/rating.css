@@ -8,19 +8,19 @@
 }
 
 .upvote_button {
-	background: url("/Forum/images/up.png") no-repeat;
+	background: url("./../images/up.png") no-repeat;
 }
 
 .downvote_button {
-	background: url("/Forum/images/down.png") no-repeat;
+	background: url("./../images/down.png") no-repeat;
 }
 
 .upvote_button_black {
-	background: url("/Forum/images/upblack.png") no-repeat;
+	background: url("./../images/upblack.png") no-repeat;
 }
 
 .downvote_button_black {
-	background: url("/Forum/images/downblack.png") no-repeat;
+	background: url("./../images/downblack.png") no-repeat;
 }
 
 .votingtable {

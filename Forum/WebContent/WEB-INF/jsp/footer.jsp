@@ -11,9 +11,9 @@
 		<hr>
 		&copy; 2016 made by J3DT <br> (Jano, Jozef, Janka, Dalibor,
 		Tomas)<br/>
-		<a href="https://github.com/DaliborAdamcik/teamJ3DT/" target="_blank">Project on GitHub</a>
-		<a href="doc/" target="_blank">Java doc</a>
-		<a href="diagrams.zip" target="_blank">Diagrams</a>
+		<a href="https://github.com/DaliborAdamcik/teamJ3DT/" target="_blank">Project on GitHub</a> &#8226;
+		<a href="doc/" target="_blank">Java doc</a> &#8226;
+		<a href="diagrams.zip" target="_blank">Diagrams</a> 
 	</div>
 </footer>
 
