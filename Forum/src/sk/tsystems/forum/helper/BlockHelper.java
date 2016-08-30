@@ -1,6 +1,7 @@
 package sk.tsystems.forum.helper;
 
 import sk.tsystems.forum.entity.Blocked;
+import sk.tsystems.forum.entity.Comment;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
@@ -8,6 +9,7 @@ import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
+import sk.tsystems.forum.helper.exceptions.WEBNoPermissionException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 /**
  * Contains functions essential for changing certain attributes of entities.
@@ -40,6 +42,22 @@ public class BlockHelper {
 			if (objectToBeBlocked == null) {
 				return false;
 			}
+			
+			if (!blockedBy.getRole().equals(UserRole.ADMIN)) {
+				
+				
+				User owner = null;
+				
+				if(objectToBeBlocked instanceof Comment)
+					owner  = ((Comment) objectToBeBlocked).getOwner();
+				
+				if(objectToBeBlocked instanceof Theme)
+					owner  = ((Theme) objectToBeBlocked).getAuthor();
+				
+				if(owner == null || !owner.equals(blockedBy))
+					return false;
+			}
+			
 			Blocked blo = new Blocked(blockedBy, reason);
 			jpa.persist(blo);
 			objectToBeBlocked.setBlocked(blo);

@@ -243,13 +243,13 @@ public class Welcome extends MasterServlet {
 
 			if("block".equals(url.getAction()))
 			{
-				if (svHelper.getSessionRole() != UserRole.ADMIN)
+				if (svHelper.getSessionRole().equals(UserRole.GUEST))
 					throw new WEBNoPermissionException("Privileged action. Permissions denied.");
-				
+
 				if(BlockHelper.block(url.getParrentID(), json.getString("block_reason"), svHelper.getLoggedUser()))
 				ServletHelper.jsonResponse(response, "OK");
 				else
-					throw new WEBNoPermissionException("Privileged action. Permissions denied.");
+					throw new WEBNoPermissionException("Cant block / erase (May be privileged action / permissions denied).");
 				
 				return;
 			}
