@@ -181,7 +181,7 @@ function blockCommonDlg_DoBlock()
 
 	}
 	catch(err) {
-	    console.log(err);
+	    console.error(err);
 	} 
 	finally {
 		// TODO enable form
@@ -193,7 +193,6 @@ function blockCommonDlg_DoBlock()
  * Called after success of ajax call for block
  */
 function blockCommonDlg_BlockSucces(response) {
-	console.log("blockCommonDlg_BlockSucces response:", response);
 	ajxErrorDlg(response);
 	try
 	{
@@ -201,7 +200,7 @@ function blockCommonDlg_BlockSucces(response) {
 		if($dlg.data('calltome')!=undefined)
 		$dlg.data('calltome')(response, $dlg.data('ident'), $dlg.find("input").val().trim());
 	}
-	catch(err) {console.log("cant call callback", err);}
+	catch(err) {console.error("cant call callback", err);}
 }
 
 /**
@@ -263,7 +262,6 @@ function removeCommonDlgPopup(ident, callback){
  * @param ident an ident of removed entity
  */
 function removeCommonDlg_defaultCallBack(response, ident) {
-	console.log(response, ident);
 	if(ajxErrorDlg(response))
 		$('#ent_'+ident).hide('slow');	
 }
@@ -291,7 +289,6 @@ function removeCommonDlg_answer(answer, cbcparam)
         success: function (resp) {
         	ajxErrorDlg(resp);
         	try {
-        		console.log(cbcparam);
         		cbcparam.cbc(resp, cbcparam.id);
         	}
         	catch(err) {

@@ -57,7 +57,6 @@ function ajaxComments(news) {
 function comments2page(response)
 {
 	try	{
-		console.log(response);
 		
 	    if(ajxErrorDlg(response) && response.error.type==='WEBNoPermissionException')
     	{
@@ -110,7 +109,6 @@ function comments2page(response)
  */
 function comment2page(comment){
 	try {
-		console.log(comment);
 		comment.created = timeStmp2strDate(comment.created);
 		if(comment.blocked)
 			comment.blocked.created = timeStmp2strDate(comment.blocked.created);
@@ -145,7 +143,6 @@ $('#addComment').submit(function(ev){
     		return false;
     	}
 	
-	    console.log(jsobj);
 	    $.ajax({
 	        type: "PUT",
 	        url: "Comment/"+ $('#themeId').val() +"/",
@@ -153,7 +150,6 @@ $('#addComment').submit(function(ev){
 	        dataType: "json",
 	        data: JSON.stringify(jsobj),
 	        success: function (response) {
-	        	console.log(response);
 	        	if(ajxErrorDlg(response))
 	        		return;
 	        		
@@ -168,7 +164,7 @@ $('#addComment').submit(function(ev){
 
 	}
 	catch(err) {
-	    console.log(err);
+	    console.error(err);
 	} 
 	finally {
 		//TODO enable form
@@ -229,7 +225,6 @@ function commentEditDlgModify(){
 	    	return;
     	}
 	    
-	    console.log(jsobj);
 	    $.ajax({
 	        type: "POST",
 	        url: "Comment/"+ ident +"/",
@@ -237,7 +232,6 @@ function commentEditDlgModify(){
 	        dataType: "json",
 	        data: JSON.stringify(jsobj),
 	        success: function (response) {
-	        	console.log(response);
 	        	if(ajxErrorDlg(response))
 	        		return;
 
@@ -249,7 +243,7 @@ function commentEditDlgModify(){
 
 	}
 	catch(err) {
-	    console.log(err);
+	    console.error(err);
 	} 
 	finally {
 		// TODO enable form

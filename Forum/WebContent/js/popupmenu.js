@@ -24,8 +24,6 @@ function entityMenuPopup(ident) {
 	$('#entityMenu_iEdit').off("click");
 	$('#entityMenu_iEdit').click(function () { entityMenuItemClick(etype+'.edit'); });
 	
-	console.log("popup menu dbg:", user.role, user.id, etype, owner);
-	
 	if(user.id!=owner && user.role!='ADMIN')
 		$menu.find('.entMenuOwnerOption').addClass('ui-state-disabled');
 	

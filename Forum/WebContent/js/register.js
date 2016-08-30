@@ -29,7 +29,6 @@ $('#register').submit(function(ev){
 	    //confirmMessage
 	    var sendobj = {};
 	    sendobj.register = jsobj;
-	    console.log(sendobj);
 	    $.ajax({
 	        type: "POST",
 	        url: "Register",
@@ -37,7 +36,6 @@ $('#register').submit(function(ev){
 	        dataType: "json",
 	        data: JSON.stringify(sendobj),
 	        success: function (response) {
-	        	console.log(response);
 	        	if(response.error)
 	        	{
 	        		document.getElementById('confirmMessage').innerHTML = response.error;
@@ -69,7 +67,7 @@ function stateMessage(objID, message, state)
 		case 'critic': stateImg = 'warn_red.png'; break;
 		case 'warning': stateImg = 'warn_yel.png'; break;
 		default:
-			console.log("stateMessage invalid option: ", state); break;
+			console.error("stateMessage invalid option: ", state); break;
 	}
 	
 	$('#'+objID+'_img').attr('src', 'images/'+stateImg);
@@ -82,7 +80,6 @@ function stateMessage(objID, message, state)
 $('#reg_login').keyup(function(e){
 	var $newnick = $('#reg_login').val();
 	
-	console.log($newnick);
 	if($newnick.length<4)
 	{
 		stateMessage('reg_login', 'Your new nickname is too short', 'err');
@@ -102,8 +99,6 @@ $('#reg_login').keyup(function(e){
     jsobj.checknick = {};
     jsobj.checknick.nick = $newnick;
     
-    console.log(jsobj, JSON.stringify(jsobj));
-
     $.ajax({
         type: "POST",
         url: "Register",
@@ -111,7 +106,6 @@ $('#reg_login').keyup(function(e){
         dataType: "json",
         data:JSON.stringify(jsobj),
         success: function (response) {
-        	console.log(response);
         	if(response.exists)
     		{
         		stateMessage('reg_login', 'Nickname already exists, please type another nickname', 'warning');

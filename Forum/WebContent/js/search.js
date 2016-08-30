@@ -63,7 +63,6 @@ function colorize(what, where) {
 	var res = where;
 	
 	var re = new RegExp('(?!<span class="hili">)('+what+')(?!<\/span>)', "gmi");
-	console.log(re);
 	res = res.replace(re, '<span class="hili">$1</span>');
 	
 	return res;
