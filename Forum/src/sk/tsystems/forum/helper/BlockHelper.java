@@ -9,7 +9,6 @@ import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.entity.common.BlockableEntity;
 import sk.tsystems.forum.entity.common.CommonEntity;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
-import sk.tsystems.forum.helper.exceptions.WEBNoPermissionException;
 import sk.tsystems.forum.service.jpa.JpaConnector;
 /**
  * Contains functions essential for changing certain attributes of entities.
