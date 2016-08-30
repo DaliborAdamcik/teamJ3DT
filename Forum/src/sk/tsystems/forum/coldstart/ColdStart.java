@@ -1,7 +1,6 @@
 package sk.tsystems.forum.coldstart;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.Date;
 
 import sk.tsystems.forum.entity.Blocked;

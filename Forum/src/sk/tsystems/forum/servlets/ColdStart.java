@@ -2,7 +2,6 @@ package sk.tsystems.forum.servlets;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 
 import javax.servlet.ServletException;
