@@ -12,6 +12,5 @@ sk.tsystems.forum.junittest.entity
 sk.tsystems.forum.junittest.servicesJPA
 sk.tsystems.forum.service
 sk.tsystems.forum.service.jpa
-sk.tsystems.forum.service.jpa2
 sk.tsystems.forum.servlets
 sk.tsystems.forum.servlets.master
