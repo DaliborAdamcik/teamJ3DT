@@ -15,6 +15,7 @@ import sk.tsystems.forum.entity.exceptions.field.user.NickNameException;
 import sk.tsystems.forum.entity.exceptions.field.user.PasswordCheckException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.UserJPA;
 
 public class UserJPATest {
@@ -26,7 +27,7 @@ public class UserJPATest {
 	public List<Object> listOfTemporaryObjects;
 	@Before
 	public void setUp() throws Exception {
-		userservice = new UserJPA(); // start tested service
+		userservice = new UserJPA(new JpaConnector()); // start tested service
 		userName = TestHelper.randomString(20, 0).toLowerCase();
 		realName = TestHelper.randomString(20);
 		password = TestHelper.randomString(10,10)+"@./";
@@ -53,7 +54,7 @@ public class UserJPATest {
 	@Test
 	public void testUserJPA() {
 		assertNotNull("Object is badly initialized", userservice);
-		UserJPA secondinstance = new UserJPA();
+		UserJPA secondinstance = new UserJPA(new JpaConnector());
 		assertNotNull("Object is badly initialized (try create new object)", secondinstance);
 	}
 

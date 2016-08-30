@@ -17,6 +17,7 @@ import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.entity.exceptions.field.user.UserEntityFieldException;
 import sk.tsystems.forum.helper.TestHelper;
 import sk.tsystems.forum.service.jpa.CommentJPA;
+import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 import sk.tsystems.forum.service.jpa.UserJPA;
@@ -35,10 +36,11 @@ public class CommentJPATest {
 	@Before
 	public void setUp() throws Exception {
 		toRemove = new ArrayList<>();
-		commentservice = new CommentJPA();
-		userservice = new UserJPA();
-		themeService = new ThemeJPA();
-		topicService = new TopicJPA();
+		JpaConnector jpa = new JpaConnector();
+		commentservice = new CommentJPA(jpa);
+		userservice = new UserJPA(jpa);
+		themeService = new ThemeJPA(jpa);
+		topicService = new TopicJPA(jpa);
 		
 		
 		topic = new Topic(TestHelper.randomString(20), true);
@@ -62,7 +64,7 @@ public class CommentJPATest {
 	@Test
 	public void testCommetJPA() {
 		assertNotNull("Object is badly initialized", commentservice);
-		CommentJPA secondinstance = new CommentJPA();
+		CommentJPA secondinstance = new CommentJPA(new JpaConnector());
 		assertNotNull("Object is badly initialized (try create new object)", secondinstance);
 	}
 

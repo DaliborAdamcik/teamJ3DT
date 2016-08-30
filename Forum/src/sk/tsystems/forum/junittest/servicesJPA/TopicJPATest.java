@@ -13,6 +13,7 @@ import org.junit.Test;
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.exceptions.field.FieldValueException;
 import sk.tsystems.forum.helper.TestHelper;
+import sk.tsystems.forum.service.jpa.JpaConnector;
 import sk.tsystems.forum.service.jpa.TopicJPA;
 
 public class TopicJPATest {
@@ -24,7 +25,7 @@ public class TopicJPATest {
 
 	@Before
 	public void setUp() throws Exception {
-		topicservice = new TopicJPA();
+		topicservice = new TopicJPA(new JpaConnector());
 		creationDate = new Date();
 		name = TestHelper.randomString(20);
 		isPublic = false;
@@ -39,7 +40,7 @@ public class TopicJPATest {
 	@Test
 	public void testCommetJPA() {
 		assertNotNull("Object is badly initialized", topicservice);
-		TopicJPA secondinstance = new TopicJPA();
+		TopicJPA secondinstance = new TopicJPA(new JpaConnector());
 		assertNotNull("Object is badly initialized (try create new object)", secondinstance);
 	}
 
