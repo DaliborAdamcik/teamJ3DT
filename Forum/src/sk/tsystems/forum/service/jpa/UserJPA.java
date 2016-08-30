@@ -1,4 +1,4 @@
-package sk.tsystems.forum.service.jpa2;
+package sk.tsystems.forum.service.jpa;
 
 import java.util.List;
 
@@ -7,13 +7,12 @@ import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.entity.UserRole;
 import sk.tsystems.forum.service.UserService;
-import sk.tsystems.forum.service.jpa.JpaConnector;
 
-public class UserJPA2 implements UserService {
+public class UserJPA implements UserService {
 
 	private final JpaConnector jpa;
 
-	public UserJPA2(JpaConnector jpa) {
+	public UserJPA(JpaConnector jpa) {
 		super();
 		this.jpa = jpa;
 	}

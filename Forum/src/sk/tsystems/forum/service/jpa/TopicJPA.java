@@ -1,4 +1,4 @@
-package sk.tsystems.forum.service.jpa2;
+package sk.tsystems.forum.service.jpa;
 
 import java.util.Date;
 import java.util.List;
@@ -7,15 +7,14 @@ import javax.persistence.TemporalType;
 
 import sk.tsystems.forum.entity.Topic;
 import sk.tsystems.forum.service.TopicService;
-import sk.tsystems.forum.service.jpa.JpaConnector;
 
 /**
  * http://grepcode.com/file/repo1.maven.org/maven2/javax.persistence/persistence-api/1.0.2/javax/persistence/Query.java?av=f
  */
-public class TopicJPA2 implements TopicService {
+public class TopicJPA implements TopicService {
 	private JpaConnector jpa;
 
-	public TopicJPA2(JpaConnector jpa) {
+	public TopicJPA(JpaConnector jpa) {
 		super();
 		this.jpa = jpa;
 	}

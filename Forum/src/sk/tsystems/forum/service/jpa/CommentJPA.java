@@ -1,4 +1,4 @@
-package sk.tsystems.forum.service.jpa2;
+package sk.tsystems.forum.service.jpa;
 
 import java.util.Date;
 import java.util.List;
@@ -11,13 +11,12 @@ import sk.tsystems.forum.entity.CommentRating;
 import sk.tsystems.forum.entity.Theme;
 import sk.tsystems.forum.entity.User;
 import sk.tsystems.forum.service.CommentService;
-import sk.tsystems.forum.service.jpa.JpaConnector;
 
-public class CommentJPA2 implements CommentService {
+public class CommentJPA implements CommentService {
 
 	private JpaConnector jpa;
 
-	public CommentJPA2(JpaConnector jpa) {
+	public CommentJPA(JpaConnector jpa) {
 		super();
 		this.jpa = jpa;
 	}

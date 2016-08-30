@@ -15,12 +15,12 @@ import sk.tsystems.forum.service.CommentService;
 import sk.tsystems.forum.service.ThemeService;
 import sk.tsystems.forum.service.TopicService;
 import sk.tsystems.forum.service.UserService;
+import sk.tsystems.forum.service.jpa.BlockedJPA;
+import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.JpaConnector;
-import sk.tsystems.forum.service.jpa2.BlockedJPA2;
-import sk.tsystems.forum.service.jpa2.CommentJPA2;
-import sk.tsystems.forum.service.jpa2.ThemeJPA2;
-import sk.tsystems.forum.service.jpa2.TopicJPA2;
-import sk.tsystems.forum.service.jpa2.UserJPA2;
+import sk.tsystems.forum.service.jpa.ThemeJPA;
+import sk.tsystems.forum.service.jpa.TopicJPA;
+import sk.tsystems.forum.service.jpa.UserJPA;
 
 /**
  * Place for cold intialization methods ... 
@@ -39,11 +39,11 @@ public class ColdStart {
 	 */
 	public ColdStart() {
 		JpaConnector jpa = new JpaConnector();
-		this.userService = new UserJPA2(jpa);
-		this.themeService = new ThemeJPA2(jpa);
-		this.topicService = new TopicJPA2(jpa);
-		this.commentService = new CommentJPA2(jpa);
-		this.blockedService = new BlockedJPA2(jpa);
+		this.userService = new UserJPA(jpa);
+		this.themeService = new ThemeJPA(jpa);
+		this.topicService = new TopicJPA(jpa);
+		this.commentService = new CommentJPA(jpa);
+		this.blockedService = new BlockedJPA(jpa);
 	}
 
 	/**

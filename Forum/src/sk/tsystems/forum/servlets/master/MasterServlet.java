@@ -6,16 +6,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sk.tsystems.forum.helper.ServletHelper;
+import sk.tsystems.forum.service.jpa.BlockedJPA;
+import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.JpaConnector;
-import sk.tsystems.forum.service.jpa2.BlockedJPA2;
-/*import sk.tsystems.forum.service.jpa.CommentJPA;
 import sk.tsystems.forum.service.jpa.ThemeJPA;
 import sk.tsystems.forum.service.jpa.TopicJPA;
-import sk.tsystems.forum.service.jpa.UserJPA;*/
-import sk.tsystems.forum.service.jpa2.CommentJPA2;
-import sk.tsystems.forum.service.jpa2.ThemeJPA2;
-import sk.tsystems.forum.service.jpa2.TopicJPA2;
-import sk.tsystems.forum.service.jpa2.UserJPA2;
+import sk.tsystems.forum.service.jpa.UserJPA;
 
 public abstract class MasterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -38,11 +34,11 @@ public abstract class MasterServlet extends HttpServlet {
 		
 		try(JpaConnector jpa = new JpaConnector())
 		{
-			servletHelper.setService(new UserJPA2(jpa)); 
-			servletHelper.setService(new TopicJPA2(jpa));
-			servletHelper.setService(new CommentJPA2(jpa));
-			servletHelper.setService(new ThemeJPA2(jpa));
-			servletHelper.setService(new BlockedJPA2(jpa));
+			servletHelper.setService(new UserJPA(jpa)); 
+			servletHelper.setService(new TopicJPA(jpa));
+			servletHelper.setService(new CommentJPA(jpa));
+			servletHelper.setService(new ThemeJPA(jpa));
+			servletHelper.setService(new BlockedJPA(jpa));
 			servletHelper.setService(jpa); 
 	
 			// we can do some global checks here
