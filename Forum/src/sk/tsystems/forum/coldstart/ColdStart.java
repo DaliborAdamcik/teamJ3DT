@@ -1,5 +1,7 @@
 package sk.tsystems.forum.coldstart;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.Date;
 
 import sk.tsystems.forum.entity.Blocked;
@@ -49,9 +51,12 @@ public class ColdStart {
 	 * Method to create all essential entities for testing. Creates all admins
 	 * and users. Calls method to initialize other essential entities
 	 * 
+	 * @param out {@link PrintStream} an output for script messages
 	 * @throws {@link CommonEntityException}
 	 */
-	public void run() throws CommonEntityException {
+	public void run(PrintStream out) throws CommonEntityException {
+		System.setErr(out);
+		System.setOut(out);
 		// as a first we drop all old data and create new structure for database
 		try(JpaConnector connJPA = new JpaConnector())
 		{
@@ -261,7 +266,7 @@ public class ColdStart {
 //
 //			for (Comment comment2 : komenty) {
 //				new CommentRating(comment2, user, 1);
-//				System.out.println(
+//				out.println(
 //						"test CommentObjectDTO: " + CommentObjectDTO.getDTO(comment2) + " id " + comment2.getId());
 //			}
 //

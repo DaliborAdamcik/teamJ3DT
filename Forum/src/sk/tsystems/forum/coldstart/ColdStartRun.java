@@ -13,7 +13,7 @@ public class ColdStartRun {
 		try
 		{
 			ColdStart cold = new ColdStart();
-			cold.run();
+			cold.run(System.out);
 		}
 		catch(Exception e)
 		{
