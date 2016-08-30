@@ -15,7 +15,7 @@ import sk.tsystems.forum.service.jpa.JpaConnector;
  */
 public class URLParser {
 	/** Constant required to build correct regex string */
-	private static final String FORUM_NAME = "Forum";
+	private static final String FORUM_NAME = "Forum_J3DT";
 	/** an incorrect value assigner */
 	private static final int UNSUPPLIED_IDENT_VALUE = -1;
 	/** ident of parent in request URL */
